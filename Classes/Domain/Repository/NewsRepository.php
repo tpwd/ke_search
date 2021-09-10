@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace TeaminmediasPluswerk\KeSearch\Domain\Repository;
+namespace Tpwd\KeSearch\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice

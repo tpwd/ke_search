@@ -1,9 +1,9 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Domain\Repository;
+namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;

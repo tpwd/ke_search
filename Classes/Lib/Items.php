@@ -1,7 +1,7 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************

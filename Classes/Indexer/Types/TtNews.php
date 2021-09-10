@@ -1,14 +1,14 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\IndexRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\PageRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\TtNewsRepository;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Domain\Repository\PageRepository;
+use Tpwd\KeSearch\Domain\Repository\TtNewsRepository;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

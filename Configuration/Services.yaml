@@ -4,5 +4,5 @@ services:
     autoconfigure: false
     public: false
 
-  TeaminmediasPluswerk\KeSearch\:
+  Tpwd\KeSearch\:
     resource: '../Classes/*'

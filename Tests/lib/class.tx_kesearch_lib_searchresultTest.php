@@ -22,11 +22,11 @@ class SearchResultTest extends Tx_Extbase_BaseTestCase
      */
     public function checkIsArrayOfWordsInString()
     {
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Pluginbase $lib */
-        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Lib\Pluginbase::class);
+        /** @var \Tpwd\KeSearch\Lib\Pluginbase $lib */
+        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Lib\Pluginbase::class);
 
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Searchresult $sr */
-        $sr = new \TeaminmediasPluswerk\KeSearch\Lib\Searchresult($lib);
+        /** @var \Tpwd\KeSearch\Lib\Searchresult $sr */
+        $sr = new \Tpwd\KeSearch\Lib\Searchresult($lib);
 
         // check if one word can be found
         $wordArray = array(
@@ -74,7 +74,7 @@ class SearchResultTest extends Tx_Extbase_BaseTestCase
      */
     public function checkHighlightArrayOfWordsInContent()
     {
-        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Lib\Pluginbase::class);
+        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Lib\Pluginbase::class);
 
         $lib->conf['resultChars'] = 300;
         $lib->swords = array(
@@ -83,8 +83,8 @@ class SearchResultTest extends Tx_Extbase_BaseTestCase
 
         $lib->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Searchresult $sr */
-        $sr = new \TeaminmediasPluswerk\KeSearch\Lib\Searchresult($lib);
+        /** @var \Tpwd\KeSearch\Lib\Searchresult $sr */
+        $sr = new \Tpwd\KeSearch\Lib\Searchresult($lib);
 
         // highlight one word
         $wordArray = array(
@@ -115,7 +115,7 @@ class SearchResultTest extends Tx_Extbase_BaseTestCase
      */
     public function checkBuildTeaserContent()
     {
-        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Lib\Pluginbase::class);
+        $lib = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Lib\Pluginbase::class);
         $lib->conf['resultChars'] = 300;
         $lib->swords = array(
             'Abgangszeugnis'
@@ -123,8 +123,8 @@ class SearchResultTest extends Tx_Extbase_BaseTestCase
 
         $lib->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Searchresult $sr */
-        $sr = new \TeaminmediasPluswerk\KeSearch\Lib\Searchresult($lib);
+        /** @var \Tpwd\KeSearch\Lib\Searchresult $sr */
+        $sr = new \Tpwd\KeSearch\Lib\Searchresult($lib);
 
         // test without highlighting
         $result = $sr->buildTeaserContent($this->content);

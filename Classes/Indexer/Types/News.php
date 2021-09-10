@@ -1,10 +1,10 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2013 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+ *  (c) 2013 Christian Bülter
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -20,21 +20,21 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\IndexRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\NewsRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\PageRepository;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Domain\Repository\NewsRepository;
+use Tpwd\KeSearch\Domain\Repository\PageRepository;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Resource\FileReference;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FileRepository;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
- * @author    Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ * @author    Andreas Kiefer
  * @author    Stefan Frömken
- * @author    Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+ * @author    Christian Bülter
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
@@ -43,7 +43,7 @@ class News extends IndexerBase
     /**
      * Initializes indexer for news
      *
-     * @param \TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner $pObj
+     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
      */
     public function __construct($pObj)
     {
@@ -382,7 +382,7 @@ class News extends IndexerBase
      * it as an array in $categoryData['uid_list']. The titles of the
      * categories are returned in $categoryData['title_list'] (array)
      *
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.06.13 14:34
      * @param array $newsRecord
      * @return array
@@ -446,7 +446,7 @@ class News extends IndexerBase
     /**
      * adds tags from the ext:news "keywords" field to the index entry
      *
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.06.13 14:27
      * @param string $tags
      * @param array $newsRecord
@@ -467,7 +467,7 @@ class News extends IndexerBase
     /**
      * Adds tags from the ext:news table "tags" as ke_search tags to the index entry
      *
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.06.13 14:25
      * @param string $tags
      * @param array $newsRecord
@@ -507,7 +507,7 @@ class News extends IndexerBase
     /**
      * creates tags from category titles
      *
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.06.13 15:49
      * @param string $tags
      * @param array $categoryData
@@ -522,7 +522,7 @@ class News extends IndexerBase
     /**
      * Fetches related content elements for a given news record.
      *
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 15.10.15
      * @param array $newsRecord
      * @return array

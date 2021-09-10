@@ -11,7 +11,7 @@ class DatabaseOrderingTest extends Tx_Extbase_BaseTestCase
     public $pObj;
 
     /**
-     * @var \TeaminmediasPluswerk\KeSearch\Lib\PluginBaseHelper
+     * @var \Tpwd\KeSearch\Lib\PluginBaseHelper
      */
     public $div;
 
@@ -20,7 +20,7 @@ class DatabaseOrderingTest extends Tx_Extbase_BaseTestCase
     {
         $this->pObj = $this->getMock('SearchboxPlugin');
         $this->pObj->expects($this->any())->method('pi_getLL')->will($this->returnValue('Suchbegriff'));
-        $this->div = new \TeaminmediasPluswerk\KeSearch\Lib\PluginBaseHelper();
+        $this->div = new \Tpwd\KeSearch\Lib\PluginBaseHelper();
     }
 
     public function tearDown()
@@ -47,8 +47,8 @@ class DatabaseOrderingTest extends Tx_Extbase_BaseTestCase
 
         $this->pObj->piVars = $this->div->cleanPiVars($this->pObj->piVars);
 
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Db $db */
-        $db = new \TeaminmediasPluswerk\KeSearch\Lib\Db($this->pObj);
+        /** @var \Tpwd\KeSearch\Lib\Db $db */
+        $db = new \Tpwd\KeSearch\Lib\Db($this->pObj);
 
         $this->assertEquals('sortdate desc', $db->getOrdering());
 

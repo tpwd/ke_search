@@ -18,11 +18,11 @@ Install the extension ke_search via extension manager or via composer (recommend
 
 .. code-block:: none
 
-	composer require teaminmedias-pluswerk/ke_search
+	composer require tpwd/ke_search
 
 You can find the current version (and older ones) at
 
-https://github.com/teaminmedias-pluswerk/ke_search/releases
+https://github.com/tpwd/ke_search/
 
 Include static template
 -----------------------

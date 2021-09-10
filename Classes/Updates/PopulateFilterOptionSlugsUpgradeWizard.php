@@ -19,7 +19,7 @@ declare(strict_types=1);
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\Updates;
+namespace Tpwd\KeSearch\Updates;
 
 use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
- * @package TeaminmediasPluswerk\KeSearch\Updates
+ * @package Tpwd\KeSearch\Updates
  */
 class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
 {

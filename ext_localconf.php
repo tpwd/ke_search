@@ -10,7 +10,7 @@ if (!defined('TYPO3_MODE')) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi1.userFunc = TeaminmediasPluswerk\KeSearch\Plugins\SearchboxPlugin->main'
+        'plugin.tx_kesearch_pi1.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
     );
 
     // add Resultlist Plugin, override class name with namespace
@@ -18,7 +18,7 @@ if (!defined('TYPO3_MODE')) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi2.userFunc = TeaminmediasPluswerk\KeSearch\Plugins\ResultlistPlugin->main'
+        'plugin.tx_kesearch_pi2.userFunc = Tpwd\KeSearch\Plugins\ResultlistPlugin->main'
     );
 
     // add page TSconfig (Content element wizard icons, hide index table)
@@ -28,17 +28,17 @@ if (!defined('TYPO3_MODE')) {
 
     // use hooks for generation of sortdate values
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
-        \TeaminmediasPluswerk\KeSearch\Hooks\AdditionalFields::class;
+        \Tpwd\KeSearch\Hooks\AdditionalFields::class;
 
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPagesIndexEntry'][] =
-        \TeaminmediasPluswerk\KeSearch\Hooks\AdditionalFields::class;
+        \Tpwd\KeSearch\Hooks\AdditionalFields::class;
 
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'][] =
-        \TeaminmediasPluswerk\KeSearch\Hooks\AdditionalFields::class;
+        \Tpwd\KeSearch\Hooks\AdditionalFields::class;
 
     // Custom validators for TCA (eval)
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']
-    ['TeaminmediasPluswerk\\KeSearch\\UserFunction\\CustomFieldValidation\\FilterOptionTagValidator'] =
+    ['Tpwd\\KeSearch\\UserFunction\\CustomFieldValidation\\FilterOptionTagValidator'] =
         'EXT:ke_search/Classes/UserFunction/CustomFieldValidation/FilterOptionTagValidator.php';
 
     // logging
@@ -55,7 +55,7 @@ if (!defined('TYPO3_MODE')) {
         $loglevel = strtolower($loglevel);
     }
 
-    $GLOBALS['TYPO3_CONF_VARS']['LOG']['TeaminmediasPluswerk']['KeSearch']['writerConfiguration'] = [
+    $GLOBALS['TYPO3_CONF_VARS']['LOG']['Tpwd']['KeSearch']['writerConfiguration'] = [
         $loglevel => [
             'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => [
                 'logFileInfix' => 'kesearch'
@@ -65,19 +65,19 @@ if (!defined('TYPO3_MODE')) {
 
     // register "after save" hook
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']
-    ['ke_search-filter-option'] = \TeaminmediasPluswerk\KeSearch\Hooks\FilterOptionHook::class;
+    ['ke_search-filter-option'] = \Tpwd\KeSearch\Hooks\FilterOptionHook::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']
-    ['ke_search-filter-option'] = \TeaminmediasPluswerk\KeSearch\Hooks\FilterOptionHook::class;
+    ['ke_search-filter-option'] = \Tpwd\KeSearch\Hooks\FilterOptionHook::class;
 
     // Upgrade Wizards
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchMakeTagsAlphanumericUpgradeWizard']
-        = \TeaminmediasPluswerk\KeSearch\Updates\MakeTagsAlphanumericUpgradeWizard::class;
+        = \Tpwd\KeSearch\Updates\MakeTagsAlphanumericUpgradeWizard::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchPopulateFilterOptionsSlugsUpgradeWizard']
-        = \TeaminmediasPluswerk\KeSearch\Updates\PopulateFilterOptionSlugsUpgradeWizard::class;
+        = \Tpwd\KeSearch\Updates\PopulateFilterOptionSlugsUpgradeWizard::class;
 
     // Custom aspects for routing
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['KeSearchUrlEncodeMapper'] =
-        \TeaminmediasPluswerk\KeSearch\Routing\Aspect\KeSearchUrlEncodeMapper::class;
+        \Tpwd\KeSearch\Routing\Aspect\KeSearchUrlEncodeMapper::class;
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['KeSearchTagToSlugMapper'] =
-        \TeaminmediasPluswerk\KeSearch\Routing\Aspect\KeSearchTagToSlugMapper::class;
+        \Tpwd\KeSearch\Routing\Aspect\KeSearchTagToSlugMapper::class;
 })();

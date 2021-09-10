@@ -16,9 +16,9 @@ if (!defined('TYPO3_MODE')) {
         \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
     ) {
         $extensionName = 'ke_search';
-        $controller = \TeaminmediasPluswerk\KeSearch\Controller\BackendModuleController::class;
+        $controller = \Tpwd\KeSearch\Controller\BackendModuleController::class;
     } else {
-        $extensionName = 'TeaminmediasPluswerk.ke_search';
+        $extensionName = 'Tpwd.ke_search';
         $controller = 'BackendModule';
     }
 
@@ -40,7 +40,7 @@ if (!defined('TYPO3_MODE')) {
     );
 
     // add scheduler task
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TeaminmediasPluswerk\KeSearch\Scheduler\IndexerTask::class]
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Tpwd\KeSearch\Scheduler\IndexerTask::class]
         = array(
         'extension' => 'ke_search',
         'title' => 'Indexing process for ke_search (DEPRECATED, please use "Execute console commands" --> "ke_search:indexing" instead)',

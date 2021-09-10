@@ -1,7 +1,7 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\ViewHelpers;
+namespace Tpwd\KeSearch\ViewHelpers;
 
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

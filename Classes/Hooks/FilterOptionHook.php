@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
-namespace TeaminmediasPluswerk\KeSearch\Hooks;
+namespace Tpwd\KeSearch\Hooks;
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\CategoryRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\FilterOptionRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\FilterRepository;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
+use Tpwd\KeSearch\Domain\Repository\FilterOptionRepository;
+use Tpwd\KeSearch\Domain\Repository\FilterRepository;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

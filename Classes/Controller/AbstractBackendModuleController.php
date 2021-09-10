@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\Controller;
+namespace Tpwd\KeSearch\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 
 /**
  * Class AbstractBackendModuleController
- * @package TeaminmediasPluswerk\KeSearch\Controller
+ * @package Tpwd\KeSearch\Controller
  */
 abstract class AbstractBackendModuleController extends ActionController
 {

@@ -1,7 +1,7 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
-use TeaminmediasPluswerk\KeSearch\Plugins\txkesearchpi1;
+use Tpwd\KeSearch\Plugins\txkesearchpi1;
 
 /***************************************************************
  *  Copyright notice

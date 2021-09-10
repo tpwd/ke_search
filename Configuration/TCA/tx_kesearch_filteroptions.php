@@ -90,7 +90,7 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
-                'eval' => 'trim,required,alphanum,TeaminmediasPluswerk\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator'
+                'eval' => 'trim,required,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator'
             )
         ),
         'slug' => [

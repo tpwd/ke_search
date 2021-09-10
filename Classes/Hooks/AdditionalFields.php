@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Hooks;
+namespace Tpwd\KeSearch\Hooks;
 
 /***************************************************************
  *  Copyright notice

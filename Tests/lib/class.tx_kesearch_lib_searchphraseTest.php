@@ -4,20 +4,20 @@ class SearchPhraseTest extends Tx_Extbase_BaseTestCase
 {
 
     /**
-     * @var \TeaminmediasPluswerk\KeSearch\Lib\Searchphrase
+     * @var \Tpwd\KeSearch\Lib\Searchphrase
      */
     protected $searchPhrase;
 
 
     public function setUp()
     {
-        $searchLib = $this->getMock('TeaminmediasPluswerk\KeSearch\Lib\Items');
+        $searchLib = $this->getMock('Tpwd\KeSearch\Lib\Items');
         $searchLib->extConf['searchWordLength'] = 4;
         $searchLib->expects($this->any())
             ->method('pi_getLL')
             ->will($this->returnValue('Bitte geben Sie einen Suchbegriff ein'));
 
-        $this->searchPhrase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Lib\Searchphrase::class);
+        $this->searchPhrase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Lib\Searchphrase::class);
 
         $this->searchPhrase->initialize($searchLib);
     }

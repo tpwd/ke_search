@@ -1,11 +1,11 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
 /* ***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,17 +25,17 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * *************************************************************
  *
- * @author Andreas Kiefer <kiefer@kennziffer.com>
- * @author Christian Bülter <buelter@kennziffer.com>
+ * @author Andreas Kiefer
+ * @author Christian Bülter
  */
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\ContentRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\IndexRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\PageRepository;
+use Tpwd\KeSearch\Domain\Repository\ContentRepository;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Exception;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\Db;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -52,9 +52,9 @@ define('DONOTINDEX', -3);
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
- * @author    Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ * @author    Andreas Kiefer
  * @author    Stefan Froemken
- * @author    Christian Bülter <christian.buelter@inmedias.de>
+ * @author    Christian Bülter
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
@@ -179,7 +179,7 @@ class Page extends IndexerBase
 
     /**
      * tx_kesearch_indexer_types_page constructor.
-     * @param \TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner $pObj
+     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
      */
     public function __construct($pObj)
     {
@@ -900,7 +900,7 @@ class Page extends IndexerBase
      * @param string $feGroupsPages comma list
      * @param string $feGroupsContentElement comma list
      * @return string
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.09.13
      */
     public function getCombinedFeGroupsForContentElement($feGroupsPages, $feGroupsContentElement)
@@ -960,7 +960,7 @@ class Page extends IndexerBase
      * @param array $ttContentRow
      * @param string $feGroupsPages comma list
      * @param string $tags string
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 25.09.13
      */
     public function indexFiles($fileObjects, $ttContentRow, $feGroupsPages, $tags)
@@ -1037,7 +1037,7 @@ class Page extends IndexerBase
     /**
      * Finds files attached to "uploads" content elements
      * returns them as file reference objects array
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 24.09.13
      * @param array $ttContentRow content element
      * @return array
@@ -1061,7 +1061,7 @@ class Page extends IndexerBase
      * returns them as array of file objects
      * @param array $ttContentRow content element
      * @return array
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 24.09.13
      */
     public function findLinkedFilesInRte($ttContentRow)
@@ -1099,7 +1099,7 @@ class Page extends IndexerBase
      * @param File $fileIndexerObject
      * @param string $feGroups comma list of groups to assign
      * @param array $ttContentRow tt_content element the file was assigned to
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 25.09.13
      */
     public function storeFileContentToIndex($fileObject, $content, $fileIndexerObject, $feGroups, $tags, $ttContentRow)
@@ -1213,7 +1213,7 @@ class Page extends IndexerBase
     /**
      * Extracts content from content element and returns it as plain text
      * for writing it directly to the index
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 24.09.13
      * @param array $ttContentRow content element
      * @return string

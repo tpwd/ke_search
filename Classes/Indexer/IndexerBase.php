@@ -1,9 +1,9 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Indexer;
+namespace Tpwd\KeSearch\Indexer;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -20,9 +20,9 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer;
  ***************************************************************/
 
 use PDO;
-use TeaminmediasPluswerk\KeSearch\Indexer\Types\File;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -35,9 +35,9 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Base class for indexer classes.
  *
- * @author    Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ * @author    Andreas Kiefer
  * @author    Stefan Froemken
- * @author    Christian Bülter <christian.buelter@inmedias.de>
+ * @author    Christian Bülter
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
@@ -299,7 +299,7 @@ class IndexerBase
     /**
      * adds an error to the error array
      * @param string or array of strings $errorMessage
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.11.13
      */
     public function addError($errorMessage)
@@ -317,7 +317,7 @@ class IndexerBase
 
     /**
      * @return array
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.11.13
      */
     public function getErrors()
@@ -346,7 +346,7 @@ class IndexerBase
      *
      * @param array file properties (including metadata)
      * @param string content already prepared for this file index record
-     * @author Christian Bülter <christian.buelter@pluswerk.ag>
+     * @author Christian Bülter
      * @since 31.11.19
      * @return string metadata compiled into a string
      */
