@@ -1,6 +1,6 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Filetypes;
+namespace Tpwd\KeSearch\Indexer\Filetypes;
 
 /* * *************************************************************
  *  Copyright notice
@@ -25,7 +25,7 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer\Filetypes;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TeaminmediasPluswerk\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Indexer\Types\File;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -48,7 +48,7 @@ class Xls extends File implements FileIndexerInterface
     /**
      * class constructor
      *
-     * @param \TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner $pObj
+     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
      */
     public function __construct($pObj)
     {

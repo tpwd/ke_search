@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Plugins;
+namespace Tpwd\KeSearch\Plugins;
 
 /***************************************************************
  *  Copyright notice
@@ -19,7 +19,7 @@ namespace TeaminmediasPluswerk\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TeaminmediasPluswerk\KeSearch\Lib\Pluginbase;
+use Tpwd\KeSearch\Lib\Pluginbase;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;

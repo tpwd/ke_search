@@ -45,16 +45,16 @@ You can find an example in the extension ke_search_hooks: https://github.com/tea
 
     // Register hook to register additional fields in the index table
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
-    \TeaminmediasPluswerk\KeSearchHooks\AdditionalIndexerFields::class;
+    \MyVendor\KeSearchHooks\AdditionalIndexerFields::class;
 
 .. code-block:: none
 
     <?php
-    namespace TeaminmediasPluswerk\KeSearchHooks;
+    namespace MyVendor\KeSearchHooks;
 
     /**
      * Class AdditionalIndexerFields
-     * @package TeaminmediasPluswerk\KeSearchHooks
+     * @package MyVendor\KeSearchHooks
      */
     class AdditionalIndexerFields {
         public function registerAdditionalFields(&$additionalFields) {

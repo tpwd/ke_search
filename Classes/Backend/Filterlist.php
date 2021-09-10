@@ -1,13 +1,13 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Backend;
+namespace Tpwd\KeSearch\Backend;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\Db;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer, www.kennziffer.com GmbH <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -25,7 +25,7 @@ use TeaminmediasPluswerk\KeSearch\Lib\Db;
 
 /**
  * User class 'user_filterlist' for the 'ke_search' extension.
- * @author  Andreas Kiefer, www.kennziffer.com GmbH <kiefer@kennziffer.com>
+ * @author  Andreas Kiefer
  * @package TYPO3
  * @subpackage  tx_kesearch
  */

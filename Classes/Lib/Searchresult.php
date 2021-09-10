@@ -1,7 +1,7 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************

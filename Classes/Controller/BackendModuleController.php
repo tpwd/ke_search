@@ -2,7 +2,7 @@
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  (c) 2016 Bernhard Berger <bernhard.berger@gmail.com>
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -19,13 +19,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\Controller;
+namespace Tpwd\KeSearch\Controller;
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\IndexRepository;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -362,7 +362,7 @@ class BackendModuleController extends AbstractBackendModuleController
 
     /**
      * returns the number of records the index contains
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 26.03.15
      * @return integer
      */
@@ -379,7 +379,7 @@ class BackendModuleController extends AbstractBackendModuleController
     /**
      * prints the indexer configurations available
      * @param array $indexerConfigurations
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 28.04.15
      * @return string
      */
@@ -415,7 +415,7 @@ class BackendModuleController extends AbstractBackendModuleController
 
     /**
      * prints number of records in index
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 28.04.15
      */
     public function printNumberOfRecords()

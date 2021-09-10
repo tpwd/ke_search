@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
 /***************************************************************
  *  Copyright notice
@@ -101,7 +101,7 @@ class Filters
      *
      * @param array $filter
      * @return array
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 09.09.14
      */
     public function getSelectedFilterOptions($filter)
@@ -154,7 +154,7 @@ class Filters
      * combines two string comma lists
      * @param string $list1
      * @param string $list2
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 23.07.13
      * @return string
      */

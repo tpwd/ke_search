@@ -1,9 +1,9 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Backend;
+namespace Tpwd\KeSearch\Backend;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\Db;
 
 class Flexform
 {

@@ -110,7 +110,7 @@
 								<renderType>selectMultipleSideBySide</renderType>
 								<maxitems>10</maxitems>
 								<size>10</size>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Flexform->listAvailableOrderingsForAdmin</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Flexform->listAvailableOrderingsForAdmin</itemsProcFunc>
 								<default>score desc</default>
 							</config>
 						</TCEforms>
@@ -126,7 +126,7 @@
 								<size>10</size>
 								<relevanceNotAllowed>1</relevanceNotAllowed>
 								<default>sortdate desc</default>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Flexform->listAvailableOrderingsForAdmin</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Flexform->listAvailableOrderingsForAdmin</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</sortWithoutSearchword>
@@ -151,7 +151,7 @@
 								<renderType>selectMultipleSideBySide</renderType>
 								<maxitems>100</maxitems>
 								<size>5</size>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Flexform->listAvailableOrderingsForFrontend</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Flexform->listAvailableOrderingsForFrontend</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</sortByVisitor>
@@ -463,7 +463,7 @@
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>
 								<items type="array"></items>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForFlexforms</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForFlexforms</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</filters>
@@ -480,7 +480,7 @@
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>
 								<items type="array"></items>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForFlexforms</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForFlexforms</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</hiddenfilters>
@@ -497,7 +497,7 @@
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>
 								<items type="array"></items>
-								<itemsProcFunc>TeaminmediasPluswerk\KeSearch\Backend\Filterlist->getListOfAvailableFilteroptionsForFlexforms</itemsProcFunc>
+								<itemsProcFunc>Tpwd\KeSearch\Backend\Filterlist->getListOfAvailableFilteroptionsForFlexforms</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</preselected_filters>

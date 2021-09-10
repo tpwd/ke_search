@@ -25,10 +25,10 @@ You need to register the hooks in your ext_localconf.php as follows:
 
     // Register hooks for indexing additional fields.
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] =
-        \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
+        \MyVendor\KeSearchHooks\AdditionalContentFields::class;
 
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
-        \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
+        \MyVendor\KeSearchHooks\AdditionalContentFields::class;
 
 Hook class
 ..........

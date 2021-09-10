@@ -1,17 +1,17 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\IndexRepository;
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\TtAddressRepository;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Domain\Repository\TtAddressRepository;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Lib\Db;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
- * @author    Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @package    TYPO3
  * @subpackage    tx_kesearch

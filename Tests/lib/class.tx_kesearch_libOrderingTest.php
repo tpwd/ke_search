@@ -8,8 +8,8 @@ class LibOrderingTest extends Tx_Extbase_BaseTestCase
 
     public function setUp()
     {
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\PluginBaseHelper div */
-        $this->div = new \TeaminmediasPluswerk\KeSearch\Lib\PluginBaseHelper();
+        /** @var \Tpwd\KeSearch\Lib\PluginBaseHelper div */
+        $this->div = new \Tpwd\KeSearch\Lib\PluginBaseHelper();
     }
 
     public function tearDown()
@@ -31,8 +31,8 @@ class LibOrderingTest extends Tx_Extbase_BaseTestCase
         );
         $this->numberOfResults = 35;
 
-        /** @var \TeaminmediasPluswerk\KeSearch\Lib\Pluginbase $lib */
-        $lib = new \TeaminmediasPluswerk\KeSearch\Lib\Pluginbase();
+        /** @var \Tpwd\KeSearch\Lib\Pluginbase $lib */
+        $lib = new \Tpwd\KeSearch\Lib\Pluginbase();
         $this->assertEquals('', $lib->renderOrdering());
 
         // Test with sortByVisitor = empty

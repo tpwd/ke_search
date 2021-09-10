@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
 /***************************************************************
  *  Copyright notice

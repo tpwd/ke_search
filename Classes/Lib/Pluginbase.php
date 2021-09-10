@@ -1,10 +1,10 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@ namespace TeaminmediasPluswerk\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\GenericRepository;
+use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use TeaminmediasPluswerk\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -514,7 +514,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * check filter options availability and preselection status
      * @param array $filter
      * @return array
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 09.09.14
      */
     public function findFilterOptionsToDisplay($filter)
@@ -760,7 +760,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      *
      * @param $row
      * @return int uid of preview image file reference
-     * @author Andreas Kiefer <andreas.kiefer@pluswerk.ag>
+     * @author Andreas Kiefer
      */
     public function getFileReference($row)
     {
@@ -1249,7 +1249,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * implements a recursive in_array function
      * @param mixed $needle
      * @param array $haystack
-     * @author Christian Bülter <buelter@kennziffer.com>
+     * @author Christian Bülter
      * @since 11.07.12
      * @return bool
      */

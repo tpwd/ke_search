@@ -1,6 +1,6 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
 /* * *************************************************************
  *  Copyright notice
@@ -25,11 +25,11 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TeaminmediasPluswerk\KeSearch\Indexer\Filetypes\FileIndexerInterface;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Lib\Fileinfo;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Indexer\Filetypes\FileIndexerInterface;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Lib\Fileinfo;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -65,7 +65,7 @@ class File extends IndexerBase
     /**
      * Initializes indexer for files
      *
-     * @param \TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner $pObj
+     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
      */
     public function __construct($pObj)
     {
@@ -222,7 +222,7 @@ class File extends IndexerBase
     {
         // we can continue only when given file is really file and not a directory
         if ($this->fileInfo->getIsFile()) {
-            $className = 'TeaminmediasPluswerk\KeSearch\Indexer\Filetypes\\' . ucfirst($this->fileInfo->getExtension());
+            $className = 'Tpwd\KeSearch\Indexer\Filetypes\\' . ucfirst($this->fileInfo->getExtension());
 
             // check if class exists
             if (class_exists($className)) {

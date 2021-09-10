@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;

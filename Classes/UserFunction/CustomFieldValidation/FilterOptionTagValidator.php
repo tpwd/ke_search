@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017 Armin Vieweg <armin.vieweg@pluswerk.ag>
+ *  (c) 2017 Armin Vieweg
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\UserFunction\CustomFieldValidation;
+namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Validates given filter option tag. Checks length, which may not smaller than
  * basic.searchWordLength extension (and MySQL) setting.
  *
- * @package TeaminmediasPluswerk\KeSearch\UserFunction\CustomFieldValidation
+ * @package Tpwd\KeSearch\UserFunction\CustomFieldValidation
  */
 class FilterOptionTagValidator
 {

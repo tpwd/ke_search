@@ -1,12 +1,12 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Scheduler;
+namespace Tpwd\KeSearch\Scheduler;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2011 Andreas Kiefer <kiefer@kennziffer.com>
+ *  (c) 2011 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -25,8 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class IndexerTask
- * @deprecated Use console command instead (TeaminmediasPluswerk\KeSearch\Command\StartIndexerCommand)
- * @package TeaminmediasPluswerk\KeSearch\Scheduler
+ * @deprecated Use console command instead (Tpwd\KeSearch\Command\StartIndexerCommand)
+ * @package Tpwd\KeSearch\Scheduler
  */
 class IndexerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
@@ -38,7 +38,7 @@ class IndexerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
 
         // make indexer instance
-        $indexer = GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner::class);
+        $indexer = GeneralUtility::makeInstance(\Tpwd\KeSearch\Indexer\IndexerRunner::class);
 
         // process
         $indexer->startIndexing(true, $this->extConf, 'CLI');

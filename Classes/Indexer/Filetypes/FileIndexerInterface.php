@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Filetypes;
+namespace Tpwd\KeSearch\Indexer\Filetypes;
 
 interface FileIndexerInterface
 {

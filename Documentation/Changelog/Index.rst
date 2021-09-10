@@ -10,4 +10,4 @@ Changelog
 
 The changelog can be found here:
 
-https://github.com/teaminmedias-pluswerk/ke_search/blob/master/ChangeLog
+https://github.com/tpwd/ke_search/blob/master/ChangeLog

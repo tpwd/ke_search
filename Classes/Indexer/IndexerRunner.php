@@ -1,5 +1,5 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Indexer;
+namespace Tpwd\KeSearch\Indexer;
 
 /***************************************************************
  *  Copyright notice
@@ -22,8 +22,8 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use PDO;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -330,7 +330,7 @@ class IndexerRunner
 
         // indexing mode
         $content .= '<td>';
-        if (is_subclass_of($searchObj, '\TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase')) {
+        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
             if (method_exists($searchObj, 'getIndexingMode')) {
                 if ($searchObj->getIndexingMode() == IndexerBase::INDEXING_MODE_INCREMENTAL) {
                     $content .= '<span class="indexingMode">Incremental mode</span>';
@@ -346,7 +346,7 @@ class IndexerRunner
         $content .= nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
 
         // errors
-        if (is_subclass_of($searchObj, '\TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase')) {
+        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
             $errors = method_exists($searchObj, 'getErrors') ? $searchObj->getErrors() : [];
             if (count($errors)) {
                 $content .= '<p class="badge badge-warning">Warning: There have been errors. Please refer to the error log (typically in var/log/)</p>';
@@ -357,7 +357,7 @@ class IndexerRunner
 
         // duration, show sec or ms
         $content .= '<td>';
-        if (is_subclass_of($searchObj, '\TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase')) {
+        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
             $duration = method_exists($searchObj, 'getDuration') ? $searchObj->getDuration() : 0;
             if ($duration > 0) {
                 $content .= '<i>Indexing process took ';

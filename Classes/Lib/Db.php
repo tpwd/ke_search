@@ -1,10 +1,10 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Lib;
+namespace Tpwd\KeSearch\Lib;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LogLevel;
-use TeaminmediasPluswerk\KeSearch\Plugins\SearchboxPlugin;
+use Tpwd\KeSearch\Plugins\SearchboxPlugin;
 use TeaminmediasPluswerk\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;

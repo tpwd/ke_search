@@ -1,11 +1,10 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Filetypes;
+namespace Tpwd\KeSearch\Indexer\Filetypes;
 
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2017 Pluswerk
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +24,7 @@ namespace TeaminmediasPluswerk\KeSearch\Indexer\Filetypes;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TeaminmediasPluswerk\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Indexer\Types\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -53,8 +52,8 @@ class Xlsx extends File implements FileIndexerInterface
      */
     public function getContent($file)
     {
-        /** @var \TeaminmediasPluswerk\KeSearch\Utility\OoxmlConversion $reader */
-        $reader = GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Utility\OoxmlConversion::class, $file);
+        /** @var \Tpwd\KeSearch\Utility\OoxmlConversion $reader */
+        $reader = GeneralUtility::makeInstance(\Tpwd\KeSearch\Utility\OoxmlConversion::class, $file);
 
         try {
             return trim($reader->convertToText());

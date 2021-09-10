@@ -16,10 +16,10 @@ class IndexerTypesTest extends Tx_Extbase_BaseTestCase
 
     public function setUp()
     {
-        $this->indexerTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase::class);
+        $this->indexerTypes = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Indexer\IndexerBase::class);
         $this->indexerTypes->queryGen = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
-        $this->pageIndexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Indexer\Types\Page::class);
-        $this->pageIndexer->pObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner::class);
+        $this->pageIndexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Indexer\Types\Page::class);
+        $this->pageIndexer->pObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tpwd\KeSearch\Indexer\IndexerRunner::class);
         $this->pageIndexer->pObj->extConf['prePostTagChar'] = '#';
     }
 

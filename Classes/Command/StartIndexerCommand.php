@@ -1,10 +1,10 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Command;
+namespace Tpwd\KeSearch\Command;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2019 Andreas Kiefer <andreas.kiefer@pluswerk.ag>
+ *  (c) 2019 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -26,8 +26,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
-use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
+use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

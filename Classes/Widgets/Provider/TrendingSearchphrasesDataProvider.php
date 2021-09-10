@@ -18,9 +18,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\Widgets\Provider;
+namespace Tpwd\KeSearch\Widgets\Provider;
 
-use TeaminmediasPluswerk\KeSearch\Domain\Repository\SearchPhraseStatisticsRepository;
+use Tpwd\KeSearch\Domain\Repository\SearchPhraseStatisticsRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface;
 

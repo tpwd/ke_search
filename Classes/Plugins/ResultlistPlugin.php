@@ -1,9 +1,9 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Plugins;
+namespace Tpwd\KeSearch\Plugins;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@ namespace TeaminmediasPluswerk\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TeaminmediasPluswerk\KeSearch\Lib\Pluginbase;
+use Tpwd\KeSearch\Lib\Pluginbase;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;

@@ -1,10 +1,10 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Utility;
+namespace Tpwd\KeSearch\Utility;
 
 /**
  * Class OoxmlConversion
  *
- * @package TeaminmediasPluswerk\KeSearch\Utility
+ * @package Tpwd\KeSearch\Utility
  * @see https://stackoverflow.com/questions/19503653/how-to-extract-text-from-word-file-doc-docx-xlsx-pptx-php
  */
 class OoxmlConversion

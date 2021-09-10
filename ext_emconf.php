@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = array(
     ),
     'suggests' => array(),
     'autoload' => array(
-        'psr-4' => array('TeaminmediasPluswerk\\KeSearch\\' => 'Classes'),
+        'psr-4' => array('Tpwd\\KeSearch\\' => 'Classes'),
         'classmap' => array('Classes'),
     ),
 );

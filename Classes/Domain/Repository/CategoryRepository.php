@@ -1,8 +1,8 @@
 <?php
-namespace TeaminmediasPluswerk\KeSearch\Domain\Repository;
+namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

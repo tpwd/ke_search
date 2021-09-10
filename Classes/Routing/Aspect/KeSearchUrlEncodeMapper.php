@@ -24,7 +24,7 @@ declare(strict_types=1);
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace TeaminmediasPluswerk\KeSearch\Routing\Aspect;
+namespace Tpwd\KeSearch\Routing\Aspect;
 
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
 

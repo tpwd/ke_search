@@ -1,16 +1,16 @@
 <?php
 
-namespace TeaminmediasPluswerk\KeSearch\Indexer\Types;
+namespace Tpwd\KeSearch\Indexer\Types;
 
-use TeaminmediasPluswerk\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TeaminmediasPluswerk\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\Db;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ use TeaminmediasPluswerk\KeSearch\Lib\Db;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
- * @author    Andreas Kiefer (kennziffer.com) <kiefer@kennziffer.com>
+ * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @package    TYPO3
  * @subpackage    tx_kesearch

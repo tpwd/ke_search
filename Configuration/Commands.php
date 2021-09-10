@@ -2,15 +2,15 @@
 
 return [
     'ke_search:indexing' => [
-        'class' => \TeaminmediasPluswerk\KeSearch\Command\StartIndexerCommand::class,
+        'class' => \Tpwd\KeSearch\Command\StartIndexerCommand::class,
         'schedulable' => true,
     ],
     'ke_search:clearindex' => [
-        'class' => \TeaminmediasPluswerk\KeSearch\Command\ClearIndexCommand::class,
+        'class' => \Tpwd\KeSearch\Command\ClearIndexCommand::class,
         'schedulable' => true,
     ],
     'ke_search:removelock' => [
-        'class' => \TeaminmediasPluswerk\KeSearch\Command\RemoveLockCommand::class,
+        'class' => \Tpwd\KeSearch\Command\RemoveLockCommand::class,
         'schedulable' => true,
     ],
 ];

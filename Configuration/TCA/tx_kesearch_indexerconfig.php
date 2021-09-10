@@ -84,7 +84,7 @@ return array(
                         'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_2.gif'
                     ),
                 ),
-                'itemsProcFunc' => 'TeaminmediasPluswerk\KeSearch\Lib\Items->fillIndexerConfig',
+                'itemsProcFunc' => 'Tpwd\KeSearch\Lib\Items->fillIndexerConfig',
                 'size' => 1,
                 'maxitems' => 1,
                 'default' => 'page',
@@ -305,7 +305,7 @@ return array(
                 'items' => array(
                     array('', 0),
                 ),
-                'itemsProcFunc' => 'TeaminmediasPluswerk\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForTCA',
+                'itemsProcFunc' => 'Tpwd\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForTCA',
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,

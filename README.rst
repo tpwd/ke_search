@@ -26,6 +26,7 @@ templating or coding.
 ke_search does not use frontend crawling but fetches content elements and data records directly from the database.
 For the most used content types indexers are provided within the extension itself, including pages and news.
 
-You can find a rendered version of the documentation at https://docs.typo3.org/p/teaminmedias-pluswerk/ke_search/master/en-us/
-
 If you found a bug or want to ask for a feature, please use https://github.com/tpwd/ke_search/issues
+
+**Please note that the namespace has changed to "tpwd" since version 4. If you extended ke_search with**
+**your own code, please use the new namespace also.**
