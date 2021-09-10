@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.0.0, September 2021
 [!!!]     This version changes the namespace for ke_search to "twpd". If you extend or use classes of ke_search, please make sure to use the new namespace in your code.
 [TASK]    Move repository and issue tracker to https://github.com/tpwd/ke_search
 [TASK]    Switch namespace to tpwd
