@@ -35,7 +35,7 @@ class PageRepository extends BaseRepository {
     /**
      * @var string
      */
-    protected string $tableName = 'pages';
+    protected $tableName = 'pages';
 
     /**
      * @param array $uidList
