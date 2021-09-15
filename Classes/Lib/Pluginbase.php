@@ -640,7 +640,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         
         // get filters
-        $this->renderFilters();
+        if (intval($this->conf['includeFilters']) == 1) {
+            $this->renderFilters();
+        }
+
 
         // fetch the search results
         $limit = $this->db->getLimit();
