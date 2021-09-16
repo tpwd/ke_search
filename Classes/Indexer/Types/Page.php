@@ -661,6 +661,11 @@ class Page extends IndexerBase
                 // restrictons, that's no problem from a access permission perspective (in fact, it's a feature).
                 if (in_array($ttContentRow['CType'], $this->fileCTypes)) {
                     $fileObjects = $this->findAttachedFiles($ttContentRow);
+                    foreach ($fileObjects as $file) {
+                        $title = $file->getProperty('title');
+                        $description = $file->getProperty('description');
+                        $content .= ' ' . $title . ' [' . $description . ']';
+                    }
                 } else {
                     $fileObjects = $this->findLinkedFilesInRte($ttContentRow);
                     $content .= $this->getContentFromContentElement($ttContentRow) . "\n";
