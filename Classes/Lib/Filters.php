@@ -325,7 +325,7 @@ class Filters
     {
         // if tag list is empty, fetch them from the result list
         // otherwise use the cached result list
-        if (!$this->tagsInSearchResult) {
+        if ($this->pObj->tagsInSearchResult === false) {
             $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
         }
 
