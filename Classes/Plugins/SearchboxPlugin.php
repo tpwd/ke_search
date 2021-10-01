@@ -76,9 +76,9 @@ class SearchboxPlugin extends Pluginbase
         // get content for searchbox
         $this->getSearchboxContent();
 
-        if (class_exists('\TeaminmediasPluswerk\KeSearchPremium\Headless\HeadlessApi')) {
-            /** @var \TeaminmediasPluswerk\KeSearchPremium\Headless\HeadlessApi $headlessApi */
-            $headlessApi = GeneralUtility::makeInstance(\TeaminmediasPluswerk\KeSearchPremium\Headless\HeadlessApi::class);
+        if (class_exists('\Tpwd\KeSearchPremium\Headless\HeadlessApi')) {
+            /** @var \Tpwd\KeSearchPremium\Headless\HeadlessApi $headlessApi */
+            $headlessApi = GeneralUtility::makeInstance(\Tpwd\KeSearchPremium\Headless\HeadlessApi::class);
             if ($headlessApi->getHeadlessMode()) {
                 return json_encode($this->fluidTemplateVariables);
             }

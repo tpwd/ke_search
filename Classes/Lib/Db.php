@@ -5,7 +5,7 @@ namespace Tpwd\KeSearch\Lib;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LogLevel;
 use Tpwd\KeSearch\Plugins\SearchboxPlugin;
-use TeaminmediasPluswerk\KeSearchPremium\KeSearchPremium;
+use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\Logger;

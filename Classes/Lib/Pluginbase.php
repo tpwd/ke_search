@@ -21,7 +21,7 @@ namespace Tpwd\KeSearch\Lib;
  ***************************************************************/
 
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
-use TeaminmediasPluswerk\KeSearchPremium\KeSearchPremium;
+use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
