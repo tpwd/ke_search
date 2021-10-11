@@ -238,7 +238,7 @@ class Searchresult
                 } else {
                     $pattern = '/\b(' . $word . ')/iu';
                 }
-                $content = preg_replace($pattern, $highlightedWord, $content);
+                $content = preg_replace($pattern, $highlightedWord . " ", $content);
             }
         }
         return $content;
