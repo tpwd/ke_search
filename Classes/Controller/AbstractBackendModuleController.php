@@ -99,24 +99,6 @@ abstract class AbstractBackendModuleController extends ActionController
     }
 
     /**
-     * Adds code to the standard request processor for saving the last action.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     */
-    public function processRequest(
-        RequestInterface $request,
-        ResponseInterface $response
-    ) {
-        parent::processRequest($request, $response);
-
-        // We are here ony if the action did not throw exceptions (==successful and not forwarded). Save the action.
-        $this->storeLastModuleInformation();
-    }
-
-    /**
      * Initializes all actions.
      *
      * @return void

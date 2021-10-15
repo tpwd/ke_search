@@ -235,6 +235,7 @@ class BackendModuleController extends AbstractBackendModuleController
         }
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -263,6 +264,7 @@ class BackendModuleController extends AbstractBackendModuleController
         }
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -273,6 +275,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $content = $this->renderIndexTableInformation();
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -293,6 +296,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('data', $data);
         $this->view->assign('error', $error);
         $this->view->assign('languages', $this->getLanguages());
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -323,6 +327,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('moduleUrl', $moduleUrl);
         $this->view->assign('isAdmin', $this->getBackendUser()->isAdmin());
         $this->view->assign('indexCount', $this->getNumberOfRecordsInIndex());
+        $this->storeLastModuleInformation();
 
     }
 
