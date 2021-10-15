@@ -303,12 +303,8 @@ class SearchHelper
                 break;
         }
 
-        if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
-            VersionNumberUtility::convertVersionNumberToInteger('10.0')
-        ) {
-            // Deprecated: Setting typolink.useCacheHash has no effect anymore
-            unset($linkConf['useCacheHash']);
-        }
+        // Deprecated: Setting typolink.useCacheHash has no effect anymore
+        unset($linkConf['useCacheHash']);
 
         return $linkConf;
     }

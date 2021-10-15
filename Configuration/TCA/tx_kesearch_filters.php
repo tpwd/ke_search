@@ -2,12 +2,6 @@
 
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 
-if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) <
-    \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-) {
-    $langGeneralPath = 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:';
-}
-
 return array(
     'ctrl' => array(
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters',

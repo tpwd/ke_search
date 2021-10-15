@@ -11,32 +11,19 @@ if (!defined('TYPO3_MODE')) {
         'EXT:ke_search/locallang_csh.xml'
     );
 
-    // add module
-    if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
-        \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-    ) {
-        $extensionName = 'ke_search';
-        $controller = \Tpwd\KeSearch\Controller\BackendModuleController::class;
-    } else {
-        $extensionName = 'Tpwd.ke_search';
-        $controller = 'BackendModule';
-    }
-
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        $extensionName,
+        'KeSearch',
         'web',
         'backend_module',
         '',
-        array(
-            $controller =>
-                'startIndexing,indexedContent,indexTableInformation,'
-                . 'searchwordStatistics,clearSearchIndex,lastIndexingReport,alert',
-        ),
-        array(
+        [
+            \Tpwd\KeSearch\Controller\BackendModuleController::class => 'startIndexing, indexedContent, indexTableInformation, searchwordStatistics, clearSearchIndex, lastIndexingReport, alert',
+        ],
+        [
             'access' => 'user,group',
             'icon' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg',
             'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml',
-        )
+        ]
     );
 
     // add scheduler task

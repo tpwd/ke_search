@@ -34,9 +34,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
- * @author    Andreas Kiefer (team.inmedias) <andreas.kiefer@inmedias.de>
+ * @author    Andreas Kiefer
  * @author    Stefan Froemken
- * @author    Christian Bülter (team.inmedias) <christian.buelter@inmedias.de>
+ * @author    Christian Bülter
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
@@ -279,13 +279,7 @@ class IndexerRunner
                 $mail->setFrom(array($this->extConf['notificationSender']));
                 $mail->setTo(array($this->extConf['notificationRecipient']));
                 $mail->setSubject($this->extConf['notificationSubject']);
-                if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
-                    \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-                ) {
-                    $mail->text($plaintextReport);
-                } else {
-                    $mail->setBody($plaintextReport);
-                }
+                $mail->text($plaintextReport);
                 $mail->send();
             }
         }
