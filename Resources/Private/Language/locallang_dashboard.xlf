@@ -57,6 +57,9 @@
 			<trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language" >
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="error_templatePaths" resname="error_templatePaths" >
+				<source>No template paths set. Did you include the static template?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

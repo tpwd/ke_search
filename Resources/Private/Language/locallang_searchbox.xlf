@@ -189,6 +189,9 @@
 			<trans-unit id="error_resultPage" resname="error_resultPage" >
 				<source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
 			</trans-unit>
+			<trans-unit id="error_templatePaths" resname="error_templatePaths" >
+				<source>No template paths set. Did you include the static template?</source>
+			</trans-unit>
 			<trans-unit id="pagebrowser_prev" resname="pagebrowser_prev" >
 				<source>previous</source>
 			</trans-unit>

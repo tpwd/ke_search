@@ -62,6 +62,11 @@ class SearchboxPlugin extends Pluginbase
         // initializes plugin configuration
         $this->init();
 
+        if (empty($this->conf['view'])) {
+            $content = '<div id="textmessage">' . $this->pi_getLL('error_templatePaths') . '</div>';
+            return $this->pi_wrapInBaseClass($content);
+        }
+
         // init template for search box
         $this->initFluidTemplate();
 

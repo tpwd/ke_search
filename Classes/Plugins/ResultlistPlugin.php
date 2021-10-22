@@ -67,6 +67,11 @@ class ResultlistPlugin extends Pluginbase
             return $this->pi_wrapInBaseClass($content);
         }
 
+        if (empty($this->conf['view'])) {
+            $content = '<div id="textmessage">' . $this->pi_getLL('error_templatePaths') . '</div>';
+            return $this->pi_wrapInBaseClass($content);
+        }
+
         // init template
         $this->initFluidTemplate();
 
