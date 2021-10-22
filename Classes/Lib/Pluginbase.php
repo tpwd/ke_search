@@ -144,7 +144,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         // set start of query timer
         if (!$GLOBALS['TSFE']->register['ke_search_queryStartTime']) {
-            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = GeneralUtility::milliseconds();
+            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
         }
 
         // make settings from flexform available in general configuration ($this->conf)

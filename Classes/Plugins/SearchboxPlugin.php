@@ -47,7 +47,7 @@ class SearchboxPlugin extends Pluginbase
      */
     public function main($content, $conf)
     {
-        $this->ms = GeneralUtility::milliseconds();
+        $this->ms = round(microtime(true) * 1000);
 
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;

@@ -47,7 +47,7 @@ class ResultlistPlugin extends Pluginbase
      */
     public function main($content, $conf)
     {
-        $this->ms = GeneralUtility::milliseconds();
+        $this->ms = round(microtime(true) * 1000);
 
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
@@ -91,7 +91,7 @@ class ResultlistPlugin extends Pluginbase
         $this->renderOrdering();
 
         // process query time
-        $queryTime = (GeneralUtility::milliseconds() - $GLOBALS['TSFE']->register['ke_search_queryStartTime']);
+        $queryTime = (round(microtime(true) * 1000) - $GLOBALS['TSFE']->register['ke_search_queryStartTime']);
         $this->fluidTemplateVariables['queryTime'] = $queryTime;
         $this->fluidTemplateVariables['queryTimeText'] = sprintf($this->pi_getLL('query_time'), $queryTime);
 
