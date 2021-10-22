@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:23Z" product-name="ke_search">
+		<header/>
+		<body>
+			<trans-unit id="widget_group.ke_search" resname="widget_group.ke_search" >
+				<source>ke_search</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.title" resname="widgets.keSearchStatus.title" >
+				<source>Indexer Status</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.description" resname="widgets.keSearchStatus.description" >
+				<source>Shows the current status of the ke_search indexer.</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.running_since" resname="widgets.keSearchStatus.running_since" >
+				<source>Indexer is running since</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.not_running" resname="widgets.keSearchStatus.not_running" >
+				<source>Currently no indexing process is running</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.h" resname="widgets.keSearchStatus.h" >
+				<source>h</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.m" resname="widgets.keSearchStatus.m" >
+				<source>m</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.s" resname="widgets.keSearchStatus.s" >
+				<source>s</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_finished" resname="widgets.keSearchStatus.last_run_finished" >
+				<source>Last run finished</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_finished_at" resname="widgets.keSearchStatus.last_run_finished_at" >
+				<source>at</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_took" resname="widgets.keSearchStatus.last_run_took" >
+				<source>and took</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title" >
+				<source>Index Overview</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description" >
+				<source>Shows how many records of each type are currently in the index.</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.title" resname="widgets.keSearchTrendingSearchphrases.title" >
+				<source>Trending search phrases</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.description" resname="widgets.keSearchTrendingSearchphrases.description" >
+				<source>Shows search phrases from the last 7 days.</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.phrase" resname="widgets.keSearchTrendingSearchphrases.phrase" >
+				<source>Search phrase</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.number_of_usages" resname="widgets.keSearchTrendingSearchphrases.number_of_usages" >
+				<source>Number of usages</source>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language" >
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="error_templatePaths" resname="error_templatePaths" >
+				<source>No template paths set. Did you include the static template?</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

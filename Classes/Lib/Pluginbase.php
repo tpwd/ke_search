@@ -23,10 +23,10 @@ namespace Tpwd\KeSearch\Lib;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
@@ -133,18 +133,25 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $filters;
 
     /**
+     * @var int
+     */
+    public $typo3Version;
+
+    /**
      * Initializes flexform, conf vars and some more
      * @return void
      */
     public function init()
     {
+        $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+
         // get some helper functions
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
 
         $this->typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         // set start of query timer
         if (!$GLOBALS['TSFE']->register['ke_search_queryStartTime']) {
-            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = GeneralUtility::milliseconds();
+            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
         }
 
         // make settings from flexform available in general configuration ($this->conf)
@@ -267,7 +274,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // add cssTag to header if set
         if (!empty($this->conf['cssFile'])) {
             $filePathSanitizer = GeneralUtility::makeInstance(FilePathSanitizer::class);
-            $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile']);
+            if ($this->typo3Version->getMajorVersion() < 11) {
+                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile']);
+            } else {
+                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
+            }
             if (!empty($cssFile)) {
                 /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
                 $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
@@ -317,7 +328,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $searchString = $this->piVars['sword'];
 
         $searchboxDefaultValue = LocalizationUtility::translate(
-            'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xml:searchbox_default_value',
+            'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:searchbox_default_value',
             'KeSearch'
         );
 

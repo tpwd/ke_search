@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -61,14 +62,12 @@ class BackendModuleController extends AbstractBackendModuleController
     private $indexingMode;
 
     /**
-     * @var \TYPO3\CMS\Core\Page\PageRenderer
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var PageRenderer
      */
     protected $pageRenderer;
 
     /**
-     * @var \TYPO3\CMS\Core\Registry
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var Registry
      */
     protected $registry;
 
@@ -76,6 +75,16 @@ class BackendModuleController extends AbstractBackendModuleController
      * @var string
      */
     protected $perms_clause;
+
+    /**
+     * @param Registry $registry
+     * @param PageRenderer $pageRenderer
+     */
+    public function __construct( Registry $registry, PageRenderer $pageRenderer)
+    {
+        $this->registry = $registry;
+        $this->pageRenderer = $pageRenderer;
+    }
 
     /**
      * initialize action
@@ -147,7 +156,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     $content .=
                         '<p>'
                         . LocalizationUtility::translate(
-                            'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:not_allowed_remove_indexer_lock',
+                            'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:not_allowed_remove_indexer_lock',
                             'KeSearch'
                         )
                         . '</p>';
@@ -227,7 +236,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     '<div class="alert alert-info">'
                     .
                     LocalizationUtility::translate(
-                        'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:no_indexer_configurations',
+                        'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:no_indexer_configurations',
                         'KeSearch'
                     )
                     . '</div>';
@@ -235,6 +244,7 @@ class BackendModuleController extends AbstractBackendModuleController
         }
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -256,13 +266,14 @@ class BackendModuleController extends AbstractBackendModuleController
             // no page selected: show message
             $content = '<div class="alert alert-info">'
                 . LocalizationUtility::translate(
-                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:select_a_page',
+                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:select_a_page',
                     'KeSearch'
                 )
                 . '</div>';
         }
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -273,6 +284,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $content = $this->renderIndexTableInformation();
 
         $this->view->assign('content', $content);
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -293,6 +305,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('data', $data);
         $this->view->assign('error', $error);
         $this->view->assign('languages', $this->getLanguages());
+        $this->storeLastModuleInformation();
     }
 
     /**
@@ -323,6 +336,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('moduleUrl', $moduleUrl);
         $this->view->assign('isAdmin', $this->getBackendUser()->isAdmin());
         $this->view->assign('indexCount', $this->getNumberOfRecordsInIndex());
+        $this->storeLastModuleInformation();
 
     }
 
@@ -427,14 +441,14 @@ class BackendModuleController extends AbstractBackendModuleController
             $content .=
                 '<p>'
                 . LocalizationUtility::translate(
-                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:index_contains',
+                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:index_contains',
                     'KeSearch'
                 )
                 . ' <strong>'
                 . $numberOfRecords
                 . '</strong> '
                 . LocalizationUtility::translate(
-                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:records',
+                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:records',
                     'KeSearch'
                 )
                 . '</p>';
@@ -443,7 +457,7 @@ class BackendModuleController extends AbstractBackendModuleController
             if ($lastRun) {
                 $content .= '<p>'
                     . LocalizationUtility::translate(
-                        'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:last_indexing',
+                        'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:last_indexing',
                         'KeSearch'
                     )
                     . ' '
@@ -667,7 +681,7 @@ class BackendModuleController extends AbstractBackendModuleController
 
         if (!$pageUid) {
             $statisticData['error'] = LocalizationUtility::translate(
-                'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml:select_a_page',
+                'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:select_a_page',
                 'KeSearch'
             );
             return $statisticData;

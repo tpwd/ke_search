@@ -23,8 +23,8 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                 [
                     'identifier' => 'keSearchStatus',
                     'groupNames' => 'ke_search',
-                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.title',
-                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.description',
+                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.title',
+                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'small',
                     'width' => 'small'
@@ -40,8 +40,8 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                 [
                     'identifier' => 'keSearchIndexOverview',
                     'groupNames' => 'ke_search',
-                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchIndexOverview.title',
-                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchIndexOverview.description',
+                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.title',
+                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'medium',
                     'width' => 'medium'
@@ -57,8 +57,8 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                 [
                     'identifier' => 'keSearchTrendingSearchphrases',
                     'groupNames' => 'ke_search',
-                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchTrendingSearchphrases.title',
-                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchTrendingSearchphrases.description',
+                    'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchTrendingSearchphrases.title',
+                    'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchTrendingSearchphrases.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'medium',
                     'width' => 'medium'

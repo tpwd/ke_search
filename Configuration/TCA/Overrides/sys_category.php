@@ -9,7 +9,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'exclude' => 1,
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:sys_category.tx_kesearch_filter',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:sys_category.tx_kesearch_filter',
             'config' => array(
                 'default' => 0,
                 'type' => 'select',
@@ -25,7 +25,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'exclude' => 1,
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:sys_category.tx_kesearch_filtersubcat',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:sys_category.tx_kesearch_filtersubcat',
             'config' => array(
                 'default' => 0,
                 'type' => 'select',
@@ -41,5 +41,5 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
 );
 TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_category',
-    '--div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:pages.tx_kesearch_label,tx_kesearch_filter,tx_kesearch_filtersubcat'
+    '--div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:pages.tx_kesearch_label,tx_kesearch_filter,tx_kesearch_filtersubcat'
 );

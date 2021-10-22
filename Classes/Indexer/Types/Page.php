@@ -212,19 +212,13 @@ class Page extends IndexerBase
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
-            \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-        ) {
-            $startingPoints = [];
-            $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['startingpoints_recursive'], true);
-            $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['single_pages'], true);
-            foreach ($startingPoints as $startingPoint) {
-                foreach ($translationProvider->getSystemLanguages($startingPoint) as $key => $lang) {
-                    $this->sysLanguages[$key] = $lang;
-                }
+        $startingPoints = [];
+        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['startingpoints_recursive'], true);
+        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['single_pages'], true);
+        foreach ($startingPoints as $startingPoint) {
+            foreach ($translationProvider->getSystemLanguages($startingPoint) as $key => $lang) {
+                $this->sysLanguages[$key] = $lang;
             }
-        } else {
-            $this->sysLanguages = $translationProvider->getSystemLanguages();
         }
 
         // make file repository
@@ -400,50 +394,25 @@ class Page extends IndexerBase
 
                 // get translations from "pages" not from "pages_language_overlay" if on TYPO3 9 or higher
                 // see https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.0/Breaking-82445-PagesAndPageTranslations.html
-                if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
-                    \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('9.0')
-                ) {
-                    $queryBuilder = Db::getQueryBuilder('pages');
-                    if ($removeRestrictions) {
-                        $queryBuilder->getRestrictions()->removeAll();
-                    }
-                    list($pageOverlay) = $queryBuilder
-                        ->select('*')
-                        ->from('pages')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'l10n_parent',
-                                $queryBuilder->quote($pageRow['uid'], \PDO::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                'sys_language_uid',
-                                $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
-                            )
-                        )
-                        ->execute()
-                        ->fetchAll();
-                } else {
-                    // use fallback for translated pages in "pages_language_overlay"
-                    $queryBuilder = Db::getQueryBuilder('pages_language_overlay');
-                    if ($removeRestrictions) {
-                        $queryBuilder->getRestrictions()->removeAll();
-                    }
-                    list($pageOverlay) = $queryBuilder
-                        ->select('*')
-                        ->from('pages_language_overlay')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'pid',
-                                $queryBuilder->quote($pageRow['uid'], \PDO::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                'sys_language_uid',
-                                $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
-                            )
-                        )
-                        ->execute()
-                        ->fetchAll();
+                $queryBuilder = Db::getQueryBuilder('pages');
+                if ($removeRestrictions) {
+                    $queryBuilder->getRestrictions()->removeAll();
                 }
+                list($pageOverlay) = $queryBuilder
+                    ->select('*')
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'l10n_parent',
+                            $queryBuilder->quote($pageRow['uid'], \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'sys_language_uid',
+                            $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
+                        )
+                    )
+                    ->execute()
+                    ->fetchAll();
 
                 if ($pageOverlay) {
                     $this->cachedPageRecords[$sysLang['uid']][$pageRow['uid']] = $pageOverlay + $pageRow;
@@ -1107,22 +1076,10 @@ class Page extends IndexerBase
         // get metadata
         if ($fileObject instanceof FileReference) {
             $orig_uid = $fileObject->getOriginalFile()->getUid();
-            if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) <
-                \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-            ) {
-                $metadata = $fileObject->getOriginalFile()->_getMetaData();
-            } else {
-                $metadata = $fileObject->getOriginalFile()->getMetaData()->get();
-            }
+            $metadata = $fileObject->getOriginalFile()->getMetaData()->get();
         } else {
             $orig_uid = $fileObject->getUid();
-            if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) <
-                \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-            ) {
-                $metadata = $fileObject->_getMetaData();
-            } else {
-                $metadata = $fileObject->getMetaData()->get();
-            }
+            $metadata = $fileObject->getMetaData()->get();
         }
 
         if ($metadata['fe_groups']) {

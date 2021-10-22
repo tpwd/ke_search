@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2021-10-15T11:05:28Z" product-name="ke_search">
+		<header/>
+		<body>
+			<trans-unit id="pi_title" resname="pi_title"  approved="yes">
+				<source>Faceted Search</source>
+				<target>Facet Zoeken</target>
+			</trans-unit>
+			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description"  approved="yes">
+				<source>Show searchbox and filters.</source>
+				<target>Toon Zoekveld en filters</target>
+			</trans-unit>
+			<trans-unit id="ff.page.main" resname="ff.page.main"  approved="yes">
+				<source>General</source>
+				<target>Algemeen</target>
+			</trans-unit>
+			<trans-unit id="ff.resultPage" resname="ff.resultPage"  approved="yes">
+				<source>Page with result list</source>
+				<target>Pagina met resultaat lijst</target>
+			</trans-unit>
+			<trans-unit id="ff.showTextInsteadOfResults" resname="ff.showTextInsteadOfResults"  approved="yes">
+				<source>Show text instead of searchresults if no filter or searchword has been given?</source>
+				<target>Laat tekst in plaats van zoekresultaten zien als er geen filter of zoekwoord is gegeven.</target>
+			</trans-unit>
+			<trans-unit id="ff.textForResults" resname="ff.textForResults"  approved="yes">
+				<source>Insert this text if no filter or searchword has been given.</source>
+				<target>Plaats deze tekst als er geen filter of zoekwoord is gegeven.</target>
+			</trans-unit>
+			<trans-unit id="ff.showNoResultsText" resname="ff.showNoResultsText"  approved="yes">
+				<source>Show individual text if no results were found?</source>
+				<target>Toon individuele tekst als er geen resultaten zijn gevonden?</target>
+			</trans-unit>
+			<trans-unit id="ff.noResultsText" resname="ff.noResultsText"  approved="yes">
+				<source>Individual text for &quot;no results found&quot;</source>
+				<target>Individuele tekst voor &quot;geen resultaten gevonden&quot;</target>
+			</trans-unit>
+			<trans-unit id="ff.countSearchPhrases" resname="ff.countSearchPhrases"  approved="yes">
+				<source>Count search phrases in statistic tables?</source>
+				<target>Tel zoektermen in statistiek tabellen?</target>
+			</trans-unit>
+			<trans-unit id="ff.cssFile" resname="ff.cssFile"  approved="yes">
+				<source>CSS File</source>
+				<target>CSS bestand</target>
+			</trans-unit>
+			<trans-unit id="ff.page.sorting" resname="ff.page.sorting"  approved="yes">
+				<source>Sorting</source>
+				<target>Sorteer op</target>
+			</trans-unit>
+			<trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin"  approved="yes">
+				<source>Sorting for searchresults</source>
+				<target>Alle zoekresultaten worden gesorteerd op deze waarde</target>
+			</trans-unit>
+			<trans-unit id="ff.sortWithoutSearchword" resname="ff.sortWithoutSearchword"  approved="yes">
+				<source>Sorting for searchresults if no searchword/filter is given</source>
+				<target>Hoe moet het soort resultaten worden gesorteerd als er geen zoekwoord / filter is gegeven?</target>
+			</trans-unit>
+			<trans-unit id="ff.showSortInFrontend" resname="ff.showSortInFrontend"  approved="yes">
+				<source>The website visitor should be able to order the searchresults</source>
+				<target>Moet de bezoeker van de website de zoekresultaten kunnen ordenen?</target>
+			</trans-unit>
+			<trans-unit id="ff.sortByVisitor" resname="ff.sortByVisitor"  approved="yes">
+				<source>Fields the website user should be able to order by</source>
+				<target>Welke velden kan de bezoeker ordenen?</target>
+			</trans-unit>
+			<trans-unit id="ff.page.view" resname="ff.page.view"  approved="yes">
+				<source>General Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="ff.showQueryTime" resname="ff.showQueryTime"  approved="yes">
+				<source>Show time (query process duration)?</source>
+				<target>Toon tijd (query proces duur)?</target>
+			</trans-unit>
+			<trans-unit id="ff.showResultUrl" resname="ff.showResultUrl"  approved="yes">
+				<source>Show result URL?</source>
+				<target>Toon resultaat URL?</target>
+			</trans-unit>
+			<trans-unit id="ff.renderResultUrlAsLink" resname="ff.renderResultUrlAsLink"  approved="yes">
+				<source>Render result URL as link (a-Tag)?</source>
+				<target>Render resultaat URL als link (a-Label)?</target>
+			</trans-unit>
+			<trans-unit id="ff.showDate" resname="ff.showDate"  approved="yes">
+				<source>Show date?</source>
+				<target>Toon datum?</target>
+			</trans-unit>
+			<trans-unit id="ff.resultLinkTarget" resname="ff.resultLinkTarget"  approved="yes">
+				<source>Target for result link</source>
+				<target>Doel voor resultaat-link</target>
+			</trans-unit>
+			<trans-unit id="ff.resultLinkTargetFiles" resname="ff.resultLinkTargetFiles"  approved="yes">
+				<source>Target for result link for files</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.resultLinkTarget.I.0" resname="ff.resultLinkTarget.I.0"  approved="yes">
+				<source>Open in new window</source>
+				<target>Open in nieuw scherm</target>
+			</trans-unit>
+			<trans-unit id="ff.resultLinkTarget.I.1" resname="ff.resultLinkTarget.I.1"  approved="yes">
+				<source>Open in same window</source>
+				<target>Open in hetzelfde scherm</target>
+			</trans-unit>
+			<trans-unit id="ff.resultsNumeration" resname="ff.resultsNumeration"  approved="yes">
+				<source>Number results consecutively?</source>
+				<target>Aantal resultaten achter elkaar?</target>
+			</trans-unit>
+			<trans-unit id="ff.templateLayout" resname="ff.templateLayout"  approved="yes">
+				<source>Template Layout</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.templateLayout.I.0" resname="ff.templateLayout.I.0"  approved="yes">
+				<source>Default</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.highlightSword" resname="ff.highlightSword"  approved="yes">
+				<source>Highlight search word in result preview</source>
+				<target>Markeer zoekterm in het resultaat voorbeeld</target>
+			</trans-unit>
+			<trans-unit id="ff.previewMode" resname="ff.previewMode"  approved="yes">
+				<source>Text for used for search result (preview text)</source>
+				<target>Voorbeeld Mode</target>
+			</trans-unit>
+			<trans-unit id="ff.previewMode.I.0" resname="ff.previewMode.I.0"  approved="yes">
+				<source>Always show the abstract if set.</source>
+				<target>Toon altijd samenvatting indien ingesteld</target>
+			</trans-unit>
+			<trans-unit id="ff.previewMode.I.1" resname="ff.previewMode.I.1"  approved="yes">
+				<source>Show abstract if it contains searchword, otherwise show an excerpt from the content.</source>
+				<target>Toon samenvatting als het de zoekterm bevat, toon anders de inhoud</target>
+			</trans-unit>
+			<trans-unit id="ff.resultChars" resname="ff.resultChars"  approved="yes">
+				<source>Number of characters used for the result preview text.</source>
+				<target>Aantal chars gebruikt bij het resultaat voorbeeld</target>
+			</trans-unit>
+			<trans-unit id="ff.page.images" resname="ff.page.images"  approved="yes">
+				<source>Images</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.showTypeIcon" resname="ff.showTypeIcon"  approved="yes">
+				<source>Show result type icon?</source>
+				<target>Toon resultaat type icoon?</target>
+			</trans-unit>
+			<trans-unit id="ff.showFilePreview" resname="ff.showFilePreview"  approved="yes">
+				<source>Show file preview instead of result icon if possible?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.showPageImages" resname="ff.showPageImages"  approved="yes">
+				<source>Show page image preview instead of result icon? (Images are taken from the page properties, field &quot;search result image&quot;.)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.showNewsImages" resname="ff.showNewsImages"  approved="yes">
+				<source>Show news (ext:news / ext:tt_news) image preview instead of result icon?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.page.pagebrowser" resname="ff.page.pagebrowser"  approved="yes">
+				<source>Pagebrowser</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.pagebrowserOnTop" resname="ff.pagebrowserOnTop"  approved="yes">
+				<source>Show pagebrowser on top of result list</source>
+				<target>Toon pagebrowser boven de lijst met resultaten</target>
+			</trans-unit>
+			<trans-unit id="ff.pagebrowserAtBottom" resname="ff.pagebrowserAtBottom"  approved="yes">
+				<source>Show pagebrowser at the bottom of the result list</source>
+				<target>Toon pagebrowser onderaan de lijst met resultaten</target>
+			</trans-unit>
+			<trans-unit id="ff.maxPagesInPagebrowser" resname="ff.maxPagesInPagebrowser"  approved="yes">
+				<source>Number of pages shown in pagebrowser</source>
+				<target>Aantal pagina's weergegeven in pagebrowser</target>
+			</trans-unit>
+			<trans-unit id="ff.resultsPerPage" resname="ff.resultsPerPage"  approved="yes">
+				<source>Results per page</source>
+				<target>Resultaten per pagina</target>
+			</trans-unit>
+			<trans-unit id="ff.page.debug" resname="ff.page.debug"  approved="yes">
+				<source>Debug (Admin)</source>
+				<target>Debug (Admin)</target>
+			</trans-unit>
+			<trans-unit id="ff.showTags" resname="ff.showTags"  approved="yes">
+				<source>Show tags?</source>
+				<target>Toon labels?</target>
+			</trans-unit>
+			<trans-unit id="ff.logQuery" resname="ff.logQuery"  approved="yes">
+				<source>Log query to log file (in var/log/)?</source>
+				<target>Toon query (logfile, var/log/)?</target>
+			</trans-unit>
+			<trans-unit id="ff.showTaggedContentOnly" resname="ff.showTaggedContentOnly"  approved="yes">
+				<source>Show tagged content only?</source>
+				<target>Toon alleen gelabelde inhoud?</target>
+			</trans-unit>
+			<trans-unit id="ff.page.filter" resname="ff.page.filter"  approved="yes">
+				<source>Filter</source>
+				<target>Filter</target>
+			</trans-unit>
+			<trans-unit id="ff.filters" resname="ff.filters"  approved="yes">
+				<source>Shown Filters</source>
+				<target>Filters</target>
+			</trans-unit>
+			<trans-unit id="ff.hiddenfilters" resname="ff.hiddenfilters"  approved="yes">
+				<source>Hidden Filters (for use with &quot;preselected filter options&quot;)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="ff.preselected_filters" resname="ff.preselected_filters"  approved="yes">
+				<source>Preselected filter options</source>
+				<target>vooraf ingestelde filters</target>
+			</trans-unit>
+			<trans-unit id="ff.checkFilterCondition" resname="ff.checkFilterCondition"  approved="yes">
+				<source>Availability check for filter options</source>
+				<target>Controle beschikbaarheid van filter opties</target>
+			</trans-unit>
+			<trans-unit id="ff.checkFilterCondition.I.0" resname="ff.checkFilterCondition.I.0"  approved="yes">
+				<source>Check in condition to other filters</source>
+				<target>Controleer in conditie tot andere filters</target>
+			</trans-unit>
+			<trans-unit id="ff.checkFilterCondition.I.1" resname="ff.checkFilterCondition.I.1"  approved="yes">
+				<source>no check</source>
+				<target>Geen controle</target>
+			</trans-unit>
+			<trans-unit id="results" resname="results"  approved="yes">
+				<source>Search results</source>
+				<target>Zoek resultaten</target>
+			</trans-unit>
+			<trans-unit id="num_results" resname="num_results"  approved="yes">
+				<source>%s results:</source>
+				<target>%s resultaten:</target>
+			</trans-unit>
+			<trans-unit id="num_results_plain" resname="num_results_plain"  approved="yes">
+				<source>results</source>
+				<target>resultaten</target>
+			</trans-unit>
+			<trans-unit id="until" resname="until"  approved="yes">
+				<source>until</source>
+				<target>tot</target>
+			</trans-unit>
+			<trans-unit id="of" resname="of"  approved="yes">
+				<source>of</source>
+				<target>van</target>
+			</trans-unit>
+			<trans-unit id="no_results_found" resname="no_results_found"  approved="yes">
+				<source>No results found</source>
+				<target>Geen zoekresultaten gevonden</target>
+			</trans-unit>
+			<trans-unit id="no_results_refine" resname="no_results_refine"  approved="yes">
+				<source>This search term is not specific enough. Please choose another.</source>
+				<target>Deze zoekterm is niet specifiek genoeg. Kies een andere.</target>
+			</trans-unit>
+			<trans-unit id="searchword_length_error" resname="searchword_length_error"  approved="yes">
+				<source>Search words under length of %d characters are not processed.</source>
+				<target>Zoek woorden in lengte van minder dan %d karakter zijn niet verwerkt.</target>
+			</trans-unit>
+			<trans-unit id="error_resultPage" resname="error_resultPage"  approved="yes">
+				<source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
+				<target>Er is al een pagina met zoekresultaten in de Plugin configuratie. Dus het heeft geen zin om nogmaals de resultatenlijst plug-in te voegen op deze pagina.</target>
+			</trans-unit>
+			<trans-unit id="pagebrowser_prev" resname="pagebrowser_prev"  approved="yes">
+				<source>previous</source>
+				<target>Vorige</target>
+			</trans-unit>
+			<trans-unit id="pagebrowser_next" resname="pagebrowser_next"  approved="yes">
+				<source>next</source>
+				<target>Volgende</target>
+			</trans-unit>
+			<trans-unit id="label_resulturl" resname="label_resulturl"  approved="yes">
+				<source>URL</source>
+				<target>URL</target>
+			</trans-unit>
+			<trans-unit id="label_sort" resname="label_sort"  approved="yes">
+				<source>Sorting:</source>
+				<target>Sorteer op:</target>
+			</trans-unit>
+			<trans-unit id="label_score" resname="label_score"  approved="yes">
+				<source>Score</source>
+				<target>Score</target>
+			</trans-unit>
+			<trans-unit id="label_date" resname="label_date"  approved="yes">
+				<source>Date</source>
+				<target>Datum</target>
+			</trans-unit>
+			<trans-unit id="label_tags" resname="label_tags"  approved="yes">
+				<source>Tags</source>
+				<target>Labels</target>
+			</trans-unit>
+			<trans-unit id="label_all" resname="label_all"  approved="yes">
+				<source>select all / deselect all</source>
+				<target>Selecteer alles / deselecteer alles</target>
+			</trans-unit>
+			<trans-unit id="loading" resname="loading"  approved="yes">
+				<source>Loading</source>
+				<target>Laden</target>
+			</trans-unit>
+			<trans-unit id="all_options" resname="all_options"  approved="yes">
+				<source>ALL</source>
+				<target>Allemaal</target>
+			</trans-unit>
+			<trans-unit id="no_options" resname="no_options"  approved="yes">
+				<source>---</source>
+				<target>---</target>
+			</trans-unit>
+			<trans-unit id="message_before_search" resname="message_before_search"  approved="yes">
+				<source>Please choose your search parameters.</source>
+				<target>Kies je zoekcriteria.</target>
+			</trans-unit>
+			<trans-unit id="query_time" resname="query_time"  approved="yes">
+				<source>The search query was processed in %s ms.</source>
+				<target>De zoekopdracht is verwerkt in %s ms.</target>
+			</trans-unit>
+			<trans-unit id="reset_button" resname="reset_button"  approved="yes">
+				<source>Reset</source>
+				<target>Opnieuw instellen</target>
+			</trans-unit>
+			<trans-unit id="reset_filter" resname="reset_filter"  approved="yes">
+				<source>Reset filter</source>
+				<target>Filter opnieuw instellen</target>
+			</trans-unit>
+			<trans-unit id="submit" resname="submit"  approved="yes">
+				<source>Find</source>
+				<target>Zoek</target>
+			</trans-unit>
+			<trans-unit id="back" resname="back"  approved="yes">
+				<source>Back</source>
+				<target>Terug</target>
+			</trans-unit>
+			<trans-unit id="checkbox_submit" resname="checkbox_submit"  approved="yes">
+				<source>Apply filter</source>
+				<target>Filter toepassen</target>
+			</trans-unit>
+			<trans-unit id="orderlink_title" resname="orderlink_title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="orderlink_score" resname="orderlink_score"  approved="yes">
+				<source>Relevance</source>
+				<target>Relevantie</target>
+			</trans-unit>
+			<trans-unit id="orderlink_sortdate" resname="orderlink_sortdate"  approved="yes">
+				<source>Date</source>
+				<target>datum</target>
+			</trans-unit>
+			<trans-unit id="searchbox_default_value" resname="searchbox_default_value"  approved="yes">
+				<source>Your search phrase</source>
+				<target>Je zoekterm</target>
+			</trans-unit>
+			<trans-unit id="linktext_more" resname="linktext_more"  approved="yes">
+				<source>More %s and Multiselection</source>
+				<target>Meer %s en Multiselectie</target>
+			</trans-unit>
+			<trans-unit id="show_results" resname="show_results"  approved="yes">
+				<source>Show results</source>
+				<target>Toon resultaten</target>
+			</trans-unit>
+			<trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime"  approved="yes">
+				<source>%B %e, %Y, %I:%M %p</source>
+				<target>%B %e, %Y, %I:%M %p</target>
+			</trans-unit>
+			<trans-unit id="dateformat.dateAndTimeWithoutYear" resname="dateformat.dateAndTimeWithoutYear"  approved="yes">
+				<source>%B %e, %I:%M %p</source>
+				<target>%B %e, %I:%M %p</target>
+			</trans-unit>
+			<trans-unit id="dateformat.time" resname="dateformat.time"  approved="yes">
+				<source>%I:%M %p</source>
+				<target>%I:%M %p</target>
+			</trans-unit>
+			<trans-unit id="dateformat.dateWithYear" resname="dateformat.dateWithYear"  approved="yes">
+				<source>%B %e, %Y</source>
+				<target>%B %e, %Y</target>
+			</trans-unit>
+			<trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear"  approved="yes">
+				<source>%B %e</source>
+				<target>%B %e</target>
+			</trans-unit>
+			<trans-unit id="ff.templateFile" resname="ff.templateFile"  approved="yes">
+				<source/>
+				<target>Sjabloon bestand</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

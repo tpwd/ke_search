@@ -1,6 +1,15 @@
 ChangeLog
 
 Upcoming version
+[TASK]    Remove support for TYPO3 9
+[TASK]    Make extension installable with TYPO3 11
+[TASK]    Switch from xml to xlf language files
+[TASK]    Replace deprecated GeneralUtility::milliseconds() with native PHP function
+[TASK]    Add check if static template is included
+[TASK]    Adapt usage of filePathSanitizer to TYPO3 11
+[TASK]    Use new namespace for PageRepository
+[TASK]    Move commands registration from Commands.php to Services.yaml
+[TASK]    Move dependency injection for AbstractBackendModuleController from inject annotation to constructor injection
 [BUGFIX]  Fix syntax error with PHP 7.2 and 7.3. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/5
 
 Version 4.0.1, October 2021

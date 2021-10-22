@@ -6,3 +6,21 @@ services:
 
   Tpwd\KeSearch\:
     resource: '../Classes/*'
+
+  Tpwd\KeSearch\Command\StartIndexerCommand:
+    tags:
+      - name: 'console.command'
+        command: 'ke_search:indexing'
+        description: 'Runs the ke_search indexers'
+
+  Tpwd\KeSearch\Command\ClearIndexCommand:
+    tags:
+      - name: 'console.command'
+        command: 'ke_search:clearindex'
+        description: 'Clears the ke_search index'
+
+  Tpwd\KeSearch\Command\RemoveLockCommand:
+    tags:
+      - name: 'console.command'
+        command: 'ke_search:removelock'
+        description: 'Removes the ke_search lock'

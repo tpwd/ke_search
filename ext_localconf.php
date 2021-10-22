@@ -46,15 +46,7 @@ if (!defined('TYPO3_MODE')) {
         \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
     )->get('ke_search');
     $loglevel = !empty($extConf['loglevel']) ? $extConf['loglevel'] : 'ERROR';
-
-    if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) <
-        \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger('10.0')
-    ) {
-        $loglevel = \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel($loglevel);
-    } else {
-        $loglevel = strtolower($loglevel);
-    }
-
+    $loglevel = strtolower($loglevel);
     $GLOBALS['TYPO3_CONF_VARS']['LOG']['Tpwd']['KeSearch']['writerConfiguration'] = [
         $loglevel => [
             'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => [

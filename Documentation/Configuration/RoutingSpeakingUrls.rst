@@ -232,7 +232,7 @@ Resources/Private/Templates/Widget/Pagination.html
     <ul>
     <f:if condition="{pagination.previous}">
         <li>
-            <kesearch:link piVars="{page: pagination.previous}" keepPiVars="1" class="prev">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xml:pagebrowser_prev')}</kesearch:link>
+            <kesearch:link piVars="{page: pagination.previous}" keepPiVars="1" class="prev">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_prev')}</kesearch:link>
         </li>
     </f:if>
     <f:for each="{pagination.pages}" as="page">
@@ -241,7 +241,7 @@ Resources/Private/Templates/Widget/Pagination.html
     </f:for>
     <f:if condition="{pagination.next}">
         <li>
-            <kesearch:link piVars="{page: pagination.next}" keepPiVars="1" class="next">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xml:pagebrowser_next')}</kesearch:link>
+            <kesearch:link piVars="{page: pagination.next}" keepPiVars="1" class="next">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_next')}</kesearch:link>
         </li>
     </f:if>
     </ul>

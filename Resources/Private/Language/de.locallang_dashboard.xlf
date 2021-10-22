@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-10-15T11:05:23Z" product-name="ke_search">
+		<header/>
+		<body>
+			<trans-unit id="widget_group.ke_search" resname="widget_group.ke_search"  approved="yes">
+				<source>ke_search</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.title" resname="widgets.keSearchStatus.title"  approved="yes">
+				<source>Indexer Status</source>
+				<target>Indexer Status</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.description" resname="widgets.keSearchStatus.description"  approved="yes">
+				<source>Shows the current status of the ke_search indexer.</source>
+				<target>Zeigt den aktuellen Status des ke_search-Indexers an.</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.running_since" resname="widgets.keSearchStatus.running_since"  approved="yes">
+				<source>Indexer is running since</source>
+				<target>Indexer läuft seit</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.not_running" resname="widgets.keSearchStatus.not_running"  approved="yes">
+				<source>Currently no indexing process is running</source>
+				<target>Aktuell läuft kein Indexierungsvorgang</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.h" resname="widgets.keSearchStatus.h"  approved="yes">
+				<source>h</source>
+				<target>Std</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.m" resname="widgets.keSearchStatus.m"  approved="yes">
+				<source>m</source>
+				<target>Min</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.s" resname="widgets.keSearchStatus.s"  approved="yes">
+				<source>s</source>
+				<target>Sek</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_finished" resname="widgets.keSearchStatus.last_run_finished"  approved="yes">
+				<source>Last run finished</source>
+				<target>Der letzte Durchlauf wurde beendet am</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_finished_at" resname="widgets.keSearchStatus.last_run_finished_at"  approved="yes">
+				<source>at</source>
+				<target>um</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchStatus.last_run_took" resname="widgets.keSearchStatus.last_run_took"  approved="yes">
+				<source>and took</source>
+				<target>und benötigte</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title"  approved="yes">
+				<source>Index Overview</source>
+				<target>Index Übersicht</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description"  approved="yes">
+				<source>Shows how many records of each type are currently in the index.</source>
+				<target>Zeigt wie viele Einträge von welchem Typ derzeit im Index vorhanden sind.</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.title" resname="widgets.keSearchTrendingSearchphrases.title"  approved="yes">
+				<source>Trending search phrases</source>
+				<target>Am häufigsten verwendete Suchphrasen</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.description" resname="widgets.keSearchTrendingSearchphrases.description"  approved="yes">
+				<source>Shows search phrases from the last 7 days.</source>
+				<target>Zeigt die am häufigsten verwendeten Suchphrasen der letzten 7 Tage.</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.phrase" resname="widgets.keSearchTrendingSearchphrases.phrase"  approved="yes">
+				<source>Search phrase</source>
+				<target>Suchphrase</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.number_of_usages" resname="widgets.keSearchTrendingSearchphrases.number_of_usages"  approved="yes">
+				<source>Number of usages</source>
+				<target>Anzahl der Verwendungen</target>
+			</trans-unit>
+			<trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language"  approved="yes">
+				<source>Language</source>
+				<target>Sprache</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
