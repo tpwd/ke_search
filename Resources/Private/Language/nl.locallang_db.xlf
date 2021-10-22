@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2021-10-15T11:09:07Z" product-name="ke_search">
+		<header/>
+		<body>
+			<trans-unit id="pages.tx_kesearch_label" resname="pages.tx_kesearch_label"  approved="yes">
+				<source>Search</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="pages.tx_kesearch_tags" resname="pages.tx_kesearch_tags"  approved="yes">
+				<source>Tags for faceted search</source>
+				<target>Labels voor Facet Zoeken</target>
+			</trans-unit>
+			<trans-unit id="pages.tx_kesearch_resultimage" resname="pages.tx_kesearch_resultimage"  approved="yes">
+				<source>Search result image</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="pages.tx_kesearch_abstract" resname="pages.tx_kesearch_abstract"  approved="yes">
+				<source>Abstract for search result</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="sys_category.tx_kesearch_filter" resname="sys_category.tx_kesearch_filter"  approved="yes">
+				<source>Category acts as a filter option for these filters</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="sys_category.tx_kesearch_filtersubcat" resname="sys_category.tx_kesearch_filtersubcat"  approved="yes">
+				<source>Sub-Categories act as a filter options for these filters</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi1" resname="tt_content.list_type_pi1"  approved="yes">
+				<source>Faceted search - Searchbox and Filters</source>
+				<target>Facet Zoeken - Zoekvak en Filters</target>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi2" resname="tt_content.list_type_pi2"  approved="yes">
+				<source>Faceted search - Results</source>
+				<target>Facet Zoeken - Resultaten</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters" resname="tx_kesearch_filters"  approved="yes">
+				<source>Filters</source>
+				<target>Filters</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.title" resname="tx_kesearch_filters.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.rendertype" resname="tx_kesearch_filters.rendertype"  approved="yes">
+				<source>Rendering type</source>
+				<target>Rendering soort</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.markAllCheckboxes" resname="tx_kesearch_filters.markAllCheckboxes"  approved="yes">
+				<source>Mark all checkboxes by default?</source>
+				<target>Markeer alle selectievakjes standaard?</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.options" resname="tx_kesearch_filters.options"  approved="yes">
+				<source>Filter options</source>
+				<target>Filter opties</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.target_pid" resname="tx_kesearch_filters.target_pid"  approved="yes">
+				<source>Choose page where to show all filter options</source>
+				<target>Kies pagina om alle filter opties te tonen</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.amount" resname="tx_kesearch_filters.amount"  approved="yes">
+				<source>How many textlinks should be displayed?</source>
+				<target>Hoeveel tekstlinks moeten er worden getoond</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.shownumberofresults" resname="tx_kesearch_filters.shownumberofresults"  approved="yes">
+				<source>Show number of results for each filter option?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.alphabeticalsorting" resname="tx_kesearch_filters.alphabeticalsorting"  approved="yes">
+				<source>Sort filteroptions alphabetically?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.rendertype.I.0" resname="tx_kesearch_filters.rendertype.I.0"  approved="yes">
+				<source>Select/Dropdown</source>
+				<target>Selecteer</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.rendertype.I.1" resname="tx_kesearch_filters.rendertype.I.1"  approved="yes">
+				<source>List/Textlinks</source>
+				<target>Lijst</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.rendertype.I.2" resname="tx_kesearch_filters.rendertype.I.2"  approved="yes">
+				<source>Checkboxes (multiselection OR)</source>
+				<target>Checkboxen (Multiselectie OR)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions" resname="tx_kesearch_filteroptions"  approved="yes">
+				<source>Filter options</source>
+				<target>Filter opties</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions.title" resname="tx_kesearch_filteroptions.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions.tag" resname="tx_kesearch_filteroptions.tag"  approved="yes">
+				<source>Tag</source>
+				<target>Label</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions.slug" resname="tx_kesearch_filteroptions.slug"  approved="yes">
+				<source>URL Segment (Slug)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions.automated_tagging" resname="tx_kesearch_filteroptions.automated_tagging"  approved="yes">
+				<source>Set tag for this page and all children</source>
+				<target>Stel label in voor deze pagina en alle kinderen van deze pagina</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_filteroptions.automated_tagging_exclude" resname="tx_kesearch_filteroptions.automated_tagging_exclude"  approved="yes">
+				<source>Exclude tag for all children of this page</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index" resname="tx_kesearch_index"  approved="yes">
+				<source>Index</source>
+				<target>Index</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.relevance" resname="tx_kesearch_index.relevance"  approved="yes">
+				<source>Relevance</source>
+				<target>Relevantie</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.targetpid" resname="tx_kesearch_index.targetpid"  approved="yes">
+				<source>Target PID</source>
+				<target>Doel PID</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.content" resname="tx_kesearch_index.content"  approved="yes">
+				<source>Indexed content</source>
+				<target>Geindexeerde inhoud</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.params" resname="tx_kesearch_index.params"  approved="yes">
+				<source>Parameters</source>
+				<target>Parameters</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.type" resname="tx_kesearch_index.type"  approved="yes">
+				<source>Type</source>
+				<target>Type</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.tags" resname="tx_kesearch_index.tags"  approved="yes">
+				<source>Tags</source>
+				<target>Labels</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.abstract" resname="tx_kesearch_index.abstract"  approved="yes">
+				<source>Abstract</source>
+				<target>Samenvatting</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.title" resname="tx_kesearch_index.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.language" resname="tx_kesearch_index.language"  approved="yes">
+				<source>Language UID</source>
+				<target>Taal UID</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.sortdate" resname="tx_kesearch_index.sortdate"  approved="yes">
+				<source>Date</source>
+				<target>Datum</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.directory" resname="tx_kesearch_index.directory"  approved="yes">
+				<source>Directory</source>
+				<target>Map</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig" resname="tx_kesearch_indexerconfig"  approved="yes">
+				<source>Indexer Configuration</source>
+				<target>Indexeer configuratie</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.title" resname="tx_kesearch_indexerconfig.title"  approved="yes">
+				<source>Title</source>
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.storagepid" resname="tx_kesearch_indexerconfig.storagepid"  approved="yes">
+				<source>Storage</source>
+				<target>Record opslag pagina van zoekgegevens</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.storagepid.description" resname="tx_kesearch_indexerconfig.storagepid.description"  approved="yes">
+				<source>Storage page for search data (the index)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.targetpid" resname="tx_kesearch_indexerconfig.targetpid"  approved="yes">
+				<source>Target page for extension content</source>
+				<target>Target pagina voor extensie inhoud</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.startingpoints_recursive" resname="tx_kesearch_indexerconfig.startingpoints_recursive"  approved="yes">
+				<source>Pages/folders recursive</source>
+				<target>Startpunten (recursief)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.startingpoints_recursive.description" resname="tx_kesearch_indexerconfig.startingpoints_recursive.description"  approved="yes">
+				<source>Pages/folders and sub-pages/sub-folders to be indexed (recursive)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.single_pages" resname="tx_kesearch_indexerconfig.single_pages"  approved="yes">
+				<source>Single pages</source>
+				<target>Enkele pagina's</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.single_pages.description" resname="tx_kesearch_indexerconfig.single_pages.description"  approved="yes">
+				<source>Pages to be indexed (non-recursive)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.sysfolder" resname="tx_kesearch_indexerconfig.sysfolder"  approved="yes">
+				<source>Single folders</source>
+				<target>Record opslag pagina(s) van te indexeren data</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.sysfolder.description" resname="tx_kesearch_indexerconfig.sysfolder.description"  approved="yes">
+				<source>Folders to be indexed (non-recursive)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.0" resname="tx_kesearch_indexerconfig.type.I.0"  approved="yes">
+				<source>Pages</source>
+				<target>Pagina's</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.2" resname="tx_kesearch_indexerconfig.type.I.2"  approved="yes">
+				<source>News (tt_news)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.5" resname="tx_kesearch_indexerconfig.type.I.5"  approved="yes">
+				<source>Address records (tt_address)</source>
+				<target>Adres velden (tt_address)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.6" resname="tx_kesearch_indexerconfig.type.I.6"  approved="yes">
+				<source>Content records (tt_content)</source>
+				<target>Inhouds elementen (tt_content)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.7" resname="tx_kesearch_indexerconfig.type.I.7"  approved="yes">
+				<source>Files</source>
+				<target>Bestanden</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type.I.12" resname="tx_kesearch_indexerconfig.type.I.12"  approved="yes">
+				<source>News (news)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.type" resname="tx_kesearch_indexerconfig.type"  approved="yes">
+				<source>Type</source>
+				<target>Type</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions" resname="tx_kesearch_indexerconfig.index_content_with_restrictions"  approved="yes">
+				<source>Index content elements with restrictions?</source>
+				<target>Indexeer inhouds elementen met restricties?</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0"  approved="yes">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.1" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.1"  approved="yes">
+				<source>No</source>
+				<target>Nee</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode" resname="tx_kesearch_indexerconfig.index_news_category_mode"  approved="yes">
+				<source>Category mode</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode.I.1" resname="tx_kesearch_indexerconfig.index_news_category_mode.I.1"  approved="yes">
+				<source>Index all news records</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode.I.2" resname="tx_kesearch_indexerconfig.index_news_category_mode.I.2"  approved="yes">
+				<source>Index only news with selected categories</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_archived" resname="tx_kesearch_indexerconfig.index_news_archived"  approved="yes">
+				<source>Archived news settings</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.0" resname="tx_kesearch_indexerconfig.index_news_archived.I.0"  approved="yes">
+				<source>Index all news</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.1" resname="tx_kesearch_indexerconfig.index_news_archived.I.1"  approved="yes">
+				<source>Index only active news</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.2" resname="tx_kesearch_indexerconfig.index_news_archived.I.2"  approved="yes">
+				<source>Index only archived news</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_category_selection" resname="tx_kesearch_indexerconfig.index_news_category_selection"  approved="yes">
+				<source>Categories</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_useHRDatesSingleWithoutDay" resname="tx_kesearch_indexerconfig.index_news_useHRDatesSingleWithoutDay"  approved="yes">
+				<source>Use dates without day for single-view-URLs</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode" resname="tx_kesearch_indexerconfig.index_news_files_mode"  approved="yes">
+				<source>Attached files should be handled as</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode.I.0" resname="tx_kesearch_indexerconfig.index_news_files_mode.I.0"  approved="yes">
+				<source>Separate search result</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode.I.1" resname="tx_kesearch_indexerconfig.index_news_files_mode.I.1"  approved="yes">
+				<source>Content of news record</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_extnews_category_selection" resname="tx_kesearch_indexerconfig.index_extnews_category_selection"  approved="yes">
+				<source>Categories</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_use_page_tags" resname="tx_kesearch_indexerconfig.index_use_page_tags"  approved="yes">
+				<source>Add tags of parent pages/folders?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_use_page_tags_for_files" resname="tx_kesearch_indexerconfig.index_use_page_tags_for_files"  approved="yes">
+				<source>Add tags to files also?</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes"  approved="yes">
+				<source>Page types which should be indexed (field:doktype, default: 1,2,5)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories"  approved="yes">
+				<source>Directories</source>
+				<target>Mappen (fileadmin/my_directory/,fileadmin/my_other_directory)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.directories.description" resname="tx_kesearch_indexerconfig.directories.description"  approved="yes">
+				<source>comma-separated, if FAL is used, name the directories as inside the file storage, e.g.: 'my_directory/,my_other_directory/'. If FAL is not used, you need to add the storage folder, e.g.: 'fileadmin/user_upload/,fileadmin/examples/'</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.fileext" resname="tx_kesearch_indexerconfig.fileext"  approved="yes">
+				<source>File indexer: Comma separated list of allowed file extensions (eg. pdf,ppt,doc,xls)</source>
+				<target>Door komma's gescheiden lijst van toegestane bestandsextensies (bijv. pdf,ppt,doc,xls)</target>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes"  approved="yes">
+				<source>Content element types which should be indexed (default: text,textpic,bullets,table,html,header,uploads)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption"  approved="yes">
+				<source>Add tag to all indexed elements</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.fal_storage" resname="tx_kesearch_indexerconfig.fal_storage"  approved="yes">
+				<source>File storage (FAL)</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.fal_storage.dont_use_fal" resname="tx_kesearch_indexerconfig.fal_storage.dont_use_fal"  approved="yes">
+				<source>Dont' use FAL but read files directly</source>
+				<target/>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
