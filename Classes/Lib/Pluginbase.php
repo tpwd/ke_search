@@ -23,6 +23,7 @@ namespace Tpwd\KeSearch\Lib;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Core\Utility\HttpUtility;
@@ -133,11 +134,18 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $filters;
 
     /**
+     * @var int
+     */
+    public $typo3Version;
+
+    /**
      * Initializes flexform, conf vars and some more
      * @return void
      */
     public function init()
     {
+        $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+
         // get some helper functions
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
 
@@ -267,7 +275,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // add cssTag to header if set
         if (!empty($this->conf['cssFile'])) {
             $filePathSanitizer = GeneralUtility::makeInstance(FilePathSanitizer::class);
-            $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile']);
+            if ($this->typo3Version->getMajorVersion() < 11) {
+                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile']);
+            } else {
+                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
+            }
             if (!empty($cssFile)) {
                 /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
                 $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);

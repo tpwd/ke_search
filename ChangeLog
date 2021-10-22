@@ -6,6 +6,7 @@ Upcoming version
 [TASK]    Switch from xml to xlf language files
 [TASK]    Replace deprecated GeneralUtility::milliseconds() with native PHP function
 [TASK]    Add check if static template is included
+[TASK]    Adapt usage of filePathSanitizer to TYPO3 11
 
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"
