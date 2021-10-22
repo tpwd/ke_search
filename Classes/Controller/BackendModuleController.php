@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -61,14 +62,12 @@ class BackendModuleController extends AbstractBackendModuleController
     private $indexingMode;
 
     /**
-     * @var \TYPO3\CMS\Core\Page\PageRenderer
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var PageRenderer
      */
     protected $pageRenderer;
 
     /**
-     * @var \TYPO3\CMS\Core\Registry
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var Registry
      */
     protected $registry;
 
@@ -76,6 +75,16 @@ class BackendModuleController extends AbstractBackendModuleController
      * @var string
      */
     protected $perms_clause;
+
+    /**
+     * @param Registry $registry
+     * @param PageRenderer $pageRenderer
+     */
+    public function __construct( Registry $registry, PageRenderer $pageRenderer)
+    {
+        $this->registry = $registry;
+        $this->pageRenderer = $pageRenderer;
+    }
 
     /**
      * initialize action

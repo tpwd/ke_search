@@ -9,6 +9,7 @@ Upcoming version
 [TASK]    Adapt usage of filePathSanitizer to TYPO3 11
 [TASK]    Use new namespace for PageRepository
 [TASK]    Move commands registration from Commands.php to Services.yaml
+[TASK]    Move dependency injection for AbstractBackendModuleController from inject annotation to constructor injection
 
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"
