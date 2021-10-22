@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[!!!]     This version supports TYPO3 10 and 11 and drops support for TYPO3 9.
 [TASK]    Remove support for TYPO3 9
 [TASK]    Make extension installable with TYPO3 11
 [TASK]    Switch from xml to xlf language files
