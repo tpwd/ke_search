@@ -52,7 +52,7 @@ class SearchboxPlugin extends Pluginbase
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
-        $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xml');
+        $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // Configuring so caching is not expected. This value means that no cHash params are ever set.

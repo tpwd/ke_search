@@ -22,7 +22,7 @@ if (!defined('TYPO3_MODE')) {
         [
             'access' => 'user,group',
             'icon' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg',
-            'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xml',
+            'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf',
         ]
     );
 

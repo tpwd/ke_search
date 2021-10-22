@@ -4,7 +4,7 @@ $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xl
 
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters',
+        'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -70,7 +70,7 @@ return array(
         ),
         'title' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.title',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.title',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -80,14 +80,14 @@ return array(
             'exclude' => 0,
             'l10n_display' => 'defaultAsReadonly',
             'displayCond' => 'FIELD:l10n_parent:<:1',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.rendertype',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype',
             'config' => array(
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.rendertype.I.0', 'select'),
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.rendertype.I.1', 'list'),
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.rendertype.I.2', 'checkbox'),
+                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0', 'select'),
+                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1', 'list'),
+                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2', 'checkbox'),
                 ),
                 'size' => 1,
                 'maxitems' => 1,
@@ -98,14 +98,14 @@ return array(
         'markAllCheckboxes' => array(
             'exclude' => 0,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.markAllCheckboxes',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.markAllCheckboxes',
             'config' => array(
                 'type' => 'check',
                 'default' => '0'
             )
         ),
         'options' => array(
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.options',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.options',
             'l10n_mode' => 'exclude',
             'config' => array(
                 'type' => 'inline',
@@ -132,7 +132,7 @@ return array(
         'target_pid' => array(
             'exclude' => 1,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.target_pid',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.target_pid',
             'config' => array(
                 'default' => 0,
                 'type' => 'group',
@@ -146,7 +146,7 @@ return array(
         'amount' => array(
             'exclude' => 0,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.amount',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.amount',
             'config' => array(
                 'type' => 'input',
                 'default' => '10',
@@ -157,7 +157,7 @@ return array(
         'shownumberofresults' => array(
             'exclude' => 0,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.shownumberofresults',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.shownumberofresults',
             'config' => array(
                 'type' => 'check',
                 'default' => '1'
@@ -166,7 +166,7 @@ return array(
         'alphabeticalsorting' => array(
             'exclude' => 0,
             'l10n_mode' => 'exclude',
-            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tx_kesearch_filters.alphabeticalsorting',
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.alphabeticalsorting',
             'config' => array(
                 'type' => 'check',
                 'default' => '1',

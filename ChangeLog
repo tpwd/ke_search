@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [TASK]    Remove support for TYPO3 9
 [TASK]    Make extension installable with TYPO3 11
+[TASK]    Switch from xml to xlf language files
 
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"

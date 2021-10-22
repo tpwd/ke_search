@@ -11,29 +11,29 @@
             <f:if condition="{indexerStartTime}">
                 <f:then>
                     <div class="widget-number-title">
-                        <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.running_since"/>
+                        <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.running_since"/>
                     </div>
                     <div class="widget-number-number">
-                        <f:if condition="{indexerRunningTimeHMS.h}">{indexerRunningTimeHMS.h} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.h"/>, </f:if>
-                        <f:if condition="{indexerRunningTimeHMS.m}">{indexerRunningTimeHMS.m} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.m"/>, </f:if>
-                        <f:if condition="{indexerRunningTimeHMS.s}">{indexerRunningTimeHMS.s} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.s"/></f:if>
+                        <f:if condition="{indexerRunningTimeHMS.h}">{indexerRunningTimeHMS.h} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.h"/>, </f:if>
+                        <f:if condition="{indexerRunningTimeHMS.m}">{indexerRunningTimeHMS.m} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.m"/>, </f:if>
+                        <f:if condition="{indexerRunningTimeHMS.s}">{indexerRunningTimeHMS.s} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.s"/></f:if>
                     </div>
                 </f:then>
                 <f:else>
                     <div class="widget-number-title">
-                        <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.not_running"/>
+                        <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.not_running"/>
                     </div>
                 </f:else>
             </f:if>
                 <f:if condition="{lastRunEndTime}">
                     <div class="widget-number-subtitle">
                         <small>
-                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.last_run_finished"/>
+                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.last_run_finished"/>
                             <f:format.date date="{lastRunEndTime}" format="{f:translate(key: 'backend.date.format.day', extensionName: 'ke_search')}"/>
-                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.last_run_finished_at"/>
+                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.last_run_finished_at"/>
                             <f:format.date date="{lastRunEndTime}" format="{f:translate(key: 'backend.date.format.time', extensionName: 'ke_search')}"/><f:if condition="{lastRunIndexingTime}">
-                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.last_run_took"/>
-                            <f:if condition="{lastRunIndexingTimeHMS.h}">{lastRunIndexingTimeHMS.h}<f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.h"/>, </f:if><f:if condition="{lastRunIndexingTimeHMS.m}">{lastRunIndexingTimeHMS.m}<f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.m"/>, </f:if><f:if condition="{lastRunIndexingTimeHMS.s}">{lastRunIndexingTimeHMS.s} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xml:widgets.keSearchStatus.s"/></f:if></f:if>.
+                            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.last_run_took"/>
+                            <f:if condition="{lastRunIndexingTimeHMS.h}">{lastRunIndexingTimeHMS.h}<f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.h"/>, </f:if><f:if condition="{lastRunIndexingTimeHMS.m}">{lastRunIndexingTimeHMS.m}<f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.m"/>, </f:if><f:if condition="{lastRunIndexingTimeHMS.s}">{lastRunIndexingTimeHMS.s} <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.s"/></f:if></f:if>.
                         </small>
                     </div>
                 </f:if>
