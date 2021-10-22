@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix syntax error with PHP 7.2 and 7.3. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/5
+
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"
 
