@@ -1,4 +1,6 @@
 <?php
+defined('TYPO3') or die();
+
 // re-use news category TCA, needs to stay in TCA/Overrides to make sure news TCA is loaded
 if (TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news')) {
     $GLOBALS['TCA']['tx_kesearch_indexerconfig']['columns']['index_extnews_category_selection']['config']

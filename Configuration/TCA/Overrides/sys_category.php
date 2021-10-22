@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') or die();
 
 // add field tx_keasearch_filter
 TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
