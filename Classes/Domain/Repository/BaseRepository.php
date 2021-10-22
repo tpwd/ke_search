@@ -35,7 +35,7 @@ class BaseRepository {
     /**
      * @var string
      */
-    protected string $tableName = '';
+    protected $tableName = '';
 
     /**
      * @return mixed
@@ -90,7 +90,7 @@ class BaseRepository {
             ->from($this->tableName)
             ->orWhere(
                 $queryBuilder->expr()->eq('deleted', 1),
-                $queryBuilder->expr()->eq('hidden', 1),
+                $queryBuilder->expr()->eq('hidden', 1)
             )
             ->andWhere(
                 $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($pidList,Connection::PARAM_INT_ARRAY)),

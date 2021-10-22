@@ -30,5 +30,5 @@ class TtAddressRepository extends BaseRepository {
     /**
      * @var string
      */
-    protected string $tableName = 'tt_address';
+    protected $tableName = 'tt_address';
 }

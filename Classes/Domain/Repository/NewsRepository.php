@@ -30,5 +30,5 @@ class NewsRepository extends BaseRepository {
     /**
      * @var string
      */
-    protected string $tableName = 'tx_news_domain_model_news';
+    protected $tableName = 'tx_news_domain_model_news';
 }
