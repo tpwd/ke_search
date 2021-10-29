@@ -3,7 +3,7 @@ namespace Tpwd\KeSearch\Indexer;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Andreas Kiefer (team.inmedias) <andreas.kiefer@inmedias.de>
+ *  (c) 2010 Andreas Kiefer
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify

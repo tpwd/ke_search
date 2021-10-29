@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class BackendModuleController
- * @package Teaminmedias\KeSearch\Controller
+ * @package Tpwd\KeSearch\Controller
  */
 class BackendModuleController extends AbstractBackendModuleController
 {
@@ -351,7 +351,7 @@ class BackendModuleController extends AbstractBackendModuleController
     /**
      * get report from sys_log
      * @return string
-     * @author Christian Bülter <christian.buelter@inmedias.de>
+     * @author Christian Bülter
      * @since 29.05.15
      */
     public function getLastIndexingReport()

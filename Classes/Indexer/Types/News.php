@@ -556,7 +556,7 @@ class News extends IndexerBase
      * fetches the bare text content of an array of content elements.
      * makes use of the already given functions the page indexer provides.
      *
-     * @author Christian Bülter <christian.buelter@inmedias.de>
+     * @author Christian Bülter
      * @since 15.10.15
      * @param array $contentElements
      * @return string

@@ -26,8 +26,8 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Plugin 'Faceted search - resultlist plugin' for the 'ke_search' extension.
- * @author    Andreas Kiefer <andreas.kiefer@inmedias.de>
- * @author    Christian Bülter <christian.buelter@inmedias.de>
+ * @author    Andreas Kiefer
+ * @author    Christian Bülter
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
