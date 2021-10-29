@@ -32,6 +32,6 @@ the server. But you will need to install tools if you want to use file indexing 
 System requirements
 -------------------
 
-* ke_search 3 requires TYPO3 9. (Please use ke_search version 2.8.X for TYPO3 8).
+* ke_search 4.1 requires TYPO3 10 or 11. (Please use ke_search version 4.0.X for TYPO3 9 and 2.8.X for TYPO3 8).
 * ke_search requires MySQL / MariaDB, since it uses the “MATCH … AGAINST” function.
 * For file indexing additional tools are required: pdftotext, pdfinfo, catdoc, catppt, xls2csv.
