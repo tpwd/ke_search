@@ -14,6 +14,7 @@ Upcoming version
 [BUGFIX]  Fix syntax error with PHP 7.2 and 7.3. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/5
 [TASK]    Remove usage of deprecated constant TYPO3_MODE, see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/11.0/Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.html
 [BUGFIX]  Fix the check which action is currently set in the backend module, fixes error: Could not ultimately dispatch the request after 101 iterations
+[TASK]    Show document header in backend module
 
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"
