@@ -18,4 +18,5 @@ you find more information below.
 
 	Options
 	Ranking
+	Stopwords
 
