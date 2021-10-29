@@ -67,14 +67,8 @@ abstract class AbstractBackendModuleController extends ActionController
             return;
         }
 
-        // Don't need to check if it is an array because getModuleData always
-        // returns an array. Only have to check if it's empty.
-        if (!empty($moduleData)) {
-            $currentController = $this->getControllerName();
-            $currentAction = $this->getActionName();
-            if ($moduleData['action'] !== '' && $moduleData['action'] !== $currentAction) {
-                $this->forward($moduleData['action'], $moduleData['controller']);
-            }
+        if (!empty($moduleData['action']) && $moduleData['action'] !== $this->getActionName()) {
+            $this->forward($moduleData['action'], $moduleData['controller']);
         }
     }
 
@@ -133,7 +127,7 @@ abstract class AbstractBackendModuleController extends ActionController
     protected function storeLastModuleInformation()
     {
         // Probably should store also arguments (except pager?)
-        $foo = BackendUtility::getModuleData(
+        BackendUtility::getModuleData(
             array('controller' => '', 'action' => ''),
             array('controller' => $this->getControllerName(), 'action' => $this->getActionName()),
             $this->argumentsKey
