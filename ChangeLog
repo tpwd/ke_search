@@ -1,7 +1,8 @@
 ChangeLog
 
-Upcoming version
+Upcoming version (will be 4.2.0)
 [BUGFIX]  Do not create preview images for files attached in the workspace version of a record. Thanks to medarob. https://github.com/teaminmedias-pluswerk/ke_search/issues/434
+[FEATURE] Add cachable searchbox. Thanks to Stephan Bauer. https://github.com/teaminmedias-pluswerk/ke_search/pull/430
 
 Version 4.1.0, October 2021
 [!!!]     This version supports TYPO3 10 and 11 and drops support for TYPO3 9.

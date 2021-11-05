@@ -4,10 +4,16 @@
 		<header/>
 		<body>
 			<trans-unit id="pi_title" resname="pi_title" >
-				<source>Faceted Search</source>
+				<source>Searchbox</source>
+			</trans-unit>
+			<trans-unit id="pi_cachable_title" resname="pi_cachable_title" >
+				<source>Cachable Searchbox</source>
 			</trans-unit>
 			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" >
-				<source>Show searchbox and filters.</source>
+				<source>Faceted Search: Show searchbox and filters.</source>
+			</trans-unit>
+			<trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description" >
+				<source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
 			</trans-unit>
 			<trans-unit id="ff.page.main" resname="ff.page.main" >
 				<source>General</source>

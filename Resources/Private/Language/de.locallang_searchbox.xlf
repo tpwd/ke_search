@@ -7,9 +7,17 @@
 				<source>Faceted Search</source>
 				<target>Facettierte Suche</target>
 			</trans-unit>
+			<trans-unit id="pi_cachable_title" resname="pi_cachable_title" >
+				<source>Cachable Searchbox</source>
+				<target>Suchbox mit Caching</target>
+			</trans-unit>
 			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description"  approved="yes">
-				<source>Show searchbox and filters.</source>
-				<target>Suchbox und Filter anzeigen.</target>
+				<source>Faceted search: Show searchbox and filters.</source>
+				<target>Facettierte Suche: Suchbox und Filter anzeigen.</target>
+			</trans-unit>
+			<trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description"  approved="yes">
+				<source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+				<target>Facettierte Suche: Suchbox und Filter mit Caching anzeigen. Filter werden nicht durch die Ergebnisliste aktualisiert, aber dafür ist Caching möglich.</target>
 			</trans-unit>
 			<trans-unit id="ff.page.main" resname="ff.page.main"  approved="yes">
 				<source>General</source>

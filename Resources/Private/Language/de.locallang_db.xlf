@@ -36,8 +36,8 @@
 				<target>Facettierte Suche - Ergebnisliste</target>
 			</trans-unit>
 			<trans-unit id="tt_content.list_type_pi3" resname="tt_content.list_type_pi3" >
-				<source>Faceted search - Simple Searchbox (cachable)</source>
-				<target>Facettierte Suche - Einfache Suchbox (Caching möglich)</target>
+				<source>Faceted search - Cachable Searchbox and filters</source>
+				<target>Facettierte Suche - Suchbox und Filter mit Caching</target>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_filters" resname="tx_kesearch_filters"  approved="yes">
 				<source>Filters</source>

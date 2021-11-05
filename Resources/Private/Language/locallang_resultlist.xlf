@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="pi_title" resname="pi_title" >
-				<source>Faceted Search</source>
+				<source>Search resultlist</source>
 			</trans-unit>
 			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" >
-				<source>Show resultlist.</source>
+				<source>Faceted Search: Show resultlist.</source>
 			</trans-unit>
 			<trans-unit id="ff.main" resname="ff.main" >
 				<source>General</source>

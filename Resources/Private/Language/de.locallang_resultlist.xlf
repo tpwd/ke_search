@@ -4,12 +4,12 @@
 		<header/>
 		<body>
 			<trans-unit id="pi_title" resname="pi_title"  approved="yes">
-				<source>Faceted Search</source>
-				<target>Facettierte Suche</target>
+				<source>Search resultlist</source>
+				<target>Suchergebnisliste</target>
 			</trans-unit>
 			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description"  approved="yes">
-				<source>Show resultlist.</source>
-				<target>Ergebnisliste anzeigen.</target>
+				<source>Faceted Search: Show resultlist.</source>
+				<target>Facettierte Suche: Ergebnisliste anzeigen.</target>
 			</trans-unit>
 			<trans-unit id="ff.main" resname="ff.main"  approved="yes">
 				<source>General</source>
