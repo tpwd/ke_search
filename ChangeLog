@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Do not create preview images for files attached in the workspace version of a record. Thanks to medarob. https://github.com/teaminmedias-pluswerk/ke_search/issues/434
+
 Version 4.1.0, October 2021
 [!!!]     This version supports TYPO3 10 and 11 and drops support for TYPO3 9.
 [TASK]    Remove support for TYPO3 9

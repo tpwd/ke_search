@@ -877,6 +877,14 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
                     $queryBuilder->quote($uid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_state',
+                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->quote(0, \PDO::PARAM_INT)
                 )
             )
             ->orderBy('sorting_foreign', 'asc')
