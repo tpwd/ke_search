@@ -8,14 +8,22 @@
 Backend
 =======
 
+Backend module
+--------------
+
 In the backend you can use the dedicated module to start the indexing process, view the indexed content or statistical data.
+
+.. image:: ../Images/BackendModule/backend_module_01.png
+
+Scheduler Task
+--------------
 
 A scheduler task is provided to start the indexing process automatically (see :ref:`indexing`).
 
-There are also widgets for the dashboard which show some information at a glance.
-
 Dashboard widgets
 -----------------
+
+There are also widgets for the dashboard which show some information at a glance.
 
 Add a widget
 ~~~~~~~~~~~~
