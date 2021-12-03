@@ -4,6 +4,7 @@ Upcoming version (will be 4.2.0)
 [BUGFIX]  Do not create preview images for files attached in the workspace version of a record. Thanks to medarob. https://github.com/teaminmedias-pluswerk/ke_search/issues/434
 [FEATURE] Add cachable searchbox. Thanks to Stephan Bauer. https://github.com/teaminmedias-pluswerk/ke_search/pull/430
 [BUGFIX]  Fix toggling of indexed content in the backend module for TYPO3 11 by using Bootstrap 5 data attributes.
+[TASK]    Add dashboard as a requirement because it's not possible to check if dashboard is installed when the widgets are registered. https://github.com/tpwd/ke_search/issues/15
 
 Version 4.1.0, October 2021
 [!!!]     This version supports TYPO3 10 and 11 and drops support for TYPO3 9.

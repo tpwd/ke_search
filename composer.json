@@ -16,7 +16,8 @@
     "issues": "https://github.com/tpwd/ke_search/issues"
   },
   "require": {
-    "typo3/cms-core": "^10.4.11 || ^11.0"
+    "typo3/cms-core": "^10.4.11 || ^11.0",
+    "typo3/cms-dashboard": "^10.4 || ^11.0"
   },
   "replace": {
     "typo3-ter/ke_search": "self.version",
