@@ -286,7 +286,7 @@ class News extends IndexerBase
                 }
 
                 // hook for custom modifications of the indexed data, e.g. the tags
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] ?? null)) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] as
                              $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);

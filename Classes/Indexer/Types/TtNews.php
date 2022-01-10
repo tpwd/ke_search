@@ -211,7 +211,7 @@ class TtNews extends IndexerBase
                 }
 
                 // hook for custom modifications of the indexed data, e.g. the tags
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'] ?? null)) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'] as
                              $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);

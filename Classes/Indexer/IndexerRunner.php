@@ -158,7 +158,7 @@ class IndexerRunner
         $configurations = $this->getConfigurations();
 
         // register additional fields which should be written to DB
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->registerAdditionalFields($this->additionalFields);
@@ -204,7 +204,7 @@ class IndexerRunner
             }
 
             // hook for custom indexer
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'])) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] ?? null)) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] as $_classRef) {
                     $searchObj = GeneralUtility::makeInstance($_classRef, $this);
                     $this->logger->info(
@@ -535,7 +535,7 @@ class IndexerRunner
             );
 
             // hook for cleanup
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['cleanup'])) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['cleanup'] ?? null)) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['cleanup'] as $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
                     $content .= $_procObj->cleanup($where, $this);
@@ -584,7 +584,7 @@ class IndexerRunner
 
         // check if Sphinx is enabled
         // in this case we have to update sphinx index, too.
-        if ($this->extConfPremium['enableSphinxSearch']) {
+        if ($this->extConfPremium['enableSphinxSearch'] ?? false) {
             $this->logger->info('Sphinx index rotation started');
             if (!$this->extConfPremium['sphinxIndexerName']) {
                 $this->extConfPremium['sphinxIndexerConf'] = '--all';
@@ -734,7 +734,7 @@ class IndexerRunner
         );
 
         // hook to manipulate the fieldvalues before they go to the database
-        if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] ?? null)) {
             foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $fieldValues = $_procObj->modifyFieldValuesBeforeStoring($this->indexerConfig, $fieldValues);
