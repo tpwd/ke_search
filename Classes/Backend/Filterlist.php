@@ -82,7 +82,7 @@ class Filterlist
 
         // get the page TSconfig
         $pageTSconfig = BackendUtility::GetPagesTSconfig($currentPid);
-        $modTSconfig = $pageTSconfig['tx_kesearch.'];
+        $modTSconfig = $pageTSconfig['tx_kesearch.'] ?? [];
 
         // get filters
         $fields = '*';

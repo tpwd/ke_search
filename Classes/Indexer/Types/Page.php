@@ -398,7 +398,7 @@ class Page extends IndexerBase
                 if ($removeRestrictions) {
                     $queryBuilder->getRestrictions()->removeAll();
                 }
-                list($pageOverlay) = $queryBuilder
+                $results = $queryBuilder
                     ->select('*')
                     ->from('pages')
                     ->where(
@@ -414,6 +414,7 @@ class Page extends IndexerBase
                     ->execute()
                     ->fetchAll();
 
+                $pageOverlay = $results[0] ?? false;
                 if ($pageOverlay) {
                     $this->cachedPageRecords[$sysLang['uid']][$pageRow['uid']] = $pageOverlay + $pageRow;
                 }

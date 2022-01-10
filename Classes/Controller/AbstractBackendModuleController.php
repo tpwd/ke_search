@@ -63,7 +63,7 @@ abstract class AbstractBackendModuleController extends ActionController
             $this->argumentsKey
         );
 
-        if ($moduleData['action'] === 'alert') {
+        if (($moduleData['action'] ?? '') === 'alert') {
             return;
         }
 
