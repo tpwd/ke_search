@@ -25,10 +25,11 @@ $EM_CONF[$_EXTKEY] = array(
     'constraints' => array(
         'depends' => array(
             'typo3' => '10.4.11-11.5.99',
-            'dashboard' => '10.4.0-11.5.99'
         ),
         'conflicts' => array(),
-        'suggests' => array(),
+        'suggests' => array(
+            'dashboard' => '10.4.11-11.5.99',
+        ),
     ),
     'suggests' => array(),
     'autoload' => array(
