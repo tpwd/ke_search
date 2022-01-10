@@ -71,7 +71,7 @@ class SearchboxPlugin extends Pluginbase
         $this->initFluidTemplate();
 
         // hook for initials
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->addInitials($this);

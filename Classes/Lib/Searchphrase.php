@@ -52,7 +52,7 @@ class Searchphrase
     {
         $cleanSearchStringParts = array();
         $tagsAgainst = $this->buildTagsAgainst();
-        $searchString = trim($this->pObj->piVars['sword']);
+        $searchString = trim($this->pObj->piVars['sword'] ?? '');
         $searchString = $this->checkAgainstDefaultValue($searchString);
         $searchStringParts = $this->explodeSearchPhrase($searchString);
         foreach ($searchStringParts as $key => $part) {
@@ -129,7 +129,7 @@ class Searchphrase
                 if ($word != '|') {
                     // enable part searching by default. But be careful: Enabling this slows down the search engine
                     if (!isset($this->pObj->extConf['enablePartSearch']) || $this->pObj->extConf['enablePartSearch']) {
-                        if ($this->pObj->extConfPremium['enableInWordSearch']) {
+                        if ($this->pObj->extConfPremium['enableInWordSearch'] ?? false) {
                             $searchParts[$key] = '*' . trim($searchParts[$key], '*') . '*';
                         } else {
                             $searchParts[$key] = rtrim($searchParts[$key], '*') . '*';
@@ -200,9 +200,9 @@ class Searchphrase
     {
         // add filter options selected in the frontend
         $tagChar = $this->pObj->extConf['prePostTagChar'];
-        if (is_array($this->pObj->piVars['filter'])) {
+        if (is_array($this->pObj->piVars['filter'] ?? null)) {
             foreach ($this->pObj->piVars['filter'] as $key => $tag) {
-                if (is_array($this->pObj->piVars['filter'][$key])) {
+                if (is_array($this->pObj->piVars['filter'][$key] ?? null)) {
                     foreach ($this->pObj->piVars['filter'][$key] as $subkey => $subtag) {
                         // Don't add the tag if it is already inserted by preselected filters
                         if (!empty($subtag) && strstr($tagsAgainst[$key], $subtag) === false) {
@@ -220,7 +220,7 @@ class Searchphrase
         }
 
         // hook for modifiying the tags to filter for
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyTagsAgainst'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyTagsAgainst'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyTagsAgainst'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyTagsAgainst($tagsAgainst, $this);

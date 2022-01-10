@@ -80,7 +80,7 @@ class Sorting
         $this->conf = $this->pObj->conf;
 
         // get sorting values (sortdate, title, what ever...)
-        $this->sortBy = GeneralUtility::trimExplode(',', $this->conf['sortByVisitor'], true);
+        $this->sortBy = GeneralUtility::trimExplode(',', $this->conf['sortByVisitor'] ?? '', true);
     }
 
 
@@ -96,7 +96,7 @@ class Sorting
         // if show Sorting is activated in FlexForm
         // if a value to sortBy is set in FlexForm (title, relevance, sortdate, what ever...)
         // if there are any entries in current search results
-        if ($this->conf['showSortInFrontend'] && !empty($this->conf['sortByVisitor']) && $this->pObj->numberOfResults) {
+        if (($this->conf['showSortInFrontend'] ?? false) && !empty($this->conf['sortByVisitor']) && $this->pObj->numberOfResults) {
             // loop all allowed orderings
             foreach ($this->sortBy as $field) {
                 // we can't sort by score if there is no sword given

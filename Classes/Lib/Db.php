@@ -131,7 +131,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // log query
-        if ($this->conf['logQuery']) {
+        if ($this->conf['logQuery'] ?? false) {
             $logger->log(LogLevel::DEBUG, $resultQuery->getSQL());
         }
 
@@ -287,7 +287,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         );
 
         // hook for third party applications to manipulate last part of query building
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getQueryParts'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getQueryParts'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getQueryParts'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $queryParts = $_procObj->getQueryParts($queryParts, $this, $searchwordQuoted);
@@ -444,7 +444,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         $where .= ' AND language IN(' . $languageAspect->getId() . ', -1) ';
 
         // add "tagged content only" searchphrase
-        if ($this->conf['showTaggedContentOnly']) {
+        if ($this->conf['showTaggedContentOnly'] ?? false) {
             $where .= ' AND tags <> ""';
         }
 
@@ -466,9 +466,9 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         $orderBy = $this->conf['sortWithoutSearchword'];
 
         // if sorting in FE is allowed
-        if ($this->conf['showSortInFrontend']) {
-            $piVarsField = $this->pObj->piVars['sortByField'];
-            $piVarsDir = $this->pObj->piVars['sortByDir'];
+        if ($this->conf['showSortInFrontend'] ?? false) {
+            $piVarsField = $this->pObj->piVars['sortByField'] ?? '';
+            $piVarsDir = $this->pObj->piVars['sortByDir'] ?? '';
             $piVarsDir = ($piVarsDir == '') ? 'asc' : $piVarsDir;
             if (!empty($piVarsField)) { // if an ordering field is defined by GET/POST
                 $isInList = GeneralUtility::inList($this->conf['sortByVisitor'], $piVarsField);
@@ -489,7 +489,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // hook for third party extensions to modify the sorting
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getOrdering'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getOrdering'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getOrdering'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->getOrdering($orderBy, $this);
@@ -508,7 +508,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     {
         $limit = $this->conf['resultsPerPage'] ? $this->conf['resultsPerPage'] : 10;
 
-        if ($this->pObj->piVars['page']) {
+        if ($this->pObj->piVars['page'] ?? false) {
             $start = ($this->pObj->piVars['page'] * $limit) - $limit;
             if ($start < 0) {
                 $start = 0;
@@ -518,7 +518,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         $startLimit = array($start, $limit);
 
         // hook for third party pagebrowsers or for modification $this->pObj->piVars['page'] parameter
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->getLimit($startLimit, $this);
@@ -535,7 +535,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function sphinxSearchEnabled()
     {
-        return $this->pObj->extConfPremium['enableSphinxSearch'] && !$this->pObj->isEmptySearch;
+        return ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && !$this->pObj->isEmptySearch;
     }
 
     /**

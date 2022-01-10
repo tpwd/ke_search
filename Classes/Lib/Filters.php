@@ -74,11 +74,11 @@ class Filters
 
         // get filters and filter options
         $this->filters = $this->getFiltersFromUidList(
-            $this->combineLists($this->conf['filters'], $this->conf['hiddenfilters'])
+            $this->combineLists($this->conf['filters'] ?? '', $this->conf['hiddenfilters'] ?? '')
         );
 
         // hook to modify filters
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilters'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilters'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilters'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyFilters($this->filters, $this);

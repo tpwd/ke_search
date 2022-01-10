@@ -76,7 +76,7 @@ class ResultlistPlugin extends Pluginbase
         $this->initFluidTemplate();
 
         // hook for initials
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->addInitials($this);
@@ -102,13 +102,13 @@ class ResultlistPlugin extends Pluginbase
 
         // render pagebrowser
         if ($GLOBALS['TSFE']->id == $this->conf['resultPage']) {
-            if ($this->conf['pagebrowserOnTop'] || $this->conf['pagebrowserAtBottom']) {
+            if (($this->conf['pagebrowserOnTop'] ?? false) || ($this->conf['pagebrowserAtBottom'] ?? false)) {
                 $this->renderPagebrowser();
             }
         }
 
         // hook: modifyResultList
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyResultList($this->fluidTemplateVariables, $this);
