@@ -1042,7 +1042,7 @@ class Page extends IndexerBase
 
         /** @var LinkService $linkService */
         $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', $ttContentRow['bodytext'], 1);
+        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow['bodytext'], 1);
         foreach ($blockSplit as $k => $v) {
             list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {
@@ -1178,7 +1178,7 @@ class Page extends IndexerBase
     public function getContentFromContentElement($ttContentRow)
     {
         // bodytext
-        $bodytext = $ttContentRow['bodytext'];
+        $bodytext = (string)$ttContentRow['bodytext'];
 
         // following lines prevents having words one after the other like: HelloAllTogether
         $bodytext = str_replace('<td', ' <td', $bodytext);
