@@ -9,9 +9,9 @@ Override record storage page
 ============================
 
 It is possible to override the record storage page defined in the plugin using typoscript. This is useful
-if you want to servere differend search results depending on typoscript conditions.
+if you want to serve different search results depending on typoscript conditions.
 
-For example you could server different search results to logged in users.
+For example you could serve different search results to logged in users.
 
 Setup typoscript:
 

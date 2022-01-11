@@ -11,7 +11,7 @@ Custom values in the search result list
 By default the indexed content will be shown in the search result list (either the abstract or a part of the indexed
 content).
 
-The partial for a single result row is stored ad
+The partial for a single result row is stored at
 
 .. code-block:: none
 
