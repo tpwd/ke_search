@@ -227,7 +227,7 @@ class Searchresult
                 $word = preg_quote($word, '/');
                 $word = htmlspecialchars($word);
                 // Highlight hits within words when using ke_seaarch_premium "in word search"
-                if (intval($this->pObj->extConfPremium['enableSphinxSearch']) && intval($this->pObj->extConfPremium['enableInWordSearch'])) {
+                if (intval($this->pObj->extConfPremium['enableSphinxSearch'] ?? 0) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? 0)) {
                     $pattern = '/(' . $word . ')/iu';
                 } else {
                     $pattern = '/\b(' . $word . ')/iu';

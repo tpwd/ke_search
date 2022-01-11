@@ -717,7 +717,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $resultrowTemplateValues = $tempMarkerArray;
 
                 // set result url
-                $resultUrl = $this->searchResult->getResultUrl($this->conf['renderResultUrlAsLink']);
+                $resultUrl = $this->searchResult->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
                 $resultrowTemplateValues['url'] = $resultUrl;
 
                 // set result numeration
@@ -778,7 +778,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         list($type) = explode(':', $row['type']);
         switch ($type) {
             case 'page':
-                if ($this->conf['showPageImages']) {
+                if ($this->conf['showPageImages'] ?? false) {
 
                     // first check if "tx_kesearch_resultimage" is set
                     $result = $this->getFirstFalRelationUid(
@@ -796,7 +796,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             case 'tt_news':
-                if ($this->conf['showNewsImages']) {
+                if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
                         'tt_news', 'image', $row['orig_uid']
                     );
@@ -804,7 +804,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             case 'news':
-                if ($this->conf['showNewsImages']) {
+                if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
                         'tx_news_domain_model_news', 'fal_media', $row['orig_uid']
                     );
@@ -835,7 +835,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         list($type) = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);
 
-        if ($this->conf['resultListTypeIcon'][$name]) {
+        if ($this->conf['resultListTypeIcon'][$name] ?? false) {
             // custom icons defined by typoscript
             return $this->conf['resultListTypeIcon'][$name]['file'];
         } else {
@@ -892,7 +892,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ->execute()
             ->fetch();
 
-        if ($row !== NULL) {
+        if (is_array($row)) {
             return $row['uid'];
         }
 
