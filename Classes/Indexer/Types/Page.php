@@ -485,9 +485,9 @@ class Page extends IndexerBase
         // get the rootline, start with the current page and go up
         $pageUid = $currentPageUid;
         $tempRootline = array(intval($this->cachedPageRecords[0][$currentPageUid]['pageUid'] ?? 0));
-        while ($this->cachedPageRecords[0][$pageUid]['pid'] > 0) {
+        while (($this->cachedPageRecords[0][$pageUid]['pid'] ?? 0) > 0) {
             $pageUid = intval($this->cachedPageRecords[0][$pageUid]['pid']);
-            if (is_array($this->cachedPageRecords[0][$pageUid])) {
+            if (is_array($this->cachedPageRecords[0][$pageUid] ?? null)) {
                 $tempRootline[] = $pageUid;
             }
         }
@@ -841,15 +841,15 @@ class Page extends IndexerBase
     {
         $index = true;
 
-        if ($this->cachedPageRecords[$language_uid][$uid]['hidden']) {
+        if ($this->cachedPageRecords[$language_uid][$uid]['hidden'] ?? false) {
             $index = false;
         }
 
-        if ($this->cachedPageRecords[$language_uid][$uid]['no_search']) {
+        if ($this->cachedPageRecords[$language_uid][$uid]['no_search'] ?? false) {
             $index = false;
         }
 
-        if (!in_array($this->cachedPageRecords[$language_uid][$uid]['doktype'], $this->indexDokTypes)) {
+        if (!in_array($this->cachedPageRecords[$language_uid][$uid]['doktype'] ?? 0, $this->indexDokTypes)) {
             $index = false;
         }
 
