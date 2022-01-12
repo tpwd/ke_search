@@ -393,7 +393,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // rendering of this filter. The filter is only used
             // to add preselected filter options to the query and
             // must not be rendered.
-            $isInList = GeneralUtility::inList($this->conf['hiddenfilters'], $filter['uid']);
+            $isInList = GeneralUtility::inList($this->conf['hiddenfilters'] ?? '', $filter['uid']);
 
             if ($isInList) {
                 continue;
@@ -488,7 +488,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     // if user has selected a checkbox it must be selected on the resultpage, too.
                     // options which have been preselected in the backend are
                     // already in $this->piVars['filter'][$filter['uid]]
-                    if ($this->piVars['filter'][$filter['uid']][$key]) {
+                    if ($this->piVars['filter'][$filter['uid']][$key] ?? false) {
                         $data['selected'] = 1;
                     }
 

@@ -115,9 +115,9 @@ class Filters
             // or in the backend via flexform configuration ("preselected filters")?
             $selected = false;
 
-            if ($this->pObj->piVars['filter'][$filter['uid']] == $option['tag']) {
+            if (isset($this->pObj->piVars['filter'][$filter['uid']]) && $this->pObj->piVars['filter'][$filter['uid']] == $option['tag']) {
                 $selected = true;
-            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']])) { // if a this filter is set
+            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) { // if a this filter is set
                 // test pre selected filter again
                 if (is_array($this->pObj->preselectedFilter)
                     && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
@@ -131,7 +131,7 @@ class Filters
                     }
                 }
             } elseif (!isset($this->pObj->piVars['filter'][$filter['uid']])
-                && !is_array($this->pObj->piVars['filter'][$filter['uid']])
+                && !is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)
             ) {
                 if (is_array($this->pObj->preselectedFilter)
                     && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)

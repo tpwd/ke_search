@@ -331,6 +331,9 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         foreach ($tagsForResult as $tagSet) {
             $tagSet = explode($tagDivider, trim($tagSet, $tagChar));
             foreach ($tagSet as $tag) {
+                if (!isset($tags[$tag])) {
+                    $tags[$tag] = 0;
+                }
                 $tags[$tag] += 1;
             }
         }

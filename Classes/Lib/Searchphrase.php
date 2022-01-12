@@ -205,7 +205,10 @@ class Searchphrase
                 if (is_array($this->pObj->piVars['filter'][$key] ?? null)) {
                     foreach ($this->pObj->piVars['filter'][$key] as $subkey => $subtag) {
                         // Don't add the tag if it is already inserted by preselected filters
-                        if (!empty($subtag) && strstr($tagsAgainst[$key], $subtag) === false) {
+                        if (!empty($subtag) && strstr($tagsAgainst[$key] ?? '', $subtag) === false) {
+                            if (!isset($tagsAgainst[$key])) {
+                                $tagsAgainst[$key] = '';
+                            }
                             // Don't add a "+", because we are here in checkbox mode. It's a OR.
                             $tagsAgainst[$key] .= ' "' . $tagChar . $subtag . $tagChar . '"';
                         }
