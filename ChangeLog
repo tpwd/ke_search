@@ -6,6 +6,7 @@ Upcoming version
 [BUGFIX]  Fix PHP8 issues in indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/26
 [BUGFIX]  Fix typos. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/32
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
+[TASK]    Allow plugins in composer 2.2. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/29
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
