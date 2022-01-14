@@ -45,7 +45,7 @@ class Flexform
 
         // get orderings
         $fieldLabel = $this->lang->sL('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.relevance');
-        if (!$config['config']['relevanceNotAllowed']) {
+        if (!($config['config']['relevanceNotAllowed'] ?? false)) {
             $config['items'][] = array($fieldLabel . ' UP', 'score asc');
             $config['items'][] = array($fieldLabel . ' DOWN', 'score desc');
         }

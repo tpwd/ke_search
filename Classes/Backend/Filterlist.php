@@ -82,7 +82,7 @@ class Filterlist
 
         // get the page TSconfig
         $pageTSconfig = BackendUtility::GetPagesTSconfig($currentPid);
-        $modTSconfig = $pageTSconfig['tx_kesearch.'];
+        $modTSconfig = $pageTSconfig['tx_kesearch.'] ?? [];
 
         // get filters
         $fields = '*';
@@ -174,7 +174,7 @@ class Filterlist
                     }
                 }
 
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilteroptionsForFlexforms'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilteroptionsForFlexforms'] ?? null)) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilteroptionsForFlexforms'] as
                              $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);
