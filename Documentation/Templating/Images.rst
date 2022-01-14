@@ -46,6 +46,8 @@ Changing the size of images
 To change the size of the images, you will have to adjust the corresponding fluid partial.
 Please have a look at the partial "ResultRow.html" in the section "typeIconOrPreviewImage".
 
+.. _imagesInCustomIndexers:
+
 Images in custom indexers
 -------------------------
 
