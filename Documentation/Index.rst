@@ -20,6 +20,9 @@ ke_search
 	:Language:
 		en
 
+	:Description:
+		Extension to search and filter content of the TYPO3 installation. It indexes directly from the database with build-in indexers and allows to add custom indexers. Provides indexers, plugins for searching and filtering, a backend module and a command-line interface.
+
 	:Keywords:
 		search
 
