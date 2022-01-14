@@ -17,11 +17,13 @@ these two elements belong to.
 The page indexer indexes content elements of the following types:
 
 * text
-* text with image
-* bullet list
+* text with image / media element (textmedia, textpic)
+* bullet list (bullets)
 * table
-* plain HTML
-* header.
+* plain HTML (html)
+* header
+* file lists (uploads)
+* referenced content elements (shortcut)
 
 In the page property there's the field "Abstract for search result" in the tab "Search". Here you can enter a short
 description of the page, this text will be used as an abstract in the search result list. If this field is empty, it

@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [!!!]     This version removes the dashboard requirement introduced in the last version.
+[!!!]     Add "shortcut" to the list "Content element types which should be indexed" in the indexer configuration if you want to index those records.
 [BUGFIX]  Fix PHP8 issues in frontend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/27
 [BUGFIX]  Fix PHP8 issues in backend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/28
 [BUGFIX]  Fix PHP8 issues in indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/26
@@ -9,6 +10,7 @@ Upcoming version
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
 [TASK]    Allow plugins in composer 2.2. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/29
 [TASK]    Make dashboard optional. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/30
+[FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
