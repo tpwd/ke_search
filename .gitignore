@@ -1,4 +1,6 @@
+.Build
 .idea
+composer.lock
 vendor
 .DS_Store
 Tests/Behat/vendor

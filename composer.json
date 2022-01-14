@@ -38,13 +38,16 @@
   },
   "extra": {
     "typo3/cms": {
-      "extension-key": "ke_search"
+      "extension-key": "ke_search",
+      "web-dir": ".Build/web"
     }
   },
   "config": {
     "allow-plugins": {
       "typo3/class-alias-loader": true,
       "typo3/cms-composer-installers": true
-    }
+    },
+    "bin-dir": ".Build/bin",
+    "vendor-dir": ".Build/vendor"
   }
 }
