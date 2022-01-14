@@ -195,7 +195,7 @@ Resources/Private/Templates/SearchForm.html
 .. code-block:: none
 
     <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-          xmlns:kesearch="http://typo3.org/ns/Tpwd\KeSearch\ViewHelpers"
+          xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
           data-namespace-typo3-fluid="true">
 
 .. code-block:: none
@@ -225,7 +225,7 @@ Resources/Private/Templates/Widget/Pagination.html
 .. code-block:: none
 
     <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-          xmlns:kesearch="http://typo3.org/ns/Tpwd\KeSearch\ViewHelpers"
+          xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
           data-namespace-typo3-fluid="true">
 
     <f:spaceless>

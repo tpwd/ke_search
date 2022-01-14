@@ -16,7 +16,7 @@ ke_search has multilingual support in a way that
 Indexing content in different languages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All available langauges will be detected automatically and will be indexed.
+All available languages will be detected automatically and will be indexed.
 
 Translating search result pages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,7 +27,7 @@ function "copy default content elements". You can leave the configuration as it 
 Translating filters
 ~~~~~~~~~~~~~~~~~~~
 
-In order to use the multilangual feature for filters you'll have to
+In order to use the multilingual feature for filters you'll have to
 
 Create page translations
 	Create alternative page languages for the storage folder where the index and filters are stored and

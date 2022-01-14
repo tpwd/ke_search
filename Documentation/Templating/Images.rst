@@ -51,13 +51,13 @@ Images in custom indexers
 
 If you have implemented a custom indexer you can display images which are attached to the original record.
 
-The image needs to be attached as FAL record to the origional record.
+The image needs to be attached as FAL record to the original record.
 
 The configuration setting shown below has to be added to your "ext_localconf.php".
 
-* INDEXER_KEY is th key of your custom indexer (column "type" in the tx_kesearch_index table).
-* 'table' referes to the column 'tablenames' in the table "sys_file_reference"
-* 'field' referes to the column 'fieldnames' in the table "sys_file_reference"
+* INDEXER_KEY is the key of your custom indexer (column "type" in the tx_kesearch_index table).
+* 'table' refers to the column 'tablenames' in the table "sys_file_reference"
+* 'field' refers to the column 'fieldnames' in the table "sys_file_reference"
 * TABLE_NAME is the table of the original record
 * IMAGE_FIELD_NAME is the column of the original record where the image is attached
 
