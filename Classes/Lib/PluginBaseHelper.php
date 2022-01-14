@@ -50,7 +50,7 @@ class PluginBaseHelper
 
         // if loadFlexformsFromOtherCE is set
         // try to get startingPoint of given page
-        if ($uid = intval($this->pObj->conf['loadFlexformsFromOtherCE'])) {
+        if ($uid = intval($this->pObj->conf['loadFlexformsFromOtherCE'] ?? 0)) {
             $queryBuilder = Db::getQueryBuilder('tt_content');
             $queryBuilder->getRestrictions()->removeAll();
             $pageResult = $queryBuilder
@@ -78,7 +78,7 @@ class PluginBaseHelper
         // allow to override startingpoint with typoscript like this
         // plugin.tx_kesearch_pi1.overrideStartingPoint = 123
         // plugin.tx_kesearch_pi1.overrideStartingPointRecursive = 1
-        if ($this->pObj->conf['overrideStartingPoint']) {
+        if ($this->pObj->conf['overrideStartingPoint'] ?? false) {
             $startingpoint['pages'] = $this->pObj->conf['overrideStartingPoint'];
             $startingpoint['recursive'] = $this->pObj->conf['overrideStartingPointRecursive'];
         }

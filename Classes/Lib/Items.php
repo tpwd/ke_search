@@ -35,7 +35,7 @@ class Items
     {
         $indexerRunner = GeneralUtility::makeInstance(IndexerRunner::class);
         // hook for custom registration of further indexerConfigurations
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'] as
                      $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef, $indexerRunner);

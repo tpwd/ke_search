@@ -150,7 +150,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $this->typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         // set start of query timer
-        if (!$GLOBALS['TSFE']->register['ke_search_queryStartTime']) {
+        if (!($GLOBALS['TSFE']->register['ke_search_queryStartTime'] ?? false)) {
             $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
         }
 
@@ -176,13 +176,13 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // add stdWrap properties to each config value (not to arrays)
         foreach ($this->conf as $key => $value) {
-            if (!is_array($this->conf[$key])) {
-                $this->conf[$key] = $this->cObj->stdWrap($value, $this->conf[$key . '.']);
+            if (!is_array($this->conf[$key] ?? null)) {
+                $this->conf[$key] = $this->cObj->stdWrap($value, $this->conf[$key . '.'] ?? []);
             }
         }
 
         // set some default values (this part has to be after stdWrap!!!)
-        if (!$this->conf['resultPage']) {
+        if (!($this->conf['resultPage'] ?? false)) {
             $this->conf['resultPage'] = $GLOBALS['TSFE']->id;
         }
         if (!isset($this->piVars['page'])) {
@@ -193,7 +193,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // hook: modifyFlexFormData
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyFlexFormData($this->conf, $this->cObj, $this->piVars);
@@ -252,15 +252,15 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // * sorting for "relevance" is allowed (internal: "score")
         // * user did not select his own sorting yet
         // * a searchword is given
-        $isInList = GeneralUtility::inList($this->conf['sortByVisitor'], 'score');
-        if ($this->conf['showSortInFrontend'] && $isInList && !$this->piVars['sortByField'] && $this->sword) {
+        $isInList = GeneralUtility::inList($this->conf['sortByVisitor'] ?? '', 'score');
+        if (($this->conf['showSortInFrontend'] ?? false) && $isInList && !($this->piVars['sortByField'] ?? false) && $this->sword) {
             $this->piVars['sortByField'] = 'score';
             $this->piVars['sortByDir'] = 'desc';
         }
 
         // after the searchword is removed, sorting for "score" is not possible
         // anymore. So remove this sorting here and put it back to default.
-        if (!$this->sword && $this->piVars['sortByField'] == 'score') {
+        if (!$this->sword && ($this->piVars['sortByField'] ?? '') == 'score') {
             unset($this->piVars['sortByField']);
             unset($this->piVars['sortByDir']);
         }
@@ -303,7 +303,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         // delete current conf value from conf-array
                         // when FF-Value differs from TS-Conf and FF-Value is not empty
                         $value = $this->fetchConfigurationValue($key, $sheetKey);
-                        if ($this->conf[$key] != $value && !empty($value)) {
+                        if (($this->conf[$key] ?? '') != $value && !empty($value)) {
                             unset($this->conf[$key]);
                             $this->conf[$key] = $this->fetchConfigurationValue($key, $sheetKey);
                         }
@@ -325,7 +325,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->fluidTemplateVariables['page'] = $pageValue;
 
         // searchword input value
-        $searchString = $this->piVars['sword'];
+        $searchString = $this->piVars['sword'] ?? '';
 
         $searchboxDefaultValue = LocalizationUtility::translate(
             'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:searchbox_default_value',
@@ -340,8 +340,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $this->fluidTemplateVariables['searchword'] = htmlspecialchars($this->swordValue);
         $this->fluidTemplateVariables['searchwordDefault'] = $searchboxDefaultValue;
-        $this->fluidTemplateVariables['sortByField'] = $this->piVars['sortByField'];
-        $this->fluidTemplateVariables['sortByDir'] = $this->piVars['sortByDir'];
+        $this->fluidTemplateVariables['sortByField'] = $this->piVars['sortByField'] ?? '';
+        $this->fluidTemplateVariables['sortByDir'] = $this->piVars['sortByDir'] ?? '';
 
         // get filters
         $this->renderFilters();
@@ -393,7 +393,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // rendering of this filter. The filter is only used
             // to add preselected filter options to the query and
             // must not be rendered.
-            $isInList = GeneralUtility::inList($this->conf['hiddenfilters'], $filter['uid']);
+            $isInList = GeneralUtility::inList($this->conf['hiddenfilters'] ?? '', $filter['uid']);
 
             if ($isInList) {
                 continue;
@@ -408,7 +408,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             }
 
             // hook for modifying filter options
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'])) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] ?? null)) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] as
                          $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
@@ -435,7 +435,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // and $filterData['rawHtmlContent'] to your pre-rendered filter code
                 default:
                     // hook for custom filter renderer
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'])) {
+                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] ?? null)) {
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as
                                  $_classRef) {
                             $_procObj = GeneralUtility::makeInstance($_classRef);
@@ -488,7 +488,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     // if user has selected a checkbox it must be selected on the resultpage, too.
                     // options which have been preselected in the backend are
                     // already in $this->piVars['filter'][$filter['uid]]
-                    if ($this->piVars['filter'][$filter['uid']][$key]) {
+                    if ($this->piVars['filter'][$filter['uid']][$key] ?? false) {
                         $data['selected'] = 1;
                     }
 
@@ -510,7 +510,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // modify filter options by hook
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptions'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptions'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptions'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyFilterOptions($filter, $checkboxOptions, $this);
@@ -615,7 +615,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function setNoResultsText()
     {
         // no results found
-        if ($this->conf['showNoResultsText']) {
+        if ($this->conf['showNoResultsText'] ?? false) {
             // use individual text set in flexform
             $noResultsText = $this->pi_RTEcssText($this->conf['noResultsText']);
         } else {
@@ -624,7 +624,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // hook to implement your own idea of a no result message
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['noResultsHandler'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['noResultsHandler'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['noResultsHandler'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->noResultsHandler($noResultsText, $this);
@@ -698,7 +698,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 );
 
                 // hook for additional markers in result row
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] ?? null)) {
                     // make curent row number available to hook
                     $this->currentRowNumber = $resultCount;
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] as $_classRef) {
@@ -717,7 +717,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $resultrowTemplateValues = $tempMarkerArray;
 
                 // set result url
-                $resultUrl = $this->searchResult->getResultUrl($this->conf['renderResultUrlAsLink']);
+                $resultUrl = $this->searchResult->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
                 $resultrowTemplateValues['url'] = $resultUrl;
 
                 // set result numeration
@@ -778,7 +778,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         list($type) = explode(':', $row['type']);
         switch ($type) {
             case 'page':
-                if ($this->conf['showPageImages']) {
+                if ($this->conf['showPageImages'] ?? false) {
 
                     // first check if "tx_kesearch_resultimage" is set
                     $result = $this->getFirstFalRelationUid(
@@ -796,7 +796,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             case 'tt_news':
-                if ($this->conf['showNewsImages']) {
+                if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
                         'tt_news', 'image', $row['orig_uid']
                     );
@@ -804,7 +804,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             case 'news':
-                if ($this->conf['showNewsImages']) {
+                if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
                         'tx_news_domain_model_news', 'fal_media', $row['orig_uid']
                     );
@@ -812,7 +812,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 break;
 
             default:
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes'])
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes'] ?? null)
                     && isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes'][$type])) {
                     return $this->getFirstFalRelationUid(
                         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes'][$type]['table'],
@@ -835,7 +835,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         list($type) = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);
 
-        if ($this->conf['resultListTypeIcon'][$name]) {
+        if ($this->conf['resultListTypeIcon'][$name] ?? false) {
             // custom icons defined by typoscript
             return $this->conf['resultListTypeIcon'][$name]['file'];
         } else {
@@ -892,7 +892,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ->execute()
             ->fetch();
 
-        if ($row !== NULL) {
+        if (is_array($row)) {
             return $row['uid'];
         }
 
@@ -913,7 +913,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $sheet
             )
         );
-        return $value ? $value : $this->conf[$param];
+        return $value ?: ($this->conf[$param] ?? '');
     }
 
 
@@ -1023,7 +1023,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         );
 
         // hook for additional markers in pagebrowser
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['pagebrowseAdditionalMarker'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['pagebrowseAdditionalMarker'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['pagebrowseAdditionalMarker'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->pagebrowseAdditionalMarker(
@@ -1127,7 +1127,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // get definitions from plugin settings
         // and proceed only when preselectedFilter was not set
         // this reduces the amount of sql queries, too
-        if ($this->conf['preselected_filters'] && count($this->preselectedFilter) == 0) {
+        if (($this->conf['preselected_filters'] ?? false) && count($this->preselectedFilter) == 0) {
             $preselectedArray = GeneralUtility::trimExplode(',', $this->conf['preselected_filters'], true);
             foreach ($preselectedArray as $option) {
                 $option = intval($option);

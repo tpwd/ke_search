@@ -75,7 +75,7 @@ class SearchHelper
         $extConf['searchWordLength'] = ($extConf['searchWordLength']) ? $extConf['searchWordLength'] : 4;
 
         // override extConf with TS Setup
-        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'])
+        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'] ?? null)
             && count($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'])) {
             foreach ($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'] as $key => $value) {
                 $extConf[$key] = $value;
@@ -107,7 +107,7 @@ class SearchHelper
         }
 
         // override extConfPremium with TS Setup
-        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'])
+        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'] ?? null)
             && count($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'])) {
             foreach ($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'] as $key => $value) {
                 $extConfPremium[$key] = $value;
@@ -385,7 +385,7 @@ class SearchHelper
                 $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . $piVars[$piVarKey];
             }
         }
-        if (is_array($piVars['filter']) && count($piVars['filter'])) {
+        if (is_array($piVars['filter'] ?? null) && count($piVars['filter'])) {
             foreach ($piVars['filter'] as $filterUid => $filterValue) {
                 if (!in_array($filterUid, $resetFilters)) {
                     if (!is_array($piVars['filter'][$filterUid])) {

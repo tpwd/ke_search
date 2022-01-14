@@ -74,7 +74,7 @@ class GenericRepository {
                 }
         }
         // hook to add a custom types
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['GenericRepositoryTablename'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['GenericRepositoryTablename'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['GenericRepositoryTablename'] as $_classRef) {
                 $_procObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($_classRef);
                 $tableName = $_procObj->getTableName($type);
