@@ -46,6 +46,7 @@ use \TYPO3\CMS\Frontend\DataProcessing\FilesProcessor;
 use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 define('DONOTINDEX', -3);
 
@@ -91,7 +92,8 @@ class Page extends IndexerBase
         'table',
         'html',
         'header',
-        'uploads'
+        'uploads',
+        'shortcut'
     );
 
     /**
@@ -541,6 +543,52 @@ class Page extends IndexerBase
         return $accessRestrictions;
     }
 
+    private function processShortcuts($rows, $fields, $depth = 99)
+    {
+        if (--$depth === 0) {
+            return $rows;
+        }
+        $processedRows = [];
+        foreach ($rows as $row) {
+            if ($row['CType'] !== 'shortcut') {
+                $processedRows[] = $row;
+                continue;
+            }
+
+            $recordList = GeneralUtility::trimExplode(',', $row['records'], true);
+            foreach ($recordList as $recordIdentifier) {
+                $split = BackendUtility::splitTable_Uid($recordIdentifier);
+                $tableName = empty($split[0]) ? 'tt_content' : $split[0];
+                $uid = (int)($split[1] ?? 0);
+
+                if ($tableName !== 'tt_content' || $uid === 0) {
+                    continue;
+                }
+
+                $queryBuilder = Db::getQueryBuilder($tableName);
+                $where = [];
+                $where[] = $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                );
+                $where[] = $this->whereClauseForCType;
+
+                $fieldArray = GeneralUtility::trimExplode(',', $fields);
+                $referencedRow = $queryBuilder
+                    ->select(...$fieldArray)
+                    ->from($tableName)
+                    ->where(...$where)
+                    ->execute()
+                    ->fetch();
+
+	        if ($referencedRow) {
+                    array_push($processedRows, ...$this->processShortcuts([$referencedRow], $fields, $depth));
+                }
+            }
+        }
+        return $processedRows;
+    }
+
     /**
      * get content of current page and save data to db
      *
@@ -549,7 +597,7 @@ class Page extends IndexerBase
     public function getPageContent($uid)
     {
         // get content elements for this page
-        $fields = 'uid, pid, header, bodytext, CType, sys_language_uid, header_layout, fe_group, file_collections, filelink_sorting';
+        $fields = 'uid, pid, header, bodytext, CType, sys_language_uid, header_layout, fe_group, file_collections, filelink_sorting, records';
 
         // If EXT:gridelements is installed, add the field containing the gridelement to the list
         if (ExtensionManagementUtility::isLoaded('gridelements')) {
@@ -607,6 +655,7 @@ class Page extends IndexerBase
 
         $pageContent = array();
         if (count($ttContentRows)) {
+            $ttContentRows = $this->processShortcuts($ttContentRows, $fields);
             foreach ($ttContentRows as $ttContentRow) {
 
                 // Skip content elements inside hidden containers and for other (custom) reasons

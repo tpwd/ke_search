@@ -331,7 +331,7 @@ return array(
                 'cols' => 48,
                 'rows' => 10,
                 'eval' => 'trim',
-                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads'
+                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut'
             )
         ),
         'index_news_files_mode' => [
