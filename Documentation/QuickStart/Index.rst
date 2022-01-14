@@ -22,7 +22,7 @@ Install the extension ke_search via extension manager or via composer (recommend
 
 You can find the current version (and older ones) at
 
-https://github.com/tpwd/ke_search/
+https://extensions.typo3.org/extension/ke_search
 
 Include static template
 -----------------------
