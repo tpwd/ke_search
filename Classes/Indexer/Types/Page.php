@@ -649,6 +649,9 @@ class Page extends IndexerBase
                     || $ttContentRow['fe_group'] == ''
                     || $ttContentRow['fe_group'] == '0'
                 ) {
+                    if (!isset($pageContent[$ttContentRow['sys_language_uid']])) {
+                        $pageContent[$ttContentRow['sys_language_uid']] = '';
+                    }
                     $pageContent[$ttContentRow['sys_language_uid']] .= $content;
 
                     // add content elements with sys_language_uid = -1 to all language versions of this page
@@ -1085,7 +1088,7 @@ class Page extends IndexerBase
             $metadata = $fileObject->getMetaData()->get();
         }
 
-        if ($metadata['fe_groups']) {
+        if (!empty($metadata['fe_groups'])) {
             if ($feGroups) {
                 $feGroupsContentArray = GeneralUtility::intExplode(',', $feGroups);
                 $feGroupsFileArray = GeneralUtility::intExplode(',', $metadata['fe_groups']);
@@ -1162,8 +1165,8 @@ class Page extends IndexerBase
             '',                                      // typolink params for singleview
             $abstract,                               // abstract
             $ttContentRow['sys_language_uid'],       // language uid
-            $ttContentRow['starttime'],              // starttime
-            $ttContentRow['endtime'],                // endtime
+            $ttContentRow['starttime'] ?? 0,              // starttime
+            $ttContentRow['endtime'] ?? 0,                // endtime
             $feGroups,                               // fe_group
             false,                                   // debug only?
             $additionalFields                        // additional fields added by hooks
