@@ -195,7 +195,7 @@ class TtContent extends Page
                 $indexerConfig = $this->indexerConfig;
 
                 // hook for custom modifications of the indexed data, e. g. the tags
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'])) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'] ?? null)) {
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'] as
                              $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);

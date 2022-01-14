@@ -485,10 +485,10 @@ class Page extends IndexerBase
 
         // get the rootline, start with the current page and go up
         $pageUid = $currentPageUid;
-        $tempRootline = array(intval($this->cachedPageRecords[0][$currentPageUid]['pageUid']));
-        while ($this->cachedPageRecords[0][$pageUid]['pid'] > 0) {
+        $tempRootline = array(intval($this->cachedPageRecords[0][$currentPageUid]['pageUid'] ?? 0));
+        while (($this->cachedPageRecords[0][$pageUid]['pid'] ?? 0) > 0) {
             $pageUid = intval($this->cachedPageRecords[0][$pageUid]['pid']);
-            if (is_array($this->cachedPageRecords[0][$pageUid])) {
+            if (is_array($this->cachedPageRecords[0][$pageUid] ?? null)) {
                 $tempRootline[] = $pageUid;
             }
         }
@@ -517,7 +517,7 @@ class Page extends IndexerBase
         // (0 = level 0, 1 = level 1 and so on),
         // we can fetch the access restrictions from pages above
         foreach ($rootline as $pageUid) {
-            if ($this->cachedPageRecords[0][$pageUid]['extendToSubpages']) {
+            if ($this->cachedPageRecords[0][$pageUid]['extendToSubpages'] ?? false) {
                 $inheritedAccessRestrictions['hidden'] = $this->cachedPageRecords[0][$pageUid]['hidden'];
                 $inheritedAccessRestrictions['fe_group'] = $this->cachedPageRecords[0][$pageUid]['fe_group'];
                 $inheritedAccessRestrictions['starttime'] = $this->cachedPageRecords[0][$pageUid]['starttime'];
@@ -562,7 +562,7 @@ class Page extends IndexerBase
         }
 
         // hook to modify the page content fields
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyPageContentFields(
@@ -679,7 +679,7 @@ class Page extends IndexerBase
         );
 
         // hook for custom modifications of the indexed data, e. g. the tags
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPagesIndexEntry'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPagesIndexEntry'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPagesIndexEntry'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyPagesIndexEntry(
@@ -814,7 +814,7 @@ class Page extends IndexerBase
         }
 
         // hook to add custom check if this content element should be indexed
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndexed'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndexed'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndexed'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $contentElementShouldBeIndexed = $_procObj->contentElementShouldBeIndexed(
@@ -842,15 +842,15 @@ class Page extends IndexerBase
     {
         $index = true;
 
-        if ($this->cachedPageRecords[$language_uid][$uid]['hidden']) {
+        if ($this->cachedPageRecords[$language_uid][$uid]['hidden'] ?? false) {
             $index = false;
         }
 
-        if ($this->cachedPageRecords[$language_uid][$uid]['no_search']) {
+        if ($this->cachedPageRecords[$language_uid][$uid]['no_search'] ?? false) {
             $index = false;
         }
 
-        if (!in_array($this->cachedPageRecords[$language_uid][$uid]['doktype'], $this->indexDokTypes)) {
+        if (!in_array($this->cachedPageRecords[$language_uid][$uid]['doktype'] ?? 0, $this->indexDokTypes)) {
             $index = false;
         }
 
@@ -884,6 +884,8 @@ class Page extends IndexerBase
         // 6. if page or ce has "hide at login" and the other
         // has an explicit group the element will never be shown and we must not index it.
         // So which group do we set here? Let's use a constant for that and check in the calling function for that.
+
+        $feGroups = '';
 
         if (!$feGroupsPages && $feGroupsContentElement) {
             $feGroups = $feGroupsContentElement;
@@ -1127,7 +1129,7 @@ class Page extends IndexerBase
         );
 
         //hook for custom modifications of the indexed data, e. g. the tags
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] as
                      $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
@@ -1201,7 +1203,7 @@ class Page extends IndexerBase
         $bodytext = strip_tags($bodytext);
 
         // hook for modifiying a content elements content
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] as
                      $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
