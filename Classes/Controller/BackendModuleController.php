@@ -296,7 +296,8 @@ class BackendModuleController extends AbstractBackendModuleController
         $days = 30;
         $data = $this->getSearchwordStatistics($this->id, $days);
 
-        if ($data['error']) {
+        $error = null;
+        if ($data['error'] ?? false) {
             $error = $data['error'];
             unset($data['error']);
         }
