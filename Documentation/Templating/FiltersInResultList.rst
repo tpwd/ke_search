@@ -11,10 +11,19 @@ Render filters in result list
 Since version 3.9.0 it is possible to show filters also in the result list plugin which gives you more flexibility
 in placing them in relation to the result list.
 
+In order to use this feature you need to enable the filters in the result list with the TypoScript setup setting
+`plugin.tx_kesearch_pi2.includeFilters = 1`.
+
 This is useful if you want to show e.g. the filters in the right-hand side and only if they are present.
 
 HowTo
 ~~~~~
+Enable the filters in the result list with this snippet in the TypoScript setup:
+
+.. code-block:: none
+
+    plugin.tx_kesearch_pi2.includeFilters = 1
+
 Create a `Resources/Private/Partials/FiltersForm.html` which is a modification of the `Resources/Private/Partials/Filters.html` which looks like:
 
 .. code-block:: none

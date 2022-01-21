@@ -37,6 +37,8 @@ plugin.tx_kesearch_pi2 {
         }
     }
     cssFile = EXT:ke_search/Resources/Public/Css/ke_search_pi1.css
+
+    # Set this to 1 to make the filters available in the result list plugin
     includeFilters = 0
 }
 
