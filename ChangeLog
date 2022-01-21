@@ -3,13 +3,14 @@ ChangeLog
 Upcoming version
 [!!!]     This version removes the dashboard requirement introduced in the last version and makes it optional again.
 [!!!]     This version makes it possible to index "shortcut" content elements. For that you need to add "shortcut" to the list "Content element types which should be indexed" in existing indexer configurations.
+[FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
+[FEATURE] Add dashboard preset. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/41
 [BUGFIX]  Fix PHP8 issues in frontend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/27
 [BUGFIX]  Fix PHP8 issues in backend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/28
 [BUGFIX]  Fix PHP8 issues in indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/26
 [BUGFIX]  Fix typos. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/32
 [BUGFIX]  Display hours in status widget correctly. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/38
 [BUGFIX]  Avoid PHP8 errors in backend module. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/39
-[FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
 [TASK]    Allow plugins in composer 2.2. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/29
 [TASK]    Make dashboard optional. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/30
