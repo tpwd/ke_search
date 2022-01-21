@@ -160,8 +160,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // in pi2 (the list plugin) fetch the configuration from pi1 (the search
         // box plugin) since all the configuration is done there
         if (!empty($this->conf['loadFlexformsFromOtherCE'])) {
-            $data = $this->pi_getRecord('tt_content', intval($this->conf['loadFlexformsFromOtherCE']));
-            $this->cObj->data['pi_flexform'] = $data['pi_flexform'];
+            $contentElement = $this->pi_getRecord('tt_content', intval($this->conf['loadFlexformsFromOtherCE']));
+            if (is_int($contentElement) && $contentElement === 0) {
+                throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
+            }
+            $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $this->moveFlexFormDataToConf();
         }
 
@@ -654,7 +657,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if (intval($this->conf['includeFilters']) == 1) {
             $this->renderFilters();
         }
-
 
         // fetch the search results
         $limit = $this->db->getLimit();
