@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2021-10-15T11:05:23Z" product-name="ke_search">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-01-20T10:11:58Z" product-name="ke_search">
 		<header/>
 		<body>
+			<trans-unit id="dashboard_preset.description" resname="dashboard_preset.description"  approved="yes">
+				<source>A dashboard with all available widgets for search.</source>
+				<target>Ein Dashboard mit allen verfügbaren Widgets für die Suche.</target>
+			</trans-unit>
+			<trans-unit id="dashboard_preset.title" resname="dashboard_preset.title" >
+				<source>ke_search</source>
+				<target/>
+			</trans-unit>
 			<trans-unit id="widget_group.ke_search" resname="widget_group.ke_search"  approved="yes">
 				<source>ke_search</source>
 				<target/>
