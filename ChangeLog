@@ -12,6 +12,7 @@ Upcoming version
 [TASK]    Make dashboard optional. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/30
 [FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
 [TASK]    Use .Build folder for dependencies. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/33
+[TASK]    Register icons via service container. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/34
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
