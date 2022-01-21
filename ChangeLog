@@ -5,6 +5,7 @@ Upcoming version
 [!!!]     This version makes it possible to index "shortcut" content elements. For that you need to add "shortcut" to the list "Content element types which should be indexed" in existing indexer configurations.
 [FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
 [FEATURE] Add dashboard preset. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/41
+[FEATURE] Switch off filter rendering in result list if not needed. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/3
 [BUGFIX]  Fix PHP8 issues in frontend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/27
 [BUGFIX]  Fix PHP8 issues in backend. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/28
 [BUGFIX]  Fix PHP8 issues in indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/26
@@ -18,6 +19,7 @@ Upcoming version
 [TASK]    Register icons via service container. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/34
 [TASK]    Move extension icon into Resources/Public/Icons folder. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/35
 [TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
+[TASK]    Check if content element with search configuration is accessible
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 
 Version 4.2.0, December 2021
