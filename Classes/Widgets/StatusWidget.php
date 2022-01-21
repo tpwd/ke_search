@@ -61,8 +61,8 @@ class StatusWidget implements WidgetInterface
         $indexerRunningTimeHMS =
             $indexerRunningTime ?
                 [
-                    's' => round($indexerRunningTime / 3600),
-                    'm' => $indexerRunningTime / 60 % 60,
+                    'h' => floor($indexerRunningTime / 3600),
+                    'm' => (int)($indexerRunningTime / 60) % 60,
                     's' => $indexerRunningTime % 60
                 ]
                 : [];
@@ -78,8 +78,8 @@ class StatusWidget implements WidgetInterface
             $lastRunIndexingTimeHMS =
                 $lastRun['indexingTime'] ?
                 [
-                    's' => round($lastRun['indexingTime'] / 3600),
-                    'm' => $lastRun['indexingTime'] / 60 % 60,
+                    'h' => floor($lastRun['indexingTime'] / 3600),
+                    'm' => (int)($lastRun['indexingTime'] / 60) % 60,
                     's' => $lastRun['indexingTime'] % 60
                 ]
                 : [];
