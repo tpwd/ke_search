@@ -773,9 +773,8 @@ class Page extends IndexerBase
                     }
 
                     // use tx_kesearch_abstract instead of "abstract" if set
-                    $abstract = $this->cachedPageRecords[$language_uid][$uid]['tx_kesearch_abstract'] ?
-                        $this->cachedPageRecords[$language_uid][$uid]['tx_kesearch_abstract'] :
-                        $this->cachedPageRecords[$language_uid][$uid]['abstract'];
+                    $abstract = (string)($this->cachedPageRecords[$language_uid][$uid]['tx_kesearch_abstract']
+                        ?: $this->cachedPageRecords[$language_uid][$uid]['abstract']);
 
                     $this->pObj->storeInIndex(
                         $indexerConfig['storagepid'],                               // storage PID
