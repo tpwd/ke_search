@@ -71,8 +71,8 @@ class PluginBaseHelper
         } else {
             // if loadFlexformsFromOtherCE is NOT set
             // get startingPoints of current page
-            $startingpoint['pages'] = $this->pObj->cObj->data['pages'];
-            $startingpoint['recursive'] = $this->pObj->cObj->data['recursive'];
+            $startingpoint['pages'] = $this->pObj->cObj->data['pages'] ?? false;
+            $startingpoint['recursive'] = $this->pObj->cObj->data['recursive'] ?? false;
         }
 
         // allow to override startingpoint with typoscript like this

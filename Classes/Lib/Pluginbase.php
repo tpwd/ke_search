@@ -270,7 +270,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // perform search at this point already if we need to calculate what
         // filters to display.
-        if ($this->conf['checkFilterCondition'] != 'none' && !$this->allowEmptySearch()) {
+        if (isset($this->conf['checkFilterCondition']) && $this->conf['checkFilterCondition'] != 'none' && !$this->allowEmptySearch()) {
             $this->db->getSearchResults();
         }
 
@@ -296,19 +296,20 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function moveFlexFormDataToConf()
     {
         // don't move this to init
-        $this->pi_initPIflexForm();
-
-        $piFlexForm = $this->cObj->data['pi_flexform'];
-        if (is_array($piFlexForm['data'])) {
-            foreach ($piFlexForm['data'] as $sheetKey => $sheet) {
-                foreach ($sheet as $lang) {
-                    foreach ($lang as $key => $value) {
-                        // delete current conf value from conf-array
-                        // when FF-Value differs from TS-Conf and FF-Value is not empty
-                        $value = $this->fetchConfigurationValue($key, $sheetKey);
-                        if (($this->conf[$key] ?? '') != $value && !empty($value)) {
-                            unset($this->conf[$key]);
-                            $this->conf[$key] = $this->fetchConfigurationValue($key, $sheetKey);
+        if (isset($this->cObj->data['pi_flexform'])) {
+            $this->pi_initPIflexForm();
+            $piFlexForm = $this->cObj->data['pi_flexform'];
+            if (is_array($piFlexForm['data'])) {
+                foreach ($piFlexForm['data'] as $sheetKey => $sheet) {
+                    foreach ($sheet as $lang) {
+                        foreach ($lang as $key => $value) {
+                            // delete current conf value from conf-array
+                            // when FF-Value differs from TS-Conf and FF-Value is not empty
+                            $value = $this->fetchConfigurationValue($key, $sheetKey);
+                            if (($this->conf[$key] ?? '') != $value && !empty($value)) {
+                                unset($this->conf[$key]);
+                                $this->conf[$key] = $this->fetchConfigurationValue($key, $sheetKey);
+                            }
                         }
                     }
                 }
