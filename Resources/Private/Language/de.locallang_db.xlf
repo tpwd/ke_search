@@ -304,8 +304,8 @@
 				<target>Schlagworte auch für Dateien übernehmen?</target>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes"  approved="yes">
-				<source>Page types which should be indexed (field:doktype, default: 1,2,5)</source>
-				<target>Seitentypen, die indexiert werden sollen (Feld:doktype, Standard: 1,2,5)</target>
+				<source>Page types which should be indexed (field:doktype, default: 1)</source>
+				<target>Seitentypen, die indexiert werden sollen (Feld:doktype, Standard: 1)</target>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories"  approved="yes">
 				<source>Directories</source>

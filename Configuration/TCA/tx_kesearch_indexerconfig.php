@@ -287,7 +287,7 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
-                'default' => '1,2,5'
+                'default' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT
             )
         ),
         'filteroption' => array(

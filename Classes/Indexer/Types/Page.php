@@ -36,6 +36,7 @@ use Exception;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Lib\Db;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -105,19 +106,10 @@ class Page extends IndexerBase
     /**
      * this array contains the definition of which page
      * types (field doktype in pages table) should be indexed.
-     * Standard = 1
-     * Advanced = 2
-     * External URL = 3
-     * Shortcut = 4
-     * Not in menu = 5
-     * Backend User Section = 6
-     * Mountpoint = 7
-     * Spacer = 199
-     * SysFolder = 254
-     * Recycler = 255
      * @var array
+     * @see https://github.com/TYPO3/typo3/blob/10.4/typo3/sysext/core/Classes/Domain/Repository/PageRepository.php#L106
      */
-    public $indexDokTypes = array(1, 2, 5);
+    public $indexDokTypes = array(CorePageRepository::DOKTYPE_DEFAULT);
 
     /*
      * Name of indexed elements. Will be overwritten in content element indexer.
