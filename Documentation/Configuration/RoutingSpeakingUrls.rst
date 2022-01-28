@@ -220,7 +220,7 @@ Resources/Private/Templates/Widget/Pagination.html
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Add the kesearch namespace to the beginning of the file
-* Change the links using the kesearch:link viewhelper
+* Change the links using the kesearch:link Viewhelper
 
 .. code-block:: none
 

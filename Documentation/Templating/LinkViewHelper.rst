@@ -8,7 +8,7 @@
 Link ViewHelper
 ===============
 
-A link ViewHelper is provided to generate links to search result pages including a search word and filters.
+A link Viewhelper is provided to generate links to search result pages including a search word and filters.
 
 Parameters
 ..........
@@ -25,7 +25,7 @@ Additionally the standard HTML universal attributes can be used (like class, dir
 Setting filters
 ...............
 
-In order to use filters with the link ViewHelper you will need to know the filter UID, the tag of the filter option and (if you use a checkbox
+In order to use filters with the link Viewhelper you will need to know the filter UID, the tag of the filter option and (if you use a checkbox
 filter) the UID of the filter option. Please see the example below.
 
 Example

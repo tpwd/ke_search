@@ -63,11 +63,11 @@ You can add a hook "additionalResultMarker" in order to add more variables to th
 
     ke_search/Classes/Lib/Pluginbase.php
 
-Write a viewhelper
+Write a Viewhelper
 ..................
 
-You could also write a viewhelper. Since you have the type and the UID of the original record available, you could
-pass this to the viewhelper and you are then free to create whatever content you want.
+You could also write a Viewhelper. Since you have the type and the UID of the original record available, you could
+pass this to the Viewhelper and you are then free to create whatever content you want.
 
 Debug available values
 ......................
