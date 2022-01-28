@@ -8,7 +8,7 @@
 Use your own Templates
 ======================
 
-In order to use your own fluid templates, please set the path to your templates in the typoscript *constants*.
+In order to use your own fluid templates, please set the path to your templates in the TypoScript *constants*.
 
 It's good practice to put the templates in a dedicated "site" package (an extension which holds all your
 templates, configuration and css files).

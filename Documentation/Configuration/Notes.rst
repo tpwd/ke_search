@@ -8,7 +8,7 @@
 Notes
 =====
 
-Notes on typoscript and flexform settings
+Notes on TypoScript and flexform settings
 -----------------------------------------
 
 Each property in Flexform overwrites the property defined by TypoScript.
@@ -27,12 +27,12 @@ or you can define the resultpage with help of an URL param if you want:
 
 	plugin.tx_kesearch_pi1.resultPage.data = GP:tx_kesearch_pi1|resultPage
 
-Notes on typoscript and extension manager settings
+Notes on TypoScript and extension manager settings
 --------------------------------------------------
 
 In the extension manager you can define basic options like the minimal length of searchwords.
 
-You can overwrite this configuration in your page typoscript setup:
+You can overwrite this configuration in your page TypoScript setup:
 
 .. code-block:: none
 

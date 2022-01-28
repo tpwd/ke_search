@@ -12,10 +12,10 @@ ke_search comes with a default css file which is loaded automatically.
 
 If you do not wish to use that file, you have the following possibilities.
 
-Unset via typoscript
+Unset via TypoScript
 --------------------
 
-If you do not wish to load that file, you can unset it via typoscript:
+If you do not wish to load that file, you can unset it via TypoScript:
 
 .. code-block:: none
 

@@ -64,7 +64,7 @@ You can find an example in the extension ke_search_hooks: https://extensions.typ
 
 Your new database field will automatically appear in the backend selection of sorting fields!
 
-You will have to add a locallang-value to your typoscript setup:
+You will have to add a locallang-value to your TypoScript setup:
 
 .. code-block:: none
 
