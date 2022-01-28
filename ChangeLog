@@ -26,6 +26,7 @@ Upcoming version
 [TASK]    Add .gitattributes files. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/44
 [TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
+[DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
