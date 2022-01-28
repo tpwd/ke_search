@@ -22,8 +22,9 @@ Upcoming version
 [TASK]    Move extension icon into Resources/Public/Icons folder. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/35
 [TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
 [TASK]    Check if content element with search configuration is accessible
-[DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 [TASK]    Remove usage of deprecated strftime() function and use localized date format in the backend controller.
+[TASK]    Add .gitattributes files. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/44
+[DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
