@@ -12,18 +12,19 @@ Upcoming version
 [BUGFIX]  Fix typos. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/32
 [BUGFIX]  Display hours in status widget correctly. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/38
 [BUGFIX]  Avoid PHP8 errors in backend module. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/39
-[BUGFIX]  Fix PHP8 Deprecation Notices.
 [BUGFIX]  Do not show preview image if the file does not exist and do not link to those files. https://github.com/tpwd/ke_search/issues/42
+[TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
+[TASK]    Remove PHP 8.1 Deprecations. https://github.com/tpwd/ke_search/commit/bdbba5d0bac74f724f727aa5d857fb00adfa59d7
 [TASK]    Allow plugins in composer 2.2. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/29
 [TASK]    Make dashboard optional. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/30
 [TASK]    Use .Build folder for dependencies. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/33
 [TASK]    Register icons via service container. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/34
 [TASK]    Move extension icon into Resources/Public/Icons folder. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/35
-[TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
-[TASK]    Check if content element with search configuration is accessible
-[TASK]    Remove usage of deprecated strftime() function and use localized date format in the backend controller.
+[TASK]    Check if content element with search configuration is accessible. https://github.com/tpwd/ke_search/commit/739eca9374bc10216c498b028bbd481a4786c993
+[TASK]    Remove usage of deprecated strftime() function and use localized date format in the backend controller. https://github.com/tpwd/ke_search/commit/cfde92f32ceeac3c2d966e9c590946a8e1576654
 [TASK]    Add .gitattributes files. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/44
+[TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 
 Version 4.2.0, December 2021
