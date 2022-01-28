@@ -215,7 +215,7 @@ class Searchphrase
                     }
                 } else {
                     // Don't add the tag if it is already inserted by preselected filters
-                    if (!empty($tag) && strstr($tagsAgainst[$key], $tag) === false) {
+                    if (!empty($tag) && isset($tagsAgainst[$key]) && strstr($tagsAgainst[$key], $tag) === false) {
                         $tagsAgainst[$key] .= ' +"' . $tagChar . $tag . $tagChar . '"';
                     }
                 }
