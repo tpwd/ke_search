@@ -30,8 +30,8 @@ Translating filters
 In order to use the multilingual feature for filters you'll have to
 
 Create page translations
-	Create alternative page languages for the storage folder where the index and filters are stored and
-	for your search result page. You can do that with help of the page module by using the function
+    Create alternative page languages for the storage folder where the index and filters are stored and
+    for your search result page. You can do that with help of the page module by using the function
     "Create a new translation of this page".
 
 Translate filters and filter options
