@@ -196,7 +196,7 @@ class BackendModuleController extends AbstractBackendModuleController
                 $content .= '<div class="alert alert-info">';
                 $content .= '<p>The indexer is already running and can not be started twice.</p>';
                 $content .= '</div>';
-                $content .= '<p>The indexing process was started at <strong>' . strftime('%c', $lockTime) . '.</p></strong>';
+                $content .= '<p>The indexing process was started at <strong>' . SearchHelper::formatTimestamp($lockTime) . '.</p></strong>';
                 $content .= '<p>You can remove the lock by clicking the following button.</p>';
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
@@ -606,15 +606,14 @@ class BackendModuleController extends AbstractBackendModuleController
             }
 
             // build content
-            $timeformat = '%d.%m.%Y %H:%M';
             $content .=
                 '<tr>'
                     . '<td>' . $this->encode($row['title']) . '</td>'
                     . '<td><span class="label label-primary">' . $this->encode($row['type']) . '</span></td>'
                     . '<td>' . $this->encode($row['language']) . '</td>'
                     . '<td>' . $this->encode(str_word_count($row['content'])) . '</td>'
-                    . '<td>' . $this->encode(strftime($timeformat, $row['crdate'])) . '</td>'
-                    . '<td>' . $this->encode(strftime($timeformat, $row['tstamp'])) . '</td>'
+                    . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['crdate'])) . '</td>'
+                    . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['tstamp'])) . '</td>'
                     . '<td>' . $this->encode($row['targetpid']) . '</td>'
                     . '<td>' . $this->encode($row['params']) . '</td>'
                     . '<td><a class="btn btn-default" data-bs-toggle="collapse" data-bs-target="#ke' . $row['uid'] . '" data-action="expand" data-toggle="collapse" data-target="#ke' . $row['uid'] . '" title="Expand record"><span class="icon icon-size-small icon-state-default"><span class="icon-markup"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M7 2.25c0-.14.11-.25.25-.25h1.5c.14 0 .25.11.25.25v1.5c0 .14-.11.25-.25.25h-1.5C7.11 4 7 3.89 7 3.75v-1.5zM10.75 14h-5.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25H7V8h-.75C6.11 8 6 7.89 6 7.75v-1.5A.25.25 0 0 1 6.25 6h2.5a.25.25 0 0 1 .25.25V12h1.75a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25z"/></g></svg> </span></span></a></td>'
@@ -637,9 +636,9 @@ class BackendModuleController extends AbstractBackendModuleController
                                 . '<td>' . $this->encode($row['orig_pid']) . '</td>'
                                 . '<td>' . $this->encode($row['orig_uid']) . '</td>'
                                 . '<td>' . $this->encode($row['fe_group']) . '</td>'
-                                . '<td>' . $this->encode($row['sortdate'] ? strftime($timeformat, $row['sortdate']) : '') . '</td>'
-                                . '<td>' . $this->encode($row['starttime'] ? strftime($timeformat, $row['starttime']) : '') . '</td>'
-                                . '<td>' . $this->encode($row['endtime'] ? strftime($timeformat, $row['endtime']) : '') . '</td>'
+                                . '<td>' . $this->encode($row['sortdate'] ? SearchHelper::formatTimestamp($row['sortdate']) : '') . '</td>'
+                                . '<td>' . $this->encode($row['starttime'] ? SearchHelper::formatTimestamp($row['starttime']) : '') . '</td>'
+                                . '<td>' . $this->encode($row['endtime'] ? SearchHelper::formatTimestamp($row['endtime']) : '') . '</td>'
                                 . '<td>' . $tagTable . '</td>'
                             . '</tr>'
                             . '<tr>'
