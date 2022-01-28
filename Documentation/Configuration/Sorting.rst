@@ -8,7 +8,7 @@
 Sorting
 =======
 
-You may define the sorting method in the plugin configuration. Available options are “relevance”, “titel” and “date”.
+You may define the sorting method in the plugin configuration. Available options are “relevance”, “title” and “date”.
 More options may be added through third party extensions (see below “adding your own sorting options”).
 
 There are two sorting method options, one if a searchword was given and one if only filters have been used without

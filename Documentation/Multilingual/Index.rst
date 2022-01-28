@@ -31,9 +31,8 @@ In order to use the multilingual feature for filters you'll have to
 
 Create page translations
 	Create alternative page languages for the storage folder where the index and filters are stored and
-	for your search result page. You can do that with help of the list module you by creating a new record called
-	"Alternative Page language" or with the page module by using the function "Make new translation of this page".
+	for your search result page. You can do that with help of the page module by using the function
+    "Create a new translation of this page".
 
 Translate filters and filter options
-    Now you can translate the filters and filteroptions to the new language. Note: In TYPO3 version 9 and below you will
-    have to activate “Localization view”-Checkbox in list module.
+    Now you can translate the filters and filteroptions to the new language.
