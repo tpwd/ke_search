@@ -252,7 +252,7 @@ class News extends IndexerBase
                             : $newsRecord['uid'];
                         $paramsSingleView['tx_news_pi1']['controller'] = 'News';
                         $paramsSingleView['tx_news_pi1']['action'] = 'detail';
-                        $params = '&' . http_build_query($paramsSingleView, '', '&');
+                        $params = '&' . http_build_query($paramsSingleView);
                         $params = rawurldecode($params);
                     }
                 }

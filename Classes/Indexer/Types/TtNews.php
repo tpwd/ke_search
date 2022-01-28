@@ -180,7 +180,7 @@ class TtNews extends IndexerBase
                 // /tt-news-detail?tx_ttnews[tt_news]=1
                 $paramsSingleView['tx_ttnews']['tt_news'] =
                     $newsRecord['l18n_parent'] ? $newsRecord['l18n_parent'] : $newsRecord['uid'];
-                $params = '&' . http_build_query($paramsSingleView, null, '&');
+                $params = '&' . http_build_query($paramsSingleView);
                 $params = rawurldecode($params);
 
                 // add tags from pages

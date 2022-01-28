@@ -181,7 +181,7 @@ class TtAddress extends IndexerBase
                 $paramsSingleView['tx_ttaddress_listview']['address'] = $addressRow['uid'];
                 $paramsSingleView['tx_ttaddress_listview']['controller'] = 'Address';
                 $paramsSingleView['tx_ttaddress_listview']['action'] = 'show';
-                $params = '&' . http_build_query($paramsSingleView, null, '&');
+                $params = '&' . http_build_query($paramsSingleView);
                 $params = rawurldecode($params);
 
                 // no tags yet
