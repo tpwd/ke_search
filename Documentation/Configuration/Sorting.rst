@@ -37,7 +37,7 @@ If you want other sorting options than relevance, date or title, you will have t
 Note: If you add an "additional field" to the index **every** indexer must set this field. So make sure you use the
 provided hooks for every indexer you use.
 
-You can find an example in the extension ke_search_hooks: https://github.com/teaminmedias-pluswerk/ke_search_hooks
+You can find an example in the extension ke_search_hooks: https://extensions.typo3.org/extension/ke_search_hooks
 
 .. code-block:: none
 

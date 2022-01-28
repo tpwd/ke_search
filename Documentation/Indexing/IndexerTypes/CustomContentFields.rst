@@ -54,6 +54,4 @@ Hook class
 Example
 .......
 
-You can find an example in the extension ke_search_hooks:
-
-https://github.com/teaminmedias-pluswerk/ke_search_hooks
+You can find an example in the extension ke_search_hooks: https://extensions.typo3.org/extension/ke_search_hooks
