@@ -373,14 +373,10 @@ class File extends IndexerBase
             $content = $this->addFileMetata($fileProperties, $content);
 
             // use file description as abstract
-            if ($fileProperties['description']) {
-                $indexRecordValues['abstract'] = $fileProperties['description'];
-            }
+            $indexRecordValues['abstract'] = $fileProperties['description'] ?? '';
 
             // respect groups from metadata
-            if ($fileProperties['fe_groups']) {
-                $indexRecordValues['fe_group'] = $fileProperties['fe_groups'];
-            }
+            $indexRecordValues['fe_group'] = $fileProperties['fe_groups'] ?? '';
 
             // get list of assigned system categories
             $categories = SearchHelper::getCategories(
@@ -460,7 +456,7 @@ class File extends IndexerBase
             }
         }
 
-        if (array_key_exists($fileProperties['language'], $languages)) {
+        if (isset($fileProperties['language']) && array_key_exists($fileProperties['language'], $languages)) {
             $languageUid = $languages[$fileProperties['language']];
         } else {
             $languageUid = -1;
