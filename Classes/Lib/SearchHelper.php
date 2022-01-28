@@ -289,11 +289,9 @@ class SearchHelper
             case 'external':
                 // render a link for external results (provided by eg. ke_search_premium)
                 $linkConf['parameter'] = $resultRow['params'];
-                $linkConf['useCacheHash'] = false;
                 $linkConf['additionalParams'] = '';
                 $extConfPremium = SearchHelper::getExtConfPremium();
-                $linkConf['extTarget'] = $extConfPremium['apiExternalResultTarget'] ?
-                    $extConfPremium['apiExternalResultTarget'] : '_blank';
+                $linkConf['extTarget'] = $extConfPremium['apiExternalResultTarget'] ?: '_blank';
                 break;
 
             default:
@@ -303,13 +301,9 @@ class SearchHelper
                     $linkConf['additionalParams'] = $resultRow['params'];
                 }
                 $linkConf['parameter'] = $resultRow['targetpid'];
-                $linkConf['useCacheHash'] = true;
                 $linkConf['target'] = $targetDefault;
                 break;
         }
-
-        // Deprecated: Setting typolink.useCacheHash has no effect anymore
-        unset($linkConf['useCacheHash']);
 
         return $linkConf;
     }
