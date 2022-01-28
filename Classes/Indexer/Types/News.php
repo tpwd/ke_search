@@ -179,9 +179,9 @@ class News extends IndexerBase
                 // compile the information which should go into the index:
                 // title, teaser, bodytext
                 $type = 'news';
-                $title = strip_tags($newsRecord['title']);
-                $abstract = strip_tags($newsRecord['teaser']);
-                $content = strip_tags($newsRecord['bodytext']);
+                $title = strip_tags($newsRecord['title'] ?? '');
+                $abstract = strip_tags($newsRecord['teaser'] ?? '');
+                $content = strip_tags($newsRecord['bodytext'] ?? '');
 
                 // add additional fields to the content:
                 // alternative_title, author, author_email, keywords

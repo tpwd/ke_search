@@ -12,6 +12,7 @@ Upcoming version
 [BUGFIX]  Fix typos. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/32
 [BUGFIX]  Display hours in status widget correctly. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/38
 [BUGFIX]  Avoid PHP8 errors in backend module. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/39
+[BUGFIX]  Fix PHP8 Deprecation Notice in news indexer.
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
 [TASK]    Allow plugins in composer 2.2. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/29
 [TASK]    Make dashboard optional. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/30
