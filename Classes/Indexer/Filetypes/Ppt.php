@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Ppt extends File implements FileIndexerInterface
 {
 
-    public $extConf = array(); // saves the configuration of extension ke_search_hooks
+    public $extConf = array();
     public $app = array(); // saves the path to the executables
     public $isAppArraySet = false;
 
