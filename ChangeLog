@@ -27,6 +27,8 @@ Upcoming version
 [TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 [DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
+[DOC]     Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
+[DOC]     Add description for documentation. https://github.com/tpwd/ke_search/commit/451723698b13e3ca3f68b39fc2c01ff3fa99cf6f
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
