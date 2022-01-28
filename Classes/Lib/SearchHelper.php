@@ -272,11 +272,16 @@ class SearchHelper
         switch ($type) {
             case 'file':
                 // render a link for files
-                // if we use FAL, we can use the API
-                if ($resultRow['orig_uid'] && ($fileObject = SearchHelper::getFile($resultRow['orig_uid']))) {
-                    $linkConf['parameter'] = 't3://file?uid=' . $resultRow['orig_uid'];
+                // If an orig_uid is given, we use FAL and we can use the API. Otherwise, we just have a plain file path.
+                if ($resultRow['orig_uid']) {
+                    if (SearchHelper::getFile($resultRow['orig_uid'])) {
+                        $linkConf['parameter'] = 't3://file?uid=' . $resultRow['orig_uid'];
+                    }
                 } else {
-                    $linkConf['parameter'] = $resultRow['directory'] . rawurlencode($resultRow['title']);
+                    $filePath = $resultRow['directory'] . rawurlencode($resultRow['title']);
+                    if (file_exists($filePath)) {
+                        $linkConf['parameter'] = $filePath;
+                    }
                 }
                 $linkConf['fileTarget'] = $targetFiles;
                 break;

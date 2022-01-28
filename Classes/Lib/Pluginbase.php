@@ -746,7 +746,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
                 // for pages and news we have to fetch the file reference uid
                 if ($type == 'file') {
-                    if ($this->conf['showFilePreview']) {
+                    if ($this->conf['showFilePreview'] && SearchHelper::getFile($row['orig_uid'])) {
                         $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
                     }
                     $resultrowTemplateValues['treatIdAsReference'] = 0;
