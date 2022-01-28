@@ -300,7 +300,7 @@
 				<target/>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes"  approved="yes">
-				<source>Page types which should be indexed (field:doktype, default: 1,2,5)</source>
+				<source>Page types which should be indexed (field:doktype, default: 1)</source>
 				<target/>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories"  approved="yes">

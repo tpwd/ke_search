@@ -229,7 +229,7 @@
 				<source>Add tags to files also?</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes" >
-				<source>Page types which should be indexed (field:doktype, default: 1,2,5)</source>
+				<source>Page types which should be indexed (field:doktype, default: 1)</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories" >
 				<source>Directories</source>
