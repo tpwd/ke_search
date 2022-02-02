@@ -31,7 +31,7 @@ class Flexform
         foreach($res as $col) {
             $isInList = GeneralUtility::inList($this->notAllowedFields, $col['Field']);
             if (!$isInList) {
-                $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'];
+                $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'] ?? $col['Field'];
                 $fieldLabel = $this->lang->sL($file);
                 $config['items'][] = array($fieldLabel, $col['Field']);
             }
@@ -54,7 +54,7 @@ class Flexform
         foreach($res as $col) {
             $isInList = GeneralUtility::inList($this->notAllowedFields, $col['Field']);
             if (!$isInList) {
-                $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'];
+                $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'] ?? $col['Field'];
                 $fieldLabel = $this->lang->sL($file);
                 $config['items'][] = array($fieldLabel . ' UP', $col['Field'] . ' asc');
                 $config['items'][] = array($fieldLabel . ' DOWN', $col['Field'] . ' desc');
