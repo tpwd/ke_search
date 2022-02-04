@@ -481,7 +481,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     foreach ($options as $optionInResultList) {
                         if ($optionInResultList['value'] == $data['tag']) {
                             $isOptionInOptionArray = true;
-                            $data['results'] = $optionInResultList['results'];
+                            $data['results'] = $optionInResultList['results'] ?? 0;
                             break;
                         }
                     }
