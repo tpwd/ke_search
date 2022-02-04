@@ -27,6 +27,7 @@ Upcoming version
 [TASK]    Remove usage of deprecated strftime() function and use localized date format in the backend controller. https://github.com/tpwd/ke_search/commit/cfde92f32ceeac3c2d966e9c590946a8e1576654
 [TASK]    Add .gitattributes files. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/44
 [TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
+[TASK]    Remove superfluous condition in checkbox filter. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/49
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 [DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
 [DOC]     Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
