@@ -1134,9 +1134,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // and proceed only when preselectedFilter was not set
         // this reduces the amount of sql queries, too
         if (($this->conf['preselected_filters'] ?? false) && count($this->preselectedFilter) == 0) {
-            $preselectedArray = GeneralUtility::trimExplode(',', $this->conf['preselected_filters'], true);
+            $preselectedArray = GeneralUtility::intExplode(',', $this->conf['preselected_filters'], true);
             foreach ($preselectedArray as $option) {
-                $option = intval($option);
                 $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
                 $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $filterRows = $queryBuilder
