@@ -381,7 +381,7 @@ class SearchHelper
         unset($keepPiVars[array_search('filter', $keepPiVars)]);
         foreach ($keepPiVars as $piVarKey) {
             if (!empty($piVars[$piVarKey])) {
-                $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . $piVars[$piVarKey];
+                $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . urlencode($piVars[$piVarKey]);
             }
         }
         if (is_array($piVars['filter'] ?? null) && count($piVars['filter'])) {
