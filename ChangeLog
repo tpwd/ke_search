@@ -14,6 +14,7 @@ Upcoming version
 [BUGFIX]  Avoid PHP8 errors in backend module. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/39
 [BUGFIX]  Do not show preview image if the file does not exist and do not link to those files. https://github.com/tpwd/ke_search/issues/42
 [BUGFIX]  Pagebrowser strips logical operators from search phrase, breaking functionality. https://github.com/tpwd/ke_search/issues/46
+[BUGFIX]  Add fallback when label in TCA is not defined. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/48
 [TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
 [TASK]    Remove PHP 8.1 Deprecations. https://github.com/tpwd/ke_search/commit/bdbba5d0bac74f724f727aa5d857fb00adfa59d7
