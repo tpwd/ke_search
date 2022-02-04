@@ -30,6 +30,7 @@ Upcoming version
 [TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
 [TASK]    Remove superfluous condition in checkbox filter. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/49
 [TASK]    Close html tag in SearchForm template. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/51
+[TASK]    Optimize int cast of preselected filters. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/52
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 [DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
 [DOC]     Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
