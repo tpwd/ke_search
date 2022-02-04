@@ -15,6 +15,7 @@ Upcoming version
 [BUGFIX]  Do not show preview image if the file does not exist and do not link to those files. https://github.com/tpwd/ke_search/issues/42
 [BUGFIX]  Pagebrowser strips logical operators from search phrase, breaking functionality. https://github.com/tpwd/ke_search/issues/46
 [BUGFIX]  Add fallback when label in TCA is not defined. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/48
+[BUGFIX]  Avoid undefined array key when filter options availability is not checked. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/50
 [TASK]    Avoid PHP 8.1 deprecations when indexing. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/37
 [TASK]    Remove PHP 8.1 deprecations. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/31
 [TASK]    Remove PHP 8.1 Deprecations. https://github.com/tpwd/ke_search/commit/bdbba5d0bac74f724f727aa5d857fb00adfa59d7
@@ -28,6 +29,7 @@ Upcoming version
 [TASK]    Add .gitattributes files. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/44
 [TASK]    Remove outdated doktypes. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/43
 [TASK]    Remove superfluous condition in checkbox filter. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/49
+[TASK]    Close html tag in SearchForm template. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/51
 [DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
 [DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
 [DOC]     Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
