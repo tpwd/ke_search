@@ -1,41 +1,42 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _commandline:
 
-Command Line Tools
+==================
+Command line tools
 ==================
 
 Certain ke_search functions can be accessed via the command line.
 
-
 Start the indexer
-.................
+=================
 
-.. code-block:: none
+.. code-block:: shell
 
 	vendor/bin/typo3 ke_search:indexing
 
-.. image:: ../Images/CommandLine/cli-start-indexing.png
-
+.. figure:: /Images/CommandLine/cli-start-indexing.png
+   :alt: Indexing command
+   :class: with-border
 
 Clear the index
-...............
+===============
 
-.. code-block:: none
+.. code-block:: shell
 
 	vendor/bin/typo3 ke_search:clearindex
 
-.. image:: ../Images/CommandLine/cli-clear-index.png
-
+.. figure:: /Images/CommandLine/cli-clear-index.png
+   :alt: Clear index command
+   :class: with-border
 
 Remove the indexer lock
-.......................
+=======================
 
-.. code-block:: none
+.. code-block:: shell
 
 	vendor/bin/typo3 ke_search:removelock
 
-.. image:: ../Images/CommandLine/cli-removelock.png
+.. figure:: /Images/CommandLine/cli-removelock.png
+   :alt: Remove lock command
+   :class: with-border

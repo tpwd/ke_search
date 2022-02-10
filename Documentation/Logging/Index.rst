@@ -1,10 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _logging:
 
+=======
 Logging
 =======
 
@@ -12,9 +10,12 @@ Logging uses the TYPO3 Logging API.
 
 The "minimum log level" is configurable in extension manager configuration (default: error).
 
-.. image:: ../Images/Logging/logging-level.png
+.. figure:: /Images/Logging/logging-level.png
+   :alt: Loglevel in extension configuration
+   :class: with-border
 
-Log messages matching the configured minimum log level are written into a seperate logfile (e.g. var/log/typo3_kesearch_3765640ce4.log) with content like this:
+Log messages matching the configured minimum log level are written into a separate logfile (e.g.
+:file:`var/log/typo3_kesearch_3765640ce4.log`) with content like this:
 
 .. code-block:: none
 
@@ -35,4 +36,7 @@ Indexing errors and main indexing database operations are catched.
 The "could not index file..." messages were removed from the indexing report (which is shown in the backend module and
 written to the sys_log) and replaced by a message pointing to the logfile.
 
-.. image:: ../Images/Logging/indexer-error-message.png
+.. figure:: /Images/Logging/indexer-error-message.png
+   :alt: Error notifications in backend module
+   :class: with-border
+

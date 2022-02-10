@@ -1,10 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _introduction:
 
+============
 Introduction
 ============
 
@@ -30,14 +28,15 @@ ke_search uses the MySQL fulltext search algorithm, so it does not need any tool
 the server. But you will need to install tools if you want to use file indexing (PDF, XLS, DOC files).
 
 System requirements
--------------------
+===================
 
-* ke_search 4.1 requires TYPO3 10 or 11. (Please use ke_search version 4.0.X for TYPO3 9 and 2.8.X for TYPO3 8).
-* ke_search requires MySQL / MariaDB, since it uses the “MATCH … AGAINST” function.
+* ke_search 4.1+ requires TYPO3 10 or 11. (Please use ke_search version 4.0.X for TYPO3 9 and 2.8.X for TYPO3 8).
+* ke_search requires MySQL / MariaDB, since it uses the :sql:`MATCH … AGAINST` function.
 * For file indexing additional tools are required: pdftotext, pdfinfo, catdoc, catppt, xls2csv.
 
 Source code
------------
+===========
+
 The source code is managed at
 
-https://github.com/tpwd/ke_search/
+https://github.com/tpwd/ke_search
