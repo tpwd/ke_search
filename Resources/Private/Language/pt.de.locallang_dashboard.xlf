@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="pt-PT" datatype="plaintext" original="messages" date="2022-01-20T10:11:58Z" product-name="ke_search">
+  <file source-language="en" target-language="pt-BR" datatype="plaintext" original="messages" date="2022-01-20T10:11:58Z" product-name="ke_search">
     <header/>
     <body>
       <trans-unit id="dashboard_preset.description" resname="dashboard_preset.description">
