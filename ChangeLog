@@ -37,7 +37,8 @@ Upcoming version
 [DOC]     Add description for documentation. https://github.com/tpwd/ke_search/commit/451723698b13e3ca3f68b39fc2c01ff3fa99cf6f
 [DOC]     Link to TER version of ke_search_hooks instead of GitHub
 [DOC]     Use consistent wording for ViewHelper and TypoScript
-[DOCS]    Beautify documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/54
+[DOC]     Beautify documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/54
+[DOC]     Add Matomo guide for statistics of search words. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/56
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
