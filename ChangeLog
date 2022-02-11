@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.3.0, February 2022
 [!!!]     This version removes the dashboard requirement introduced in the last version and makes it optional again.
 [!!!]     This version makes it possible to index "shortcut" content elements. For that you need to add "shortcut" to the list "Content element types which should be indexed" in existing indexer configurations.
 [FEATURE] Index shortcut content records in page indexer. Thanks to Benjamin Franzke. https://github.com/tpwd/ke_search/pull/7
