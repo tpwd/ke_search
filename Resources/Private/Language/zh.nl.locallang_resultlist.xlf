@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="zh-CN" datatype="plaintext" original="messages" date="2021-10-15T11:05:26Z" product-name="ke_search">
+  <file source-language="en" target-language="zh-TW" datatype="plaintext" original="messages" date="2021-10-15T11:05:26Z" product-name="ke_search">
     <header/>
     <body>
       <trans-unit id="pi_title" resname="pi_title">
