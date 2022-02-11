@@ -32,9 +32,7 @@ Including searchbox as a content element
 
 .. code-block:: typoscript
 
-   ########################################
-   # searchbox pure HTML
-   ########################################
+   # Include searchbox as a content element
    lib.searchbox = RECORDS
    lib.searchbox {
       tables = tt_content
@@ -63,9 +61,7 @@ Include searchbox with plain HTML
 
 .. code-block:: typoscript
 
-   ########################################
-   # searchbox pure HTML
-   ########################################
+   # Include searchbox as plain HTML
    lib.searchbox_html = TEXT
    lib.searchbox_html.value (
       <form method="get" id="form_kesearch_searchfield" name="form_kesearch_searchfield" action="/search/">
@@ -91,9 +87,7 @@ recommended to include the searchbox as content element as shown above.
 
 .. code-block:: typoscript
 
-   ########################################
-   # Searchbox Plugin
-   ########################################
+   # Include searchbox as a plugin
    lib.searchbox_plugin = COA
    lib.searchbox_plugin {
       10 < plugin.tx_kesearch_pi3
