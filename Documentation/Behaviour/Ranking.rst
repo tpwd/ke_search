@@ -28,7 +28,7 @@ ranked higher. Most likely this will push those index records to the very top of
 .. note::
    This will only work, if the search word appears exactly in the title.
    If a user searches for "Australia", the results with "Australian shepherd" in the title won't get a
-   higher weight. (see also :ref:`<relevance-calculation-partial-words>` below)
+   higher weight. (see also :ref:`relevance-calculation-partial-words` below)
 
 Adjusting weight of the searchwords in titles
 =============================================
