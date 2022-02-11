@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ru" datatype="plaintext" original="messages" date="2021-10-15T11:09:07Z" product-name="ke_search">
+    <header/>
+    <body>
+      <trans-unit id="pages.tx_kesearch_label" resname="pages.tx_kesearch_label">
+        <source>Search</source>
+        <target state="needs-translation">Search</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_kesearch_tags" resname="pages.tx_kesearch_tags">
+        <source>Tags for faceted search</source>
+        <target state="needs-translation">Tags for faceted search</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_kesearch_resultimage" resname="pages.tx_kesearch_resultimage">
+        <source>Search result image</source>
+        <target state="needs-translation">Search result image</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_kesearch_abstract" resname="pages.tx_kesearch_abstract">
+        <source>Abstract for search result</source>
+        <target state="needs-translation">Abstract for search result</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tx_kesearch_filter" resname="sys_category.tx_kesearch_filter">
+        <source>Category acts as a filter option for these filters</source>
+        <target state="needs-translation">Category acts as a filter option for these filters</target>
+      </trans-unit>
+      <trans-unit id="sys_category.tx_kesearch_filtersubcat" resname="sys_category.tx_kesearch_filtersubcat">
+        <source>Sub-Categories act as a filter options for these filters</source>
+        <target state="needs-translation">Sub-Categories act as a filter options for these filters</target>
+      </trans-unit>
+      <trans-unit id="tt_content.list_type_pi1" resname="tt_content.list_type_pi1">
+        <source>Faceted search - Searchbox and Filters</source>
+        <target state="needs-translation">Faceted search - Searchbox and Filters</target>
+      </trans-unit>
+      <trans-unit id="tt_content.list_type_pi2" resname="tt_content.list_type_pi2">
+        <source>Faceted search - Results</source>
+        <target state="needs-translation">Faceted search - Results</target>
+      </trans-unit>
+      <trans-unit id="tt_content.list_type_pi3" resname="tt_content.list_type_pi3">
+        <source>Faceted search - Cachable Searchbox and filters</source>
+        <target state="needs-translation">Faceted search - Cachable Searchbox and filters</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters" resname="tx_kesearch_filters">
+        <source>Filters</source>
+        <target state="needs-translation">Filters</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.title" resname="tx_kesearch_filters.title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.rendertype" resname="tx_kesearch_filters.rendertype">
+        <source>Rendering type</source>
+        <target state="needs-translation">Rendering type</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.markAllCheckboxes" resname="tx_kesearch_filters.markAllCheckboxes">
+        <source>Mark all checkboxes by default?</source>
+        <target state="needs-translation">Mark all checkboxes by default?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.options" resname="tx_kesearch_filters.options">
+        <source>Filter options</source>
+        <target state="needs-translation">Filter options</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.target_pid" resname="tx_kesearch_filters.target_pid">
+        <source>Choose page where to show all filter options</source>
+        <target state="needs-translation">Choose page where to show all filter options</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.amount" resname="tx_kesearch_filters.amount">
+        <source>How many textlinks should be displayed?</source>
+        <target state="needs-translation">How many textlinks should be displayed?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.shownumberofresults" resname="tx_kesearch_filters.shownumberofresults">
+        <source>Show number of results for each filter option?</source>
+        <target state="needs-translation">Show number of results for each filter option?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.alphabeticalsorting" resname="tx_kesearch_filters.alphabeticalsorting">
+        <source>Sort filteroptions alphabetically?</source>
+        <target state="needs-translation">Sort filteroptions alphabetically?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.rendertype.I.0" resname="tx_kesearch_filters.rendertype.I.0">
+        <source>Select/Dropdown</source>
+        <target state="needs-translation">Select/Dropdown</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.rendertype.I.1" resname="tx_kesearch_filters.rendertype.I.1">
+        <source>List/Textlinks</source>
+        <target state="needs-translation">List/Textlinks</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filters.rendertype.I.2" resname="tx_kesearch_filters.rendertype.I.2">
+        <source>Checkboxes (multiselection OR)</source>
+        <target state="needs-translation">Checkboxes (multiselection OR)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions" resname="tx_kesearch_filteroptions">
+        <source>Filter options</source>
+        <target state="needs-translation">Filter options</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions.title" resname="tx_kesearch_filteroptions.title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions.tag" resname="tx_kesearch_filteroptions.tag">
+        <source>Tag</source>
+        <target state="needs-translation">Tag</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions.slug" resname="tx_kesearch_filteroptions.slug">
+        <source>URL Segment (Slug)</source>
+        <target state="needs-translation">URL Segment (Slug)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions.automated_tagging" resname="tx_kesearch_filteroptions.automated_tagging">
+        <source>Set tag for this page and all children</source>
+        <target state="needs-translation">Set tag for this page and all children</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_filteroptions.automated_tagging_exclude" resname="tx_kesearch_filteroptions.automated_tagging_exclude">
+        <source>Exclude tag for all children of this page</source>
+        <target state="needs-translation">Exclude tag for all children of this page</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index" resname="tx_kesearch_index">
+        <source>Index</source>
+        <target state="needs-translation">Index</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.relevance" resname="tx_kesearch_index.relevance">
+        <source>Relevance</source>
+        <target state="needs-translation">Relevance</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.targetpid" resname="tx_kesearch_index.targetpid">
+        <source>Target PID</source>
+        <target state="needs-translation">Target PID</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.content" resname="tx_kesearch_index.content">
+        <source>Indexed content</source>
+        <target state="needs-translation">Indexed content</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.params" resname="tx_kesearch_index.params">
+        <source>Parameters</source>
+        <target state="needs-translation">Parameters</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.type" resname="tx_kesearch_index.type">
+        <source>Type</source>
+        <target state="needs-translation">Type</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.tags" resname="tx_kesearch_index.tags">
+        <source>Tags</source>
+        <target state="needs-translation">Tags</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.abstract" resname="tx_kesearch_index.abstract">
+        <source>Abstract</source>
+        <target state="needs-translation">Abstract</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.title" resname="tx_kesearch_index.title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.language" resname="tx_kesearch_index.language">
+        <source>Language UID</source>
+        <target state="needs-translation">Language UID</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.sortdate" resname="tx_kesearch_index.sortdate">
+        <source>Date</source>
+        <target state="needs-translation">Date</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_index.directory" resname="tx_kesearch_index.directory">
+        <source>Directory</source>
+        <target state="needs-translation">Directory</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig" resname="tx_kesearch_indexerconfig">
+        <source>Indexer Configuration</source>
+        <target state="needs-translation">Indexer Configuration</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.title" resname="tx_kesearch_indexerconfig.title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.storagepid" resname="tx_kesearch_indexerconfig.storagepid">
+        <source>Storage</source>
+        <target state="needs-translation">Storage</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.storagepid.description" resname="tx_kesearch_indexerconfig.storagepid.description">
+        <source>Storage page for search data (the index)</source>
+        <target state="needs-translation">Storage page for search data (the index)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.targetpid" resname="tx_kesearch_indexerconfig.targetpid">
+        <source>Target page for extension content</source>
+        <target state="needs-translation">Target page for extension content</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.startingpoints_recursive" resname="tx_kesearch_indexerconfig.startingpoints_recursive">
+        <source>Pages/folders recursive</source>
+        <target state="needs-translation">Pages/folders recursive</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.startingpoints_recursive.description" resname="tx_kesearch_indexerconfig.startingpoints_recursive.description">
+        <source>Pages/folders and sub-pages/sub-folders to be indexed (recursive)</source>
+        <target state="needs-translation">Pages/folders and sub-pages/sub-folders to be indexed (recursive)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.single_pages" resname="tx_kesearch_indexerconfig.single_pages">
+        <source>Single pages</source>
+        <target state="needs-translation">Single pages</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.single_pages.description" resname="tx_kesearch_indexerconfig.single_pages.description">
+        <source>Pages to be indexed (non-recursive)</source>
+        <target state="needs-translation">Pages to be indexed (non-recursive)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.sysfolder" resname="tx_kesearch_indexerconfig.sysfolder">
+        <source>Single folders</source>
+        <target state="needs-translation">Single folders</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.sysfolder.description" resname="tx_kesearch_indexerconfig.sysfolder.description">
+        <source>Folders to be indexed (non-recursive)</source>
+        <target state="needs-translation">Folders to be indexed (non-recursive)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.0" resname="tx_kesearch_indexerconfig.type.I.0">
+        <source>Pages</source>
+        <target state="needs-translation">Pages</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.2" resname="tx_kesearch_indexerconfig.type.I.2">
+        <source>News (tt_news)</source>
+        <target state="needs-translation">News (tt_news)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.5" resname="tx_kesearch_indexerconfig.type.I.5">
+        <source>Address records (tt_address)</source>
+        <target state="needs-translation">Address records (tt_address)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.6" resname="tx_kesearch_indexerconfig.type.I.6">
+        <source>Content records (tt_content)</source>
+        <target state="needs-translation">Content records (tt_content)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.7" resname="tx_kesearch_indexerconfig.type.I.7">
+        <source>Files</source>
+        <target state="needs-translation">Files</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type.I.12" resname="tx_kesearch_indexerconfig.type.I.12">
+        <source>News (news)</source>
+        <target state="needs-translation">News (news)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.type" resname="tx_kesearch_indexerconfig.type">
+        <source>Type</source>
+        <target state="needs-translation">Type</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions" resname="tx_kesearch_indexerconfig.index_content_with_restrictions">
+        <source>Index content elements with restrictions?</source>
+        <target state="needs-translation">Index content elements with restrictions?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0">
+        <source>Yes</source>
+        <target state="needs-translation">Yes</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.1" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.1">
+        <source>No</source>
+        <target state="needs-translation">No</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode" resname="tx_kesearch_indexerconfig.index_news_category_mode">
+        <source>Category mode</source>
+        <target state="needs-translation">Category mode</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode.I.1" resname="tx_kesearch_indexerconfig.index_news_category_mode.I.1">
+        <source>Index all news records</source>
+        <target state="needs-translation">Index all news records</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_category_mode.I.2" resname="tx_kesearch_indexerconfig.index_news_category_mode.I.2">
+        <source>Index only news with selected categories</source>
+        <target state="needs-translation">Index only news with selected categories</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_archived" resname="tx_kesearch_indexerconfig.index_news_archived">
+        <source>Archived news settings</source>
+        <target state="needs-translation">Archived news settings</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.0" resname="tx_kesearch_indexerconfig.index_news_archived.I.0">
+        <source>Index all news</source>
+        <target state="needs-translation">Index all news</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.1" resname="tx_kesearch_indexerconfig.index_news_archived.I.1">
+        <source>Index only active news</source>
+        <target state="needs-translation">Index only active news</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_archived.I.2" resname="tx_kesearch_indexerconfig.index_news_archived.I.2">
+        <source>Index only archived news</source>
+        <target state="needs-translation">Index only archived news</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_category_selection" resname="tx_kesearch_indexerconfig.index_news_category_selection">
+        <source>Categories</source>
+        <target state="needs-translation">Categories</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_useHRDatesSingleWithoutDay" resname="tx_kesearch_indexerconfig.index_news_useHRDatesSingleWithoutDay">
+        <source>Use dates without day for single-view-URLs</source>
+        <target state="needs-translation">Use dates without day for single-view-URLs</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode" resname="tx_kesearch_indexerconfig.index_news_files_mode">
+        <source>Attached files should be handled as</source>
+        <target state="needs-translation">Attached files should be handled as</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode.I.0" resname="tx_kesearch_indexerconfig.index_news_files_mode.I.0">
+        <source>Separate search result</source>
+        <target state="needs-translation">Separate search result</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_files_mode.I.1" resname="tx_kesearch_indexerconfig.index_news_files_mode.I.1">
+        <source>Content of news record</source>
+        <target state="needs-translation">Content of news record</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_extnews_category_selection" resname="tx_kesearch_indexerconfig.index_extnews_category_selection">
+        <source>Categories</source>
+        <target state="needs-translation">Categories</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_use_page_tags" resname="tx_kesearch_indexerconfig.index_use_page_tags">
+        <source>Add tags of parent pages/folders?</source>
+        <target state="needs-translation">Add tags of parent pages/folders?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_use_page_tags_for_files" resname="tx_kesearch_indexerconfig.index_use_page_tags_for_files">
+        <source>Add tags to files also?</source>
+        <target state="needs-translation">Add tags to files also?</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes">
+        <source>Page types which should be indexed (field:doktype, default: 1)</source>
+        <target state="needs-translation">Page types which should be indexed (field:doktype, default: 1)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories">
+        <source>Directories</source>
+        <target state="needs-translation">Directories</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.directories.description" resname="tx_kesearch_indexerconfig.directories.description">
+        <source>comma-separated, if FAL is used, name the directories as inside the file storage, e.g.: 'my_directory/,my_other_directory/'. If FAL is not used, you need to add the storage folder, e.g.: 'fileadmin/user_upload/,fileadmin/examples/'</source>
+        <target state="needs-translation">comma-separated, if FAL is used, name the directories as inside the file storage, e.g.: 'my_directory/,my_other_directory/'. If FAL is not used, you need to add the storage folder, e.g.: 'fileadmin/user_upload/,fileadmin/examples/'</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.fileext" resname="tx_kesearch_indexerconfig.fileext">
+        <source>File indexer: Comma separated list of allowed file extensions (eg. pdf,ppt,doc,xls)</source>
+        <target state="needs-translation">File indexer: Comma separated list of allowed file extensions (eg. pdf,ppt,doc,xls)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes">
+        <source>Content element types which should be indexed (default: text,textpic,bullets,table,html,header,uploads)</source>
+        <target state="needs-translation">Content element types which should be indexed (default: text,textpic,bullets,table,html,header,uploads)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption">
+        <source>Add tag to all indexed elements</source>
+        <target state="needs-translation">Add tag to all indexed elements</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.fal_storage" resname="tx_kesearch_indexerconfig.fal_storage">
+        <source>File storage (FAL)</source>
+        <target state="needs-translation">File storage (FAL)</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.fal_storage.dont_use_fal" resname="tx_kesearch_indexerconfig.fal_storage.dont_use_fal">
+        <source>Dont' use FAL but read files directly</source>
+        <target state="needs-translation">Dont' use FAL but read files directly</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.index_news_useHRDatesSingle" resname="tx_kesearch_indexerconfig.index_news_useHRDatesSingle" approved="yes">
+        <source/>
+        <target>Datum in Single-View-URLs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
