@@ -19,7 +19,7 @@ ke_search
     search
 
 :Copyright:
-    2019-2022
+    2011-2022
 
 :Author:
     ke_search Dev Team
