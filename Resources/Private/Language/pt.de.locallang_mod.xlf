@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="pt-PT" datatype="plaintext" original="messages" date="2021-10-15T11:11:00Z" product-name="ke_search">
+  <file source-language="en" target-language="pt-BR" datatype="plaintext" original="messages" date="2021-10-15T11:11:00Z" product-name="ke_search">
     <header/>
     <body>
       <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
