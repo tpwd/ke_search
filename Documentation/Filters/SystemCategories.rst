@@ -1,10 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _systemcategories:
 
+=====================================
 Using system categories for filtering
 =====================================
 
@@ -17,30 +15,36 @@ content, you will have to write a custom indexer or extend existing ones via a h
 
 You can then select for which filter a category should be used as a filter option:
 
-1. Create a "filter" record in your search data sysfolder.
+.. rst-class:: bignums-xxl
 
-.. image:: ../Images/Filters/create-filter.png
+   #. Create a "filter" record in your search data folder.
 
-2. Select that filter in the tab "Search". You can also choose to use sub-categories as filter options. You can select
-   more than one filter if you want to use this category as a filter option for more than one filter.
+      .. figure:: /Images/Filters/create-filter.png
+         :alt: Filter record view
+         :class: with-border
 
-.. image:: ../Images/Filters/category_select_filter.png
+   #. Select that filter in the tab "Search"
 
-NOTES
-.....
+      You can also choose to use sub-categories as filter options. You can select
+      more than one filter if you want to use this category as a filter option for more than one filter.
 
-The filter options will be created via a backend hook whenever a category is edited (created, updated or deleted).
+      .. figure:: /Images/Filters/category_select_filter.png
+         :alt: Assign filters in page properties
+         :class: with-border
 
-Up to version 3.1.6 ke_search only created the tags, you had to create the filter options
-yourself and use the auto-generated tag names.
+.. note::
 
-For each assigned system category, two tags are created:
+   * The filter options will be created via a backend hook whenever a category is edited (created, updated or deleted).
+   * Up to version 3.1.6 ke_search only created the tags, you had to create the filter options
+     yourself and use the auto-generated tag names.
+   * For each assigned system category, two tags are created:
 
-1. The first tag uses this naming schema "syscat" + UID of the system category (eg. "syscat123"). This tag is used
-   in the auto-created filter options.
-2. The second tag uses the title of the category. Non-alphanumeric characters will be removed.
+     #. The first tag uses this naming schema `syscat` + UID of the system category (eg. `syscat123`). This tag is used in the auto-created filter options.
+     #. The second tag uses the title of the category. Non-alphanumeric characters will be removed.
 
-If you use the tag derived from the category title, remember that this will change if the category title changes. It
-may be better to use the tag which relies on the uid of the category.
+   * If you use the tag derived from the category title, remember that this will change if the category title changes. It
+     may be better to use the tag which relies on the uid of the category.
 
-.. image:: ../Images/Filters/syscat-tag.png
+     .. figure:: /Images/Filters/syscat-tag.png
+        :alt: Tags
+        :class: with-border

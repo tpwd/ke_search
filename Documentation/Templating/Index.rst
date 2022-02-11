@@ -1,15 +1,13 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _templating:
 
+==========
 Templating
 ==========
 
 The extension comes with some example CSS styles (which you can remove to use your own styles) and with fluid templates
-which control the frontend appearence.
+which control the frontend appearance.
 
 .. toctree::
 	:maxdepth: 3

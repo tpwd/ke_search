@@ -1,10 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _stopwords:
 
+=========
 Stopwords
 =========
 
@@ -13,7 +11,6 @@ When using the extension with MySQL, some database servers may use the default M
 (e.g. search for german *brief* may return zero results), since *brief* is a default stopword.
 
 It is therefore recommended to either disable the feature if possible by setting
-
 
 .. code-block:: none
 

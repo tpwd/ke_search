@@ -1,26 +1,31 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _examples:
 
+========
 Examples
 ========
 
-Indexer configuration
----------------------
+.. contents::
+   :depth: 1
+   :local:
 
-.. image:: ../Images/Introduction/Indexer-Configuration.png
+Indexer configuration
+=====================
+
+.. figure:: /Images/Introduction/Indexer-Configuration.png
+   :alt: Indexer configuration
+   :class: with-border
 
 Basic result list
------------------
+=================
 
-.. image:: ../Images/Introduction/Result-List.png
-
+.. figure:: /Images/Introduction/Result-List.png
+   :alt: Basic result list
+   :class: with-border
 
 Live examples
--------------
+=============
 
 Here are examples on how a search result list can be used to display either a more classical list of search results
 or results in form of tiles. It is even possible to use only the faceting possibilities and skip the fulltext search.

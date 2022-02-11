@@ -1,10 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _filtersInResultList:
 
+=============================
 Render filters in result list
 =============================
 
@@ -12,56 +10,62 @@ Since version 3.9.0 it is possible to show filters also in the result list plugi
 in placing them in relation to the result list.
 
 In order to use this feature you need to enable the filters in the result list with the TypoScript setup setting
-`plugin.tx_kesearch_pi2.includeFilters = 1`.
+:typoscript:`plugin.tx_kesearch_pi2.includeFilters = 1`.
 
 This is useful if you want to show e.g. the filters in the right-hand side and only if they are present.
 
 HowTo
-~~~~~
-Enable the filters in the result list with this snippet in the TypoScript setup:
+=====
 
-.. code-block:: none
+.. rst-class:: bignums
 
-    plugin.tx_kesearch_pi2.includeFilters = 1
+   #. Enable the filters in the result list with this snippet in the TypoScript setup:
 
-Create a `Resources/Private/Partials/FiltersForm.html` which is a modification of the `Resources/Private/Partials/Filters.html` which looks like:
+      .. code-block:: typoscript
 
-.. code-block:: none
+         plugin.tx_kesearch_pi2.includeFilters = 1
 
-    <f:for each="{filters}" as="filter">
-        <f:switch expression="{filter.rendertype}">
-            <f:case value="select"><f:render partial="Filters/Select" arguments="{conf: conf, filter: filter}" /></f:case>
-            <f:case value="checkbox"><f:render partial="Filters/Checkbox" arguments="{conf: conf, filter: filter}" /></f:case>
-        </f:switch>
-    </f:for>
 
-Add a `Resources/Private/Partials/FiltersResults.html` which contains:
+   #. Create a :file:`Resources/Private/Partials/FiltersForm.html`:
 
-.. code-block:: none
+      This is a modification of the :file:`Resources/Private/Partials/Filters.html` which looks like:
 
-    <f:for each="{filters}" as="filter">
-        <f:switch expression="{filter.rendertype}">
-            <f:case value="list"><f:render partial="Filters/List" arguments="{conf: conf, filter: filter}" /></f:case>
-            <f:case value="custom"><f:format.raw>{filter.rawHtmlContent}</f:format.raw></f:case>
-        </f:switch>
-    </f:for>
+      .. code-block:: html
 
-In `Resources/Private/Templates/ResultList.html` include:
+         <f:for each="{filters}" as="filter">
+            <f:switch expression="{filter.rendertype}">
+               <f:case value="select"><f:render partial="Filters/Select" arguments="{conf: conf, filter: filter}" /></f:case>
+               <f:case value="checkbox"><f:render partial="Filters/Checkbox" arguments="{conf: conf, filter: filter}" /></f:case>
+            </f:switch>
+         </f:for>
 
-.. code-block:: none
+   #. Add a :file:`Resources/Private/Partials/FiltersResults.html` which contains:
 
-    <f:if condition="{filters}">
-        <div class="filters filtersResults">
-            <f:render partial="FiltersResults" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, filters: filters}" />
-        </div>
-    </f:if>
+      .. code-block:: html
 
-And in `Resources/Private/Templates/SearchForm.html` include:
+         <f:for each="{filters}" as="filter">
+            <f:switch expression="{filter.rendertype}">
+               <f:case value="list"><f:render partial="Filters/List" arguments="{conf: conf, filter: filter}" /></f:case>
+               <f:case value="custom"><f:format.raw>{filter.rawHtmlContent}</f:format.raw></f:case>
+            </f:switch>
+         </f:for>
 
-.. code-block:: none
+   #. In :file:`Resources/Private/Templates/ResultList.html` include:
 
-    <f:if condition="{filters}">
-        <div class="filters filtersForm">
-            <f:render partial="FiltersForm" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, filters: filters}" />
-        </div>
-    </f:if>
+      .. code-block:: html
+
+         <f:if condition="{filters}">
+            <div class="filters filtersResults">
+               <f:render partial="FiltersResults" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, filters: filters}" />
+            </div>
+         </f:if>
+
+   #. And in :file:`Resources/Private/Templates/SearchForm.html` include:
+
+      .. code-block:: html
+
+         <f:if condition="{filters}">
+            <div class="filters filtersForm">
+               <f:render partial="FiltersForm" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, filters: filters}" />
+            </div>
+         </f:if>

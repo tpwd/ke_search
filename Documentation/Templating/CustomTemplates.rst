@@ -1,11 +1,9 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _custom-templates:
 
-Use your own Templates
+======================
+Use your own templates
 ======================
 
 In order to use your own fluid templates, please set the path to your templates in the TypoScript *constants*.
@@ -15,7 +13,7 @@ templates, configuration and css files).
 
 For example:
 
-.. code-block:: none
+.. code-block:: typoscript
 
 	plugin.tx_kesearch.templateRootPath = EXT:mysite/Resources/Private/Templates/ke_search/
 	plugin.tx_kesearch.partialRootPath = EXT:mysite/Resources/Private/Partials/ke_search/
@@ -23,15 +21,16 @@ For example:
 
 You can use the *Constant Editor* to set the paths to your templates, partials and layouts.
 
-.. image:: ../Images/Templating/templating-constants.png
+.. figure:: /Images/Templating/templating-constants.png
+   :alt: Constant editor
+   :class: with-border
 
-
-In order to use your own templates please copy the default templates to your own package.
+In order to use your own templates, please copy the default templates to your own package.
 
 .. code-block:: none
 
 	typo3conf/ext/ke_search/Resources/Private
 
-It is not neccessary to copy all templates, partials and layouts to adjust the templates, you can just copy the
+It is not necessary to copy all templates, partials and layouts to adjust the templates, you can just copy the
 files you need to change. You will then have less hassle when templates change with a new version. All other files
 will fall back to the default.

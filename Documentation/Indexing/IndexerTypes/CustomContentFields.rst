@@ -1,14 +1,12 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _indexingCustomContentFields:
 
+==============================
 Indexing custom content fields
 ==============================
 
-If you added fields to the tt_content table in order to use them with your own content elements, you can index
+If you added fields to the `tt_content` table in order to use them with your own content elements, you can index
 these fields with the default page indexer, too.
 
 Two hooks are needed:
@@ -16,42 +14,44 @@ Two hooks are needed:
 * One adds the new field to the list of fields fetched from the tt_content table,
 * the other one adds the field to the content written to the index.
 
-Register the hooks
-..................
+.. rst-class:: bignums-xxl
 
-You need to register the hooks in your ext_localconf.php as follows:
+   #. Register the hooks
 
-.. code-block:: none
+      You need to register the hooks in your :file:`ext_localconf.php` as follows:
 
-    // Register hooks for indexing additional fields.
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] =
-        \MyVendor\KeSearchHooks\AdditionalContentFields::class;
+      .. code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
-        \MyVendor\KeSearchHooks\AdditionalContentFields::class;
+         // Register hooks for indexing additional fields.
+         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] =
+            \MyVendor\KeSearchHooks\AdditionalContentFields::class;
 
-Hook class
-..........
+         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
+            \MyVendor\KeSearchHooks\AdditionalContentFields::class;
 
-.. code-block:: none
+   #. Hook class
 
-    class AdditionalContentFields {
+      .. code-block:: php
 
-        public function modifyPageContentFields(&$fields, $pageIndexer)
-        {
-            // Add the field "subheader" from the tt_content table, which is normally not indexed, to the list of fields.
-            $fields .= ",subheader";
-        }
+         class AdditionalContentFields {
 
-        public function modifyContentFromContentElement(string &$bodytext, array $ttContentRow, $pageIndexer)
-        {
-            // Add the content of the field "subheader" to $bodytext, which is, what will be saved to the index.
-            $bodytext .= strip_tags($ttContentRow['subheader']);
-        }
+            public function modifyPageContentFields(&$fields, $pageIndexer)
+            {
+               // Add the field "subheader" from the tt_content table, which is normally
+               // not indexed, to the list of fields.
+               $fields .= ",subheader";
+            }
 
-    }
+            public function modifyContentFromContentElement(string &$bodytext, array $ttContentRow, $pageIndexer)
+            {
+               // Add the content of the field "subheader" to $bodytext, which is, what
+               // will be saved to the index.
+               $bodytext .= strip_tags($ttContentRow['subheader']);
+            }
+
+         }
 
 Example
-.......
+=======
 
-You can find an example in the extension ke_search_hooks: https://extensions.typo3.org/extension/ke_search_hooks
+You can find an example in the extension "ke_search_hooks": https://extensions.typo3.org/extension/ke_search_hooks

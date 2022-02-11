@@ -1,49 +1,53 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+﻿.. include:: /Includes.rst.txt
 
 .. _start:
 
-=============================================================
+=========
 ke_search
-=============================================================
+=========
 
-.. only:: html
+:Version:
+    |release|
 
-	:Classification:
-		ke_search
+:Language:
+    en
 
-	:Version:
-		|release|
+:Description:
+    Extension to search and filter content of the TYPO3 installation. It indexes directly from the database with build-in indexers and allows to add custom indexers. Provides indexers, plugins for searching and filtering, a backend module and a command-line interface.
 
-	:Language:
-		en
+:Keywords:
+    search
 
-	:Description:
-		Extension to search and filter content of the TYPO3 installation. It indexes directly from the database with build-in indexers and allows to add custom indexers. Provides indexers, plugins for searching and filtering, a backend module and a command-line interface.
+:Copyright:
+    2019-2022
 
-	:Keywords:
-		search
+:Author:
+    ke_search Dev Team
 
-	:Copyright:
-		2019
+:License:
+    This document is published under the Open Content License
+    available from http://www.opencontent.org/opl.shtml
 
-	:Author:
-		ke_search Dev Team
+**TYPO3**
 
-	:License:
-		This document is published under the Open Content License
-		available from http://www.opencontent.org/opl.shtml
+The content of this document is related to TYPO3 CMS,
+a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_.
 
-	:Rendered:
-		|today|
+**Community Documentation**
 
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+This documentation is community documentation for the TYPO3 extension ke_search.
+
+It is maintained as part of this third party extension.
+
+If you find an error or something is missing, please:
+`Report a Problem <https://github.com/tpwd/ke_search/issues/new>`_
+
+**Extension Manual**
+
+This documentation is for the TYPO3 extension ke_search.
 
 
-	**Table of Contents**
+**Table of Contents**
 
 .. toctree::
 	:maxdepth: 3
