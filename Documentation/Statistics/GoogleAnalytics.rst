@@ -2,6 +2,7 @@
 
 .. _googleanalytics:
 
+=================================
 Statistics using Google Analytics
 =================================
 

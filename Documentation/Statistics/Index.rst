@@ -52,4 +52,5 @@ More options
 	:titlesonly:
 	:glob:
 
-	GoogleAnalytics/GoogleAnalytics
+	GoogleAnalytics
+	Matomo

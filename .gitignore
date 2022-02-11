@@ -6,3 +6,4 @@ vendor
 Tests/Behat/vendor
 Tests/Behat/composer.lock
 Documentation/_themes
+*GENERATED*
