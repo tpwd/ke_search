@@ -2,9 +2,9 @@
 
 .. _addressesIndexer:
 
-=========
-Addresses
-=========
+==========================
+Addresses (EXT:tt_address)
+==========================
 
 The Address indexer allows you to index tt_address entries.
 
