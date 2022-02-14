@@ -82,7 +82,7 @@ class Pdf extends File implements FileIndexerInterface
 
         if (!$this->isAppArraySet) {
             $errorMessage = 'The path to pdftools is not correctly set in the '
-                . 'extension manager configuration. You can get the path with "which pdfinfo" or "which pdftotext".';
+                . 'extension configuration. You can get the path with "which pdfinfo" or "which pdftotext".';
             $pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
         }

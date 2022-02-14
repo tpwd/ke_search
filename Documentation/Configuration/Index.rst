@@ -6,7 +6,7 @@
 Configuration
 =============
 
-The extension can be configured via the plugin settings (flexform), TypoScript and the extension manager settings.
+The extension can be configured via the plugin settings (flexform), TypoScript and the extension configuration.
 
 .. toctree::
 	:maxdepth: 3

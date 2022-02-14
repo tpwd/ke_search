@@ -47,7 +47,7 @@ class SearchHelper
     public static $systemCategoryPrefix = 'syscat';
 
     /**
-     * get extension manager configuration for ke_search
+     * get extension configuration for ke_search
      * and make it possible to override it with page ts setup
      * @return array
      * @throws ExtensionConfigurationExtensionNotConfiguredException
@@ -86,7 +86,7 @@ class SearchHelper
     }
 
     /**
-     * get extension manager configuration for ke_search_premium
+     * get extension configuration for ke_search_premium
      * and make it possible to override it with page ts setup
      * @return array
      * @throws ExtensionConfigurationExtensionNotConfiguredException
