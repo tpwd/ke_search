@@ -19,7 +19,8 @@
     "typo3/cms-core": "^10.4.11 || ^11.0"
   },
   "require-dev": {
-    "typo3/cms-dashboard": "^10.4.11 || ^11.0"
+    "typo3/cms-dashboard": "^10.4.11 || ^11.0",
+    "phpunit/phpunit": "^8.5 || ^9.5"
   },
   "suggest": {
     "typo3/cms-dashboard": "Use widgets in dashboard"
@@ -49,5 +50,8 @@
     },
     "bin-dir": ".Build/bin",
     "vendor-dir": ".Build/vendor"
+  },
+  "scripts": {
+    "test:unit": ".Build/bin/phpunit -c Tests/phpunit.xml.dist"
   }
 }

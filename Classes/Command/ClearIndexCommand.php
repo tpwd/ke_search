@@ -20,24 +20,38 @@ namespace Tpwd\KeSearch\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Tpwd\KeSearch\Lib\Db;
-use Tpwd\KeSearch\Indexer\IndexerRunner;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 
 /**
  * Command for completely clearing the ke_search index
  */
-class ClearIndexCommand extends Command
+class ClearIndexCommand extends Command implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * @var IndexRepository
+     */
+    private $indexRepository;
+
+    public function __construct(IndexRepository $indexRepository)
+    {
+        $this->indexRepository = $indexRepository;
+        parent::__construct();
+    }
+
     /**
      * Configure command
      */
     protected function configure()
     {
+        // @todo Remove description when minimum compatibility is set to TYPO3 v11.
         $this->setDescription('Truncates the ke_search index table')
             ->setHelp(
                 'Completely truncates the ke_search index table. Use with care!'
@@ -52,42 +66,32 @@ class ClearIndexCommand extends Command
     /**
      * Removes the lock for the ke_search index process
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Clear ke_search index table');
 
-        /** @var IndexerRunner $indexerRunner */
-        $indexerRunner = GeneralUtility::makeInstance(IndexerRunner::class);
-        $indexerRunner->logger->log('notice', 'Clear index table started by command.');
+        $this->logger->log('notice', 'Clear index table started by command.');
 
-        // get number of records in index
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        $countIndex = $queryBuilder
-            ->count('*')
-            ->from('tx_kesearch_index')
-            ->execute()
-            ->fetchColumn(0);
-
+        $countIndex = $this->indexRepository->getTotalNumberOfRecords();
         if ($countIndex > 0) {
             try {
                 $io->text($countIndex . ' index records found');
-                $databaseConnection = Db::getDatabaseConnection('tx_kesearch_index');
-                $databaseConnection->truncate('tx_kesearch_index');
+                $this->indexRepository->truncate();
                 $io->success('ke_search index table was truncated');
                 $logMessage = 'Index table was cleared';
                 $logMessage .= ' (' . $countIndex . ' records deleted)';
-                $indexerRunner->logger->log('notice', $logMessage);
+                $this->logger->log('notice', $logMessage);
             } catch (\Exception $e) {
                 $io->error($e->getMessage());
-                $indexerRunner->logger->log('error', $e->getMessage());
+                $this->logger->log('error', $e->getMessage());
+
+                return 1;
             }
         } else {
             $io->note('There are no entries in ke_search index table.');
         }
 
         return 0;
-
     }
-
 }
