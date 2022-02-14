@@ -6,6 +6,8 @@
 Storage Engine
 ==============
 
+.. _configuration-storage-engine-innodb-vs-myisam:
+
 Why not use InnoDB for the index table?
 =======================================
 
