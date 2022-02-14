@@ -82,7 +82,7 @@ The action "/search/" ist the slug of the page you created with your result list
 Include searchbox with TypoScript
 =================================
 
-This is only possible without displaying filters as they are configured in a flexform. If you need filters, it's
+This is only possible without displaying filters as they are configured in a FlexForm. If you need filters, it's
 recommended to include the searchbox as content element as shown above.
 
 .. code-block:: typoscript
