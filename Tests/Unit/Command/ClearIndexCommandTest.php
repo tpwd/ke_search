@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Tpwd\KeSearch\Tests\Unit\Command\ClearIndexCommand;
+namespace Tpwd\KeSearch\Tests\Unit\Command;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\NullLogger;
@@ -18,6 +18,7 @@ class ClearIndexCommandTest extends TestCase
      * @var MockObject|IndexRepository
      */
     private $indexRepositoryMock;
+
     /**
      * @var CommandTester
      */
@@ -35,7 +36,7 @@ class ClearIndexCommandTest extends TestCase
     /**
      * @test
      */
-    public function testNoEntriesInIndexTableThenNoteIsDisplayed(): void
+    public function noEntriesInIndexTableThenNoteIsDisplayed(): void
     {
         $this->indexRepositoryMock
             ->expects(self::once())
@@ -57,7 +58,7 @@ class ClearIndexCommandTest extends TestCase
     /**
      * @test
      */
-    public function testEntriesInTableThenSuccessMessageIsDisplayed(): void
+    public function entriesInTableThenSuccessMessageIsDisplayed(): void
     {
         $this->indexRepositoryMock
             ->expects(self::once())
@@ -83,7 +84,7 @@ class ClearIndexCommandTest extends TestCase
     /**
      * @test
      */
-    public function testDisplayErrorMessageWhenExceptionOccurs(): void
+    public function errorMessageIsDisplayedWhenExceptionOccurs(): void
     {
         $this->indexRepositoryMock
             ->expects(self::once())

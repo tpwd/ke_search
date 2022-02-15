@@ -71,7 +71,7 @@ class ClearIndexCommand extends Command implements LoggerAwareInterface
         $io = new SymfonyStyle($input, $output);
         $io->title('Clear ke_search index table');
 
-        $this->logger->log('notice', 'Clear index table started by command.');
+        $this->logger->notice('Clear index table started by command.');
 
         $countIndex = $this->indexRepository->getTotalNumberOfRecords();
         if ($countIndex > 0) {
@@ -81,10 +81,10 @@ class ClearIndexCommand extends Command implements LoggerAwareInterface
                 $io->success('ke_search index table was truncated');
                 $logMessage = 'Index table was cleared';
                 $logMessage .= ' (' . $countIndex . ' records deleted)';
-                $this->logger->log('notice', $logMessage);
+                $this->logger->notice($logMessage);
             } catch (\Exception $e) {
                 $io->error($e->getMessage());
-                $this->logger->log('error', $e->getMessage());
+                $this->logger->error($e->getMessage());
 
                 return 1;
             }
