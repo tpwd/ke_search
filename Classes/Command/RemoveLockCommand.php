@@ -77,7 +77,7 @@ class RemoveLockCommand extends Command implements LoggerAwareInterface
             } else {
                 $this->registry->removeAllByNamespace('tx_kesearch');
                 $io->success('Indexer lock was successfully removed');
-                $this->logger->notice('Indexer lock successful removed');
+                $this->logger->notice('Indexer lock successfully removed');
             }
         } catch (\Exception $e) {
             $io->error('There was an error accessing the TYPO3 registry.');
