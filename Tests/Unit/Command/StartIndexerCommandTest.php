@@ -145,8 +145,7 @@ class StartIndexerCommandTest extends TestCase
 
     public function dataProviderForIndexerOutput(): iterable
     {
-        yield 'No errors occurred while indexing, tags are correctly stripped off' => [
-            'indexerResult' => <<<EOL
+        $indexerResult = <<<EOL
 <div class="row"><div class="col-md-6"><div class="alert alert-info">Running indexing process in full mode.</div><table class="table table-striped table-hover"><tr><th>Indexer</th><th>Mode</th><th>Info</th><th>Time</th></tr><tr><td><span class="title">Pages</span></td><td></td><td>10 pages have been selected for indexing in the main language.<br />
 3 languages (All languages, English, German) have been found.<br />
 2 pages have been indexed. <br />
@@ -154,8 +153,8 @@ class StartIndexerCommandTest extends TestCase
 0 files have been indexed.</td><td><i>Indexing process took 83 ms.</i></td></tr></table><div class="card"><div class="card-content"><h3 class="card-title">Cleanup</h3><p><strong>0</strong> entries deleted.</p>
 <p><i>Cleanup process took 1 ms.</i></p>
 </div></div><div class="card"><div class="card-content"><p>Indexing finished at 02/16/22, 18:36:34 (took 0 seconds).</p><p>Index contains 2 entries.</p></div></div></div></div>
-EOL,
-            'plaintextResult' => <<<EOL
+EOL;
+        $plaintextResult = <<<EOL
 Running indexing process in full mode.IndexerModeInfoTime
 Pages
 10 pages have been selected for indexing in the main language.
@@ -172,7 +171,10 @@ Cleanup process took 1 ms.
 
 Indexing finished at 02/16/22, 18:36:34 (took 0 seconds).
 Index contains 2 entries.
-EOL,
+EOL;
+        yield 'No errors occurred while indexing, tags are correctly stripped off' => [
+            'indexerResult' => $indexerResult,
+            'plaintextResult' => $plaintextResult,
             'expectedLines' => [
                 '10 pages have been selected for indexing in the main language.',
                 '3 languages (All languages, English, German) have been found.',
