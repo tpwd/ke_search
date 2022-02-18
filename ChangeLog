@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[TASK]    Use "extension configuration" over "extension manager configuration". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/69
 [DOC]     Improve chapter about search word length. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/68
 
 Version 4.3.1, February 2022
