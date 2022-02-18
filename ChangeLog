@@ -2,7 +2,7 @@ ChangeLog
 
 Upcoming version
 [TASK]    Use "extension configuration" over "extension manager configuration". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/69
-[DOC]     Improve chapter about search word length. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/68
+[DOCS]    Improve chapter about search word length. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/68
 
 Version 4.3.1, February 2022
 [BUGFIX]  Fix bug which made filtering unusable. https://github.com/tpwd/ke_search/issues/74
@@ -38,14 +38,14 @@ Version 4.3.0, February 2022
 [TASK]    Remove superfluous condition in checkbox filter. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/49
 [TASK]    Close html tag in SearchForm template. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/51
 [TASK]    Optimize int cast of preselected filters. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/52
-[DOC]     Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
-[DOC]     Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
-[DOC]     Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
-[DOC]     Add description for documentation. https://github.com/tpwd/ke_search/commit/451723698b13e3ca3f68b39fc2c01ff3fa99cf6f
-[DOC]     Link to TER version of ke_search_hooks instead of GitHub
-[DOC]     Use consistent wording for ViewHelper and TypoScript
-[DOC]     Beautify documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/54
-[DOC]     Add Matomo guide for statistics of search words. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/56
+[DOCS]    Add missing documentation for hooks for indexers. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/36
+[DOCS]    Revise "Translating filter". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/45
+[DOCS]    Link to TER for older versions and add a note about where the source code is managed. https://github.com/tpwd/ke_search/commit/09366b594c4ec6c338b5045ee04a5af53a270214
+[DOCS]    Add description for documentation. https://github.com/tpwd/ke_search/commit/451723698b13e3ca3f68b39fc2c01ff3fa99cf6f
+[DOCS]    Link to TER version of ke_search_hooks instead of GitHub
+[DOCS]    Use consistent wording for ViewHelper and TypoScript
+[DOCS]    Beautify documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/54
+[DOCS]    Add Matomo guide for statistics of search words. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/56
 
 Version 4.2.0, December 2021
 [!!!]     This version has a new requirement (EXT:dashboard).
@@ -69,7 +69,7 @@ Version 4.1.0, October 2021
 [TASK]    Remove usage of deprecated constant TYPO3_MODE, see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/11.0/Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.html
 [BUGFIX]  Fix the check which action is currently set in the backend module, fixes error: Could not ultimately dispatch the request after 101 iterations
 [TASK]    Show document header in backend module
-[DOC]     Add documentation about MySQL stopwords. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/13
+[DOCS]    Add documentation about MySQL stopwords. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/13
 
 Version 4.0.1, October 2021
 [TASK]    Use new ke_search_premium 4 namespace "tpwd"
@@ -144,7 +144,7 @@ Version 3.5.0, March 2021
 [TASK]    Use resultrow.date_timestamp instead of resultrow.date in the default template. https://github.com/teaminmedias-pluswerk/ke_search/issues/44
 [TASK]    Refactor file indexing methods by moving them from the news indexer to IndexerBase
 [FEATURE] Add indexer for EXT:tt_news. Thanks for sponsoring to Michael Lackenberger
-[DOC]     Add documentation about the storage engine for tx_kesearch_index
+[DOCS]    Add documentation about the storage engine for tx_kesearch_index
 [BUGFIX]  Do not use tags set in tt_content elements as tags for pages which have by accident the the same UID
 [BUGFIX]  Fix missing closing li tags. Thanks to al-Iskandar. https://github.com/teaminmedias-pluswerk/ke_search/issues/398
 [BUGFIX]  Fix validation error, move a tag out of ul tag.
@@ -157,7 +157,7 @@ Version 3.4.2, February 2021
 Version 3.4.1, February 2021
 [BUGFIX]  Fix ViewHelper requires $resetFilters as array. Thanks to Daniel Kruse and crealistiques. https://github.com/teaminmedias-pluswerk/ke_search/issues/391
 [BUGFIX]  The page indexer does not respect 'singe_pages' in page translations. Thanks to Zellwerker and Markus Gerdes. https://github.com/teaminmedias-pluswerk/ke_search/issues/390 and https://github.com/teaminmedias-pluswerk/ke_search/issues/389.
-[DOC]     Improve labels in indexer configuration and documentation on multilingual setup.
+[DOCS]    Improve labels in indexer configuration and documentation on multilingual setup.
 [BUGFIX]  Linked files on excluded page get indexed. Thanks to LuxEix. https://github.com/teaminmedias-pluswerk/ke_search/issues/388
 
 Version 3.4.0, January 2021
@@ -168,12 +168,12 @@ Version 3.4.0, January 2021
 [TASK]    Add string as datatype to uid param for findByUidAndType(). Thanks to escapevisual. https://github.com/teaminmedias-pluswerk/ke_search/pull/381
 [FEATURE] Add add allowEmptySearch setting, by deactivating no query will be executed if no searchword or filter is set. Thanks to Marcel Tams. https://github.com/teaminmedias-pluswerk/ke_search/pull/382
 [TASK]    Catch error if MySQL KEYS are disabled during first indexing. https://github.com/teaminmedias-pluswerk/ke_search/issues/380
-[DOC]     Add documentation on how to override the record storage page with typoscript. https://github.com/teaminmedias-pluswerk/ke_search/issues/282
+[DOCS]    Add documentation on how to override the record storage page with typoscript. https://github.com/teaminmedias-pluswerk/ke_search/issues/282
 [FEATURE] Add routing for TYPO3 9 and 10 (custom routing aspects / mapper, configuration examples, template changes). https://github.com/teaminmedias-pluswerk/ke_search/issues/279
 [TASK]    Add validation "alphanum" to filter option tags. Add upgrade wizard. Adjust makeTags function and documentation accordingly. https://github.com/teaminmedias-pluswerk/ke_search/issues/383
 [TASK]    Flatten piVars in order make it possible to use aspects in routing and create speaking URLs.
 [TASK]    Remove "redirect" parameter, there's now a history.replaceState command in the SearchForm template
-[DOC]     Add example for speaking urls for filters (see Configuration --> Routing in the documentation)
+[DOCS]    Add example for speaking urls for filters (see Configuration --> Routing in the documentation)
 [TASK]    Add slug field and upgrade wizard for filter options.
 [FEATURE] Add viewhelper to link to search result pages (see Templating --> Link ViewHelper in the documentation)
 
@@ -192,11 +192,11 @@ Version 3.3.0, October 2020
 [BUGFIX]  Fix undefined variable in news indexer
 [BUGFIX]  Fix tt_address records are only indexed from first storage pid. Thanks to Andreas Kießling. https://github.com/teaminmedias-pluswerk/ke_search/issues/374
 [BUGFIX]  Fix language overlay bug with filter options. Thanks to Andreas Hager. https://github.com/teaminmedias-pluswerk/ke_search/pull/373
-[DOC]     Add documentation on how to index custom content fields
+[DOCS]    Add documentation on how to index custom content fields
 [TASK]    Log search query to logfile if configured in plugin settings. https://github.com/teaminmedias-pluswerk/ke_search/issues/321
 [TASK]    Use class name in indexer report if title is not available.
 [TASK]    Show only filter option records for default language in localized pages. https://github.com/teaminmedias-pluswerk/ke_search/issues/367
-[DOC]     Add link to category filter options in news indexing. Thanks to okmiim. https://github.com/teaminmedias-pluswerk/ke_search/pull/377
+[DOCS]    Add link to category filter options in news indexing. Thanks to okmiim. https://github.com/teaminmedias-pluswerk/ke_search/pull/377
 [BUGFIX]  Only use single_pid of news categories as a target page for news results if the page is reachable.
 [TASK]    Use file linkhandler instead of publicUrl for links to files. Thanks to phil64. https://github.com/teaminmedias-pluswerk/ke_search/issues/331
 [TASK]    Remove usage of deprecated ResourceFactory::getInstance()
@@ -207,9 +207,9 @@ Version 3.2.0, September 2020
 [!!!]     This version changes the database structure!
 [FEATURE] Allow system categories to be used as a filter option in ke_search without the need of adding any custom code. Filter options will be created, updated or deleted whenever categories with an assigned filter are edited.
 [BUGFIX]  Fix too few arguments to function for custom indexers. https://github.com/teaminmedias-pluswerk/ke_search_hooks/issues/13
-[DOC]     Improve documentation. Thanks to Chris Müller. https://github.com/teaminmedias-pluswerk/ke_search/pull/365
+[DOCS]    Improve documentation. Thanks to Chris Müller. https://github.com/teaminmedias-pluswerk/ke_search/pull/365
 [BUGFIX]  Show option "Don't use FAL" again in file indexer configuration
-[DOC]     Improve documentation on file indexing
+[DOCS]    Improve documentation on file indexing
 [BUGFIX]  Fix news indexer, category selection doesn't contain category UIDs. Thanks to Patrick Crausaz. https://github.com/teaminmedias-pluswerk/ke_search/pull/368
 [BUGFIX]  Do not access protected logger in PDF indexer.
 [TASK]    Show first image instead of last for news records. Thanks to Robert Wolle. https://github.com/teaminmedias-pluswerk/ke_search/issues/355
