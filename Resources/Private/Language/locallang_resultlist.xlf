@@ -13,7 +13,7 @@
 				<source>General</source>
 			</trans-unit>
 			<trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE" >
-				<source>Load flexforms config from this search box</source>
+				<source>Load FlexForms config from this search box</source>
 			</trans-unit>
 		</body>
 	</file>

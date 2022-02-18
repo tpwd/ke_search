@@ -6,10 +6,10 @@
 Notes
 =====
 
-Notes on TypoScript and Flexform settings
+Notes on TypoScript and FlexForm settings
 =========================================
 
-Each property in Flexform overwrites the property defined by TypoScript.
+Each property in FlexForm overwrites the property defined by TypoScript.
 
 Each property has stdWrap properties.
 

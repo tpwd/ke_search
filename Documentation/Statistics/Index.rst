@@ -40,7 +40,7 @@ Search phrases go to the table `tx_kesearch_stat_search`. Single search words ar
 in the table `tx_kesearch_stat_words`.
 
 The statistic data is stored in the folder that is set as the first storage point in your plugin configuration.
-Make sure that you set the flexform configuration option for activating the statistics function
+Make sure that you set the FlexForm configuration option for activating the statistics function
 in the correct plugin if it does not work as expected. E.g. if you have several searchbox plugins
 that point to one central search result page, the value must be set on this result page.
 

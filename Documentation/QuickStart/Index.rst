@@ -72,7 +72,8 @@ You need to create two plugins: The searchbox and the resultlist.
 
    #. Create a plugin :guilabel:`Faceted Search: Show resultlist` on the page `Search`
 
-      In the field "load flexform config from this search box" fill in the Search-Plug-In that you created in Step 3 (our example: "Searchbox").
+      In the field :guilabel:`Load FlexForm config from this search box` fill in the Search-Plug-In that you created in
+      the previous step (our example: `Searchbox`).
 
       .. figure:: /Images/QuickStart/plugins-5.png
          :alt: Plugin tab
