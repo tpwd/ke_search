@@ -72,7 +72,7 @@ class Doc extends File implements FileIndexerInterface
 
         if (!$this->isAppArraySet) {
             $errorMessage = 'The path to catdoctools is not correctly set in the '
-                . 'extension manager configuration. You can get the path with "which catdoc".';
+                . 'extension configuration. You can get the path with "which catdoc".';
             $pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
         }

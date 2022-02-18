@@ -27,7 +27,7 @@ System requirements
 * For PPT indexing you will need to have the external tool "catppt" installed (in Ubuntu Linux it comes
   with the package "catdoc").
 
-Please use the extension manager settings to tell ke_search the file paths where to find these tools.
+Please use the extension configuration to tell ke_search the file paths where to find these tools.
 
 Directory based file indexer with FAL support
 =============================================
