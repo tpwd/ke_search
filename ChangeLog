@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 4.3.1, February 2022
+[BUGFIX]  Fix bug which made filtering unusable. https://github.com/tpwd/ke_search/issues/74
+
 Version 4.3.0, February 2022
 [!!!]     This version removes the dashboard requirement introduced in the last version and makes it optional again.
 [!!!]     This version makes it possible to index "shortcut" content elements. For that you need to add "shortcut" to the list "Content element types which should be indexed" in existing indexer configurations.
