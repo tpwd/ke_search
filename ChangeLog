@@ -5,6 +5,7 @@ Upcoming version
 [TASK]    Streamline wording of "FlexForm". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/70/
 [TASK]    Simplify determining of log level in ext_localconf.php. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/71
 [DOCS]    Improve chapter about search word length. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/68
+[TASK]    Add "ext-pdo" as requirement in composer.json. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/73
 
 Version 4.3.1, February 2022
 [BUGFIX]  Fix bug which made filtering unusable. https://github.com/tpwd/ke_search/issues/74
