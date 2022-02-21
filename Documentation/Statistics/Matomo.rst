@@ -29,3 +29,11 @@ If you use Matomo on your website, you can use it to generate a report for searc
       .. figure:: /Images/Statistics/statistics-matomo-2.png
          :alt: Site search metrics in Matomo
          :class: with-border
+
+.. tip::
+   It is also possible to add more information to Matomo like keywords with no results or the query time.
+   Take a look into the blog post `Display search metrics from TYPO3 extension ke_search in Matomo`_ how
+   to achieve that.
+
+
+.. _Display search metrics from TYPO3 extension ke_search in Matomo: https://brot.krue.ml/search-metrics-typo3-extension-ke-search-matomo/
