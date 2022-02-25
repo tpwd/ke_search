@@ -23,6 +23,7 @@ namespace Tpwd\KeSearch\Lib;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -746,8 +747,18 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
                 // for pages and news we have to fetch the file reference uid
                 if ($type == 'file') {
-                    if ($this->conf['showFilePreview'] && SearchHelper::getFile($row['orig_uid'])) {
-                        $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
+                    if ($this->conf['showFilePreview']) {
+                        // SearchHelper::getFile will return af FILE object if it is a FAL file,
+                        // otherwise it's a plain path to a file
+                        if (SearchHelper::getFile($row['orig_uid'])) {
+                            // FAL file
+                            $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
+                        } else {
+                            // no FAL file or FAL file does not exist
+                            if (file_exists(Environment::getPublicPath() . '/' . $row['directory'] . $row['title'])) {
+                                $resultrowTemplateValues['filePreviewId'] = $row['directory'] . $row['title'];
+                            }
+                        }
                     }
                     $resultrowTemplateValues['treatIdAsReference'] = 0;
                 } else {

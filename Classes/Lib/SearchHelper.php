@@ -24,6 +24,7 @@ use PDO;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Registry;
@@ -278,9 +279,9 @@ class SearchHelper
                         $linkConf['parameter'] = 't3://file?uid=' . $resultRow['orig_uid'];
                     }
                 } else {
-                    $filePath = $resultRow['directory'] . rawurlencode($resultRow['title']);
+                    $filePath = Environment::getPublicPath() . '/' . $resultRow['directory'] . $resultRow['title'];
                     if (file_exists($filePath)) {
-                        $linkConf['parameter'] = $filePath;
+                        $linkConf['parameter'] = rawurlencode($resultRow['directory'] . $resultRow['title']);
                     }
                 }
                 $linkConf['fileTarget'] = $targetFiles;
