@@ -359,19 +359,19 @@ class IndexerBase
 
         $metadataContent = '';
 
-        if ($fileProperties['title']) {
+        if (!empty($fileProperties['title'])) {
             $metadataContent = $fileProperties['title'] . " ";
         }
 
-        if ($fileProperties['description']) {
+        if (!empty($fileProperties['description'])) {
             $metadataContent .= $fileProperties['description'] . " ";
         }
 
-        if ($fileProperties['alternative']) {
+        if (!empty($fileProperties['alternative'])) {
             $metadataContent .= $fileProperties['alternative'] . " ";
         }
 
-        if ($metadataContent) {
+        if (!empty($metadataContent)) {
             $fileContent = $metadataContent . self::METADATASEPARATOR . $fileContent;
         }
 

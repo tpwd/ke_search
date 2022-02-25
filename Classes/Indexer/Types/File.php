@@ -27,6 +27,7 @@ namespace Tpwd\KeSearch\Indexer\Types;
 
 use Tpwd\KeSearch\Indexer\Filetypes\FileIndexerInterface;
 use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
@@ -48,24 +49,39 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 class File extends IndexerBase
 {
 
-    public $extConf = array(); // saves the configuration of extension ke_search_hooks
-    public $app = array(); // saves the path to the executables
-    public $isAppArraySet = false;
+    /**
+     * saves the configuration of extension ke_search_hooks
+     *
+     * @var array
+     */
+    public array $extConf = array(); //
+
+    /**
+     * saves the path to the executables
+     *
+     * @var array
+     */
+    public array $app = array();
+
+    /**
+     * @var bool
+     */
+    public bool $isAppArraySet = false;
 
     /**
      * @var Fileinfo
      */
-    public $fileInfo;
+    public FileInfo $fileInfo;
 
     /**
      * @var ResourceStorage
      */
-    public $storage;
+    public ResourceStorage $storage;
 
     /**
      * Initializes indexer for files
      *
-     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
+     * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
     {
@@ -74,6 +90,8 @@ class File extends IndexerBase
 
         // get extension configuration of ke_search
         $this->extConf = SearchHelper::getExtConf();
+
+        /** @var FileInfo fileInfo */
         $this->fileInfo = GeneralUtility::makeInstance(Fileinfo::class);
     }
 
@@ -81,7 +99,7 @@ class File extends IndexerBase
      * This function was called from indexer object and saves content to index table
      * @return string content which will be displayed in backend
      */
-    public function startIndexing()
+    public function startIndexing(): string
     {
         $directories = $this->indexerConfig['directories'];
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
@@ -108,7 +126,7 @@ class File extends IndexerBase
      * @param array $files
      * @param array $directoryArray
      */
-    public function getFilesFromFal(&$files, $directoryArray)
+    public function getFilesFromFal(array &$files, array $directoryArray)
     {
         foreach ($directoryArray as $directory) {
             $folder = $this->storage->getFolder($directory);
@@ -139,7 +157,7 @@ class File extends IndexerBase
      * @param array $directoryArray
      * @return array An Array containing all files of all valid directories
      */
-    public function getFilesFromDirectories(array $directoryArray)
+    public function getFilesFromDirectories(array $directoryArray): array
     {
         $directoryArray = $this->getAbsoluteDirectoryPath($directoryArray);
         if (is_array($directoryArray) && count($directoryArray)) {
@@ -168,9 +186,9 @@ class File extends IndexerBase
      * @param array $directoryArray
      * @return array An Array containing the absolute directory paths
      */
-    public function getAbsoluteDirectoryPath(array $directoryArray)
+    public function getAbsoluteDirectoryPath(array $directoryArray): array
     {
-        if (is_array($directoryArray) && count($directoryArray)) {
+        if (count($directoryArray)) {
             foreach ($directoryArray as $key => $directory) {
                 $directory = rtrim($directory, '/');
                 $directoryArray[$key] = Environment::getPublicPath() . '/' . $directory . '/';
@@ -188,10 +206,10 @@ class File extends IndexerBase
      * @param array $files
      * @return integer
      */
-    public function extractContentAndSaveToIndex($files)
+    public function extractContentAndSaveToIndex(array $files): int
     {
         $counter = 0;
-        if (is_array($files) && count($files)) {
+        if (count($files)) {
             foreach ($files as $file) {
                 if ($this->fileInfo->setFile($file)) {
                     // get file content, check if we have a FAL resource or a simple
@@ -215,10 +233,10 @@ class File extends IndexerBase
 
     /**
      * get filecontent of allowed extensions
-     * @param string $file
+     * @param string $filePath
      * @return mixed false or fileinformations as array
      */
-    public function getFileContent($file)
+    public function getFileContent(string $filePath)
     {
         // we can continue only when given file is really file and not a directory
         if ($this->fileInfo->getIsFile()) {
@@ -238,7 +256,7 @@ class File extends IndexerBase
 
                     // if there's no matching index entry, we execute the  "get file content" method of our new object
                     if (!$fileContent) {
-                        $fileContent = $fileObj->getContent($file);
+                        $fileContent = $fileObj->getContent($filePath);
                         $this->addError($fileObj->getErrors());
 
                         // remove metadata separator if it appears in the content
@@ -263,7 +281,7 @@ class File extends IndexerBase
                 }
             }
         } else {
-            $errorMessage = $file . ' is not a file.';
+            $errorMessage = $filePath . ' is not a file.';
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
             return false;
@@ -275,10 +293,11 @@ class File extends IndexerBase
      * @param string $hash
      * @return string/boolean returns false if no entry has been found, otherwise the content as string
      */
-    public function getFileContentFromIndex($hash = "")
+    public function getFileContentFromIndex(string $hash = "")
     {
         $fileContent = false;
 
+        // todo: use the index repository for this
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
         $hashRow = $queryBuilder
@@ -303,10 +322,11 @@ class File extends IndexerBase
 
     /**
      * get a unique hash for current file
-     * this is needed for a faster check if record allready exists in indexer table
+     * this is needed for a faster check if record already exists in indexer table
+     *
      * @return string A 25 digit MD5 hash value of current file and last modification time
      */
-    public function getUniqueHashForFile()
+    public function getUniqueHashForFile(): string
     {
         $path = $this->fileInfo->getPath();
         $file = $this->fileInfo->getName();
@@ -317,10 +337,11 @@ class File extends IndexerBase
 
     /**
      * creates a index entry for a given file
-     * @param string $file
+     *
+     * @param string|\TYPO3\CMS\Core\Resource\File $file
      * @param string $content
      */
-    public function storeToIndex($file, $content)
+    public function storeToIndex($file, string $content)
     {
         $tags = '';
 
@@ -335,12 +356,14 @@ class File extends IndexerBase
             $language_uid = $this->detectLanguage($fileProperties);
 
             // get raw metadata for this file
+            /** @var MetaDataRepository $metaDataRepository */
             $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
             $metaDataProperties = $metaDataRepository->findByFile($file);
         } else {
             $fileProperties = false;
             $orig_uid = 0;
             $language_uid = -1;
+            $metaDataProperties = false;
         }
 
         $indexRecordValues = array(
@@ -370,7 +393,9 @@ class File extends IndexerBase
         if ($this->pObj->indexerConfig['fal_storage'] > 0) {
 
             // index meta data from FAL: title, description, alternative
-            $content = $this->addFileMetata($fileProperties, $content);
+            if ($fileProperties) {
+                $content = $this->addFileMetata($fileProperties, $content);
+            }
 
             // use file description as abstract
             $indexRecordValues['abstract'] = $fileProperties['description'] ?? '';
@@ -379,23 +404,25 @@ class File extends IndexerBase
             $indexRecordValues['fe_group'] = $fileProperties['fe_groups'] ?? '';
 
             // get list of assigned system categories
-            $categories = SearchHelper::getCategories(
-                $metaDataProperties['uid'],
-                'sys_file_metadata'
-            );
+            if (isset($metaDataProperties['uid'])) {
+                $categories = SearchHelper::getCategories(
+                    $metaDataProperties['uid'],
+                    'sys_file_metadata'
+                );
 
-            // make Tags from category titles
-            SearchHelper::makeTags(
-                $indexRecordValues['tags'],
-                $categories['title_list']
-            );
+                // make Tags from category titles
+                SearchHelper::makeTags(
+                    $indexRecordValues['tags'],
+                    $categories['title_list']
+                );
 
-            // assign categories as generic tags (eg. "syscat123")
-            SearchHelper::makeSystemCategoryTags(
-                $indexRecordValues['tags'],
-                $metaDataProperties['uid'],
-                'sys_file_metadata'
-            );
+                // assign categories as generic tags (eg. "syscat123")
+                SearchHelper::makeSystemCategoryTags(
+                    $indexRecordValues['tags'],
+                    $metaDataProperties['uid'],
+                    'sys_file_metadata'
+                );
+            }
         }
 
         // hook for custom modifications of the indexed data, e. g. the tags

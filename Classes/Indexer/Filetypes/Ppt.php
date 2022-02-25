@@ -40,9 +40,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Ppt extends File implements FileIndexerInterface
 {
 
-    public $extConf = array();
-    public $app = array(); // saves the path to the executables
-    public $isAppArraySet = false;
+    public array $extConf = array();
+    public array $app = array(); // saves the path to the executables
+    public bool $isAppArraySet = false;
 
     /**
      * class constructor
