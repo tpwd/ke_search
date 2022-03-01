@@ -51,12 +51,12 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     protected $errors = [];
 
     /**
-     * @var SearchboxPlugin
+     * @var Pluginbase
      */
     public $pObj;
     public $cObj;
 
-    public function __construct(SearchboxPlugin $pObj)
+    public function __construct(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
         $this->cObj = $this->pObj->cObj;
