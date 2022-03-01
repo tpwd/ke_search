@@ -45,6 +45,12 @@ class StartIndexerCommandTest extends TestCase
             ->method('startIndexing')
             ->with(true, [], 'CLI', $expectedMode);
 
+        // As we test here only the correct handling of the mode the value
+        // of the indexerRunner method is of no interest.
+        $this->indexerRunnerMock
+            ->method('createPlaintextReport')
+            ->willReturn('');
+
         $options = [];
         if ($option !== '') {
             $options[$option] = $mode;

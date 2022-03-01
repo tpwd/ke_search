@@ -1,5 +1,6 @@
 <phpunit
         bootstrap="../.Build/vendor/autoload.php"
+        convertDeprecationsToExceptions="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
