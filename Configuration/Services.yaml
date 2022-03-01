@@ -31,5 +31,6 @@ services:
         description: 'Removes the ke_search lock'
 
   Tpwd\KeSearch\Domain\Repository\IndexRepository:
+    public: true
     arguments:
       $connection: '@connection.tx_kesearch_index'
