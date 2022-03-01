@@ -6,10 +6,10 @@
 Notes
 =====
 
-Notes on TypoScript and Flexform settings
+Notes on TypoScript and FlexForm settings
 =========================================
 
-Each property in Flexform overwrites the property defined by TypoScript.
+Each property in FlexForm overwrites the property defined by TypoScript.
 
 Each property has stdWrap properties.
 
@@ -25,10 +25,11 @@ or you can define the result page with help of an URL param if you want:
 
    plugin.tx_kesearch_pi1.resultPage.data = GP:tx_kesearch_pi1|resultPage
 
-Notes on TypoScript and extension manager settings
-==================================================
+Notes on TypoScript and extension configuration
+===============================================
 
-In the extension manager you can define basic options like the minimal length of searchwords.
+In :guilabel:`Admin Tools` > :guilabel:`Settings` > :guilabel:`Extension Configuration` you can define basic options
+like the minimal length of searchwords.
 
 You can overwrite this configuration in your page TypoScript setup:
 

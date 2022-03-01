@@ -16,8 +16,10 @@
     "issues": "https://github.com/tpwd/ke_search/issues"
   },
   "require": {
+    "ext-pdo": "*",
     "typo3/cms-core": "^10.4.11 || ^11.0",
     "symfony/polyfill-php80": "^1.23"
+    "typo3/cms-core": "^10.4.11 || ^11.0"
   },
   "require-dev": {
     "typo3/cms-dashboard": "^10.4.11 || ^11.0",

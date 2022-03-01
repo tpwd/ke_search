@@ -23,9 +23,9 @@ Log messages matching the configured minimum log level are written into a separa
 	============================
 	= Indexing process started =
 	============================
-	Thu, 20 Dec 2018 14:12:21 +0100 [ERROR] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": The path to catdoctools is not correctly set in the extension manager configuration. You can get the path with "which catdoc".
+	Thu, 20 Dec 2018 14:12:21 +0100 [ERROR] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": The path to catdoctools is not correctly set in the extension configuration. You can get the path with "which catdoc".
 	Thu, 20 Dec 2018 14:12:21 +0100 [ERROR] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": The path for xls2csv is not correctly set in extConf. You can get the path with "which xls2csv".
-	Thu, 20 Dec 2018 14:12:21 +0100 [ERROR] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": The path to catppttools is not correctly set in extension manager configuration. You can get the path with "which catppt".
+	Thu, 20 Dec 2018 14:12:21 +0100 [ERROR] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": The path to catppttools is not correctly set in extension configuration. You can get the path with "which catppt".
 	Thu, 20 Dec 2018 14:12:21 +0100 [WARNING] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": Could not index file /var/www/html/web/fileadmin/test/test-invalid.xlsx.
 	Thu, 20 Dec 2018 14:12:21 +0100 [WARNING] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": Could not index file /var/www/html/web/fileadmin/test/test-invalid.docx.
 	Thu, 20 Dec 2018 14:12:21 +0100 [WARNING] request="d40b2d51fe977" component="Tpwd.KeSearch.Indexer.IndexerRunner": Could not index file /var/www/html/web/fileadmin/test/test-invalid.pptx.

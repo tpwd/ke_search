@@ -8,6 +8,8 @@ Command line tools
 
 Certain ke_search functions can be accessed via the command line.
 
+.. _commandline-indexing:
+
 Start the indexer
 =================
 

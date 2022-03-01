@@ -71,7 +71,7 @@ class Ppt extends File implements FileIndexerInterface
 
         if (!$this->isAppArraySet) {
             $errorMessage = 'The path to catppttools is not correctly set in '
-                . 'extension manager configuration. You can get the path with "which catppt".';
+                . 'extension configuration. You can get the path with "which catppt".';
             $pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
         }

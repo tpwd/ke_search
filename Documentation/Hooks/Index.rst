@@ -51,7 +51,7 @@ initials
 	Change any variable while initializing the plugin.
 
 modifyFlexFormData
-	Access and modify all returned values of ke_search-Flexform.
+	Access and modify all returned values of ke_search FlexForm.
 
 customFilterRenderer
 	You can write your own filter rendering function using this hook. You will have to add your custom filter type to TCA options array. See chapter “Custom filter rendering” for further information.
