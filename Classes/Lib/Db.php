@@ -56,7 +56,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     public $pObj;
     public $cObj;
 
-    public function __construct(Pluginbase $pObj)
+    public function __construct($pObj)
     {
         $this->pObj = $pObj;
         $this->cObj = $this->pObj->cObj;

@@ -34,3 +34,13 @@ services:
     public: true
     arguments:
       $connection: '@connection.tx_kesearch_index'
+
+  # autowire and autoconfigure must be set to false as long
+  # as the Db class is instantiated with GU:makeInstance()
+  # which tries to inject (not given) dependencies. When
+  # this is fixed, autowire and autoconfigure can be set
+  # to true again.
+  # @see Tpwd\KeSearch\Lib\Filters::initialize()
+  Tpwd\KeSearch\Lib\Db:
+    autowire: false
+    autoconfigure: false
