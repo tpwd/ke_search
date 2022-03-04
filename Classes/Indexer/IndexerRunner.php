@@ -798,6 +798,7 @@ class IndexerRunner
      */
     public function insertRecordIntoIndex($fieldValues)
     {
+        $this->logger->debug('Inserting: ' . json_encode($this->getDebugValuesFromFieldValues($fieldValues)));
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
@@ -852,6 +853,7 @@ class IndexerRunner
      */
     public function updateRecordInIndex($fieldValues)
     {
+        $this->logger->debug('Updating: ' . json_encode($this->getDebugValuesFromFieldValues($fieldValues)));
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
@@ -1184,5 +1186,15 @@ class IndexerRunner
             ->from($table)
             ->execute()
             ->fetchAll();
+    }
+
+    /**
+     * @param array $fieldValues
+     * @return array
+     */
+    private function getDebugValuesFromFieldValues(array $fieldValues): array
+    {
+        unset($fieldValues['content']);
+        return $fieldValues;
     }
 }
