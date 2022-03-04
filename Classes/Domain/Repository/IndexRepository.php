@@ -64,6 +64,24 @@ class IndexRepository {
             ->fetch();
     }
 
+    public function findOneByHashWithoutRestrictions(string $hash)
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll();
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'hash',
+                    $queryBuilder->quote($hash, \PDO::PARAM_STR)
+                )
+            )
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+    }
+
     /**
      * @param integer $uid
      * @param array $updateFields

@@ -25,11 +25,11 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Filetypes\FileIndexerInterface;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
-use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
@@ -93,6 +93,9 @@ class File extends IndexerBase
 
         /** @var FileInfo fileInfo */
         $this->fileInfo = GeneralUtility::makeInstance(Fileinfo::class);
+
+        /** @var IndexRepository indexRepository */
+        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
     /**
@@ -200,9 +203,9 @@ class File extends IndexerBase
     }
 
     /**
-     * loops through an array of files an stores their content
-     * to the index.
-     * returns number of files indexed.
+     * Loops through an array of files and stores their content to the index.
+     * Returns the number of files which have been indexed.
+     *
      * @param array $files
      * @return integer
      */
@@ -296,24 +299,9 @@ class File extends IndexerBase
     public function getFileContentFromIndex(string $hash = "")
     {
         $fileContent = false;
+        $hashRow = $this->indexRepository->findOneByHashWithoutRestrictions($hash);
 
-        // todo: use the index repository for this
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        $queryBuilder->getRestrictions()->removeAll();
-        $hashRow = $queryBuilder
-            ->select('*')
-            ->from('tx_kesearch_index')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'hash',
-                    $queryBuilder->quote($hash, \PDO::PARAM_STR)
-                )
-            )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
-
-        if (is_array($hashRow)) {
+        if (is_array($hashRow) && !empty($hashRow['content'])) {
             $fileContent = $hashRow['content'];
         }
 
