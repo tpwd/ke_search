@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'composer.json'
+      - '.github/workflows/ci.yml'
+      - '**.php'
+  pull_request:
+    paths:
+      - 'composer.json'
+      - '.github/workflows/ci.yml'
+      - '**.php'
+
+jobs:
+  build:
+    name: Build PHP/TYPO3
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions:
+          - '7.4'
+        typo3-versions:
+          - '^10'
+          - '^11'
+        include:
+          - php-versions: '7.2'
+            typo3-versions: '^10'
+          - php-versions: '7.3'
+            typo3-versions: '^10'
+          - php-versions: '8.0'
+            typo3-versions: '^11'
+          - php-versions: '8.1'
+            typo3-versions: '^11'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Setup PHP version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install composer dependencies
+        run: |
+          composer require typo3/cms-core=${{ matrix.typo3-versions }} --no-progress --prefer-dist --optimize-autoloader
+      - name: Run PHP linter
+        run: |
+          find . -name \*.php  ! -path "./.Build/*" -exec php -l {} \;
+      - name: Run unit tests
+        run: |
+          .Build/bin/phpunit -c Tests/phpunit.xml.dist

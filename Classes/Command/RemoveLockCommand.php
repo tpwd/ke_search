@@ -20,24 +20,38 @@ namespace Tpwd\KeSearch\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Tpwd\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Command for removing the ke_search index lock
  */
-class RemoveLockCommand extends Command
+class RemoveLockCommand extends Command implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * @var Registry
+     */
+    private $registry;
+
+    public function __construct(Registry $registry)
+    {
+        $this->registry = $registry;
+        parent::__construct();
+    }
+
     /**
      * Configure command
      */
     protected function configure()
     {
+        // @todo Remove description when minimum compatibility is set to TYPO3 v11.
         $this->setDescription('Removes the lock for the ke_search index process')
             ->setHelp(
                 'Removing the lock for the ke_search index process can be useful when errors occured '
@@ -49,32 +63,29 @@ class RemoveLockCommand extends Command
     /**
      * Removes the lock for the ke_search index process
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Remove ke_search indexer lock');
 
-        /** @var IndexerRunner $indexerRunner */
-        $indexerRunner = GeneralUtility::makeInstance(IndexerRunner::class);
-        $indexerRunner->logger->log('notice', 'Remove indexer lock started by command.');
-        $registry = GeneralUtility::makeInstance(Registry::class);
+        $this->logger->notice('Remove indexer lock started by command.');
 
         try {
-            $registry->get('tx_kesearch', 'startTimeOfIndexer');
-            if (intval($registry->get('tx_kesearch', 'startTimeOfIndexer')) === 0) {
+            if (intval($this->registry->get('tx_kesearch', 'startTimeOfIndexer')) === 0) {
                 $io->note('Indexer lock is not set.');
-                $indexerRunner->logger->log('notice', 'Indexer lock is not set');
+                $this->logger->notice('Indexer lock is not set');
             } else {
-                $registry->removeAllByNamespace('tx_kesearch');
+                $this->registry->removeAllByNamespace('tx_kesearch');
                 $io->success('Indexer lock was successfully removed');
-                $indexerRunner->logger->log('notice', 'Indexer lock successful removed');
+                $this->logger->notice('Indexer lock successfully removed');
             }
         } catch (\Exception $e) {
-            $io->warning('There was an error accessing the TYPO3 registry.');
-            $indexerRunner->logger->log('warning', 'There was an error accessing the TYPO3 registry');
+            $io->error('There was an error accessing the TYPO3 registry.');
+            $this->logger->error('There was an error accessing the TYPO3 registry');
+
+            return 1;
         }
 
         return 0;
     }
-
 }

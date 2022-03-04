@@ -1,11 +1,16 @@
 services:
   _defaults:
-    autowire: false
-    autoconfigure: false
+    autowire: true
+    autoconfigure: true
     public: false
 
   Tpwd\KeSearch\:
     resource: '../Classes/*'
+
+  connection.tx_kesearch_index:
+    class: 'TYPO3\CMS\Core\Database\Connection'
+    factory: ['@TYPO3\CMS\Core\Database\ConnectionPool', 'getConnectionForTable']
+    arguments: ['tx_kesearch_index']
 
   Tpwd\KeSearch\Command\StartIndexerCommand:
     tags:
@@ -24,3 +29,18 @@ services:
       - name: 'console.command'
         command: 'ke_search:removelock'
         description: 'Removes the ke_search lock'
+
+  Tpwd\KeSearch\Domain\Repository\IndexRepository:
+    public: true
+    arguments:
+      $connection: '@connection.tx_kesearch_index'
+
+  # autowire and autoconfigure must be set to false as long
+  # as the Db class is instantiated with GU:makeInstance()
+  # which tries to inject (not given) dependencies. When
+  # this is fixed, autowire and autoconfigure can be set
+  # to true again.
+  # @see Tpwd\KeSearch\Lib\Filters::initialize()
+  Tpwd\KeSearch\Lib\Db:
+    autowire: false
+    autoconfigure: false

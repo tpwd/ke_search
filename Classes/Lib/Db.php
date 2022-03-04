@@ -51,7 +51,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     protected $errors = [];
 
     /**
-     * @var SearchboxPlugin
+     * @var Pluginbase
      */
     public $pObj;
     public $cObj;

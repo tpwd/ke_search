@@ -3,9 +3,7 @@ namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\Connection;
 
 /***************************************************************
  *  Copyright notice
@@ -36,6 +34,15 @@ class IndexRepository {
      * @var string
      */
     protected $tableName = 'tx_kesearch_index';
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
 
     /**
      * @param int $uid
@@ -43,9 +50,7 @@ class IndexRepository {
      */
     public function findByUid(int $uid)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connection->createQueryBuilder();
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -66,9 +71,7 @@ class IndexRepository {
      */
     public function update(int $uid, array $updateFields)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->update($this->tableName)
             ->where(
@@ -83,6 +86,15 @@ class IndexRepository {
         return $queryBuilder->execute();
     }
 
+    public function getTotalNumberOfRecords(): int
+    {
+        return $this->connection->createQueryBuilder()
+            ->count('*')
+            ->from('tx_kesearch_index')
+            ->execute()
+            ->fetchColumn(0);
+    }
+
     /**
      * returns number of records per type in an array
      *
@@ -90,9 +102,7 @@ class IndexRepository {
      */
     public function getNumberOfRecordsInIndexPerType(): array
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connection->createQueryBuilder();
         $typeCount = $queryBuilder
             ->select('type')
             ->addSelectLiteral(
@@ -116,9 +126,7 @@ class IndexRepository {
      */
     public function deleteByUid(int $uid)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connection->createQueryBuilder();
         return $queryBuilder
             ->delete($this->tableName)
             ->where(
@@ -129,7 +137,6 @@ class IndexRepository {
             )
             ->execute();
     }
-
 
     /**
      * Deletes records from the index which can be clearly identified by the properties $orig_uid, $pid, $type and $language.
@@ -143,9 +150,7 @@ class IndexRepository {
      */
     public function deleteByUniqueProperties(int $origUid, int $pid, string $type, int $language)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->connection->createQueryBuilder();
         return $queryBuilder
             ->delete($this->tableName)
             ->where(
@@ -184,5 +189,10 @@ class IndexRepository {
             }
         }
         return $count;
+    }
+
+    public function truncate(): void
+    {
+        $this->connection->truncate('tx_kesearch_index');
     }
 }
