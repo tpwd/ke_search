@@ -755,7 +755,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
                         } else {
                             // no FAL file or FAL file does not exist
-                            if (file_exists(Environment::getPublicPath() . '/' . $row['directory'] . $row['title'])) {
+                            if (file_exists($row['directory'] . $row['title'])) {
                                 $resultrowTemplateValues['filePreviewId'] = $row['directory'] . $row['title'];
                             }
                         }

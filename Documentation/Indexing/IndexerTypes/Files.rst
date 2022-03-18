@@ -16,8 +16,15 @@ Currently the indexer supports indexing of the following files: PDF, DOC, PPT, X
 .. note::
    Until version 1.2 only PDF and PPT files could be indexed.
 
-* directory based (with FAL support)
-* content based with FAL suppport
+There are two ways to index files:
+
+* Use the page or content element indexer. It will automatically detect links to files and index those files.
+* Use directory based file indexer. You can specify folder which should be indexed.
+  You can either choose to use FAL (File Abstraction Layer), that will also index the metadata of files. Or you can
+  decide not to use FAL. That will only index file contents and no file metadata.
+
+An incremental indexer is available. It will detect changes by comparing the file modification time against the last
+indexing time and re-index those files.
 
 System requirements
 ===================
@@ -29,8 +36,8 @@ System requirements
 
 Please use the extension configuration to tell ke_search the file paths where to find these tools.
 
-Directory based file indexer with FAL support
-=============================================
+Directory based file indexer
+============================
 
 You can specify the folders ke_search should index. Since the files are indexed directly from the file system,
 there's no access check! Please make sure only public content is in the folders you make searchable.
@@ -46,15 +53,21 @@ Configuration
 * Set the Record storage page of search data your search data folder.
 * Set the type to `Files`.
 * Select FAL storage or select `Don't use FAL`.
-* Select one or more directory which contain your files to be indexed. They have to be subdirectories of :file:`fileadmin/`.
-  If you selected a FAL storage, the directories must be subdirectories of your storage. If you selected a FAL
-  storage, the indexer will go recursively into the subfolders and index files in there, too. If you want to index
-  all directories in the given storage, just enter a dot (".") in the field :guilabel:`Directories`.
+* Define one or more directories which contain your files to be indexed.
+  If you selected a FAL storage, the directories must be subdirectories of the selected storage,
+  e. g. :file:`my_directory`. If you selected `Don't use FAL`, you need to specify the folders including the
+  storage path, e. g. :file:`fileadmin/my_directory`. Multiple directories can be entered comma-separated.
+  If you want to index all files in the given storage, just enter a dot (".") in the field :guilabel:`Directories`.
 * Enter the list of allowed file extensions. Only files with extensions the indexer supports will be indexed. If you
   use FAL indexing, you can also provide other filetypes, eg. JPG. From these files the metadata will be indexed.
 
-Content based file indexer with FAL support
-===========================================
+The indexer will go recursively into the defined directories and index files in there.
+
+FAL metadata will be indexed if you select a FAL storage (title, alternative text and description).
+Tags will be generated from categories (like in the news and pages indexer), see also :ref:`systemcategories`.
+
+Content based file indexer
+==========================
 
 This indexer detects files while indexing pages and content elements and indexes the files automatically.
 Supported content element types are `Text`, `Text with image` and `Filelinks`.
@@ -67,5 +80,5 @@ Leaving the field empty will have the effect that no files will be indexed.
 
 Content restrictions from the linking content elements will be taken into account.
 
-FAL metadata will be indexed. Tags will be generated from categories (like in the news and pages indexer),
-see also :ref:`systemcategories`.
+FAL metadata will be indexed if you select a FAL storage (title, alternative text and description).
+Tags will be generated from categories (like in the news and pages indexer), see also :ref:`systemcategories`.

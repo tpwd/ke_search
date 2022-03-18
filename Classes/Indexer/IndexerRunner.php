@@ -746,7 +746,8 @@ class IndexerRunner
             $recordExists = $this->checkIfFileWasIndexed(
                 $fieldValues['type'],
                 $fieldValues['hash'],
-                $fieldValues['pid']
+                $fieldValues['pid'],
+                $fieldValues['sortdate']
             );
         } else {
             $recordExists = $this->checkIfRecordWasIndexed(
@@ -968,12 +969,14 @@ class IndexerRunner
      * This function also sets $this->currentRow
      * parameters should be already fullQuoted. see storeInIndex
      * TODO: We should create an index to column type
-     * @param integer $type
-     * @param integer $hash
+     * @param string $type
+     * @param string $hash
      * @param integer $pid
+     * @param integer $sortdate contains the file modification time
      * @return boolean true if record was found, false if not
+     * @throws DBALException
      */
-    public function checkIfFileWasIndexed($type, $hash, $pid)
+    public function checkIfFileWasIndexed(string $type, string $hash, int $pid, int $sortdate): bool
     {
         // Query DB if record already exists
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
@@ -992,6 +995,10 @@ class IndexerRunner
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->quote($pid, PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sortdate',
+                    $queryBuilder->quote($sortdate, PDO::PARAM_INT)
                 )
             )
             ->execute();

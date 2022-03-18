@@ -48,13 +48,12 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  */
 class File extends IndexerBase
 {
-
     /**
      * saves the configuration of extension ke_search_hooks
      *
      * @var array
      */
-    public array $extConf = array(); //
+    public array $extConf = array();
 
     /**
      * saves the path to the executables
@@ -79,22 +78,21 @@ class File extends IndexerBase
     public ResourceStorage $storage;
 
     /**
+     * @var IndexRepository
+     */
+    private $indexRepository;
+
+    /**
      * Initializes indexer for files
      *
      * @param IndexerRunner $pObj
      */
-    public function __construct($pObj)
+    public function __construct(IndexerRunner $pObj)
     {
         parent::__construct($pObj);
         $this->pObj = $pObj;
-
-        // get extension configuration of ke_search
         $this->extConf = SearchHelper::getExtConf();
-
-        /** @var FileInfo fileInfo */
         $this->fileInfo = GeneralUtility::makeInstance(Fileinfo::class);
-
-        /** @var IndexRepository indexRepository */
         $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
@@ -107,10 +105,10 @@ class File extends IndexerBase
         $directories = $this->indexerConfig['directories'];
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
 
-        if ($this->pObj->indexerConfig['fal_storage'] > 0) {
+        if ($this->indexerConfig['fal_storage'] > 0) {
             /* @var $storageRepository StorageRepository */
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            $this->storage = $storageRepository->findByUid($this->pObj->indexerConfig['fal_storage']);
+            $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
             $files = array();
             $this->getFilesFromFal($files, $directoryArray);
@@ -120,10 +118,52 @@ class File extends IndexerBase
 
         $counter = $this->extractContentAndSaveToIndex($files);
 
-        // show indexer content?
-        return count($files) . ' files have been found for indexing.' . LF
-            . $counter . ' files have been indexed.';
+        if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL) {
+            $resultMessage = count($files) . ' files have been found for indexing.' . LF
+                . $counter . ' new or updated files have been indexed.';
+        } else {
+            $resultMessage = count($files) . ' files have been found for indexing.' . LF
+                . $counter . ' files have been indexed.';
+        }
+        return $resultMessage;
     }
+
+    public function startIncrementalIndexing(): string
+    {
+        $this->indexingMode = self::INDEXING_MODE_INCREMENTAL;
+        $content = $this->startIndexing();
+        $content .= $this->removeDeleted();
+        return $content;
+    }
+
+    /**
+     * Removes index records for the file records which have been deleted since the last indexing.
+     * Only needed in incremental indexing mode since there is a dedicated "cleanup" step in full indexing mode.
+     *
+     * @return string
+     */
+    public function removeDeleted(): string
+    {
+        $message = '';
+        $outdatedFileIndexRecords = $this->indexRepository->findOutdatedFileRecordsByPidAndTimestamp(
+            $this->indexerConfig['storagepid'],
+            $this->lastRunStartTime
+        );
+        $countDeleted = 0;
+        if (!empty($outdatedFileIndexRecords)) {
+            foreach ($outdatedFileIndexRecords as $outdatedFileIndexRecord) {
+                if (!file_exists($outdatedFileIndexRecord['directory'] . $outdatedFileIndexRecord['title'])) {
+                    $this->indexRepository->deleteByUid($outdatedFileIndexRecord['uid']);
+                    $countDeleted++;
+                }
+            }
+            if ($countDeleted > 0) {
+                $message .= LF . 'Found and removed ' . $countDeleted . ' outdated file index record(s).';
+            }
+        }
+        return $message;
+    }
+
 
     /** * fetches files recurively using FAL
      * @param array $files
@@ -138,7 +178,7 @@ class File extends IndexerBase
                 $filesInFolder = $folder->getFiles();
                 if (count($filesInFolder)) {
                     foreach ($filesInFolder as $file) {
-                        if (GeneralUtility::inList($this->pObj->indexerConfig['fileext'], $file->getExtension())) {
+                        if (GeneralUtility::inList($this->indexerConfig['fileext'], $file->getExtension())) {
                             $files[] = $file;
                         }
                     }
@@ -156,7 +196,9 @@ class File extends IndexerBase
     }
 
     /**
-     * get files from given relative directory path array
+     * Get files from given relative directory path array.
+     * Returns the *absolute* paths on the local file system for each file.
+     *
      * @param array $directoryArray
      * @return array An Array containing all files of all valid directories
      */
@@ -204,6 +246,8 @@ class File extends IndexerBase
 
     /**
      * Loops through an array of files and stores their content to the index.
+     * Files are either instances of \TYPO3\CMS\Core\Resource\File
+     * or *absolute* paths to the files on the local file system.
      * Returns the number of files which have been indexed.
      *
      * @param array $files
@@ -215,16 +259,30 @@ class File extends IndexerBase
         if (count($files)) {
             foreach ($files as $file) {
                 if ($this->fileInfo->setFile($file)) {
-                    // get file content, check if we have a FAL resource or a simple
-                    // string containing the path to the file
                     if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-                        $content = $this->getFileContent($file->getForLocalProcessing(false));
+                        $filePath = $file->getForLocalProcessing(false);
                     } else {
-                        $content = $this->getFileContent($file);
+                        $filePath = $file;
                     }
 
-                    if (!($content === false)) {
-                        $this->storeToIndex($file, $content);
+                    // Check if if we have already up-to-date content for this file in the index by comparing the  timestamps.
+                    // Todo: The index record also contains metadata which may have also changed, this needs to be checked also.
+                    $fileContent = $this->getFileContentFromIndex($this->getUniqueHashForFile(), filemtime($filePath));
+
+                    // in incremental indexing mode we can skip the further processing of this file now if we found
+                    // a matching index record, because we do not need to store something to the index.
+                    // In full indexing mode we need to store the already existing index record
+                    // again because we want to update the timestamp.
+                    if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL && $fileContent !== false) {
+                        continue;
+                    }
+
+                    if ($fileContent === false) {
+                        $fileContent = $this->getFileContent($filePath);
+                    }
+
+                    if ($fileContent !== false) {
+                        $this->storeToIndex($file, $fileContent);
                         $counter++;
                     }
                 }
@@ -235,9 +293,10 @@ class File extends IndexerBase
     }
 
     /**
-     * get filecontent of allowed extensions
-     * @param string $filePath
-     * @return mixed false or fileinformations as array
+     * Fetch content from a file. An indexer class for that filetype must exist.
+     *
+     * @param string $filePath absolute file path
+     * @return false|string
      */
     public function getFileContent(string $filePath)
     {
@@ -245,26 +304,15 @@ class File extends IndexerBase
         if ($this->fileInfo->getIsFile()) {
             $className = 'Tpwd\KeSearch\Indexer\Filetypes\\' . ucfirst($this->fileInfo->getExtension());
 
-            // check if class exists
             if (class_exists($className)) {
-                // make instance
                 $fileObj = GeneralUtility::makeInstance($className, $this->pObj);
 
-                // check if new object has interface implemented
                 if ($fileObj instanceof FileIndexerInterface) {
-                    // Do the check if a file has already been indexed at this early point in order
-                    // to skip the time expensive "get content" process which includes calls to external tools
-                    // fetch the file content directly from the index
-                    $fileContent = $this->getFileContentFromIndex($this->getUniqueHashForFile());
+                    $fileContent = $fileObj->getContent($filePath);
+                    $this->addError($fileObj->getErrors());
 
-                    // if there's no matching index entry, we execute the  "get file content" method of our new object
-                    if (!$fileContent) {
-                        $fileContent = $fileObj->getContent($filePath);
-                        $this->addError($fileObj->getErrors());
-
-                        // remove metadata separator if it appears in the content
-                        $fileContent = str_replace(self::METADATASEPARATOR, ' ', $fileContent);
-                    }
+                    // remove metadata separator if it appears in the content
+                    $fileContent = str_replace(self::METADATASEPARATOR, ' ', $fileContent);
 
                     return $fileContent;
                 } else {
@@ -274,7 +322,7 @@ class File extends IndexerBase
                 // if no indexer for this type of file exists, we do a fallback:
                 // we return an empty content. Doing this at least the FAL metadata
                 // can be indexed. So this makes only sense when using FAL.
-                if ($this->pObj->indexerConfig['fal_storage'] > 0) {
+                if ($this->indexerConfig['fal_storage'] > 0) {
                     return '';
                 } else {
                     $errorMessage = 'No indexer for this type of file. (class ' . $className . ' does not exist).';
@@ -292,17 +340,21 @@ class File extends IndexerBase
     }
 
     /**
-     * checks if there's an entry in the index for the given file hash. Returns the content of that entry.
+     * Checks if there's an entry in the index for the given file hash and file modification time.
+     * Returns the content of that entry or false if no matching entry exists.
+     *
      * @param string $hash
-     * @return string/boolean returns false if no entry has been found, otherwise the content as string
+     * @param int $fileModificationTime
+     * @return false|string
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function getFileContentFromIndex(string $hash = "")
+    public function getFileContentFromIndex(string $hash, int $fileModificationTime)
     {
         $fileContent = false;
-        $hashRow = $this->indexRepository->findOneByHashWithoutRestrictions($hash);
+        $indexRow = $this->indexRepository->findOneByHashAndModificationTime($hash, $fileModificationTime);
 
-        if (is_array($hashRow) && !empty($hashRow['content'])) {
-            $fileContent = $hashRow['content'];
+        if (is_array($indexRow) && isset($indexRow['content'])) {
+            $fileContent = $indexRow['content'];
         }
 
         return $fileContent;
@@ -312,15 +364,14 @@ class File extends IndexerBase
      * get a unique hash for current file
      * this is needed for a faster check if record already exists in indexer table
      *
-     * @return string A 25 digit MD5 hash value of current file and last modification time
+     * @return string A 25 digit MD5 hash value of current file
      */
     public function getUniqueHashForFile(): string
     {
         $path = $this->fileInfo->getPath();
         $file = $this->fileInfo->getName();
-        $mtime = $this->fileInfo->getModificationTime();
 
-        return md5($path . $file . '-' . $mtime);
+        return md5($path . $file);
     }
 
     /**
@@ -373,12 +424,12 @@ class File extends IndexerBase
             'sortdate' => $this->fileInfo->getModificationTime(),
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
-            'directory' => $this->fileInfo->getRelativePath(),
+            'directory' => $this->fileInfo->getAbsolutePath(),
             'hash' => $this->getUniqueHashForFile()
         );
 
         // add metadata content, frontend groups and catagory tags if FAL is used
-        if ($this->pObj->indexerConfig['fal_storage'] > 0) {
+        if ($this->indexerConfig['fal_storage'] > 0) {
 
             // index meta data from FAL: title, description, alternative
             if ($fileProperties) {
@@ -424,7 +475,7 @@ class File extends IndexerBase
         // store record in index table
         $this->pObj->storeInIndex(
             $indexRecordValues['storagepid'],   // storage PID
-            $indexRecordValues['title'],        // page title
+            $indexRecordValues['title'],        // file name
             $indexRecordValues['type'],         // content type
             $indexRecordValues['targetpid'],    // target PID: where is the single view?
             $content,                           // indexed content, includes the title (linebreak after title)

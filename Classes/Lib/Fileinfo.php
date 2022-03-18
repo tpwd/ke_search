@@ -93,7 +93,10 @@ class Fileinfo
                 'fileext' => $file->getExtension(),
                 'realFileext' => $pathInfo['extension'],
                 'atime' => $file->getCreationTime(),
-                'mtime' => $file->getModificationTime(),
+                // We want to make sure that we re-index files which have been modified without FAL noticing it
+                // (e. g. an upload via FTP and not in the TYPO3 backend). So we are using the mtime from the
+                // file system instead of the FAL value $file->getModificationTime().
+                'mtime' => filemtime($file->getForLocalProcessing(false)),
                 'owner' => '',
                 'group' => '',
                 'size' => $file->getSize(),
@@ -113,16 +116,26 @@ class Fileinfo
     }
 
     /**
+     * Returns the absolute path to the directory where the file is located, e. g. "/var/www/html/public/fileamin/".
+     *
+     * @return string
+     */
+    public function getAbsolutePath()
+    {
+        if ($this->file !== null) {
+            return dirname($this->file->getForLocalProcessing(false)) . '/';
+        } else {
+            return $this->fileInfo['path'];
+        }
+    }
+
+    /**
      * return relative to site root file path
      * @return string Filepath (f.e. fileadmin/user_upload/)
      */
     public function getRelativePath()
     {
-        if ($this->file !== null) {
-            return dirname($this->file->getForLocalProcessing(false)) . '/';
-        } else {
-            return str_replace(Environment::getPublicPath() . '/', '', $this->fileInfo['path']);
-        }
+        return str_replace(Environment::getPublicPath() . '/', '', $this->getAbsolutePath());
     }
 
     /**

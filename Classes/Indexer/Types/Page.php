@@ -1167,7 +1167,7 @@ class Page extends IndexerBase
             'sortdate' => $fileIndexerObject->fileInfo->getModificationTime(),
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
-            'directory' => $fileIndexerObject->fileInfo->getRelativePath(),
+            'directory' => $fileIndexerObject->fileInfo->getAbsolutePath(),
             'hash' => $fileIndexerObject->getUniqueHashForFile()
         );
 

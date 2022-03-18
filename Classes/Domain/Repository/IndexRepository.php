@@ -64,10 +64,14 @@ class IndexRepository {
             ->fetch();
     }
 
-    public function findOneByHashWithoutRestrictions(string $hash)
+    /**
+     * @param string $hash
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findOneByHashAndModificationTime(string $hash, $mtime)
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll();
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -75,6 +79,10 @@ class IndexRepository {
                 $queryBuilder->expr()->eq(
                     'hash',
                     $queryBuilder->quote($hash, \PDO::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sortdate',
+                    $queryBuilder->quote($mtime, \PDO::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -104,6 +112,10 @@ class IndexRepository {
         return $queryBuilder->execute();
     }
 
+    /**
+     * @return int
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function getTotalNumberOfRecords(): int
     {
         return $this->connection->createQueryBuilder()
@@ -212,5 +224,35 @@ class IndexRepository {
     public function truncate(): void
     {
         $this->connection->truncate('tx_kesearch_index');
+    }
+
+    /**
+     * @param int $pid
+     * @param int $timestamp
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findOutdatedFileRecordsByPidAndTimestamp(int $pid, int $timestamp)
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->like(
+                    'type',
+                    $queryBuilder->createNamedParameter('file%')
+                ),
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($pid, PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->lt(
+                    'tstamp',
+                    $queryBuilder->createNamedParameter($timestamp, PDO::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetchAll();
     }
 }
