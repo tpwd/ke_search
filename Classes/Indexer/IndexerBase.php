@@ -585,7 +585,7 @@ class IndexerBase
         $fileProperties = $fileReference->getOriginalFile()->getProperties();
 
         // respect given fe_groups from indexed record and from file metadata
-        if ($fileProperties['fe_groups']) {
+        if (isset($fileProperties['fe_groups']) && $fileProperties['fe_groups']) {
             if ($feGroups) {
                 $feGroupsContentArray = GeneralUtility::intExplode(',', $feGroups);
                 $feGroupsFileArray = GeneralUtility::intExplode(',', $fileProperties['fe_groups']);

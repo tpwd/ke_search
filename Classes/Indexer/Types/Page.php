@@ -1128,7 +1128,7 @@ class Page extends IndexerBase
             $metadata = $fileObject->getMetaData()->get();
         }
 
-        if (!empty($metadata['fe_groups'])) {
+        if (isset($metadata['fe_groups']) && !empty($metadata['fe_groups'])) {
             if ($feGroups) {
                 $feGroupsContentArray = GeneralUtility::intExplode(',', $feGroups);
                 $feGroupsFileArray = GeneralUtility::intExplode(',', $metadata['fe_groups']);
