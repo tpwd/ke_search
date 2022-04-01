@@ -542,6 +542,9 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             // build link which selects this option for this filter and keeps all the other filters
             $localPiVars = $this->piVars;
             $localPiVars['filter'][$filter['uid']] = $option['tag'];
+            // We need to unset the page in order to jump to the first page when a filter is selected.
+            // https://github.com/tpwd/ke_search/issues/24
+            unset($localPiVars['page']);
             $optionLink = SearchHelper::searchLink($this->conf['resultPage'], $localPiVars);
 
             // Should we check if the filter option is available in the current search result?
