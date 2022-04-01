@@ -53,6 +53,10 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
             );
         }
 
+        if (isset($piVars['page']) && $piVars['page'] == 1) {
+            unset($piVars['page']);
+        }
+
         $linkedContent = $this->renderChildren();
         if (empty($content)) {
             $content = $linkedContent;
