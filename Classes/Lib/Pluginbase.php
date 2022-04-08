@@ -89,7 +89,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     // it's for 'USE INDEX ($indexToUse)' to speed up queries
     public $indexToUse = '';
 
-    // contains all tags of current search result
+    /**
+     * contains all tags of current search result, false if not initialized yet
+     * @var bool|array
+     */
     public $tagsInSearchResult = false;
 
     // preselected filters by flexform

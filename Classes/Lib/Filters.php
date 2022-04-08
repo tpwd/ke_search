@@ -52,7 +52,12 @@ class Filters
     protected $piVars = array();
     protected $extConf = array();
     protected $extConfPremium = array();
-    protected $tagsInSearchResult = array();
+
+    /**
+     * contains all tags of current search result, false if not initialized yet
+     * @var bool|array
+     */
+    protected $tagsInSearchResult = false;
 
     protected $startingPoints = '';
 
@@ -316,17 +321,20 @@ class Filters
 
 
     /**
-     * check if an allowed tag (defined in a filteroption) was found in the current result list
+     * Checks if a tag is found in the current result list
      *
-     * @param string $tag The tag to match against the searchresult
-     * @return boolean TRUE if tag was found. Else FALSE
+     * @param string $tag The tag to match against the search result
+     * @return boolean TRUE if tag was found, otherwise FALSE
      */
-    public function checkIfTagMatchesRecords($tag)
+    public function checkIfTagMatchesRecords(string $tag): bool
     {
-        // if tag list is empty, fetch them from the result list
-        // otherwise use the cached result list
-        if (!$this->tagsInSearchResult) {
-            $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
+        // If tag list is not defined yet, fetch it from the result list, otherwise use the cached tag list.
+        if ($this->tagsInSearchResult === false) {
+            if ($this->pObj->tagsInSearchResult === false) {
+                $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
+            } else {
+                $this->tagsInSearchResult = $this->pObj->tagsInSearchResult;
+            }
         }
 
         return array_key_exists($tag, $this->tagsInSearchResult);
