@@ -292,7 +292,7 @@ class SearchHelper
                 $linkConf['parameter'] = $resultRow['params'];
                 $linkConf['additionalParams'] = '';
                 $extConfPremium = SearchHelper::getExtConfPremium();
-                $linkConf['extTarget'] = $extConfPremium['apiExternalResultTarget'] ?: '_blank';
+                $linkConf['extTarget'] = ($extConfPremium['apiExternalResultTarget'] ?? '') ?: '_blank';
                 break;
 
             default:
