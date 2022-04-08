@@ -135,8 +135,8 @@ class PluginBaseHelper
                     if (is_array($piVars[$key])) {
                         foreach ($piVars[$key] as $filterId => $filterValue) {
                             if (is_array($piVars[$key][$filterId])) {
-                                foreach ($piVars[$key][$filterId] as $key => $value) {
-                                    $piVars[$key][$filterId][$key] = htmlspecialchars($value, ENT_QUOTES);
+                                foreach ($piVars[$key][$filterId] as $subKey => $value) {
+                                    $piVars[$key][$filterId][$subKey] = htmlspecialchars($value, ENT_QUOTES);
                                 }
                             } else {
                                 if ($piVars[$key][$filterId] != null) {
