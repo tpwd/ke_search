@@ -458,7 +458,6 @@
 							<config type="array">
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<multiple>1</multiple>
 								<maxitems>100</maxitems>
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>
@@ -475,7 +474,6 @@
 							<config type="array">
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<multiple>1</multiple>
 								<maxitems>100</maxitems>
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>
@@ -492,7 +490,6 @@
 							<config type="array">
 								<type>select</type>
 								<renderType>selectMultipleSideBySide</renderType>
-								<multiple>1</multiple>
 								<maxitems>100</maxitems>
 								<size>5</size>
 								<allownonidvalues>1</allownonidvalues>

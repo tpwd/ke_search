@@ -15,6 +15,7 @@ Upcoming version
 [TASK]    Add "ext-pdo" as requirement in composer.json. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/73
 [TASK]    Add log message when inserting or updating records. https://github.com/tpwd/ke_search/issues/58
 [TASK]    Unset page parameter in link viewhelper if it links to the first page. https://github.com/tpwd/ke_search/issues/22
+[TASK]    Remove multiple option for filter selection flexform
 [DOCS]    Improve chapter about search word length. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/68
 [DOCS]    Add tip for adding more search metrics to Matomo. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/76
 
