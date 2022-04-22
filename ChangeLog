@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.4.0, April 2022
 [!!!]     For files indexed by the non-FAL-indexer the absolute path is now stored in the index instead of the relative path.
 [!!!]     The file modification date is not part of the hash for indexed files anymore. That means all files have to be re-indexed after updating the extension. Please start the full indexing.
 [FEATURE] Add incremental indexing for files. https://github.com/tpwd/ke_search/issues/64
