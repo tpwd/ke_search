@@ -29,6 +29,12 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Searchphrase
 {
+    /**
+     * List of keys in piVars which should as tag based filters. See Partials/Filters/DateRange.html
+     *
+     * @var string[]
+     */
+    public const IGNORE_FOR_TAG_BUILDING = ['start', 'end'];
 
     /**
      * @var Pluginbase
@@ -192,7 +198,8 @@ class Searchphrase
     }
 
     /**
-     * add filter options (preselected by piVars)
+     * Creates the list of tags for which should be filtered from the given piVars. Ignores certain piVars, e. g.
+     * those for the date filter, those are handled differently, Tpwd\KeSearch\Lib\DB::createQueryForDateRange().
      *
      * @param array $tagsAgainst
      */
@@ -202,10 +209,15 @@ class Searchphrase
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         if (is_array($this->pObj->piVars['filter'] ?? null)) {
             foreach ($this->pObj->piVars['filter'] as $key => $tag) {
+                // If this->pObj->piVars['filter'][$key] is an array this means the filter
+                // is a "checkbox" filter with multi-selection of the values.
                 if (is_array($this->pObj->piVars['filter'][$key] ?? null)) {
                     foreach ($this->pObj->piVars['filter'][$key] as $subkey => $subtag) {
                         // Don't add the tag if it is already inserted by preselected filters
-                        if (!empty($subtag) && strstr($tagsAgainst[$key] ?? '', $subtag) === false) {
+                        if (!empty($subtag)
+                            && strstr($tagsAgainst[$key] ?? '', $subtag) === false
+                            && !in_array($subkey, SELF::IGNORE_FOR_TAG_BUILDING)
+                        ) {
                             if (!isset($tagsAgainst[$key])) {
                                 $tagsAgainst[$key] = '';
                             }
@@ -215,7 +227,11 @@ class Searchphrase
                     }
                 } else {
                     // Don't add the tag if it is already inserted by preselected filters
-                    if (!empty($tag) && strstr($tagsAgainst[$key] ?? '', $tag) === false) {
+                    if (
+                        !empty($tag)
+                        && strstr($tagsAgainst[$key] ?? '', $tag) === false
+                        && !in_array($key, SELF::IGNORE_FOR_TAG_BUILDING)
+                    ) {
                         if (!isset($tagsAgainst[$key])) {
                             $tagsAgainst[$key] = '';
                         }

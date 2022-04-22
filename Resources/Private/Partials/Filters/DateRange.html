@@ -1,0 +1,14 @@
+<!--
+	=====================
+	Partials/Filters/DateRange.html
+-->
+
+<div class="list dateRange" id="dateRange_{filter.id}">
+	<span class="head">{filter.title}</span>
+
+	<label for="{filter.id}_start"><f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:dateRange.start" /></label>
+	<input type="date" id="{filter.id}_start" name="tx_kesearch_pi1[{filter.id}_start]" value="{filter.start}" />
+
+	<label for="{filter.id}_end"><f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:dateRange.end" /></label>
+	<input type="date" id="{filter.id}_end" name="tx_kesearch_pi1[{filter.id}_end]" value="{filter.end}" />
+</div>

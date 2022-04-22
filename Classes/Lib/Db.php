@@ -438,6 +438,8 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
             $where .= $tagWhere;
         }
 
+        $where .= $this->createQueryForDateRange();
+
         // restrict to storage page
         $startingPoints = $this->pObj->pi_getPidList($this->pObj->startingPoints);
         $where .= ' AND pid in (' . $startingPoints . ') ';
@@ -455,6 +457,31 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $where .= $pageRepository->enableFields($this->table);
 
+        return $where;
+    }
+
+    public function createQueryForDateRange()
+    {
+        $where = '';
+        $filters = $this->pObj->filters->getFilters();
+        if (!empty($filters)) {
+            foreach ($filters as $filterUid => $filter) {
+                if (
+                    $filter['rendertype'] == 'dateRange'
+                    && isset($this->pObj->piVars['filter'][$filterUid])
+                ) {
+                    $filterValues = $this->pObj->piVars['filter'][$filterUid];
+                    $startTimestamp = strtotime($filterValues['start'] ?? '');
+                    $endTimestamp = strtotime($filterValues['end'] ?? '');
+                    if ($startTimestamp) {
+                        $where .= ' AND sortdate >= ' . $startTimestamp;
+                    }
+                    if ($endTimestamp) {
+                        $where .= ' AND sortdate <= ' . ($endTimestamp + 24 * 60 * 60);
+                    }
+                }
+            }
+        }
         return $where;
     }
 

@@ -4,11 +4,13 @@ Upcoming version
 [!!!]     For files indexed by the non-FAL-indexer the absolute path is now stored in the index instead of the relative path.
 [!!!]     The file modification date is not part of the hash for indexed files anymore. That means all files have to be re-indexed after updating the extension. Please start the full indexing.
 [FEATURE] Add incremental indexing for files. https://github.com/tpwd/ke_search/issues/64
+[FEATURE] Add date range filter. https://github.com/tpwd/ke_search/issues/40
 [BUGFIX]  Fix PHP8 issue with non-existing array index in file indexer. https://github.com/tpwd/ke_search/issues/84
 [BUGFIX]  Avoid typo3conf path when including backend CSS file. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/80
 [BUGFIX]  Unset page parameter for filter options in 'list' type filter. https://github.com/tpwd/ke_search/issues/24
 [BUGFIX]  Fix PHP 8 issue: Missing extConfPremium Configuration results in Error. https://github.com/tpwd/ke_search/issues/86
 [BUGFIX]  Empty search result results in many 'SELECT from tags ...'. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/9
+[BUGFIX]  Fix cleanup of nested piVars
 [TASK]    Use dependency injection in commands. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/72
 [TASK]    Use "extension configuration" over "extension manager configuration". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/69
 [TASK]    Streamline wording of "FlexForm". Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/70/

@@ -66,6 +66,9 @@
 			<trans-unit id="tx_kesearch_filters.rendertype.I.2" resname="tx_kesearch_filters.rendertype.I.2" >
 				<source>Checkboxes (multiselection OR)</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_filters.rendertype.I.3" resname="tx_kesearch_filters.rendertype.I.3" >
+				<source>Date range</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_filteroptions" resname="tx_kesearch_filteroptions" >
 				<source>Filter options</source>
 			</trans-unit>

@@ -9,8 +9,10 @@ Filters / Faceted Search
 ke_search comes with a faceted search feature which allows the website visitors to narrow down the search result list
 by using filters.
 
-You'll have to create "filters" and "filter options". Filter options appear in the searchbox in the frontend
-and at the same time you can set them as "tags" for pages (or other content) in the backend.
+Filters are either based on tags or on a date.
+
+For tag based filters you'll have to create "filters" and "filter options". Filter options appear in the searchbox
+in the frontend and at the same time you can set them as "tags" for pages (or other content) in the backend.
 
 Examples
 ========
@@ -29,10 +31,10 @@ Example "University Courses"
 As university you offer courses with different degrees. You could create a page for each course and add filter options
 for "bachelor" and "master" and let the users select which courses they want to see.
 
-Using Faceting
-==============
+Using Filters
+=============
 
-The next pages will show you how to setup and configure the faceting feature:
+The next pages will show you how to setup and configure the filters:
 
 .. toctree::
 	:maxdepth: 3
@@ -41,5 +43,6 @@ The next pages will show you how to setup and configure the faceting feature:
 
 	Setup
 	FilterTypes
+	DateRangeFilter
 	SystemCategories
 

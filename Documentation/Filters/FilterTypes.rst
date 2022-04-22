@@ -2,11 +2,11 @@
 
 .. _filtertypes:
 
-============
-Filter Types
-============
+=================
+Tag based filters
+=================
 
-There are three different types for filters:
+There are three different types for filters which are based on tags (in opposite to the date range filter):
 
 Selectbox
 =========

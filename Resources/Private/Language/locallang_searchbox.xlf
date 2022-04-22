@@ -285,6 +285,12 @@
 			<trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear" >
 				<source>%B %e</source>
 			</trans-unit>
+			<trans-unit id="dateRange.start" resname="dateRange.start" >
+				<source>Start</source>
+			</trans-unit>
+			<trans-unit id="dateRange.end" resname="dateRange.end" >
+				<source>End</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

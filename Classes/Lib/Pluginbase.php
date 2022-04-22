@@ -435,6 +435,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $filterData['checkboxOptions'] = $this->compileCheckboxOptions($filter, $options);
             $filterData['optionCount'] = is_array($options) ? count($options) : 0;
             $filterData['resetLink'] = $resetLink;
+            if ($filter['rendertype'] == 'dateRange') {
+                $filterData['start'] = $this->piVars['filter'][$filter['uid']]['start'] ?? '';
+                $filterData['end'] = $this->piVars['filter'][$filter['uid']]['end'] ?? '';
+            }
 
             // special classes / custom code
             switch ($filter['rendertype']) {

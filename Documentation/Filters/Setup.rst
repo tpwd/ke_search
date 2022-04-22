@@ -2,11 +2,11 @@
 
 .. _filtersetup:
 
-====================
-Faceted search setup
-====================
+=============
+Setup filters
+=============
 
-Follow these steps to set up faceted search:
+Follow these steps to create filters and set up the faceted search:
 
 .. rst-class:: bignums-xxl
 
