@@ -18,33 +18,6 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi3'] = 'select_key,recursive';
 
 // add plugins
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
-        'ke_search_pi1'
-    ],
-    'list_type',
-    'ke_search'
-);
-
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
-        'ke_search_pi2'
-    ],
-    'list_type',
-    'ke_search'
-);
-
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    [
-        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi3',
-        'ke_search_pi3'
-    ],
-    'list_type',
-    'ke_search'
-);
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItemGroup(
     'tt_content',
     'list_type',
