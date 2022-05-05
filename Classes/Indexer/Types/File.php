@@ -421,7 +421,7 @@ class File extends IndexerBase
         );
 
         $additionalFields = array(
-            'sortdate' => $this->fileInfo->getModificationTime(),
+            'sortdate' => $file->getModificationTime(),
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
             'directory' => $this->fileInfo->getAbsolutePath(),
