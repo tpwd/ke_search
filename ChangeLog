@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.4.1, May 2022
 [BUGFIX]  Add PHP version constraint. Thanks to Mathias Brodala. https://github.com/tpwd/ke_search/pull/89
 
 Version 4.4.0, April 2022
