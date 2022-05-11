@@ -18,7 +18,7 @@ Download and installation
 
 Install the extension ke_search via extension manager or via composer (recommended):
 
-.. code-block:: shell
+.. code-block:: bash
 
    composer require tpwd/ke_search
 
