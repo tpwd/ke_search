@@ -18,31 +18,45 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi3'] = 'select_key,recursive';
 
 // add plugins
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItemGroup(
+    'tt_content',
+    'list_type',
+    'ke_search',
+    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab',
+    'after:default'
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'list_type',
+    [
         'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
-        'ke_search_pi1'
-    ),
-    'list_type',
-    'ke_search'
+        'ke_search_pi1',
+        'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'ke_search'
+    ]
 );
 
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'list_type',
+    [
         'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
-        'ke_search_pi2'
-    ),
-    'list_type',
-    'ke_search'
+        'ke_search_pi2',
+        'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'ke_search'
+    ]
 );
 
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-    array(
-        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi3',
-        'ke_search_pi3'
-    ),
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
     'list_type',
-    'ke_search'
+    [
+        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi3',
+        'ke_search_pi3',
+        'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'ke_search'
+    ]
 );
 
 // Configure FlexForm field
