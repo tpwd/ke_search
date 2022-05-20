@@ -17,11 +17,6 @@ return array(
         'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_indexerconfig.gif',
         'searchFields' => 'title'
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'hidden,title,storagepid,startingpoints_recursive,single_pages,sysfolder,'
-            . 'type,index_content_with_restrictions,index_news_category_mode,'
-            . 'index_news_category_selection,directories,fileext,filteroption,index_page_doctypes'
-    ),
     'columns' => array(
         'hidden' => array(
             'exclude' => 1,

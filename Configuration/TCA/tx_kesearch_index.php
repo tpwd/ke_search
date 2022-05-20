@@ -17,9 +17,6 @@ return array(
         ),
         'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_index.gif',
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'targetpid,content,params,type,tags,abstract,title,language'
-    ),
     'columns' => array(
         'starttime' => array(
             'exclude' => 1,

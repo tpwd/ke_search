@@ -21,9 +21,6 @@ return array(
         'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_filters.gif',
         'searchFields' => 'title'
     ),
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,title,options,rendertype'
-    ),
     'columns' => array(
         'sys_language_uid' => array(
             'exclude' => 1,
@@ -42,7 +39,6 @@ return array(
         ),
         'l10n_parent' => array(
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.l18n_parent',
             'config' => array(
                 'type' => 'select',
