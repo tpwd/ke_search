@@ -5,6 +5,7 @@ Upcoming version
 [TASK]    Group plugins in plugin selector by using addTcaSelectItemGroup. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/92
 [TASK]    Remove deprecated TCA configurations. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/93
 [TASK]    Clean up ext_emconf.php. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/94
+[TASK]    Add file metadata to resultrow. https://github.com/tpwd/ke_search/issues/75
 [DOCS]    Align with new TYPO3 documentation standards. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/95
 
 Version 4.4.1, May 2022

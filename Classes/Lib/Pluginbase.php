@@ -20,6 +20,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
@@ -143,12 +144,24 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $typo3Version;
 
     /**
+     * Frontend language ID
+     * @var int
+     */
+    protected int $languageId;
+
+    /**
      * Initializes flexform, conf vars and some more
      * @return void
      */
     public function init()
     {
         $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $this->languageId = $languageAspect->getId();
 
         // get some helper functions
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
@@ -659,6 +672,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function getSearchResults()
     {
+        /** @var GenericRepository $genericRepository */
+        $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
+        /** @var FileMetaDataRepository $metaDataRepository */
+        $fileMetaDataRepository = GeneralUtility::makeInstance(FileMetaDataRepository::class);
+
         // set switch for too short words
         $this->fluidTemplateVariables['wordsTooShort'] = $this->hasTooShortWords ? 1 : 0;
 
@@ -703,8 +721,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             foreach ($rows as $row) {
                 $this->searchResult->setRow($row);
 
-                /** @var GenericRepository $genericRepository */
-                $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
                 $tempMarkerArray = array(
                     'orig_uid' => $row['orig_uid'],
                     'orig_pid' => $row['orig_pid'],
@@ -714,6 +730,13 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     'title' => $this->searchResult->getTitle(),
                     'teaser' => $this->searchResult->getTeaser(),
                 );
+
+                if (substr($row['type'], 0, 4) == 'file' && !empty($row['orig_uid'])) {
+                    $tempMarkerArray['metadata'] = $fileMetaDataRepository->findByFileUidAndLanguageUid(
+                        $row['orig_uid'],
+                        $this->languageId
+                    );
+                }
 
                 // hook for additional markers in result row
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] ?? null)) {
@@ -889,11 +912,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function getFirstFalRelationUid($table, $field, $uid)
     {
-        /** @var Context $context */
-        $context = GeneralUtility::makeInstance(Context::class);
-        /** @var LanguageAspect $languageAspect */
-        $languageAspect = $context->getAspect('language');
-        $languageId = $languageAspect->getId();
         /** @var GenericRepository $genericRepository */
         $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
         /** @var FileReferenceRepository $fileReferenceRepository */
@@ -901,18 +919,18 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // Fetch result in current language and fallback to language 0.
         $languageOverlayRecord =
-            ($languageId > 0)
-                ? $genericRepository->findLangaugeOverlayByUidAndLanguage($table, $uid, $languageId)
+            ($this->languageId > 0)
+                ? $genericRepository->findLangaugeOverlayByUidAndLanguage($table, $uid, $this->languageId)
                 : null;
 
         $fileReferenceRow = $fileReferenceRepository->findOneByTableAndFieldnameAndUidForeignAndLanguage(
             $table,
             $field,
             $languageOverlayRecord['uid'] ?? $uid,
-            $languageId
+            $this->languageId
         );
 
-        if ($languageId > 0 && !is_array($fileReferenceRow) ) {
+        if ($this->languageId > 0 && !is_array($fileReferenceRow) ) {
             $fileReferenceRow = $fileReferenceRepository->findOneByTableAndFieldnameAndUidForeignAndLanguage(
                 $table,
                 $field,
@@ -1082,10 +1100,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function countSearchPhrase($searchPhrase, $searchWordsArray, $hits, $tagsAgainst)
     {
-
-        // prepare language aspect
-        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-
         // prepare "tagsAgainst"
         $search = array('"', ' ', '+');
         $replace = array('', '', '');
@@ -1106,7 +1120,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 'tstamp' => time(),
                 'hits' => $hits,
                 'tagsagainst' => $tagsAgainst,
-                'language' => $languageAspect->getId(),
+                'language' => $this->languageId,
             );
             $queryBuilder = Db::getQueryBuilder($table);
             $queryBuilder
@@ -1131,7 +1145,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     'tstamp' => time(),
                     'pageid' => $GLOBALS['TSFE']->id,
                     'resultsfound' => $hits ? 1 : 0,
-                    'language' => $languageAspect->getId(),
+                    'language' => $this->languageId,
                 );
                 $queryBuilder
                     ->insert($table)
