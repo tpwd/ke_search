@@ -2,6 +2,7 @@
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\FetchMode;
+use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -90,12 +91,47 @@ class GenericRepository {
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                     )
                 )
                 ->execute()
                 ->fetch();
         }
         return $row;
+    }
+
+    /**
+     * @param string $table
+     * @param int $uid
+     * @return null|int
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findLangaugeOverlayByUidAndLanguage(string $table, int $uid, int $languageId)
+    {
+        $overlayRecord = null;
+        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
+
+        if (!empty($transOrigPointerField) && !empty($languageField)) {
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+            $overlayRecord = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $transOrigPointerField,
+                        $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $languageField,
+                        $queryBuilder->createNamedParameter($languageId, PDO::PARAM_INT)
+                    )
+                )
+                ->execute()
+                ->fetch();
+        }
+        return $overlayRecord;
     }
 }

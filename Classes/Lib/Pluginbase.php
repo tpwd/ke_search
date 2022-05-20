@@ -20,10 +20,11 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -888,41 +889,38 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function getFirstFalRelationUid($table, $field, $uid)
     {
-        $queryBuilder = Db::getQueryBuilder($table);
-        $row = $queryBuilder
-            ->select('*')
-            ->from('sys_file_reference')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tablenames',
-                    $queryBuilder->quote($table, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'fieldname',
-                    $queryBuilder->quote($field, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'uid_foreign',
-                    $queryBuilder->quote($uid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    't3ver_state',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    't3ver_wsid',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('sorting_foreign', 'asc')
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class);
+        /** @var LanguageAspect $languageAspect */
+        $languageAspect = $context->getAspect('language');
+        $languageId = $languageAspect->getId();
+        /** @var GenericRepository $genericRepository */
+        $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
+        /** @var FileReferenceRepository $fileReferenceRepository */
+        $fileReferenceRepository = GeneralUtility::makeInstance(FileReferenceRepository::class);
 
-        if (is_array($row)) {
-            return $row['uid'];
+        // Fetch result in current language and fallback to language 0.
+        $languageOverlayRecord =
+            ($languageId > 0)
+                ? $genericRepository->findLangaugeOverlayByUidAndLanguage($table, $uid, $languageId)
+                : null;
+
+        $fileReferenceRow = $fileReferenceRepository->findOneByTableAndFieldnameAndUidForeignAndLanguage(
+            $table,
+            $field,
+            $languageOverlayRecord['uid'] ?? $uid,
+            $languageId
+        );
+
+        if ($languageId > 0 && !is_array($fileReferenceRow) ) {
+            $fileReferenceRow = $fileReferenceRepository->findOneByTableAndFieldnameAndUidForeignAndLanguage(
+                $table,
+                $field,
+                $uid
+            );
         }
 
+        return is_array($fileReferenceRow) ? $fileReferenceRow['uid'] : false;
     }
 
     /**
