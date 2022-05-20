@@ -78,13 +78,13 @@ You can start the indexing process in the :guilabel:`Faceted Search` backend mod
 
 You can also start the indexer using the command line
 
-.. code-block:: shell
+.. code-block:: bash
 
 	vendor/bin/typo3 ke_search:indexing
 
 Or if you want to use the incremental mode
 
-.. code-block:: shell
+.. code-block:: bash
 
 	vendor/bin/typo3 ke_search:indexing --indexingMode=incremental
 

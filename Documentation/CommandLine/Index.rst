@@ -13,7 +13,7 @@ Certain ke_search functions can be accessed via the command line.
 Start the indexer
 =================
 
-.. code-block:: shell
+.. code-block:: bash
 
 	vendor/bin/typo3 ke_search:indexing
 
@@ -24,7 +24,7 @@ Start the indexer
 Clear the index
 ===============
 
-.. code-block:: shell
+.. code-block:: bash
 
 	vendor/bin/typo3 ke_search:clearindex
 
@@ -35,7 +35,7 @@ Clear the index
 Remove the indexer lock
 =======================
 
-.. code-block:: shell
+.. code-block:: bash
 
 	vendor/bin/typo3 ke_search:removelock
 
