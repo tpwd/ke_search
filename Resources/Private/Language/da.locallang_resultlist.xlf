@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="da" datatype="plaintext" original="EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf" date="2022-05-23T07:13:20Z" product-name="ke_search">
+		<header/>
+		<body>
+			<trans-unit id="pi_title" resname="pi_title">
+				<source>Search resultlist</source>
+				<target>Søgeresultatliste</target>
+			</trans-unit>
+			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+				<source>Faceted Search: Show resultlist.</source>
+				<target>Facetteret søgning: Vis resultatliste.</target>
+			</trans-unit>
+			<trans-unit id="ff.main" resname="ff.main">
+				<source>General</source>
+				<target>Generelt</target>
+			</trans-unit>
+			<trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE">
+				<source>Load flexforms config from this search box</source>
+				<target>Indlæs flexforms-konfiguration fra dette søgefelt</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
