@@ -158,7 +158,7 @@ class TtContent extends Page
                 }
 
                 // index the files found
-                $this->indexFiles($fileObjects, $row, $pageAccessRestrictions['fe_group]'], $tags);
+                $this->indexFiles($fileObjects, $row, $pageAccessRestrictions['fe_group'], $tags);
 
                 // Combine starttime and endtime from page, page language overlay
                 // and content element.
