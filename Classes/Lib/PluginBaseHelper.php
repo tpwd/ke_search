@@ -105,10 +105,11 @@ class PluginBaseHelper
      * This is done when outputting and querying the database.
      * htmlspecialchars(...) and / or intval(...)
      *
-     * @param $piVars array        array containing all piVars
-     * @return mixed
+     * @param array $piVars array containing all piVars
+     * @param string $additionalAllowedPiVars comma-separated list
+     * @return array
      */
-    public function cleanPiVars($piVars)
+    public function cleanPiVars(array $piVars, string $additionalAllowedPiVars = ''): array
     {
         // run through all piVars
         foreach ($piVars as $key => $value) {
@@ -167,9 +168,11 @@ class PluginBaseHelper
                     }
                     break;
 
-                // remove all other piVars
+                // remove not allowed piVars
                 default:
-                    unset($piVars[$key]);
+                    if (!in_array($key, SearchHelper::getAllowedPiVars($additionalAllowedPiVars))) {
+                        unset($piVars[$key]);
+                    }
                     break;
             }
         }

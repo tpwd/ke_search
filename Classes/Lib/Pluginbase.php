@@ -191,11 +191,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // make settings from FlexForm available in general configuration ($this->conf)
         $this->moveFlexFormDataToConf($flexFormConfiguration);
 
-        // explode flattened piVars to multi-dimensional array
-        $this->piVars = SearchHelper::explodePiVars($this->piVars);
-
-        // clean piVars
-        $this->piVars = $this->div->cleanPiVars($this->piVars);
+        // explode flattened piVars to multi-dimensional array and clean them
+        $additionalAllowedPiVars = $this->conf['additionalAllowedPiVars'] ?? '';
+        $this->piVars = SearchHelper::explodePiVars($this->piVars, $additionalAllowedPiVars);
+        $this->piVars = $this->div->cleanPiVars($this->piVars, $additionalAllowedPiVars);
 
         // hook: modifyFlexFormData
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] ?? null)) {

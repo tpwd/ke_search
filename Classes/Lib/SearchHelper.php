@@ -332,9 +332,10 @@ class SearchHelper
      * tx_kesearch_pi1[filter_3_1]=example --> tx_kesearch_pi1[filter][3][1]=example
      *
      * @param array $piVars
+     * @param string $additionalAllowedPiVars comma-separated list
      * @return array
      */
-    static public function explodePiVars(array $piVars): array
+    static public function explodePiVars(array $piVars, string $additionalAllowedPiVars = ''): array
     {
         foreach ($piVars as $key => $value) {
             if (strstr($key, '_')) {
@@ -348,7 +349,7 @@ class SearchHelper
             }
         }
         foreach ($piVars as $key => $value) {
-           if (!in_array($key, self::PI_VARS) || empty($piVars[$key])) {
+           if (!in_array($key, self::getAllowedPiVars($additionalAllowedPiVars)) || empty($piVars[$key])) {
                unset($piVars[$key]);
            }
         }
@@ -473,5 +474,14 @@ class SearchHelper
             . ', ' . LocalizationUtility::translate('backend.date.format.time', 'ke_search'),
             $timestamp
         );
+    }
+
+    /**
+     * @param $additionalAllowedPiVars
+     * @return array
+     */
+    static public function getAllowedPiVars($additionalAllowedPiVars = ''): array
+    {
+        return array_merge(self::PI_VARS, GeneralUtility::trimExplode(',', $additionalAllowedPiVars));
     }
 }

@@ -19,45 +19,30 @@ plugin.tx_kesearch_pi1 {
         }
     }
     cssFile = EXT:ke_search/Resources/Public/Css/ke_search_pi1.css
+
+    # Set this to a comma-separated list of piVars you want to allow for custom implementations
+    # Example:
+    # Set
+    # additionalAllowedPiVars = myvar
+    # and in SearchForm.html use
+    # <input type="hidden" name="tx_kesearch_pi1[myvar]" value="example" />
+    # to add a custom piVar
+    additionalAllowedPiVars =
 }
 
 plugin.tx_kesearch_pi2 {
-    view {
-        templateRootPaths {
-            0 = EXT:ke_search/Resources/Private/Templates/
-            1 = {$plugin.tx_kesearch.templateRootPath}
-        }
-        partialRootPaths {
-            0 = EXT:ke_search/Resources/Private/Partials/
-            1 = {$plugin.tx_kesearch.partialRootPath}
-        }
-        layoutRootPaths {
-            0 = EXT:ke_search/Resources/Private/Layouts/
-            1 = {$plugin.tx_kesearch.layoutRootPath}
-        }
-    }
-    cssFile = EXT:ke_search/Resources/Public/Css/ke_search_pi1.css
+    view < plugin.tx_kesearch_pi1.view
+    cssFile < plugin.tx_kesearch_pi1.cssFile
+    additionalAllowedPiVars < plugin.tx_kesearch_pi1.additionalAllowedPiVars
 
     # Set this to 1 to make the filters available in the result list plugin
     includeFilters = 0
 }
 
 plugin.tx_kesearch_pi3 {
-    view {
-        templateRootPaths {
-            0 = EXT:ke_search/Resources/Private/Templates/
-            1 = {$plugin.tx_kesearch.templateRootPath}
-        }
-        partialRootPaths {
-            0 = EXT:ke_search/Resources/Private/Partials/
-            1 = {$plugin.tx_kesearch.partialRootPath}
-        }
-        layoutRootPaths {
-            0 = EXT:ke_search/Resources/Private/Layouts/
-            1 = {$plugin.tx_kesearch.layoutRootPath}
-        }
-    }
-    cssFile = EXT:ke_search/Resources/Public/Css/ke_search_pi1.css
+    view < plugin.tx_kesearch_pi1.view
+    cssFile < plugin.tx_kesearch_pi1.cssFile
+    additionalAllowedPiVars < plugin.tx_kesearch_pi1.additionalAllowedPiVars
 }
 
 module.tx_dashboard {
