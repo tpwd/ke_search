@@ -197,6 +197,14 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // clean piVars
         $this->piVars = $this->div->cleanPiVars($this->piVars);
 
+        // hook: modifyFlexFormData
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] ?? null)) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] as $_classRef) {
+                $_procObj = GeneralUtility::makeInstance($_classRef);
+                $_procObj->modifyFlexFormData($this->conf, $this->cObj, $this->piVars);
+            }
+        }
+
         // get preselected filter from rootline
         $this->getFilterPreselect();
 
@@ -216,14 +224,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         if (!empty($this->conf['additionalPathForTypeIcons'])) {
             $this->conf['additionalPathForTypeIcons'] = rtrim($this->conf['additionalPathForTypeIcons'], '/') . '/';
-        }
-
-        // hook: modifyFlexFormData
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] ?? null)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFlexFormData'] as $_classRef) {
-                $_procObj = GeneralUtility::makeInstance($_classRef);
-                $_procObj->modifyFlexFormData($this->conf, $this->cObj, $this->piVars);
-            }
         }
 
         // prepare database object

@@ -174,9 +174,11 @@ class Searchphrase
     {
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         foreach ($this->pObj->preselectedFilter as $key => $filterTags) {
-            // add it only, if no other filter options of this filter has been
-            // selected in the frontend
-            if (!isset($this->pObj->piVars['filter'][$key]) && !is_array($this->pObj->piVars['filter'][$key])) {
+            // add it only, if no other filter options of this filter has been selected in the frontend
+            if (!isset($this->pObj->piVars['filter'][$key])) {
+                if (!isset($tagsAgainst[$key])) {
+                    $tagsAgainst[$key] = '';
+                }
                 // Quote the tags for use in database query
                 $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
                 foreach ($filterTags as $k => $v) {
