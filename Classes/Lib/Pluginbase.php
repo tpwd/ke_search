@@ -172,19 +172,24 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
         }
 
-        // make settings from flexform available in general configuration ($this->conf)
-        $this->moveFlexFormDataToConf();
+        // get the configuration of the current plugin
+        $flexFormConfiguration = $this->getFlexFormConfiguration();
 
-        // in pi2 (the list plugin) fetch the configuration from pi1 (the search
-        // box plugin) since all the configuration is done there
-        if (!empty($this->conf['loadFlexformsFromOtherCE'])) {
-            $contentElement = $this->pi_getRecord('tt_content', intval($this->conf['loadFlexformsFromOtherCE']));
+        // in the list plugin fetch the FlexForm from the search box plugin, because all the configuration is done there
+        if (!empty($flexFormConfiguration['loadFlexformsFromOtherCE'])) {
+            $contentElement = $this->pi_getRecord(
+                'tt_content',
+                intval($flexFormConfiguration['loadFlexformsFromOtherCE'])
+            );
             if (is_int($contentElement) && $contentElement === 0) {
                 throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
-            $this->moveFlexFormDataToConf();
+            $flexFormConfiguration = $this->getFlexFormConfiguration();
         }
+
+        // make settings from FlexForm available in general configuration ($this->conf)
+        $this->moveFlexFormDataToConf($flexFormConfiguration);
 
         // explode flattened piVars to multi-dimensional array
         $this->piVars = SearchHelper::explodePiVars($this->piVars);
@@ -309,11 +314,30 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
     /**
-     * Move all FlexForm data of current record to conf array
+     * Move all FlexForm data of current record to conf array ($this->conf)
+     *
+     * @param array $flexFormConfiguration
+     * @return void
      */
-    public function moveFlexFormDataToConf()
+    public function moveFlexFormDataToConf(array $flexFormConfiguration)
     {
-        // don't move this to init
+        if (!empty($flexFormConfiguration)) {
+            foreach ($flexFormConfiguration as $key => $value) {
+                if (($this->conf[$key] ?? '') != $value && !empty($value)) {
+                    $this->conf[$key] = $value;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the FlexForm configuration of the plugin as array.
+     *
+     * @return array
+     */
+    public function getFlexFormConfiguration(): array
+    {
+        $flexFormConfiguration = [];
         if (isset($this->cObj->data['pi_flexform'])) {
             $this->pi_initPIflexForm();
             $piFlexForm = $this->cObj->data['pi_flexform'];
@@ -321,18 +345,13 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 foreach ($piFlexForm['data'] as $sheetKey => $sheet) {
                     foreach ($sheet as $lang) {
                         foreach ($lang as $key => $value) {
-                            // delete current conf value from conf-array
-                            // when FF-Value differs from TS-Conf and FF-Value is not empty
-                            $value = $this->fetchConfigurationValue($key, $sheetKey);
-                            if (($this->conf[$key] ?? '') != $value && !empty($value)) {
-                                unset($this->conf[$key]);
-                                $this->conf[$key] = $this->fetchConfigurationValue($key, $sheetKey);
-                            }
+                            $flexFormConfiguration[$key] = $this->fetchConfigurationValue($key, $sheetKey);
                         }
                     }
                 }
             }
         }
+        return $flexFormConfiguration;
     }
 
     /**
@@ -781,7 +800,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
                 // for pages and news we have to fetch the file reference uid
                 if ($type == 'file') {
-                    if ($this->conf['showFilePreview']) {
+                    if ($this->conf['showFilePreview'] ?? '') {
                         // SearchHelper::getFile will return af FILE object if it is a FAL file,
                         // otherwise it's a plain path to a file
                         if (SearchHelper::getFile($row['orig_uid'])) {

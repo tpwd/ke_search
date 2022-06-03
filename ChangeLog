@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [BUGFIX]  Use localized search result images. https://github.com/tpwd/ke_search/issues/77
 [BUGFIX]  Fix typo in tt_content indexer file indexing. Thanks to Nimmermaer. https://github.com/tpwd/ke_search/pull/97
+[BUGFIX]  Fix fetching of the FlexForm settings in the list view plugin
 [TASK]    Group plugins in plugin selector by using addTcaSelectItemGroup. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/92
 [TASK]    Remove deprecated TCA configurations. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/pull/93
 [TASK]    Clean up ext_emconf.php. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/94
