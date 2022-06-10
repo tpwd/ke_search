@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Go back to fetch() from fetchAssociative() for backwards compatibility
+
 Version 4.4.3, June 2022
 [BUGFIX]  Fix undefined array key issue
 [BUGFIX]  Fix regression which threw an error when showing file results in TYPO3 10
