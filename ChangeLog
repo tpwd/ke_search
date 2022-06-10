@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.4.4, June 2022
 [TASK]    Go back to fetch() from fetchAssociative() for backwards compatibility
 
 Version 4.4.3, June 2022
