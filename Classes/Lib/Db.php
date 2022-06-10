@@ -228,7 +228,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
         }
 
         // hook for appending additional where clause to sphinx query
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['appendWhereToSphinx'])) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['appendWhereToSphinx'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['appendWhereToSphinx'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $queryForSphinx = $_procObj->appendWhereToSphinx($queryForSphinx, $this->keSearchPremium, $this);

@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix undefined array key issue
+
 Version 4.4.2, June 2022
 [BUGFIX]  Use localized search result images. https://github.com/tpwd/ke_search/issues/77
 [BUGFIX]  Fix typo in tt_content indexer file indexing. Thanks to Nimmermaer. https://github.com/tpwd/ke_search/pull/97
