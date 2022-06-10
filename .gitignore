@@ -7,4 +7,5 @@ vendor
 Tests/Behat/vendor
 Tests/Behat/composer.lock
 Documentation/_themes
+Documentation/conf.py
 *GENERATED*
