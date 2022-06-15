@@ -46,7 +46,7 @@ class Pdf extends File implements FileIndexerInterface
     public array $app = array(); // saves the path to the executables
     public bool $isAppArraySet = false;
 
-    /** @var IndexerRunner  */
+    /** @var IndexerRunner */
     public $pObj;
 
     /**
@@ -129,6 +129,8 @@ class Pdf extends File implements FileIndexerInterface
                 // return empty string if no content was found
                 $content = '';
             }
+            // sanitize content
+            $content = $this->removeReplacementChar($content);
 
             return $this->removeEndJunk($content);
         } else {
@@ -185,6 +187,17 @@ class Pdf extends File implements FileIndexerInterface
      */
     public function removeEndJunk($string)
     {
+        $string = preg_replace('@\x{FFFD}@u', '', $string);
         return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
+    }
+
+    /**
+     * Remove (U+FFFD)� characters due to incorrect image indexing in PDF file
+     * @param string String to clean up
+     * @return string Cleaned up string
+     */
+    public function removeReplacementChar($string)
+    {
+        return trim(preg_replace('@\x{FFFD}@u', '', $string));
     }
 }
