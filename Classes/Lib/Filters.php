@@ -70,7 +70,7 @@ class Filters
     {
         $this->pObj = $pObj;
         $this->cObj = $pObj->cObj;
-        $this->db = GeneralUtility::makeInstance(Db::class);
+        $this->db = GeneralUtility::makeInstance(Db::class, $pObj);
 
         $this->conf = $this->pObj->conf;
         $this->piVars = $this->pObj->piVars;
