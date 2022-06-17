@@ -177,6 +177,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // in the list plugin fetch the FlexForm from the search box plugin, because all the configuration is done there
         if (!empty($flexFormConfiguration['loadFlexformsFromOtherCE'])) {
+            $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord(
                 'tt_content',
                 intval($flexFormConfiguration['loadFlexformsFromOtherCE'])
@@ -185,7 +186,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
-            $flexFormConfiguration = $this->getFlexFormConfiguration();
+            $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
         }
 
         // make settings from FlexForm available in general configuration ($this->conf)
