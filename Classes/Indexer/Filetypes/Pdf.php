@@ -187,7 +187,6 @@ class Pdf extends File implements FileIndexerInterface
      */
     public function removeEndJunk($string)
     {
-        $string = preg_replace('@\x{FFFD}@u', '', $string);
         return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
     }
 
