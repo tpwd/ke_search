@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.4.5, June 2022
 [BUGFIX]  Remove unicode replacement character in PDF indexing. Thanks to Kamel Ben Yedder. https://github.com/tpwd/ke_search/pull/114
 [BUGFIX]  Fix regression from version 4.4.2 which caused the search result to be empty when the search box is on a different page. https://github.com/tpwd/ke_search/issues/113
 
