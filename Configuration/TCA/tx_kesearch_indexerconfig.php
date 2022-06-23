@@ -266,6 +266,18 @@ return array(
                 'default' => 'pdf,ppt,doc,xls,docx,xlsx,pptx'
             )
         ),
+        'file_reference_fields' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.file_reference_fields',
+            'displayCond' => 'FIELD:type:IN:page,tt_content',
+            'config' => array(
+                'type' => 'text',
+                'cols' => 48,
+                'rows' => 4,
+                'eval' => 'trim',
+                'default' => 'media'
+            )
+        ),
         'index_use_page_tags_for_files' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.index_use_page_tags_for_files',
@@ -324,7 +336,7 @@ return array(
             'config' => array(
                 'type' => 'text',
                 'cols' => 48,
-                'rows' => 10,
+                'rows' => 4,
                 'eval' => 'trim',
                 'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut'
             )
@@ -355,7 +367,7 @@ return array(
         '0' => array('showitem' => 'hidden,title,type,storagepid,targetpid,'
             . 'startingpoints_recursive,single_pages,sysfolder,index_content_with_restrictions,'
             . 'index_news_archived,index_news_category_mode,index_extnews_category_selection,'
-            . 'index_use_page_tags,fal_storage,directories,fileext,index_page_doctypes,contenttypes,'
+            . 'index_use_page_tags,fal_storage,directories,fileext,file_reference_fields,index_page_doctypes,contenttypes,'
             . 'index_news_files_mode,'
             . 'filteroption,index_use_page_tags_for_files')
     )
