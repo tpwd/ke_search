@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -279,9 +280,9 @@ class SearchHelper
                         $linkConf['parameter'] = 't3://file?uid=' . $resultRow['orig_uid'];
                     }
                 } else {
-                    $filePath = Environment::getPublicPath() . '/' . $resultRow['directory'] . $resultRow['title'];
+                    $filePath = $resultRow['directory'] . $resultRow['title'];
                     if (file_exists($filePath)) {
-                        $linkConf['parameter'] = rawurlencode($resultRow['directory'] . $resultRow['title']);
+                        $linkConf['parameter'] = rawurlencode(PathUtility::stripPathSitePrefix($filePath));
                     }
                 }
                 $linkConf['fileTarget'] = $targetFiles;
