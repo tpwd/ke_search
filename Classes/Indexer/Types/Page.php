@@ -1041,7 +1041,7 @@ class Page extends IndexerBase
     }
 
     /**
-     * Finds files attached to "uploads" content elements
+     * Finds files attached to the content elements
      * returns them as file reference objects array
      * @author Christian Bülter
      * @since 24.09.13
