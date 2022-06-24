@@ -101,7 +101,7 @@ class Page extends IndexerBase
      * this array contains the definition of which file content element types should be indexed
      * @var array
      */
-    public $fileCTypes = array('uploads');
+    public $fileCTypes = [];
 
     /**
      * this array contains the definition of which page
@@ -133,19 +133,7 @@ class Page extends IndexerBase
      * Files Processor configuration
      * @var array
      */
-    public $filesProcessorConfiguration = [
-        'references.' => [
-            'fieldName' => 'media',
-            'table' => 'tt_content'
-        ],
-        'collections.' => [
-            'field' => 'file_collections'
-        ],
-        'sorting.' => [
-            'field ' => 'filelink_sorting'
-        ],
-        'as' => 'files'
-    ];
+    public $filesProcessorConfiguration = [];
 
     /**
      * counter for how many pages we have indexed
@@ -202,6 +190,9 @@ class Page extends IndexerBase
             $cTypes[] = 'CType="' . $value . '"';
         }
         $this->whereClauseForCType = implode(' OR ', $cTypes);
+
+        // set allowed CTypes for file reference indexing
+        $this->fileCTypes = $content_types_temp ?: ['uploads'];
 
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
@@ -1064,9 +1055,24 @@ class Page extends IndexerBase
 
         // Get files by filesProcessor
         $processedData = [];
-        $processedData = $this->filesProcessor->process($this->cObj, [], $this->filesProcessorConfiguration, $processedData);
-        $fileReferenceObjects = $processedData['files'];
 
+        // set tt_content fields used for file references
+        if (empty($this->indexerConfig["file_reference_fields"])) {
+            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration(["media"]);
+        } else {
+            $fileReferenceFields = GeneralUtility::trimExplode(
+                ',',
+                $this->indexerConfig["file_reference_fields"]
+            );
+            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration($fileReferenceFields);
+        }
+
+        $fileReferenceObjects = [];
+        foreach ($filesProcessorConfiguration as $configuration) {
+            $processedData = $this->filesProcessor->process($this->cObj, [], $configuration, $processedData);
+            $fileReferenceObjects = array_merge($fileReferenceObjects, $processedData['files']);
+        }
+        
         return $fileReferenceObjects;
     }
 
@@ -1259,5 +1265,32 @@ class Page extends IndexerBase
         }
 
         return $bodytext;
+    }
+
+    /**
+     * Set the $filesProcessorConfiguration according to the Page-Indexer-Configuration
+     *
+     * @param array $fileReferenceFields
+     * @return array
+     */
+    protected function setFilesProcessorConfiguration(array $fileReferenceFields): array
+    {
+        $filesProcessorConfiguration = [];
+        foreach ($fileReferenceFields as $fileReferenceField) {
+            $filesProcessorConfiguration[] = [
+                'references.' => [
+                    'fieldName' => $fileReferenceField,
+                    'table' => 'tt_content'
+                ],
+                'collections.' => [
+                    'field' => 'file_collections'
+                ],
+                'sorting.' => [
+                    'field ' => 'filelink_sorting'
+                ],
+                'as' => 'files'
+            ];
+        }
+        return $filesProcessorConfiguration;
     }
 }

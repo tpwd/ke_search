@@ -246,6 +246,9 @@
 			<trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes" >
 				<source>Content element types which should be indexed (default: text,textpic,bullets,table,html,header,uploads)</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.file_reference_fields" resname="tx_kesearch_indexerconfig.file_reference_fields" >
+				<source>tt_content fields which should be indexed for file references (default: media)</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" >
 				<source>Add tag to all indexed elements</source>
 			</trans-unit>
