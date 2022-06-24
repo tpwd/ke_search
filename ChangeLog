@@ -2,6 +2,10 @@ ChangeLog
 
 compat8 branch
 
+Upcoming version 
+(not sure if there will be another version for TYPO3 8, please use latest version from branch compat8 if you neet the latest patches)
+[BUGFIX]   fixed mysql error for newer mariadb versions. Thanks to Manuel Wohlers. https://github.com/tpwd/ke_search/pull/116	
+
 Version 2.8.3, July 2020
 [!!!][BUGFIX]  Security Bugfix. Please update!
 
