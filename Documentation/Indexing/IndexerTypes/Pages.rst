@@ -42,14 +42,17 @@ Advanced options
 * If you set :guilabel:`Index content elements with restrictions` to `yes`, content elements will be indexed even if
   they have frontend user group access restrictions. This function may be used to "tease" certain content elements in
   your search and then tell the user that he will have to log in to see the full content once he clicks on the search result.
-* Using the field :guilabel:``Comma separated list of allowed file extensions` you can set the allowed file extension of files
-  to index. By default this is set to `pdf,ppt,doc,xls,docx,xlsx,pptx`. For pdf, ppt, doc and xls files you need to
-  install external tools on the server.
 * If you created custom page types which you want to index, you can add them in
   :guilabel:`Page types which should be indexed` set the page types you want to index.
 * in :guilabel:`Content element types which should be indexed` you can add your own content element types. For
-  example those created with the extension "mask". If you are not sure what to enter here, have a look a the table
+  example those created with EXT:mask. If you are not sure what to enter here, have a look a the table
   `tt_content` in the column `CType`.
+* in :guilabel:`tt_content fields which should be indexed` you can define custom fields which should be indexed. Default
+  is here "bodytext" which is used for the default content elements. This is useful if you added your custom
+  content elements for example using EXT:mask.
+* Using the field :guilabel:``Comma separated list of allowed file extensions` you can set the allowed file extension of files
+  to index. By default this is set to `pdf,ppt,doc,xls,docx,xlsx,pptx`. For pdf, ppt, doc and xls files you need to
+  install external tools on the server.
 * Using the field :guilabel:`tt_content fields which should be indexed for file references` you can add fields from
   `tt_content` which hold file references and for which the attached files should be indexed.
 * You can choose to add a tag to all index entries created by this indexer.

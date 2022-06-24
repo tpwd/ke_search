@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [FEATURE]  Index custom file references in page indexer. Thanks to Patrick Crausaz. https://github.com/tpwd/ke_search/pull/119
+[FEATURE]  Index custom fields in tt_content. https://github.com/tpwd/ke_search/issues/102
 [TASK]     Remove unnecessary removing of replacement character, see https://github.com/tpwd/ke_search/commit/af9f166f241728916a726ae453a676997a0f3b7d#r76324249
 [BUGFIX]   Give dependencies when instantiating Db object and activate autoconfigure and auto-wiring for Db. https://github.com/tpwd/ke_search/issues/78
 [BUGFIX]   Fix link to non-FAL-files in result list. https://github.com/tpwd/ke_search/issues/118

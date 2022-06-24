@@ -138,6 +138,7 @@ CREATE TABLE tx_kesearch_indexerconfig (
 	index_page_doctypes varchar(255) DEFAULT '' NOT NULL,
 	directories text,
 	fileext tinytext,
+	content_fields text,
 	file_reference_fields text,
 	filteroption int(11) DEFAULT '0' NOT NULL,
 	fal_storage int(11) DEFAULT '0' NOT NULL,

@@ -569,6 +569,7 @@ class News extends IndexerBase
         // NOTE: If the content elements contain links to files, those files will NOT be indexed.
         // NOTE: There's no restriction to certain content element types .
         // All attached content elements will be indexed. Only fields "header" and "bodytext" will be indexed.
+        // todo: As in the page indexer it should be possible to define which fields should be indexed from the tt_content row.
         if (count($contentElements)) {
             /* @var $pageIndexerObject Page */
             $pageIndexerObject = GeneralUtility::makeInstance(Page::class, $this->pObj);

@@ -9,6 +9,11 @@ Indexing custom content fields
 If you added fields to the `tt_content` table in order to use them with your own content elements, you can index
 these fields with the default page indexer, too.
 
+.. note::
+   The hooks described below are not needed anymore to index custom fields in tt_content since ke_search
+   version 4.5.0. Since then you can simply configure those fields in the indexer configuration.
+   see :ref:`indexer for pages<pagesIndexer>`.
+
 Two hooks are needed:
 
 * One adds the new field to the list of fields fetched from the tt_content table,

@@ -98,12 +98,6 @@ class Page extends IndexerBase
     );
 
     /**
-     * this array contains the definition of which file content element types should be indexed
-     * @var array
-     */
-    public $fileCTypes = [];
-
-    /**
      * this array contains the definition of which page
      * types (field doktype in pages table) should be indexed.
      * @var array
@@ -190,9 +184,6 @@ class Page extends IndexerBase
             $cTypes[] = 'CType="' . $value . '"';
         }
         $this->whereClauseForCType = implode(' OR ', $cTypes);
-
-        // set allowed CTypes for file reference indexing
-        $this->fileCTypes = $content_types_temp ?: ['uploads'];
 
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
@@ -579,8 +570,11 @@ class Page extends IndexerBase
      */
     public function getPageContent($uid)
     {
-        // get content elements for this page
-        $fields = 'uid, pid, header, bodytext, CType, sys_language_uid, header_layout, fe_group, file_collections, filelink_sorting, records';
+        // define "fields" to fetch from tt_content and "content fields" which will be added to the index
+        $contentFields = GeneralUtility::trimExplode(',', $this->indexerConfig['content_fields'] ?: 'bodytext');
+        $fields =
+            'uid,pid,header,CType,sys_language_uid,header_layout,fe_group,file_collections,filelink_sorting,records'
+            . ',' . implode(',', $contentFields);
 
         // If EXT:gridelements is installed, add the field containing the gridelement to the list
         if (ExtensionManagementUtility::isLoaded('gridelements')) {
@@ -659,13 +653,14 @@ class Page extends IndexerBase
                 // a file, thus we get file objects.
                 // Files go into the index no matter if "index_content_with_restrictions" is set
                 // or not, that means even if protected content elements do not go into the index,
-                // files do. Since each file gets it's own index entry with correct access
-                // restrictons, that's no problem from a access permission perspective (in fact, it's a feature).
-                if (in_array($ttContentRow['CType'], $this->fileCTypes)) {
-                    $fileObjects = $this->findAttachedFiles($ttContentRow);
-                } else {
-                    $fileObjects = $this->findLinkedFilesInRte($ttContentRow);
-                    $content .= $this->getContentFromContentElement($ttContentRow) . "\n";
+                // files do. Since each file gets its own index entry with correct access
+                // restrictions, that's no problem from an access permission perspective (in fact, it's a feature).
+                foreach ($contentFields as $field) {
+                    $fileObjects = array_merge(
+                        $this->findAttachedFiles($ttContentRow),
+                        $this->findLinkedFilesInRte($ttContentRow, $field)
+                    );
+                    $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
 
                 // index the files found
@@ -1081,11 +1076,12 @@ class Page extends IndexerBase
      * Finds files linked in rte text
      * returns them as array of file objects
      * @param array $ttContentRow content element
+     * @param string $field
      * @return array
      * @author Christian Bülter
      * @since 24.09.13
      */
-    public function findLinkedFilesInRte($ttContentRow)
+    public function findLinkedFilesInRte($ttContentRow, $field = 'bodytext')
     {
         $fileObjects = array();
         // check if there are links to files in the rte text
@@ -1094,7 +1090,7 @@ class Page extends IndexerBase
 
         /** @var LinkService $linkService */
         $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow['bodytext'], 1);
+        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow[$field], 1);
         foreach ($blockSplit as $k => $v) {
             list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {
@@ -1220,36 +1216,36 @@ class Page extends IndexerBase
     }
 
     /**
-     * Extracts content from content element and returns it as plain text
-     * for writing it directly to the index
-     * @author Christian Bülter
-     * @since 24.09.13
+     * Extracts one field of content from the given content element (tt_content row) and returns it as plain text
+     *
      * @param array $ttContentRow content element
+     * @param string $field field from which the plain text content should be fetched
      * @return string
+     * @since 24.09.13
+     * @author Christian Bülter
      */
-    public function getContentFromContentElement($ttContentRow)
+    public function getContentFromContentElement($ttContentRow, $field = 'bodytext'): string
     {
-        // bodytext
-        $bodytext = (string)$ttContentRow['bodytext'];
+        $content = (string)$ttContentRow[$field];
 
         // following lines prevents having words one after the other like: HelloAllTogether
-        $bodytext = str_replace('<td', ' <td', $bodytext);
-        $bodytext = str_replace('<br', ' <br', $bodytext);
-        $bodytext = str_replace('<p', ' <p', $bodytext);
-        $bodytext = str_replace('<li', ' <li', $bodytext);
+        $content = str_replace('<td', ' <td', $content);
+        $content = str_replace('<br', ' <br', $content);
+        $content = str_replace('<p', ' <p', $content);
+        $content = str_replace('<li', ' <li', $content);
 
         if ($ttContentRow['CType'] == 'table') {
             // replace table dividers with whitespace
-            $bodytext = str_replace('|', ' ', $bodytext);
+            $content = str_replace('|', ' ', $content);
         }
 
         // remove script and style tags
         // thanks to the wordpress project
         // https://core.trac.wordpress.org/browser/tags/5.3/src/wp-includes/formatting.php#L5178
-        $bodytext = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $bodytext );
+        $content = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $content );
 
         // remove other tags
-        $bodytext = strip_tags($bodytext);
+        $content = strip_tags($content);
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
@@ -1257,14 +1253,14 @@ class Page extends IndexerBase
                      $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyContentFromContentElement(
-                    $bodytext,
+                    $content,
                     $ttContentRow,
                     $this
                 );
             }
         }
 
-        return $bodytext;
+        return $content;
     }
 
     /**

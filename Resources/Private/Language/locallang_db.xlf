@@ -126,6 +126,9 @@
 			<trans-unit id="tx_kesearch_indexerconfig" resname="tx_kesearch_indexerconfig" >
 				<source>Indexer Configuration</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.tabs.advanced" resname="tx_kesearch_indexerconfig.tabs.advanced" >
+				<source>Advanced</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.title" resname="tx_kesearch_indexerconfig.title" >
 				<source>Title</source>
 			</trans-unit>
@@ -180,6 +183,9 @@
 			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions" resname="tx_kesearch_indexerconfig.index_content_with_restrictions" >
 				<source>Index content elements with restrictions?</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.description" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.description" >
+				<source>Content elements will be indexed even if they have frontend user group access restrictions. This function may be used to "tease" content elements and then tell the user that a login is needed.</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" >
 				<source>Yes</source>
 			</trans-unit>
@@ -232,7 +238,10 @@
 				<source>Add tags to files also?</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes" >
-				<source>Page types which should be indexed (field:doktype, default: 1)</source>
+				<source>Page types which should be indexed</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes.description" resname="tx_kesearch_indexerconfig.index_page_doctypes.description" >
+				<source>Refers to the field "doktype" in the "pages" table, default: 1</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories" >
 				<source>Directories</source>
@@ -244,10 +253,22 @@
 				<source>File indexer: Comma separated list of allowed file extensions (eg. pdf,ppt,doc,xls)</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes" >
-				<source>Content element types which should be indexed (default: text,textpic,bullets,table,html,header,uploads)</source>
+				<source>Content element types which should be indexed</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.contenttypes.description" resname="tx_kesearch_indexerconfig.contenttypes.description" >
+				<source>Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut </source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.file_reference_fields" resname="tx_kesearch_indexerconfig.file_reference_fields" >
-				<source>tt_content fields which should be indexed for file references (default: media)</source>
+				<source>tt_content fields which should be indexed for file references</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.file_reference_fields.description" resname="tx_kesearch_indexerconfig.file_reference_fields.description" >
+				<source>default: media</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.content_fields" resname="tx_kesearch_indexerconfig.content_fields" >
+				<source>tt_content fields which should be indexed</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description" >
+				<source>default: bodytext</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" >
 				<source>Add tag to all indexed elements</source>
