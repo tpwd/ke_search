@@ -43,6 +43,8 @@ class TtContent extends Page
      */
     public function getPageContent($uid)
     {
+        $contentFields = GeneralUtility::trimExplode(',', $this->indexerConfig['content_fields'] ?: 'bodytext');
+
         // get content elements for this page
         $fields = '*';
         $table = 'tt_content';
@@ -150,11 +152,12 @@ class TtContent extends Page
                 // index content of this content element and find attached or linked files.
                 // Attached files are saved as file references, the RTE links directly to
                 // a file, thus we get file objects.
-                if (in_array($row['CType'], $this->fileCTypes)) {
-                    $fileObjects = $this->findAttachedFiles($row);
-                } else {
-                    $fileObjects = $this->findLinkedFilesInRte($row);
-                    $content .= $this->getContentFromContentElement($row) . "\n";
+                foreach ($contentFields as $field) {
+                    $fileObjects = array_merge(
+                        $this->findAttachedFiles($row),
+                        $this->findLinkedFilesInRte($row, $field)
+                    );
+                    $content .= $this->getContentFromContentElement($row, $field) . "\n";
                 }
 
                 // index the files found

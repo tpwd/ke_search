@@ -150,6 +150,7 @@ return array(
         'index_content_with_restrictions' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.index_content_with_restrictions',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.index_content_with_restrictions.description',
             'displayCond' => 'FIELD:type:=:page',
             'config' => array(
                 'type' => 'select',
@@ -269,6 +270,7 @@ return array(
         'file_reference_fields' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.file_reference_fields',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.file_reference_fields.description',
             'displayCond' => 'FIELD:type:IN:page,tt_content',
             'config' => array(
                 'type' => 'text',
@@ -290,11 +292,25 @@ return array(
         'index_page_doctypes' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.index_page_doctypes',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.index_page_doctypes.description',
             'displayCond' => 'FIELD:type:=:page',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'default' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT
+            )
+        ),
+        'content_fields' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.content_fields',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.content_fields.description',
+            'displayCond' => 'FIELD:type:IN:page,tt_content',
+            'config' => array(
+                'type' => 'text',
+                'cols' => 48,
+                'rows' => 4,
+                'eval' => 'trim',
+                'default' => 'bodytext'
             )
         ),
         'filteroption' => array(
@@ -332,6 +348,7 @@ return array(
         'contenttypes' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.contenttypes',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.contenttypes.description',
             'displayCond' => 'FIELD:type:IN:page,tt_content',
             'config' => array(
                 'type' => 'text',
@@ -363,12 +380,16 @@ return array(
             )
         ]
     ),
-    'types' => array(
-        '0' => array('showitem' => 'hidden,title,type,storagepid,targetpid,'
-            . 'startingpoints_recursive,single_pages,sysfolder,index_content_with_restrictions,'
-            . 'index_news_archived,index_news_category_mode,index_extnews_category_selection,'
-            . 'index_use_page_tags,fal_storage,directories,fileext,file_reference_fields,index_page_doctypes,contenttypes,'
-            . 'index_news_files_mode,'
-            . 'filteroption,index_use_page_tags_for_files')
-    )
+    'types' => [
+        '0' => [
+            'showitem' => 'hidden,title,type,storagepid,targetpid,
+            startingpoints_recursive,single_pages,sysfolder,
+                --div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.tabs.advanced,
+            index_content_with_restrictions,
+            index_news_archived,index_news_category_mode,index_extnews_category_selection,
+            index_use_page_tags,fal_storage,directories,index_page_doctypes,contenttypes,content_fields,fileext,file_reference_fields,
+            index_news_files_mode,
+            filteroption,index_use_page_tags_for_files'
+        ]
+    ]
 );
