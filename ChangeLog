@@ -5,6 +5,7 @@ Upcoming version
 [TASK]     Remove unnecessary removing of replacement character, see https://github.com/tpwd/ke_search/commit/af9f166f241728916a726ae453a676997a0f3b7d#r76324249
 [BUGFIX]   Give dependencies when instantiating Db object and activate autoconfigure and auto-wiring for Db. https://github.com/tpwd/ke_search/issues/78
 [BUGFIX]   Fix link to non-FAL-files in result list. https://github.com/tpwd/ke_search/issues/118
+[TASK]     Add MatchColumnsEvent, remove the dependency in the Db class, inject the EventDispatcher
 
 Version 4.4.5, June 2022
 [BUGFIX]  Remove unicode replacement character in PDF indexing. Thanks to Kamel Ben Yedder. https://github.com/tpwd/ke_search/pull/114

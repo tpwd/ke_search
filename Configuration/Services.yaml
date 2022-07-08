@@ -34,3 +34,8 @@ services:
     public: true
     arguments:
       $connection: '@connection.tx_kesearch_index'
+
+  Tpwd\KeSearch\Lib\Db:
+    public: true
+    arguments:
+      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'

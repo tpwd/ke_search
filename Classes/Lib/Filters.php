@@ -44,7 +44,7 @@ class Filters
     /**
      * @var Db
      */
-    protected $db;
+    protected Db $db;
 
     protected $tagChar = '#';
     protected $filters = array();
@@ -70,8 +70,7 @@ class Filters
     {
         $this->pObj = $pObj;
         $this->cObj = $pObj->cObj;
-        $this->db = GeneralUtility::makeInstance(Db::class, $pObj);
-
+        $this->db = $this->pObj->db;
         $this->conf = $this->pObj->conf;
         $this->piVars = $this->pObj->piVars;
         $this->startingPoints = $this->pObj->startingPoints;

@@ -3,13 +3,15 @@
 namespace Tpwd\KeSearch\Lib;
 
 use Doctrine\DBAL\Exception\DriverException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
-use Tpwd\KeSearch\Plugins\SearchboxPlugin;
+use Tpwd\KeSearch\Event\MatchColumnsEvent;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -38,8 +40,9 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
  * @package    TYPO3
  * @subpackage    tx_kesearch
  */
-class Db implements \TYPO3\CMS\Core\SingletonInterface
+class Db implements SingletonInterface
 {
+    const DEFAULT_MATCH_COLUMS = 'title,content';
     public $conf = array();
     public $countResultsOfTags = 0;
     public $countResultsOfContent = 0;
@@ -49,14 +52,16 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     protected $numberOfResults = 0;
     protected $keSearchPremium = NULL;
     protected $errors = [];
-
-    /**
-     * @var Pluginbase
-     */
-    public $pObj;
+    private EventDispatcherInterface $eventDispatcher;
+    public Pluginbase $pObj;
     public $cObj;
 
-    public function __construct(Pluginbase $pObj)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function setPluginbase(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
         $this->cObj = $this->pObj->cObj;
@@ -248,41 +253,15 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getQueryParts()
     {
-        $fields = 'SQL_CALC_FOUND_ROWS *';
-        $table = $this->table;
-        $where = '1=1';
-
-        $databaseConnection = self::getDatabaseConnection('tx_kesearch_index');
-        $searchwordQuoted = $databaseConnection->quote(
-            $this->pObj->scoreAgainst,
-            \PDO::PARAM_STR
-        );
-
-        // if a searchword was given, calculate percent of score
-        if ($this->pObj->sword) {
-            $fields .=
-                ', MATCH (title, content) AGAINST (' . $searchwordQuoted . ')'
-                . '+ ('
-                . $this->pObj->extConf['multiplyValueToTitle']
-                . ' * MATCH (title) AGAINST (' . $searchwordQuoted . ')'
-                . ') AS score';
-        }
-
-        // add where clause
-        $where .= $this->getWhere();
-
-        // add ordering
-        $orderBy = $this->getOrdering();
-
-        // add limitation
+        $databaseConnection = self::getDatabaseConnection($this->table);
+        $searchwordQuoted = $databaseConnection->quote($this->pObj->scoreAgainst, \PDO::PARAM_STR);
         $limit = $this->getLimit();
-
         $queryParts = array(
-            'SELECT' => $fields,
-            'FROM' => $table,
-            'WHERE' => $where,
+            'SELECT' => $this->getFields($searchwordQuoted),
+            'FROM' => $this->table,
+            'WHERE' => '1=1' . $this->getWhere(),
             'GROUPBY' => '',
-            'ORDERBY' => $orderBy,
+            'ORDERBY' => $this->getOrdering(),
             'LIMIT' => $limit[0] . ',' . $limit[1]
         );
 
@@ -413,6 +392,38 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
+     * @return string
+     */
+    private function getMatchColumns(): string
+    {
+        /** @var MatchColumnsEvent $matchColumnsEvent */
+        $matchColumnsEvent = $this->eventDispatcher->dispatch(
+            new MatchColumnsEvent(self::DEFAULT_MATCH_COLUMS)
+        );
+        return $matchColumnsEvent->getMatchColumns();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFields(string $searchwordQuoted): string
+    {
+        $fields = 'SQL_CALC_FOUND_ROWS *';
+
+        // if a searchword was given, calculate score
+        if ($this->pObj->sword) {
+            $fields .=
+                ', MATCH (' . $this->getMatchColumns() . ') AGAINST (' . $searchwordQuoted . ')'
+                . '+ ('
+                . $this->pObj->extConf['multiplyValueToTitle']
+                . ' * MATCH (title) AGAINST (' . $searchwordQuoted . ')'
+                . ') AS score';
+        }
+
+        return $fields;
+    }
+
+    /**
      * get where clause for search results
      *
      * @return string where clause
@@ -429,7 +440,7 @@ class Db implements \TYPO3\CMS\Core\SingletonInterface
 
         // add boolean where clause for searchwords
         if ($this->pObj->wordsAgainst != '') {
-            $where .= ' AND MATCH (title,content) AGAINST (';
+            $where .= ' AND MATCH (' . $this->getMatchColumns() . ') AGAINST (';
             $where .= $wordsAgainstQuoted . ' IN BOOLEAN MODE) ';
         }
 

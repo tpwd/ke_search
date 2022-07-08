@@ -2,11 +2,14 @@
 
 .. _hooks:
 
-=====
-Hooks
-=====
+================
+Hooks and Events
+================
 
 ke_search includes a lot of hooks you can use to include your own code and customize the behaviour of the extension.
+
+Hooks
+-----
 
 modifyPagesIndexEntry
 	Use this hook to modify the page data just before it will be saved into database.
@@ -85,3 +88,9 @@ modifyResultList
 
 fileReferenceTypes
 	Hook for adding third party file previews. See chapter “:ref:`imagesInCustomIndexers`” for further information.
+
+Events
+------
+
+MatchColumnsEvent
+    Allows to change the columns for which the "MATCH ... AGAINST" SQL clause should be created.

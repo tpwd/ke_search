@@ -227,7 +227,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // prepare database object
-        $this->db = GeneralUtility::makeInstance(Db::class, $this);
+        /** @var Db db */
+        $this->db = GeneralUtility::makeInstance(Db::class);
+        if (!isset($this->db->pObj)) {
+            $this->db->setPluginbase($this);
+        }
 
         // set startingPoints
         $this->startingPoints = $this->div->getStartingPoint();
