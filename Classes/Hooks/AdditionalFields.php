@@ -40,6 +40,7 @@ class AdditionalFields
         $additionalFields[] = 'orig_pid';
         $additionalFields[] = 'directory';
         $additionalFields[] = 'hash';
+        $additionalFields[] = 'hidden_content';
     }
 
     public function modifyPagesIndexEntry($uid, &$pageContent, &$tags, $cachedPageRecords, &$additionalFields)

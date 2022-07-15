@@ -94,3 +94,6 @@ Events
 
 MatchColumnsEvent
     Allows to change the columns for which the "MATCH ... AGAINST" SQL clause should be created.
+
+ModifyFieldValuesBeforeStoringEvent
+    Use this event to manipulate the field values before they go to the database.

@@ -99,6 +99,12 @@
 			<trans-unit id="tx_kesearch_index.content" resname="tx_kesearch_index.content" >
 				<source>Indexed content</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_index.content" resname="tx_kesearch_index.hidden_content" >
+				<source>Indexed hidden content</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_index.content" resname="tx_kesearch_index.hidden_content.description" >
+				<source>Will be searched but not shown in the frontend</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_index.params" resname="tx_kesearch_index.params" >
 				<source>Parameters</source>
 			</trans-unit>

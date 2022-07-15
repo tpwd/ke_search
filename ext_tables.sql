@@ -85,6 +85,7 @@ CREATE TABLE tx_kesearch_index (
 	fe_group varchar(100) DEFAULT '0' NOT NULL,
 	targetpid text,
 	content mediumtext,
+    hidden_content mediumtext,
 	params tinytext,
 	type tinytext,
 	tags text,
@@ -100,6 +101,7 @@ CREATE TABLE tx_kesearch_index (
 	FULLTEXT INDEX tags (tags),
 	FULLTEXT INDEX title (title),
 	FULLTEXT INDEX titlecontent (title,content),
+    FULLTEXT INDEX titlecontenthiddencontent (title,content,hidden_content),
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

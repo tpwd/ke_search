@@ -22,6 +22,8 @@ namespace Tpwd\KeSearch\Indexer;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use PDO;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Log\Logger;
@@ -80,11 +82,15 @@ class IndexerRunner
      */
     public $defaultIndexerTypes = [];
 
+    private EventDispatcherInterface $eventDispatcher;
+
     /**
      * Constructor of this class
      */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
+
         // get extension configuration array
         $this->extConf = SearchHelper::getExtConf();
         $this->extConfPremium = SearchHelper::getExtConfPremium();
@@ -99,8 +105,6 @@ class IndexerRunner
         /** @var Logger */
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
-
-
 
     /**
      * function startIndexing
@@ -733,13 +737,23 @@ class IndexerRunner
             $additionalFields
         );
 
-        // hook to manipulate the fieldvalues before they go to the database
+        // Hook to manipulate the field values before they go to the database
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] ?? null)) {
             foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $fieldValues = $_procObj->modifyFieldValuesBeforeStoring($this->indexerConfig, $fieldValues);
             }
         }
+
+        // Event to manipulate the field values before they go to the database
+        /** @var ModifyFieldValuesBeforeStoringEvent $modifyFieldValuesBeforeStoringEvent */
+        $modifyFieldValuesBeforeStoringEvent = $this->eventDispatcher->dispatch(
+            new ModifyFieldValuesBeforeStoringEvent(
+                $this->indexerConfig,
+                $fieldValues
+            )
+        );
+        $fieldValues = $modifyFieldValuesBeforeStoringEvent->getFieldValues();
 
         // check if record already exists
         if (substr($type, 0, 4) == 'file') {

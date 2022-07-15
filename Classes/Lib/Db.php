@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
  */
 class Db implements SingletonInterface
 {
-    const DEFAULT_MATCH_COLUMS = 'title,content';
+    const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
     public $conf = array();
     public $countResultsOfTags = 0;
     public $countResultsOfContent = 0;

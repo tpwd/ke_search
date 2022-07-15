@@ -39,3 +39,8 @@ services:
     public: true
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
+
+  Tpwd\KeSearch\Indexer\IndexerRunner:
+    public: true
+    arguments:
+      $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'

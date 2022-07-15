@@ -87,6 +87,17 @@ return array(
                 'rows' => '5',
             )
         ),
+        'hidden_content' => array(
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.hidden_content',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.hidden_content.description',
+            'config' => array(
+                'type' => 'text',
+                'wrap' => 'OFF',
+                'cols' => '30',
+                'rows' => '5',
+            )
+        ),
         'params' => array(
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.params',

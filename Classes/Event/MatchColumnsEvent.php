@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Tpwd\KeSearch\Event;
 
 class MatchColumnsEvent
