@@ -22,15 +22,31 @@ searched phrase.
 
 	"french cooking"
 
-Conjunction: The result must contain the word
-=============================================
+Conjunctions
+============
+
+Note on conjuctions
+-------------------
+
+To use the "+" and "-" conjunctions the setting "Enable partial word search" (`basic.enablePartSearch`) in the extension setting must turned **off**.
+
+
+The result must contain the word
+--------------------------------
 
 .. code-block:: none
 
 	"french cooking" +eggs
 
-Exclusion: The result must not contain the word
-===============================================
+
+If you want to to find only results which include **both** search words, you need to add the "+" to both search words, eg.
+
+.. code-block:: none
+
+	+"french cooking" +eggs
+
+The result must not contain the word
+------------------------------------
 
 .. code-block:: none
 
@@ -43,7 +59,7 @@ Partial word search
 
 	"french cooking" pepp*
 
-results in
+finds eg. results with these words:
 
 .. code-block:: none
 
