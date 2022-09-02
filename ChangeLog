@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 4.5.0, September 2022
 [!!!]      This version changes the database structure and ads an additional fulltext index. Please do a full indexing after upgrading.
 [FEATURE]  Index custom file references in page indexer. Thanks to Patrick Crausaz. https://github.com/tpwd/ke_search/pull/119
 [FEATURE]  Index custom fields in tt_content. https://github.com/tpwd/ke_search/issues/102
