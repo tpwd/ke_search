@@ -19,6 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -133,8 +134,15 @@ class Searchphrase
             }
             foreach ($searchParts as $key => $word) {
                 if ($word != '|') {
-                    // enable part searching by default. But be careful: Enabling this slows down the search engine
-                    if (!isset($this->pObj->extConf['enablePartSearch']) || $this->pObj->extConf['enablePartSearch']) {
+                    // Enable partial word search (default: on) and in-word-search (Sphinx-based or native).
+                    // Partial word search is activated automatically if in-word-search is activated
+                    if (
+                        ($this->pObj->extConf['enablePartSearch'] ?? true)
+                        ||
+                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                        ||
+                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
+                    ) {
                         if ($this->pObj->extConfPremium['enableInWordSearch'] ?? false) {
                             $searchParts[$key] = '*' . trim($searchParts[$key], '*') . '*';
                         } else {

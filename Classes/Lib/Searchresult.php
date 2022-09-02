@@ -2,6 +2,7 @@
 namespace Tpwd\KeSearch\Lib;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -227,7 +228,11 @@ class Searchresult
                 $word = preg_quote($word, '/');
                 $word = htmlspecialchars($word);
                 // Highlight hits within words when using ke_seaarch_premium "in word search"
-                if (intval($this->pObj->extConfPremium['enableSphinxSearch'] ?? 0) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? 0)) {
+                if (
+                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                    ||
+                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
+                ) {
                     $pattern = '/(' . $word . ')/iu';
                 } else {
                     $pattern = '/\b(' . $word . ')/iu';
