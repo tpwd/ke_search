@@ -136,6 +136,10 @@ class IndexerBase
      */
     public function getPageRecords(array $uids, $whereClause = '', $table = 'pages', $fields = 'pages.*')
     {
+        if (empty($uids)) {
+            $this->pObj->logger->warning('No pages/sysfolders given.');
+            return [];
+        }
 
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
@@ -219,6 +223,10 @@ class IndexerBase
      */
     public function addTagsToRecords($uids, $pageWhere = '1=1')
     {
+        if (empty($uids)) {
+            $this->pObj->logger->warning('No pages/sysfolders given to add tags for.');
+            return ;
+        }
 
         $tagChar = $this->pObj->extConf['prePostTagChar'];
 

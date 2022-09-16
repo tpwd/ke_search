@@ -331,7 +331,11 @@ class Page extends IndexerBase
      */
     public function getPageRecords(array $uids, $whereClause = '', $table = 'pages', $fields = 'pages.*')
     {
-        $databaseConnection = Db::getDatabaseConnection('tx_kesearch_index');
+        if (empty($uids)) {
+            $this->pObj->logger->warning('No pages/sysfolders given.');
+            return [];
+        }
+
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
         $pageQuery = $queryBuilder
