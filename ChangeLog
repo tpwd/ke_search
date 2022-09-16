@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [TASK]     Do not fetch page records and do not add tags to page records if no startingpoints are given to avoid SQL error. Thanks to Veljko Stefanovic. https://github.com/tpwd/ke_search/issues/117 and https://github.com/tpwd/ke_search/issues/66
+[TASK]     Add static Page TSconfig file which allows to only show ke_search records in the New Record wizard. Thanks to Michael Reuber
 [DOCS]     Fix link to ke_search_hooks repository and extend documentation about custom indexers. Thanks to Luka C. https://github.com/tpwd/ke_search/issues/122
 [DOCS]     Add sortdate to the routing example
 

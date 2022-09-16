@@ -1,0 +1,1 @@
+mod.web_list.allowedNewTables := addToList(tx_kesearch_filters,tx_kesearch_indexerconfig)

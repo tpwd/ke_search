@@ -69,3 +69,9 @@ $GLOBALS['TCA']['pages']['palettes']['miscellaneous']['showitem'] =
         '',
         $GLOBALS['TCA']['pages']['palettes']['miscellaneous']['showitem']
     );
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerPageTSConfigFile(
+    'ke_search',
+    'Configuration/TSconfig/AllowedNewTables.tsconfig',
+    'EXT:ke_search :: Restrict pages to ke_search records'
+);

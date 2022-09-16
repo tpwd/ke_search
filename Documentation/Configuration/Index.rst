@@ -17,6 +17,7 @@ The extension can be configured via the plugin settings (FlexForm), TypoScript a
 	Sorting
 	RoutingSpeakingUrls
 	HighlightedWord
+	AllowOnlyKeSearchRecords
 	ReducingFiltersBackend
 	OverrideRecordStoragePage
 	Notes
