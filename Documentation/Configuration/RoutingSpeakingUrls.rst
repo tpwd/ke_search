@@ -80,7 +80,7 @@ If additionally a searchword is given, this will result in
             sword: ''
             filter_13: ''
          requirements:
-            sortByField: '(score|title|customranking)?'
+            sortByField: '(score|title|customranking|sortdate)?'
             sortByDir: '(asc|desc)?'
             resetFilters: '[0-9]?'
             page: '\d+'
