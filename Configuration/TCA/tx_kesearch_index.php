@@ -196,7 +196,7 @@ return array(
         ),
     ),
     'types' => array(
-        '0' => array('showitem' => 'starttime, endtime, fe_group, targetpid, content,'
+        '0' => array('showitem' => 'starttime, endtime, fe_group, targetpid, content, hidden_content,'
             . ' params, type, tags, abstract, title, language')
     ),
     'palettes' => array(

@@ -29,7 +29,7 @@ defined('TYPO3') or die();
 
     // add page TSconfig (Content element wizard icons, hide index table)
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TSconfig/Page/pageTSconfig.txt">'
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TSconfig/Page/pageTSconfig.tsconfig">'
     );
 
     // use hooks for generation of sortdate values
