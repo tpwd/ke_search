@@ -45,4 +45,5 @@ The next pages will show you how to setup and configure the filters:
 	FilterTypes
 	DateRangeFilter
 	SystemCategories
+	CustomFilter
 
