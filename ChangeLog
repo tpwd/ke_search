@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]   Fix labels for hidden_content and show hidden_content in index records (applies only when index records are made visible by Page TSconfig).
+[BUGFIX]   Show images with language "All" in result list. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/77
 [TASK]     Do not fetch page records and do not add tags to page records if no startingpoints are given to avoid SQL error. Thanks to Veljko Stefanovic. https://github.com/tpwd/ke_search/issues/117 and https://github.com/tpwd/ke_search/issues/66
 [TASK]     Add static Page TSconfig file which allows to only show ke_search records in the New Record wizard. Thanks to Michael Reuber
 [TASK]     Rename Page TSconfig file suffix from .txt to .tsconfig.

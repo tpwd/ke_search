@@ -940,7 +940,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         /** @var FileReferenceRepository $fileReferenceRepository */
         $fileReferenceRepository = GeneralUtility::makeInstance(FileReferenceRepository::class);
 
-        // Fetch result in current language and fallback to language 0.
+        // Fetch result in current language or all languages and fallback to language 0.
         $languageOverlayRecord =
             ($this->languageId > 0)
                 ? $genericRepository->findLangaugeOverlayByUidAndLanguage($table, $uid, $this->languageId)
@@ -950,7 +950,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $table,
             $field,
             $languageOverlayRecord['uid'] ?? $uid,
-            $this->languageId
+            [$this->languageId, -1]
         );
 
         if ($this->languageId > 0 && !is_array($fileReferenceRow) ) {

@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
+use Doctrine\DBAL\Connection as DoctrineDbalConnection;
+use PDO;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,7 +42,7 @@ class FileReferenceRepository extends BaseRepository {
         string $table,
         string $fieldname,
         string $uid_foreign,
-        int $languageId = 0
+        array $languageIds = [0, -1]
     )
     {
         /** @var QueryBuilder $queryBuilder */
@@ -52,27 +54,27 @@ class FileReferenceRepository extends BaseRepository {
             ->where(
                 $queryBuilder->expr()->eq(
                     'tablenames',
-                    $queryBuilder->quote($table, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($table)
                 ),
                 $queryBuilder->expr()->eq(
                     'fieldname',
-                    $queryBuilder->quote($fieldname, \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($fieldname)
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->quote($uid_foreign, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid_foreign, PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->eq(
+                $queryBuilder->expr()->in(
                     'sys_language_uid',
-                    $queryBuilder->quote($languageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageIds, DoctrineDbalConnection::PARAM_INT_ARRAY)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
                 )
             )
             ->orderBy('sorting_foreign', 'asc')
