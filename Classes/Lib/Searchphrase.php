@@ -183,7 +183,7 @@ class Searchphrase
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         foreach ($this->pObj->preselectedFilter as $key => $filterTags) {
             // add it only, if no other filter options of this filter has been selected in the frontend
-            if (!isset($this->pObj->piVars['filter'][$key])) {
+            if (!isset($this->pObj->piVars['filter'][$key]) || empty($this->pObj->piVars['filter'][$key])) {
                 if (!isset($tagsAgainst[$key])) {
                     $tagsAgainst[$key] = '';
                 }
