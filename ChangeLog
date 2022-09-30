@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]     Code cleanup according to PHPStan
+
 Version 4.5.1, September 2022
 [BUGFIX]   Fix labels for hidden_content and show hidden_content in index records (applies only when index records are made visible by Page TSconfig).
 [BUGFIX]   Show images with language "All" in result list. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/77

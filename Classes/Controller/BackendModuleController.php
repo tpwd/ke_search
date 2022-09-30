@@ -674,7 +674,7 @@ class BackendModuleController extends AbstractBackendModuleController
     /**
      * @param integer $pageUid
      * @param integer $days
-     * @return string
+     * @return array
      */
     public function getSearchwordStatistics($pageUid, $days)
     {

@@ -50,7 +50,7 @@ class Docx extends File implements FileIndexerInterface
      * @param string $file
      * @return string The extracted content of the file
      */
-    public function getContent($file)
+    public function getContent($file): string
     {
         /** @var \Tpwd\KeSearch\Utility\OoxmlConversion $reader */
         $reader = GeneralUtility::makeInstance(\Tpwd\KeSearch\Utility\OoxmlConversion::class, $file);
@@ -60,5 +60,6 @@ class Docx extends File implements FileIndexerInterface
         } catch (\Exception $e) {
             $this->pObj->logger->error($e->getMessage());
         }
+        return '';
     }
 }
