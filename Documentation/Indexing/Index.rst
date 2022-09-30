@@ -98,13 +98,9 @@ You can execute the console command via scheduler.
 
 * Create a task, choose "Execute console commands".
 * Choose `ke_search:indexing` in the dropdown :guilabel:`Schedulable command`.
-* After saving the form you can choose wether you want to do full indexing (default) or incremental indexing by setting
+* After saving the form you can choose whether you want to do full indexing (default) or incremental indexing by setting
   the option :guilabel:`indexingMode` to either `full` or `incremental`.
 * Deactivate the :guilabel:`Allow Parallel Execution` option (default).
-
-.. note::
-   The scheduler task :guilabel:`Indexing process for ke_search` is deprecated and will be removed in future versions.
-   This task does not support incremental indexing.
 
 .. _available-indexers:
 
