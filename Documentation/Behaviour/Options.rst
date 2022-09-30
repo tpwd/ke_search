@@ -28,8 +28,10 @@ Conjunctions
 Note on conjuctions
 -------------------
 
-To use the "+" and "-" conjunctions the setting "Enable partial word search" (`basic.enablePartSearch`) in the extension setting must turned **off**.
+If you have ke_search_premium installed and want to use the conjuctions, please note:
 
+To use the "+" and "-" conjunctions the setting "Enable Sphinx-based in word search / partial word search"
+(`Sphinx.enableInWordSearch`) in the extension setting must turned **off**.
 
 The result must contain the word
 --------------------------------
