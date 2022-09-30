@@ -47,17 +47,11 @@ class ResultlistPlugin extends Pluginbase
      */
     public function main($content, $conf)
     {
-        $this->ms = round(microtime(true) * 1000);
-
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
-
-        // Configuring so caching is not expected. This value means that no cHash params are ever set.
-        // We do this, because it's a USER_INT object!
-        $this->pi_USER_INT_obj = 1;
 
         // initializes plugin configuration
         $this->init();

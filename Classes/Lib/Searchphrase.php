@@ -128,7 +128,6 @@ class Searchphrase
                 $searchWordLength = mb_strlen($word);
                 if ($searchWordLength < $this->pObj->extConf['searchWordLength']) {
                     $this->pObj->hasTooShortWords = true;
-                    $this->showShortMessage = true;
                     unset($searchParts[$key]);
                 }
             }

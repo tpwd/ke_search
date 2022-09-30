@@ -150,6 +150,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected int $languageId;
 
     /**
+     * Helper variable to pass the value to a hook
+     * @var int
+     */
+    private int $currentRowNumber;
+
+    /**
      * Initializes flexform, conf vars and some more
      * @return void
      */
@@ -378,12 +384,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         );
 
         if (!empty($searchString) && $searchString != $searchboxDefaultValue) {
-            $this->swordValue = $searchString;
+            $swordValue = $searchString;
         } else {
-            $this->swordValue = '';
+            $swordValue = '';
         }
 
-        $this->fluidTemplateVariables['searchword'] = htmlspecialchars($this->swordValue);
+        $this->fluidTemplateVariables['searchword'] = htmlspecialchars($swordValue);
         $this->fluidTemplateVariables['searchwordDefault'] = $searchboxDefaultValue;
         $this->fluidTemplateVariables['sortByField'] = $this->piVars['sortByField'] ?? '';
         $this->fluidTemplateVariables['sortByDir'] = $this->piVars['sortByDir'] ?? '';
@@ -847,7 +853,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @return int uid of preview image file reference
      * @author Andreas Kiefer
      */
-    public function getFileReference($row)
+    public function getFileReference($row): int
     {
         list($type) = explode(':', $row['type']);
         switch ($type) {
@@ -896,6 +902,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 }
                 break;
         }
+
+        return 0;
     }
 
     /**
@@ -1024,15 +1032,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // get total number of items to show
         // show pagebrowser only if there are more entries that are shown on one page
-        if ($numberOfResults > $resultsPerPage) {
-            $this->limit = $resultsPerPage;
-        } else {
+        if ($numberOfResults <= $resultsPerPage) {
             return;
         }
 
         // set db limit
         $start = ($this->piVars['page'] * $resultsPerPage) - $resultsPerPage;
-        $this->dbLimit = $start . ',' . $resultsPerPage;
         $end = ($start + $resultsPerPage > $numberOfResults) ? $numberOfResults : ($start + $resultsPerPage);
 
         // number of pages

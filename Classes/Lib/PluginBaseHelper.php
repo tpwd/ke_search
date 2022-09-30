@@ -31,8 +31,6 @@ use Tpwd\KeSearch\Plugins\txkesearchpi1;
  */
 class PluginBaseHelper
 {
-    public $showShortMessage = false;
-
     /**
      * Contains the parent object
      * @var Pluginbase
