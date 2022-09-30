@@ -32,6 +32,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -172,6 +173,7 @@ class File extends IndexerBase
     public function getFilesFromFal(array &$files, array $directoryArray)
     {
         foreach ($directoryArray as $directory) {
+            /** @var Folder $folder */
             $folder = $this->storage->getFolder($directory);
 
             if ($folder->getName() != '_temp_') {

@@ -1,5 +1,6 @@
 <f:layout name="General" />
-<!--
+
+<f:comment><!--
 =====================
 Templates/ResultList.html
 
@@ -7,7 +8,8 @@ Settings are available via
 {conf}
 {extConf}
 {extConfPremium}
--->
+--></f:comment>
+
 <f:section name="content">
 	<f:if condition="{wordsTooShort}">
 		<div class="messsage">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:searchword_length_error', arguments: {0: extConf.searchWordLength})}</div>
