@@ -104,7 +104,7 @@ class Searchphrase
      */
     public function explodeSearchPhrase($searchString)
     {
-        preg_match_all('/(\+|\-|\~|<|>)?\".*?"|[^ ]+/', $searchString, $matches);
+        preg_match_all('/([+\-~<>])?\".*?"|[^ ]+/', $searchString, $matches);
         list($searchParts) = $matches;
         if (is_array($searchParts) && count($searchParts)) {
             foreach ($searchParts as $key => $word) {
@@ -117,7 +117,7 @@ class Searchphrase
                 // Link: http://dev.mysql.com/doc/refman/5.0/en/fulltext-stopwords.html
 
                 // don't check length if it is a phrase
-                if (preg_match('/^(\+|\-|\~|<|>)?\"/', $word)) {
+                if (preg_match('/^([+\-~<>])?\"/', $word)) {
                     continue;
                 }
 
@@ -225,7 +225,7 @@ class Searchphrase
                         // Don't add the tag if it is already inserted by preselected filters
                         if (!empty($subtag)
                             && strstr($tagsAgainst[$key] ?? '', $subtag) === false
-                            && !in_array($subkey, SELF::IGNORE_FOR_TAG_BUILDING)
+                            && !in_array($subkey, self::IGNORE_FOR_TAG_BUILDING)
                         ) {
                             if (!isset($tagsAgainst[$key])) {
                                 $tagsAgainst[$key] = '';
@@ -239,7 +239,7 @@ class Searchphrase
                     if (
                         !empty($tag)
                         && strstr($tagsAgainst[$key] ?? '', $tag) === false
-                        && !in_array($key, SELF::IGNORE_FOR_TAG_BUILDING)
+                        && !in_array($key, self::IGNORE_FOR_TAG_BUILDING)
                     ) {
                         if (!isset($tagsAgainst[$key])) {
                             $tagsAgainst[$key] = '';

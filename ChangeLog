@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [!!!]      In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
 [TASK]     Code cleanup according to PHPStan
+[TASK]     Code cleanup according to PHPStorm code inspections
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
 
 Version 4.5.1, September 2022

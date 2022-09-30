@@ -1,8 +1,6 @@
 <?php
 namespace Tpwd\KeSearch\Lib;
 
-use Tpwd\KeSearch\Plugins\txkesearchpi1;
-
 /***************************************************************
  *  Copyright notice
  *  (c) 2010 Stefan Froemken

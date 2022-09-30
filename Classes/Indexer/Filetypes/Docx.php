@@ -36,16 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Docx extends File implements FileIndexerInterface
 {
     /**
-     * class constructor
-     */
-    public function __construct()
-    {
-        // without overwriting __construct, the parent class would expect one param ($pObj)
-        // which occures exception in Classes/indexer/types/class.tx_kesearch_indexer_types_file.php:224 (makeInstance)
-        // may break with more strict php settings
-    }
-
-    /**
      * get Content of DOCX file
      * @param string $file
      * @return string The extracted content of the file
