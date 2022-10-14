@@ -28,12 +28,17 @@ plugin.tx_kesearch_pi1 {
     # <input type="hidden" name="tx_kesearch_pi1[myvar]" value="example" />
     # to add a custom piVar
     additionalAllowedPiVars =
+
+    # By default the URL parameter for the searchword is "tx_kesearch_pi1[sword]". With this setting you may change
+    # the name of the parameter for example to "query" which allows the search words to be tracked by GA4.
+    searchWordParameter = tx_kesearch_pi1[sword]
 }
 
 plugin.tx_kesearch_pi2 {
     view < plugin.tx_kesearch_pi1.view
     cssFile < plugin.tx_kesearch_pi1.cssFile
     additionalAllowedPiVars < plugin.tx_kesearch_pi1.additionalAllowedPiVars
+    searchWordParameter < plugin.tx_kesearch_pi1.searchWordParameter
 
     # Set this to 1 to make the filters available in the result list plugin
     includeFilters = 0
@@ -43,6 +48,7 @@ plugin.tx_kesearch_pi3 {
     view < plugin.tx_kesearch_pi1.view
     cssFile < plugin.tx_kesearch_pi1.cssFile
     additionalAllowedPiVars < plugin.tx_kesearch_pi1.additionalAllowedPiVars
+    searchWordParameter < plugin.tx_kesearch_pi1.searchWordParameter
 }
 
 module.tx_dashboard {

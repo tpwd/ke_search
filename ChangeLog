@@ -2,6 +2,8 @@ ChangeLog
 
 Upcoming version
 [!!!]      In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
+[!!!]      To use the feature "Make search word parameter changeable" you will need to adapt the changes in the template "SearchForm.html" (line 13-17, line 31) to your own template.
+[FEATURE]  Make search word parameter changeable to be able to track search words with GA4. Thanks to Mike Street. https://github.com/tpwd/ke_search/issues/124
 [TASK]     Code cleanup according to PHPStan
 [TASK]     Code cleanup according to PHPStorm code inspections
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically

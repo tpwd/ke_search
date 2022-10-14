@@ -178,6 +178,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
         }
 
+        // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
+        $searchWordParameter = SearchHelper::getSearchWordParameter();
+        if (!isset($this->piVars['sword']) && GeneralUtility::_GP($searchWordParameter)) {
+            $this->piVars['sword'] = GeneralUtility::_GP($searchWordParameter);
+        }
+
         // get the configuration of the current plugin
         $flexFormConfiguration = $this->getFlexFormConfiguration();
 

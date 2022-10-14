@@ -376,17 +376,29 @@ class SearchHelper
             return '';
         }
 
+        // Prepare link configuration
         $keepPiVars = self::PI_VARS;
         $linkconf = [
             'parameter' => $parameter,
             'additionalParams' => ''
         ];
         unset($keepPiVars[array_search('filter', $keepPiVars)]);
+
+        // If an alternative search word parameter is given, replace the default search word parameter
+        $searchWordParameter = SearchHelper::getSearchWordParameter();
+        if ($searchWordParameter != 'tx_kesearch_pi1[sword]' && isset($piVars['sword'])) {
+            $linkconf['additionalParams'] .= '&' . $searchWordParameter . '=' . $piVars['sword'];
+            unset($piVars['sword']);
+        }
+
+        // Compile the link parameters
         foreach ($keepPiVars as $piVarKey) {
             if (!empty($piVars[$piVarKey])) {
                 $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . urlencode($piVars[$piVarKey]);
             }
         }
+
+        // Flatten the filter parameters
         if (is_array($piVars['filter'] ?? null) && count($piVars['filter'])) {
             foreach ($piVars['filter'] as $filterUid => $filterValue) {
                 if (!in_array($filterUid, $resetFilters)) {
@@ -400,6 +412,8 @@ class SearchHelper
                 }
             }
         }
+
+        // Build the link
         if (empty($linkText)) {
             return $GLOBALS['TSFE']->cObj->typoLink_URL($linkconf);
         } else {
@@ -484,5 +498,13 @@ class SearchHelper
     static public function getAllowedPiVars($additionalAllowedPiVars = ''): array
     {
         return array_merge(self::PI_VARS, GeneralUtility::trimExplode(',', $additionalAllowedPiVars));
+    }
+
+    /**
+     * @return string
+     */
+    static public function getSearchWordParameter(): string
+    {
+        return htmlspecialchars($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_kesearch_pi1.']['searchWordParameter'] ?? 'tx_kesearch_pi1[sword]');
     }
 }

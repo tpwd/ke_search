@@ -2,12 +2,9 @@
 
 .. _configurationNotes:
 
-=====
-Notes
-=====
-
-Notes on TypoScript and FlexForm settings
-=========================================
+================================
+TypoScript and FlexForm settings
+================================
 
 Each property in FlexForm overwrites the property defined by TypoScript.
 

@@ -42,6 +42,15 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $piVars = $this->arguments['piVars'] ?? [];
         $uriOnly = $this->arguments['uriOnly'] ?? false;
 
+        // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
+        $searchWordParameter = SearchHelper::getSearchWordParameter();
+        if ($searchWordParameter != 'tx_kesearch_pi1[sword]'
+            && !isset($piVars['sword'])
+            && GeneralUtility::_GP($searchWordParameter))
+        {
+            $piVars['sword'] = GeneralUtility::_GP($searchWordParameter);
+        }
+
         if (!empty($piVars)) {
             $piVars = SearchHelper::explodePiVars($piVars);
         }
