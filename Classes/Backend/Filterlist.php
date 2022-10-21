@@ -199,9 +199,8 @@ class Filterlist
     {
         // check if the tt_content row is available and if not load it manually
         // flexParentDatabaseRow not set can be caused by compatibility6 extension
-        if (!isset($config['flexParentDatabaseRow']) ||
-            (isset($config['flexParentDatabaseRow']) && !is_array($config['flexParentDatabaseRow']))
-        ) {
+        if (!isset($config['flexParentDatabaseRow']) || !is_array($config['flexParentDatabaseRow']))
+        {
             $parentRow = BackendUtility::getRecord(
                 'tt_content',
                 $config['row']['uid']
