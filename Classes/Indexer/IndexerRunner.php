@@ -667,7 +667,7 @@ class IndexerRunner
      * @param integer $storagePid
      * @param string $title
      * @param string $type
-     * @param integer $targetPid
+     * @param string $targetPid
      * @param string $content
      * @param string $tags
      * @param string $params
@@ -822,7 +822,7 @@ class IndexerRunner
 			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
 			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
 			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid'], PDO::PARAM_INT) . ',
+			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
 			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
 			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
 			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
@@ -877,7 +877,7 @@ class IndexerRunner
 			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
 			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
 			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid'], PDO::PARAM_INT) . ',
+			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
 			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
 			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
 			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
