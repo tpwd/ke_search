@@ -7,6 +7,7 @@ Upcoming version
 [TASK]     Code cleanup according to PHPStan
 [TASK]     Code cleanup according to PHPStorm code inspections
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
+[TASK]     Add .editorconfig from TYPO3 main project
 [BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
 
@@ -350,7 +351,7 @@ Version 3.1.0, January 2020
 [TASK]    get sys_languages depending on siteconf from starting points
 [BUGFIX]  version switch for module registration
 [TASK]    remove deprecated useCacheHash param
-[TASK]    move vendor name to controller when registering module 
+[TASK]    move vendor name to controller when registering module
 [TASK]    replace _getMetaData() on file objects
 [BUGFIX]  add version switch for loglevel config
 [TASK]    set general language file path
@@ -367,7 +368,7 @@ Version 3.1.0, January 2020
 [TASK]    set extkey
 [TASK]    add TYPO3 10.2 as requirement in addition to 9.5
 [BUGFIX]  Fix uncaught TYPO3 Exception Class 'GeneralUtility' not found in Templavoila Indexer. https://github.com/teaminmedias-pluswerk/ke_search/issues/316
-[TASK]    Add Dutch labels. https://github.com/teaminmedias-pluswerk/ke_search/pull/328  
+[TASK]    Add Dutch labels. https://github.com/teaminmedias-pluswerk/ke_search/pull/328
 [BUGFIX]  Fix assigning of tags from system categories in file indexer. https://github.com/teaminmedias-pluswerk/ke_search/issues/326.
 
 Version 3.0.6, November 2019
@@ -601,7 +602,7 @@ Version 2.2.0, April 2016
 [BUGFIX]  Fix fetching the right page uid in class user_filterlist, follow up to https://github.com/teaminmedias-pluswerk/ke_search/pull/9.
 [TASK]    cleanup user_filterlist
 [FEATURE] Add system categories as tags to indexed pages. That makes it possible to create filters for pages based on system categories.
-[BUGFIX]  Fix obsolete calls and missing variable declarations/initializations. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/33. 
+[BUGFIX]  Fix obsolete calls and missing variable declarations/initializations. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/33.
 [FEATURE] Add Suggest Wizard to Flexforms and TCA. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/31.
 [TASK]    Render pagebrowser as a html list. Thanks to Fernando Arconada. https://github.com/teaminmedias-pluswerk/ke_search/pull/32.
 [TASK]    Remove marker based template.
@@ -756,7 +757,7 @@ Version 1.8.4
 * bugfix: fix compatibility with version 4.5: remove relation to sys_file_storage in TCA for TYPO3 versions below 6.
 * bugfix: CLI not possible with TYPO3 6.2.x. Thanks to Ricky Bohse. https://forge.typo3.org/issues/64947
 
-Version 1.8.3 
+Version 1.8.3
 * feature: Show images from pages (field "media" in page properties) in search result list. Activate this function in plugin configuration. Relies on FAL and therefore needs 6.X to work.
 * bugfix: Don't combine groups of subpages with groups of parent pages. https://forge.typo3.org/issues/61966
 * bugfix: escpape search strings for sphinx search (ke_search_premium).
