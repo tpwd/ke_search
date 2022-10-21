@@ -611,7 +611,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     . '<td>' . $this->encode($row['title']) . '</td>'
                     . '<td><span class="label label-primary">' . $this->encode($row['type']) . '</span></td>'
                     . '<td>' . $this->encode($row['language']) . '</td>'
-                    . '<td>' . $this->encode(str_word_count($row['content'])) . '</td>'
+                    . '<td>' . $this->encode((string)str_word_count($row['content'])) . '</td>'
                     . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['crdate'])) . '</td>'
                     . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['tstamp'])) . '</td>'
                     . '<td>' . $this->encode($row['targetpid']) . '</td>'
@@ -662,8 +662,7 @@ class BackendModuleController extends AbstractBackendModuleController
     }
 
     /**
-     * @param string $label
-     * @param string $content
+     * @param string $input
      * @return string
      */
     public function encode($input)

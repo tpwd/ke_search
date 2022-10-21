@@ -99,8 +99,9 @@ class Pdf extends File implements FileIndexerInterface
         $this->fileInfo->setFile($file);
 
         // get PDF informations
-        if (!$pdfInfo = $this->getPdfInfo($file)) {
-            return false;
+        $pdfInfo = $this->getPdfInfo($file);
+        if (empty($pdfInfo)) {
+            return '';
         }
 
         // proceed only of there are any pages found
@@ -134,7 +135,7 @@ class Pdf extends File implements FileIndexerInterface
 
             return $this->removeEndJunk($content);
         } else {
-            return false;
+            return '';
         }
     }
 
@@ -157,7 +158,7 @@ class Pdf extends File implements FileIndexerInterface
             return $pdfInfo;
         }
 
-        return false;
+        return [];
     }
 
     /**
@@ -182,20 +183,20 @@ class Pdf extends File implements FileIndexerInterface
     /**
      * Removes some strange char(12) characters and line breaks that then to
      * occur in the end of the string from external files.
-     * @param string String to clean up
+     * @param string $string String to clean up
      * @return string Cleaned up string
      */
-    public function removeEndJunk($string)
+    public function removeEndJunk(string $string): string
     {
-        return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
+        return trim(preg_replace('/[' . chr(10) . chr(12) . ']*$/', '', $string));
     }
 
     /**
      * Remove (U+FFFD)� characters due to incorrect image indexing in PDF file
-     * @param string String to clean up
+     * @param string $string String to clean up
      * @return string Cleaned up string
      */
-    public function removeReplacementChar($string)
+    public function removeReplacementChar(string $string): string
     {
         return trim(preg_replace('@\x{FFFD}@u', '', $string));
     }

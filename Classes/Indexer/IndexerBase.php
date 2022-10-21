@@ -110,7 +110,7 @@ class IndexerBase
         // add recursive pids
         $pageList = '';
         foreach ($pidsRecursive as $pid) {
-            $pageList .= $this->getTreeList($pid, 99, 0, '1=1', $includeDeletedPages) . ',';
+            $pageList .= $this->getTreeList((int)$pid, 99, 0, '1=1', $includeDeletedPages) . ',';
         }
 
         // add non-recursive pids
@@ -293,7 +293,7 @@ class IndexerBase
             foreach ($automated_tagging_arr as $key => $value) {
                 $tmpPageList = GeneralUtility::trimExplode(
                     ',',
-                    $this->getTreeList($value, 99, 0, $whereRow)
+                    $this->getTreeList((int)$value, 99, 0, $whereRow)
                 );
                 $pageList = array_merge($tmpPageList, $pageList);
             }
@@ -306,7 +306,9 @@ class IndexerBase
 
     /**
      * adds an error to the error array
-     * @param string or array of strings $errorMessage
+     * Parameter can be either a string or an array of strings
+     *
+     * @param $errorMessage
      * @author Christian Bülter
      * @since 26.11.13
      */
@@ -352,13 +354,13 @@ class IndexerBase
     /**
      * compile file metadata from file properties and add it to already given file content
      *
-     * @param array file properties (including metadata)
-     * @param string content already prepared for this file index record
-     * @author Christian Bülter
-     * @since 31.11.19
+     * @param array $fileProperties file properties (including metadata)
+     * @param string $fileContent content already prepared for this file index record
      * @return string metadata compiled into a string
+     * @since 31.11.19
+     * @author Christian Bülter
      */
-    public function addFileMetata($fileProperties, $fileContent)
+    public function addFileMetata(array $fileProperties, string $fileContent): string
     {
         // remove previously indexed metadata
         if (strpos($fileContent, self::METADATASEPARATOR)) {
@@ -404,7 +406,7 @@ class IndexerBase
             )
             ->execute()
             ->fetchAll();
-        
+
         if ($selectedCategories) {
             // flatten the multidimensional array to only contain the category UIDs
             $flattenSelectedCategories = [];
@@ -416,7 +418,7 @@ class IndexerBase
             // make sure to return an empty array in case the query returns NULL
             $selectedCategories = [];
         }
-        
+
         return $selectedCategories;
     }
 
@@ -553,7 +555,7 @@ class IndexerBase
                 }
             }
         }
-        
+
     }
 
     /**
@@ -561,7 +563,7 @@ class IndexerBase
      * contains links to files and the content of these files should be stored in the index separately (not together
      * with the parent record).
      * Uses feGroups, starttime, enddtime, langauge and targetPage from the parent record.
-     * 
+     *
      * @param FileReference $fileReference
      * @param string $content
      * @param string $tags
@@ -632,7 +634,7 @@ class IndexerBase
             $this->indexerConfig['storagepid'],         // storage PID
             $fileIndexerObject->fileInfo->getName(),    // file name
             'file:' . $fileReference->getExtension(),   // content type
-            $targetPage,                                // target PID: where is the single view?
+            (string)$targetPage,                         // target PID: where is the single view?
             $content,                                   // indexed content
             $tags,                                      // tags
             '',                                         // typolink params for singleview

@@ -40,7 +40,7 @@ class FilterOptionHook
      *
      * @param $status
      * @param string $table table name
-     * @param $recordUid id of the record
+     * @param $recordUid
      * @param array $fields fieldArray
      * @param DataHandler $parentObject parent Object
      */
@@ -60,7 +60,7 @@ class FilterOptionHook
             $this->updateFilterOptionsForCategoryAndSubCategories($recordUid);
             // Cleanup (delete) filter options only only if something changed regarding the assigned filters
             if (isset($fields['tx_kesearch_filter']) || isset($fields['tx_kesearch_filtersubcat'])) {
-                $this->cleanupFilterOptions($recordUid);
+                $this->cleanupFilterOptions();
             }
         }
     }

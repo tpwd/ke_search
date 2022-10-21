@@ -151,7 +151,7 @@ class IndexRepository {
     }
 
     /**
-     * @param int $filterOptionUid
+     * @param int $uid
      * @return Statement|int
      */
     public function deleteByUid(int $uid)
@@ -196,7 +196,7 @@ class IndexRepository {
      * Deletes the corresponding index records for a record which has been indexed.
      *
      * @param string $type type as stored in the index table, eg. "page", "news", "file", "tt_address" etc.
-     * @param array $record array of the record rows
+     * @param array $records array of the record rows
      * @param array $indexerConfig the indexerConfig for which the index record should be removed
      */
     public function deleteCorrespondingIndexRecords(string $type, array $records, array $indexerConfig)

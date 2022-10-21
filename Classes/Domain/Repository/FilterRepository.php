@@ -119,7 +119,7 @@ class FilterRepository {
             ->where(
                 $queryBuilder->expr()->inSet(
                     'options',
-                    intval($filterOptionUid)
+                    (string)intval($filterOptionUid)
                 )
             )
             ->execute()
@@ -136,7 +136,7 @@ class FilterRepository {
         $filter = $this->findByAssignedFilterOption($filterOptionUid);
         if (!empty($filter)) {
             $updateFields = [
-                'options' => GeneralUtility::rmFromList($filterOptionUid, $filter['options'])
+                'options' => GeneralUtility::rmFromList((string)$filterOptionUid, $filter['options'])
             ];
             $this->update($filter['uid'], $updateFields);
         }

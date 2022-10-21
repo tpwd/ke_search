@@ -101,14 +101,14 @@ class Xls extends File implements FileIndexerInterface
             $content = GeneralUtility::getUrl($tempFileName);
             unlink($tempFileName);
         } else {
-            return false;
+            return '';
         }
 
         // check if content was found
         if (strlen($content)) {
             return $content;
         } else {
-            return false;
+            return '';
         }
     }
 }

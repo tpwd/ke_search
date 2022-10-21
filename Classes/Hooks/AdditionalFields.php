@@ -28,11 +28,6 @@ namespace Tpwd\KeSearch\Hooks;
 class AdditionalFields
 {
 
-    /**
-     * @var tx_ttnews
-     */
-    protected $ttNews;
-
     public function registerAdditionalFields(&$additionalFields)
     {
         $additionalFields[] = 'sortdate';
