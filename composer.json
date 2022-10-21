@@ -57,6 +57,6 @@
 	},
 	"scripts": {
 		"test:unit": ".Build/bin/phpunit -c Tests/phpunit.xml.dist",
-		"phpstan": ".Build/bin/phpstan > phpstan-report.log"
+		"phpstan": ".Build/bin/phpstan clear-result-cache && .Build/bin/phpstan > phpstan-report.log"
 	}
 }
