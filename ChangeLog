@@ -11,6 +11,7 @@ Upcoming version
 [TASK]     Add PHPStan
 [BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
+[DOCS]     Add information about contributing in README.rst
 
 Version 4.5.1, September 2022
 [BUGFIX]   Fix labels for hidden_content and show hidden_content in index records (applies only when index records are made visible by Page TSconfig).
