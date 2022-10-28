@@ -295,7 +295,7 @@ class TtAddress extends IndexerBase
 
         // and remove the corresponding index entries
         $count = $indexRepository->deleteCorrespondingIndexRecords('tt_address', $records, $this->indexerConfig);
-        $message = LF . 'Found ' . $count . ' deleted and hidden record(s).';
+        $message = chr(10) . 'Found ' . $count . ' deleted and hidden record(s).';
         return $message;
     }
 }

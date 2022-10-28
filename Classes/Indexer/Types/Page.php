@@ -192,7 +192,7 @@ class Page extends IndexerBase
         $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['startingpoints_recursive'], true);
         $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['single_pages'], true);
         foreach ($startingPoints as $startingPoint) {
-            foreach ($translationProvider->getSystemLanguages($startingPoint) as $key => $lang) {
+            foreach ($translationProvider->getSystemLanguages((int)$startingPoint) as $key => $lang) {
                 $this->sysLanguages[$key] = $lang;
             }
         }
@@ -271,10 +271,10 @@ class Page extends IndexerBase
 
         // show indexer content
         return
-            count($indexPids) . ' ' . $this->indexedElementsName . ' have been selected for indexing in the main language.' . LF
-            . count($this->sysLanguages) . ' languages (' . $languageTitles . ') have been found.' . LF
-            . $this->counter . ' ' . $this->indexedElementsName . ' have been indexed. ' . LF
-            . $this->counterWithoutContent . ' had no content or the content was not indexable.' . LF
+            count($indexPids) . ' ' . $this->indexedElementsName . ' have been selected for indexing in the main language.' . chr(10)
+            . count($this->sysLanguages) . ' languages (' . $languageTitles . ') have been found.' . chr(10)
+            . $this->counter . ' ' . $this->indexedElementsName . ' have been indexed. ' . chr(10)
+            . $this->counterWithoutContent . ' had no content or the content was not indexable.' . chr(10)
             . $this->fileCounter . ' files have been indexed.';
     }
 
@@ -315,7 +315,7 @@ class Page extends IndexerBase
 
         // and remove the corresponding index entries
         $count = $indexRepository->deleteCorrespondingIndexRecords('page', $records, $this->indexerConfig);
-        $message = LF . 'Found ' . $count . ' deleted or hidden page(s).';
+        $message = chr(10) . 'Found ' . $count . ' deleted or hidden page(s).';
 
         return $message;
     }
@@ -668,7 +668,10 @@ class Page extends IndexerBase
                 }
 
                 // index the files found
-                if (!$pageAccessRestrictions['hidden'] && $this->checkIfpageShouldBeIndexed($uid, $this->pageRecords[intval($uid)]['sys_language_uid'])) {
+                if (!$pageAccessRestrictions['hidden']
+                    && $this->checkIfpageShouldBeIndexed($uid, $this->pageRecords[intval($uid)]['sys_language_uid'])
+                    && !empty($fileObjects)
+                ) {
                     $this->indexFiles($fileObjects, $ttContentRow, $pageAccessRestrictions['fe_group'], $tags);
                 }
 
@@ -762,7 +765,7 @@ class Page extends IndexerBase
                         $indexerConfig['storagepid'],                               // storage PID
                         $this->cachedPageRecords[$language_uid][$uid]['title'],     // page title
                         $indexEntryDefaultValues['type'],                           // content type
-                        $indexEntryDefaultValues['uid'],                            // target PID / single view
+                        (string)$indexEntryDefaultValues['uid'],                    // target PID / single view
                         $content,                        // indexed content, includes the title (linebreak after title)
                         $tags,                                                      // tags
                         $indexEntryDefaultValues['params'],                         // typolink params for singleview
@@ -979,7 +982,7 @@ class Page extends IndexerBase
                 $isHidden = false;
                 $isInList = false;
                 if ($fileObject instanceof FileInterface) {
-                    $isHidden = $fileObject->hasProperty('hidden') && $fileObject->getProperty('hidden') === 1;
+                    $isHidden = $fileObject->hasProperty('hidden') && intval($fileObject->getProperty('hidden')) === 1;
                     $isInList = GeneralUtility::inList(
                         $this->indexerConfig['fileext'],
                         $fileObject->getExtension()
@@ -1071,7 +1074,7 @@ class Page extends IndexerBase
             $processedData = $this->filesProcessor->process($this->cObj, [], $configuration, $processedData);
             $fileReferenceObjects = array_merge($fileReferenceObjects, $processedData['files']);
         }
-        
+
         return $fileReferenceObjects;
     }
 
@@ -1115,10 +1118,13 @@ class Page extends IndexerBase
 
     /**
      * Store the file content and additional information to the index
-     * @param $fileObject File reference object or file object
+     * $fileObject is either a file reference object or file object
+     *
+     * @param $fileObject
      * @param string $content file text content
      * @param File $fileIndexerObject
      * @param string $feGroups comma list of groups to assign
+     * @param $tags
      * @param array $ttContentRow tt_content element the file was assigned to
      * @author Christian Bülter
      * @since 25.09.13

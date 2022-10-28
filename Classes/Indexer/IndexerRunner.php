@@ -1,4 +1,6 @@
 <?php
+/** @noinspection SqlNoDataSourceInspection */
+
 namespace Tpwd\KeSearch\Indexer;
 
 /***************************************************************
@@ -102,7 +104,6 @@ class IndexerRunner
         }
 
         // init logger
-        /** @var Logger */
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
@@ -382,7 +383,7 @@ class IndexerRunner
      */
     public function createPlaintextReport($content)
     {
-        $content = str_ireplace(['<span class="title">','<br />','<br>','<br/>','</span>','</p>'], LF, $content);
+        $content = str_ireplace(['<span class="title">','<br />','<br>','<br/>','</span>','</p>'], chr(10), $content);
         $report = preg_replace('~[ ]{2,}~', '', strip_tags($content));
         return $report;
     }
@@ -595,8 +596,7 @@ class IndexerRunner
             }
             if (is_file($this->extConfPremium['sphinxIndexerPath'])
                 && is_executable($this->extConfPremium['sphinxIndexerPath'])
-                && file_exists($this->extConfPremium['sphinxSearchdPath'])
-                && is_executable($this->extConfPremium['sphinxIndexerPath'])) {
+                && file_exists($this->extConfPremium['sphinxSearchdPath'])) {
                 if (function_exists('exec')) {
                     // check if daemon is running
                     $content .= '<p>';
@@ -777,14 +777,14 @@ class IndexerRunner
             unset($fieldValues['crdate']);
             if ($debugOnly) { // do not process - just debug query
                 DebugUtility::debug(
-                    Db::getDatabaseConnection($table)
+                    (string)Db::getDatabaseConnection($table)
                         ->update(
                             $table,
                             $fieldValues,
                             ['uid' => intval($this->currentRow['uid'])]
                         ),
-                    1,
-                    1
+                    '1',
+                    '1'
                 );
             } else { // process storing of index record and return true
                 $this->updateRecordInIndex($fieldValues);
@@ -793,7 +793,7 @@ class IndexerRunner
         } else { // insert new record
             if ($debugOnly) { // do not process - just debug query
                 DebugUtility::debug(
-                    Db::getDatabaseConnection($table)
+                    (string)Db::getDatabaseConnection($table)
                         ->insert(
                             $table,
                             $fieldValues
@@ -1047,7 +1047,7 @@ class IndexerRunner
      * @param integer $endtime
      * @param string $fe_group
      * @param array $additionalFields
-     * @return boolean true if record was found, false if not
+     * @return array
      */
     public function createFieldValuesForIndexing(
         $storagepid,
@@ -1063,7 +1063,8 @@ class IndexerRunner
         $endtime = 0,
         $fe_group = '',
         $additionalFields = array()
-    ) {
+    ): array
+    {
         $now = time();
         $fieldsValues = array(
             'pid' => intval($storagepid),

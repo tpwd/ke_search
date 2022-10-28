@@ -1,4 +1,7 @@
-<?php /** @noinspection PhpPropertyOnlyWrittenInspection */
+<?php
+/** @noinspection PhpUndefinedClassInspection */
+/** @noinspection PhpUndefinedNamespaceInspection */
+/** @noinspection PhpPropertyOnlyWrittenInspection */
 
 namespace Tpwd\KeSearch\Lib;
 
@@ -139,7 +142,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $filters;
 
     /**
-     * @var int
+     * @var Typo3Version
      */
     public $typo3Version;
 
@@ -194,7 +197,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 'tt_content',
                 intval($flexFormConfiguration['loadFlexformsFromOtherCE'])
             );
-            if (is_int($contentElement) && $contentElement === 0) {
+            // PHPDoc of pi_getRecord says it will return an array or false,
+            // but if no record has been found it will return 0
+            /** @phpstan-ignore-next-line */
+            if (is_int($contentElement) && $contentElement == 0) {
                 throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
@@ -239,7 +245,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // prepare database object
-        /** @var Db db */
         $this->db = GeneralUtility::makeInstance(Db::class);
         if (!isset($this->db->pObj)) {
             $this->db->setPluginbase($this);
@@ -513,11 +518,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     /**
      * compiles a list of checkbox records
-     * @param integer $filterUid UID of the filter for which we need the checkboxes
+     * @param array $filter filter record for which we need the checkboxes
      * @param array $options contains all options which are found in the search result
      * @return array list of checkboxes records
      */
-    public function compileCheckboxOptions($filter, $options)
+    public function compileCheckboxOptions(array $filter, $options): array
     {
         $allOptionsOfCurrentFilter = $filter['options'];
 
@@ -709,7 +714,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         /** @var GenericRepository $genericRepository */
         $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
-        /** @var FileMetaDataRepository $metaDataRepository */
+        /** @var FileMetaDataRepository $fileMetaDataRepository */
         $fileMetaDataRepository = GeneralUtility::makeInstance(FileMetaDataRepository::class);
 
         // set switch for too short words
@@ -718,7 +723,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if($this->isEmptySearch() && !$this->allowEmptySearch()) {
             return;
         }
-        
+
         // get filters
         if (intval($this->conf['includeFilters']) == 1) {
             $this->renderFilters();

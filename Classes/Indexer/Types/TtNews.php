@@ -34,7 +34,7 @@ class TtNews extends IndexerBase
 {
 
     /** @var FileRepository $fileRepository  */
-    protected $fileRepository = NULL;
+    protected $fileRepository;
 
     /** @var int $fileCounter */
     protected $fileCounter = 0;
@@ -162,7 +162,7 @@ class TtNews extends IndexerBase
 
                 // create content
                 $fullContent = '';
-                if (isset($abstract)) {
+                if (!empty($abstract)) {
                     $fullContent .= $abstract . "\n";
                 }
                 $fullContent .= $content;
@@ -356,7 +356,7 @@ class TtNews extends IndexerBase
 
         // and remove the corresponding index entries
         $count = $indexRepository->deleteCorrespondingIndexRecords('tt_news', $records, $this->indexerConfig);
-        $message = LF . 'Found ' . $count . ' deleted and hidden record(s).';
+        $message = chr(10) . 'Found ' . $count . ' deleted and hidden record(s).';
         return $message;
     }
 }

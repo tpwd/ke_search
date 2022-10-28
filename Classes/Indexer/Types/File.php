@@ -120,10 +120,10 @@ class File extends IndexerBase
         $counter = $this->extractContentAndSaveToIndex($files);
 
         if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL) {
-            $resultMessage = count($files) . ' files have been found for indexing.' . LF
+            $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
                 . $counter . ' new or updated files have been indexed.';
         } else {
-            $resultMessage = count($files) . ' files have been found for indexing.' . LF
+            $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
                 . $counter . ' files have been indexed.';
         }
         return $resultMessage;
@@ -159,7 +159,7 @@ class File extends IndexerBase
                 }
             }
             if ($countDeleted > 0) {
-                $message .= LF . 'Found and removed ' . $countDeleted . ' outdated file index record(s).';
+                $message .= chr(10) . 'Found and removed ' . $countDeleted . ' outdated file index record(s).';
             }
         }
         return $message;
@@ -479,7 +479,7 @@ class File extends IndexerBase
             $indexRecordValues['storagepid'],   // storage PID
             $indexRecordValues['title'],        // file name
             $indexRecordValues['type'],         // content type
-            $indexRecordValues['targetpid'],    // target PID: where is the single view?
+            (string)$indexRecordValues['targetpid'], // target PID: where is the single view?
             $content,                           // indexed content, includes the title (linebreak after title)
             $indexRecordValues['tags'],         // tags
             $indexRecordValues['params'],       // typolink params for singleview

@@ -218,7 +218,7 @@ class News extends IndexerBase
 
                 // create content
                 $fullContent = '';
-                if (isset($abstract)) {
+                if (!empty($abstract)) {
                     $fullContent .= $abstract . "\n";
                 }
                 $fullContent .= $content;
@@ -370,7 +370,7 @@ class News extends IndexerBase
 
         // and remove the corresponding index entries
         $count = $indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
-        $message = LF . 'Found ' . $count . ' deleted or hidden record(s).';
+        $message = chr(10) . 'Found ' . $count . ' deleted or hidden record(s).';
         return $message;
     }
 
@@ -607,7 +607,7 @@ class News extends IndexerBase
     /**
      * index related files as seperate file index records
      *
-     * @param array $files
+     * @param array $relatedFiles
      * @param array $newsRecord
      */
     protected function indexFilesAsSeparateResults($relatedFiles, $newsRecord)

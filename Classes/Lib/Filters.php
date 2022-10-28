@@ -134,9 +134,7 @@ class Filters
                         $selected = true;
                     }
                 }
-            } elseif (!isset($this->pObj->piVars['filter'][$filter['uid']])
-                && !is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)
-            ) {
+            } elseif (!isset($this->pObj->piVars['filter'][$filter['uid']])) {
                 if (is_array($this->pObj->preselectedFilter)
                     && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)
                 ) {
@@ -158,13 +156,13 @@ class Filters
      * combines two string comma lists
      * @param string $list1
      * @param string $list2
-     * @author Christian Bülter
-     * @since 23.07.13
      * @return string
+     * @since 23.07.13
+     * @author Christian Bülter
      */
-    public function combineLists($list1 = '', $list2 = '')
+    public function combineLists(string $list1 = '', string $list2 = ''): string
     {
-        if (!empty($list2) && !empty($list2)) {
+        if (!empty($list1) && !empty($list2)) {
             $list1 .= ',';
         }
         $list1 .= $list2;

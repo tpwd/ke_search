@@ -23,8 +23,13 @@
 	},
 	"require-dev": {
 		"typo3/cms-dashboard": "^10.4.11 || ^11.0",
+		"typo3/cms-install": "^10.4.11 || ^11.0",
 		"phpunit/phpunit": "^8.5 || ^9.5",
-		"phpstan/phpstan": "^1.8"
+		"phpstan/phpstan": "^1.8",
+		"ext-zip": "*",
+		"ext-libxml": "*",
+		"ext-dom": "*",
+		"ext-json": "*"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"
@@ -57,6 +62,6 @@
 	},
 	"scripts": {
 		"test:unit": ".Build/bin/phpunit -c Tests/phpunit.xml.dist",
-		"phpstan": ".Build/bin/phpstan clear-result-cache && .Build/bin/phpstan > phpstan-report.log"
+		"test:phpstan": ".Build/bin/phpstan clear-result-cache && .Build/bin/phpstan > phpstan-report.log"
 	}
 }

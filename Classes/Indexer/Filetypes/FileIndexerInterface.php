@@ -10,4 +10,6 @@ interface FileIndexerInterface
      * @return string The extracted content of the file
      */
     public function getContent($file);
+
+    public function getErrors();
 }

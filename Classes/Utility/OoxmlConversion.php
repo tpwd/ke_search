@@ -31,7 +31,7 @@ class OoxmlConversion
     /**
      * Read text contents from Word files (DOCX)
      *
-     * @return string
+     * @return string|bool
      */
     private function readDocx()
     {

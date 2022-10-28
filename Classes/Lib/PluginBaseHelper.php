@@ -85,10 +85,10 @@ class PluginBaseHelper
     /**
      * Get the first page of starting points
      *
-     * @param string comma seperated list of page-uids
+     * @param string $pages comma seperated list of page-uids
      * @return int first page uid
      */
-    public function getFirstStartingPoint($pages = '')
+    public function getFirstStartingPoint(string $pages = ''): int
     {
         $pageArray = explode(',', $pages);
         return intval($pageArray[0]);

@@ -1,6 +1,7 @@
 <?php
 namespace Tpwd\KeSearch\Domain\Repository;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\FetchMode;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -103,8 +104,9 @@ class GenericRepository {
     /**
      * @param string $table
      * @param int $uid
-     * @return null|int
-     * @throws \Doctrine\DBAL\DBALException
+     * @param int $languageId
+     * @return null|array
+     * @throws DBALException
      */
     public function findLangaugeOverlayByUidAndLanguage(string $table, int $uid, int $languageId)
     {

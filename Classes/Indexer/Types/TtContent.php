@@ -39,7 +39,7 @@ class TtContent extends Page
 
     /**
      * get content of current page and save data to db
-     * @param $uid page-UID that has to be indexed
+     * @param $uid
      */
     public function getPageContent($uid)
     {
@@ -161,7 +161,9 @@ class TtContent extends Page
                 }
 
                 // index the files found
-                $this->indexFiles($fileObjects, $row, $pageAccessRestrictions['fe_group'], $tags);
+                if (!empty($fileObjects)) {
+                    $this->indexFiles($fileObjects, $row, $pageAccessRestrictions['fe_group'], $tags);
+                }
 
                 // Combine starttime and endtime from page, page language overlay
                 // and content element.

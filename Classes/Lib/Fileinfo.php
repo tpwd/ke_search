@@ -56,7 +56,7 @@ class Fileinfo
     /**
      * collect all fileinformations of given file and
      * save them to the global fileinformation array
-     * @param string $file
+     * @param $file
      * @return boolean is valid file?
      */
     protected function setFileInformations($file)

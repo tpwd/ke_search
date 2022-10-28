@@ -27,6 +27,8 @@ namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -49,17 +51,17 @@ class FilterOptionTagValidator
         $minLength = isset($extConf['searchWordLength']) ? (int) $extConf['searchWordLength'] : 4;
 
         if (strlen($value) < $minLength) {
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+            /** @var FlashMessage $message */
             $message = GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                FlashMessage::class,
                 $this->translate('tag_too_short_message', [$value, $minLength]),
                 $this->translate('tag_too_short'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+                FlashMessage::ERROR,
                 true
             );
 
-            /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+            /** @var FlashMessageService $flashMessageService */
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
             return false;
         }

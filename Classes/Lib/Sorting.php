@@ -134,10 +134,11 @@ class Sorting
      * f.e. default sorting for sortdate should be DESC. The most current records at first
      * f.e. default sorting for relevance should be DESC. The best relevance at first
      * f.e. default sorting for title should be ASC. Alphabetic order begins with A.
-     * @param string The field name to sort by
+     *
+     * @param string $field The field name to sort by
      * @return string The default sorting (asc/desc) for given field
      */
-    public function getDefaultSortingDirection($field)
+    public function getDefaultSortingDirection($field): string
     {
         if (!empty($field) && is_string($field)) {
             switch ($field) {

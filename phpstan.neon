@@ -8,3 +8,5 @@ parameters:
 		- '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Result\|int\.#'
 		- '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Result\|int\.#'
 		- '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
+		- '#has unknown class Tpwd\\KeSearchPremium\\KeSearchPremium as its type\.#'
+		- '#contains unknown class Tpwd\\KeSearchPremium\\Headless\\HeadlessApi\.#'

@@ -73,7 +73,7 @@ The tests are also executed by a GitHub pipeline.
 To check the code with PHPStan
 
 ```
-composer phpstan
+composer test:phpstan
 ```
 
 (this will create a file `phpstan-report.log`)

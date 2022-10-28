@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpUndefinedClassInspection */
+/** @noinspection PhpUndefinedNamespaceInspection */
 
 namespace Tpwd\KeSearch\Lib;
 
@@ -50,7 +52,7 @@ class Db implements SingletonInterface
     protected $hasSearchResults = true;
     protected $searchResults = array();
     protected $numberOfResults = 0;
-    protected $keSearchPremium = NULL;
+    protected KeSearchPremium $keSearchPremium;
     protected $errors = [];
     private EventDispatcherInterface $eventDispatcher;
     public Pluginbase $pObj;
@@ -167,13 +169,14 @@ class Db implements SingletonInterface
     }
 
     /**
-     * get a limitted amount of search results for a requested page
+     * get a limited amount of search results for a requested page
      *
      * @return array Array containing a limited (one page) amount of search results
      */
     public function getSearchResultBySphinx()
     {
-        /** @var KeSearchPremium keSearchPremium */
+        if (!class_exists(KeSearchPremium::class)) return [];
+
         $this->keSearchPremium = GeneralUtility::makeInstance(KeSearchPremium::class);
 
         // set ordering
@@ -547,7 +550,8 @@ class Db implements SingletonInterface
      */
     public function getLimit()
     {
-        $limit = $this->conf['resultsPerPage'] ? $this->conf['resultsPerPage'] : 10;
+        $start = 0;
+        $limit = $this->conf['resultsPerPage'] ?: 10;
 
         if ($this->pObj->piVars['page'] ?? false) {
             $start = ($this->pObj->piVars['page'] * $limit) - $limit;
