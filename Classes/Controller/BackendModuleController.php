@@ -351,7 +351,6 @@ class BackendModuleController extends AbstractBackendModuleController
 
     /**
      * get report from sys_log
-     * @return string
      * @author Christian Bülter
      * @since 29.05.15
      */
@@ -755,7 +754,6 @@ class BackendModuleController extends AbstractBackendModuleController
      * @param integer $timestampStart
      * @param string $pidWhere
      * @param string $tableCol
-     * @return string
      */
     public function getStatisticTableData($table, $language, $timestampStart, $pidWhere, $tableCol)
     {
