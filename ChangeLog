@@ -9,6 +9,7 @@ Upcoming version
 [TASK]     Add PHPStan as dev requirement
 [TASK]     Code cleanup according to PHPStan
 [TASK]     Code cleanup according to PHPStorm code inspections
+[TASK]     Add PHPStan check as a GitHub Action
 [TASK]     Remove unused Behat tests for now
 [TASK]     Add .editorconfig from TYPO3 main project
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.

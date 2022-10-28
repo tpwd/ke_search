@@ -1,9 +1,9 @@
 parameters:
 	level: 5
 	paths:
-		- Classes
-		- Configuration
-		- Tests
+		- ../Classes
+		- ../Configuration
+		- ../Tests
 	ignoreErrors:
 		- '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Result\|int\.#'
 		- '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Result\|int\.#'
