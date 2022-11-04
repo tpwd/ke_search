@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /***************************************************************
  *  Copyright notice
@@ -19,7 +21,6 @@
  ***************************************************************/
 
 namespace Tpwd\KeSearch\Widgets\Provider;
-
 
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,10 +58,9 @@ class IndexOverviewDataProvider implements ChartDataProviderInterface
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'border' => 0,
-                    'data' => $data
-                ]
-            ]
+                    'data' => $data,
+                ],
+            ],
         ];
     }
-
 }

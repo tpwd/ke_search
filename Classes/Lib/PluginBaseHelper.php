@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
 /***************************************************************
@@ -19,13 +20,10 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Helper class for ke_search Plugin
  *
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class PluginBaseHelper
 {
@@ -42,11 +40,11 @@ class PluginBaseHelper
 
     public function getStartingPoint()
     {
-        $startingpoint = array();
+        $startingpoint = [];
 
         // if loadFlexformsFromOtherCE is set
         // try to get startingPoint of given page
-        if ($uid = intval($this->pObj->conf['loadFlexformsFromOtherCE'] ?? 0)) {
+        if ($uid = (int)($this->pObj->conf['loadFlexformsFromOtherCE'] ?? 0)) {
             $queryBuilder = Db::getQueryBuilder('tt_content');
             $queryBuilder->getRestrictions()->removeAll();
             $pageResult = $queryBuilder
@@ -91,7 +89,7 @@ class PluginBaseHelper
     public function getFirstStartingPoint(string $pages = ''): int
     {
         $pageArray = explode(',', $pages);
-        return intval($pageArray[0]);
+        return (int)($pageArray[0]);
     }
 
     /**
@@ -113,21 +111,21 @@ class PluginBaseHelper
             switch ($key) {
                 // integer - default 1
                 case 'page':
-                    $piVars[$key] = intval($value);
+                    $piVars[$key] = (int)$value;
                     // set to "1" if no value set
                     if (!$piVars[$key]) {
                         $piVars[$key] = 1;
                     }
                     break;
 
-                // integer
+                    // integer
                 case 'resetFilters':
-                    $piVars[$key] = intval($value);
+                    $piVars[$key] = (int)$value;
                     break;
 
-                // array of strings. Defined in the TYPO3 backend
-                // and posted as piVar. Should not contain any special
-                // chars (<>"), but just to make sure we remove them here.
+                    // array of strings. Defined in the TYPO3 backend
+                    // and posted as piVar. Should not contain any special
+                    // chars (<>"), but just to make sure we remove them here.
                 case 'filter':
                     if (is_array($piVars[$key])) {
                         foreach ($piVars[$key] as $filterId => $filterValue) {
@@ -144,19 +142,19 @@ class PluginBaseHelper
                     }
                     break;
 
-                // string, no further XSS cleaning here
-                // cleaning is done on output
+                    // string, no further XSS cleaning here
+                    // cleaning is done on output
                 case 'sword':
                     $piVars[$key] = trim($piVars[$key]);
                     break;
 
-                // only characters
+                    // only characters
                 case 'sortByField':
                 case 'orderByField':
                     $piVars[$key] = preg_replace('/[^a-zA-Z0-9]/', '', $piVars[$key]);
                     break;
 
-                // "asc" or "desc"
+                    // "asc" or "desc"
                 case 'sortByDir':
                 case 'orderByDir':
                     if ($piVars[$key] != 'asc' && $piVars[$key] != 'desc') {
@@ -164,7 +162,7 @@ class PluginBaseHelper
                     }
                     break;
 
-                // remove not allowed piVars
+                    // remove not allowed piVars
                 default:
                     if (!in_array($key, SearchHelper::getAllowedPiVars($additionalAllowedPiVars))) {
                         unset($piVars[$key]);

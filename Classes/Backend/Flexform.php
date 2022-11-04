@@ -1,9 +1,10 @@
 <?php
+
 namespace Tpwd\KeSearch\Backend;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use Tpwd\KeSearch\Lib\Db;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Flexform
 {
@@ -25,15 +26,15 @@ class Flexform
 
         // get orderings
         $fieldLabel = $this->lang->sL('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.relevance');
-        $config['items'][] = array($fieldLabel, 'score');
+        $config['items'][] = [$fieldLabel, 'score'];
         $res = Db::getDatabaseConnection('tx_kesearch_index')->fetchAll('SHOW COLUMNS FROM tx_kesearch_index');
 
-        foreach($res as $col) {
+        foreach ($res as $col) {
             $isInList = GeneralUtility::inList($this->notAllowedFields, $col['Field']);
             if (!$isInList) {
                 $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'] ?? $col['Field'];
                 $fieldLabel = $this->lang->sL($file);
-                $config['items'][] = array($fieldLabel, $col['Field']);
+                $config['items'][] = [$fieldLabel, $col['Field']];
             }
         }
     }
@@ -46,18 +47,18 @@ class Flexform
         // get orderings
         $fieldLabel = $this->lang->sL('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.relevance');
         if (!($config['config']['relevanceNotAllowed'] ?? false)) {
-            $config['items'][] = array($fieldLabel . ' UP', 'score asc');
-            $config['items'][] = array($fieldLabel . ' DOWN', 'score desc');
+            $config['items'][] = [$fieldLabel . ' UP', 'score asc'];
+            $config['items'][] = [$fieldLabel . ' DOWN', 'score desc'];
         }
         $res = Db::getDatabaseConnection('tx_kesearch_index')->fetchAll('SHOW COLUMNS FROM tx_kesearch_index');
 
-        foreach($res as $col) {
+        foreach ($res as $col) {
             $isInList = GeneralUtility::inList($this->notAllowedFields, $col['Field']);
             if (!$isInList) {
                 $file = $GLOBALS['TCA']['tx_kesearch_index']['columns'][$col['Field']]['label'] ?? $col['Field'];
                 $fieldLabel = $this->lang->sL($file);
-                $config['items'][] = array($fieldLabel . ' UP', $col['Field'] . ' asc');
-                $config['items'][] = array($fieldLabel . ' DOWN', $col['Field'] . ' desc');
+                $config['items'][] = [$fieldLabel . ' UP', $col['Field'] . ' asc'];
+                $config['items'][] = [$fieldLabel . ' DOWN', $col['Field'] . ' desc'];
             }
         }
     }

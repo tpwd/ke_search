@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Connection as DoctrineDbalConnection;
 use PDO;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -26,13 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class FileReferenceRepository extends BaseRepository {
+class FileReferenceRepository extends BaseRepository
+{
     /**
      * @var string
      */
@@ -43,8 +42,7 @@ class FileReferenceRepository extends BaseRepository {
         string $fieldname,
         string $uid_foreign,
         array $languageIds = [0, -1]
-    )
-    {
+    ) {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);

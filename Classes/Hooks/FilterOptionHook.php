@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Hooks;
 
@@ -30,8 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Hooks for ke_search
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
 class FilterOptionHook
 {
@@ -75,7 +74,8 @@ class FilterOptionHook
      * @param $value
      * @param $pObj
      */
-    function processCmdmap_postProcess ($command,$table,$id,$value,$pObj) {
+    public function processCmdmap_postProcess($command, $table, $id, $value, $pObj)
+    {
         if ($table === 'sys_category' && $command === 'delete') {
             /** @var FilterOptionRepository $filterOptionRepository */
             $filterOptionRepository = GeneralUtility::makeInstance(FilterOptionRepository::class);
@@ -104,7 +104,7 @@ class FilterOptionHook
             if ($subCats) {
                 foreach ($subCats as $subCat) {
                     $this->createOrUpdateFilterOptions($filters, $subCat);
-               }
+                }
             }
         }
         if ($category['parent']) {
@@ -182,7 +182,7 @@ class FilterOptionHook
         // filter option records. If it is in a different language, we need to create/update the
         // localized filter option.
 
-        if (in_array($category['sys_language_uid'], [0,-1])) {
+        if (in_array($category['sys_language_uid'], [0, -1])) {
             $tag = SearchHelper::createTagnameFromSystemCategoryUid($category['uid']);
             foreach ($filters as $filterUid) {
                 $filterOptions = $filterOptionRepository->findByFilterUidAndTag($filterUid, $tag);
@@ -194,7 +194,7 @@ class FilterOptionHook
                     );
                 } else {
                     // update
-                    foreach ($filterOptions as $filterOption){
+                    foreach ($filterOptions as $filterOption) {
                         $filterOptionRepository->update(
                             $filterOption['uid'],
                             ['title' => $category['title']]
@@ -229,7 +229,7 @@ class FilterOptionHook
                                 }
                             } else {
                                 // update
-                                foreach ($localizedFilterOptions as $localizedFilterOption){
+                                foreach ($localizedFilterOptions as $localizedFilterOption) {
                                     $filterOptionRepository->update(
                                         (int)$localizedFilterOption['uid'],
                                         ['title' => $category['title']]

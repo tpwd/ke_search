@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TtNews extends IndexerBase
 {
-
     /** @var FileRepository $fileRepository  */
     protected $fileRepository;
 
@@ -104,13 +103,13 @@ class TtNews extends IndexerBase
                 }
 
                 if ($shouldBeIndexed) {
-                    $this->pObj->logger->debug('Indexing tt_news record "' . $newsRecord['title'] .'"', [
+                    $this->pObj->logger->debug('Indexing tt_news record "' . $newsRecord['title'] . '"', [
                         'uid' => $newsRecord['uid'],
                         'pid' => $newsRecord['pid'],
                         'sys_language_uid' => $newsRecord['sys_language_uid'],
                     ]);
                 } else {
-                    $this->pObj->logger->debug('Skipping tt_news record "' . $newsRecord['title'] .'"', [
+                    $this->pObj->logger->debug('Skipping tt_news record "' . $newsRecord['title'] . '"', [
                         'uid' => $newsRecord['uid'],
                         'pid' => $newsRecord['pid'],
                         'sys_language_uid' => $newsRecord['sys_language_uid'],
@@ -185,7 +184,7 @@ class TtNews extends IndexerBase
 
                 // add tags from pages
                 if ($indexerConfig['index_use_page_tags']) {
-                    $tags = $this->pageRecords[intval($newsRecord['pid'])]['tags'];
+                    $tags = $this->pageRecords[(int)($newsRecord['pid'])]['tags'];
                 } else {
                     $tags = '';
                 }
@@ -194,7 +193,7 @@ class TtNews extends IndexerBase
                 if (!empty($newsRecord['keywords'])) {
                     $keywordsList = GeneralUtility::trimExplode(',', $newsRecord['keywords']);
                     foreach ($keywordsList as $keyword) {
-                        SearchHelper::makeTags($tags, array($keyword));
+                        SearchHelper::makeTags($tags, [$keyword]);
                     }
                 }
 
@@ -202,7 +201,7 @@ class TtNews extends IndexerBase
                 SearchHelper::makeTags($tags, $categoryData['title_list']);
 
                 // set additional fields
-                $additionalFields = array();
+                $additionalFields = [];
                 $additionalFields['orig_uid'] = $newsRecord['uid'];
                 $additionalFields['orig_pid'] = $newsRecord['pid'];
                 $additionalFields['sortdate'] = $newsRecord['crdate'];
@@ -251,7 +250,7 @@ class TtNews extends IndexerBase
             }
 
             $logMessage = 'Indexer "' . $this->indexerConfig['title'] . '" finished'
-                . ' ('.$indexedNewsCounter.' records processed)';
+                . ' (' . $indexedNewsCounter . ' records processed)';
             $this->pObj->logger->info($logMessage);
         }
         return $indexedNewsCounter . ' tt_news records and ' . $this->fileCounter . ' related files have been indexed.';
@@ -273,11 +272,11 @@ class TtNews extends IndexerBase
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
-        $categoryData = array(
+        $categoryData = [
             'single_pid' => 0,
-            'uid_list' => array(),
-            'title_list' => array()
-        );
+            'uid_list' => [],
+            'title_list' => [],
+        ];
 
         $queryBuilder = Db::getQueryBuilder('tt_news_cat');
 

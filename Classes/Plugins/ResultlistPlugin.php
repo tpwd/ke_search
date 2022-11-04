@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Plugins;
 
 /***************************************************************
@@ -22,18 +23,14 @@ namespace Tpwd\KeSearch\Plugins;
 use Tpwd\KeSearch\Lib\Pluginbase;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Plugin 'Faceted search - resultlist plugin' for the 'ke_search' extension.
  * @author    Andreas Kiefer
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class ResultlistPlugin extends Pluginbase
 {
-
     /**
      * @var \TYPO3\CMS\Fluid\View\StandaloneView
      */

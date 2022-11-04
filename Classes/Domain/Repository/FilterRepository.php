@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -23,13 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class FilterRepository {
+class FilterRepository
+{
     /**
      * @var string
      */
@@ -80,7 +79,7 @@ class FilterRepository {
     }
 
     /**
-     * @param integer $uid
+     * @param int $uid
      * @param array $updateFields
      * @return mixed
      */
@@ -109,7 +108,8 @@ class FilterRepository {
      * @param int $filterOptionUid
      * @return mixed[]
      */
-    public function findByAssignedFilterOption(int $filterOptionUid) {
+    public function findByAssignedFilterOption(int $filterOptionUid)
+    {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName);
@@ -119,7 +119,7 @@ class FilterRepository {
             ->where(
                 $queryBuilder->expr()->inSet(
                     'options',
-                    (string)intval($filterOptionUid)
+                    (string)(int)$filterOptionUid
                 )
             )
             ->execute()
@@ -136,7 +136,7 @@ class FilterRepository {
         $filter = $this->findByAssignedFilterOption($filterOptionUid);
         if (!empty($filter)) {
             $updateFields = [
-                'options' => GeneralUtility::rmFromList((string)$filterOptionUid, $filter['options'])
+                'options' => GeneralUtility::rmFromList((string)$filterOptionUid, $filter['options']),
             ];
             $this->update($filter['uid'], $updateFields);
         }

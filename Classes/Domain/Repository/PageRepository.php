@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
@@ -25,13 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class PageRepository extends BaseRepository {
+class PageRepository extends BaseRepository
+{
     /**
      * @var string
      */
@@ -52,10 +51,10 @@ class PageRepository extends BaseRepository {
             ->select('*')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($uidList,Connection::PARAM_INT_ARRAY))
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY))
             )
             ->orWhere(
-                $queryBuilder->expr()->in('l10n_parent', $queryBuilder->createNamedParameter($uidList,Connection::PARAM_INT_ARRAY))
+                $queryBuilder->expr()->in('l10n_parent', $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY))
             )
             ->andWhere(
                 '('
@@ -63,7 +62,7 @@ class PageRepository extends BaseRepository {
                 . ' OR '
                 . $queryBuilder->expr()->eq('hidden', 1)
                 . ')',
-                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp,PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
             )
             ->execute()
             ->fetchAll();

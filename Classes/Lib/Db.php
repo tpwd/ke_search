@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection PhpUndefinedClassInspection */
 /** @noinspection PhpUndefinedNamespaceInspection */
 
@@ -11,12 +12,12 @@ use Tpwd\KeSearch\Event\MatchColumnsEvent;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 /***************************************************************
  *  Copyright notice
@@ -39,18 +40,16 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 /**
  * DB Class for ke_search, generates search queries.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Db implements SingletonInterface
 {
     const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
-    public $conf = array();
+    public $conf = [];
     public $countResultsOfTags = 0;
     public $countResultsOfContent = 0;
     public $table = 'tx_kesearch_index';
     protected $hasSearchResults = true;
-    protected $searchResults = array();
+    protected $searchResults = [];
     protected $numberOfResults = 0;
     protected KeSearchPremium $keSearchPremium;
     protected $errors = [];
@@ -96,7 +95,6 @@ class Db implements SingletonInterface
 
     /**
      * get a limitted amount of search results for a requested page
-     * @return void
      */
     public function getSearchResultByMySQL()
     {
@@ -162,8 +160,8 @@ class Db implements SingletonInterface
      */
     public function escapeString($string)
     {
-        $from = array('\\', '(', ')', '-', '!', '@', '~', '"', '&', '/', '^', '$', '=');
-        $to = array('\\\\', '\(', '\)', '\-', '\!', '\@', '\~', '\"', '\&', '\/', '\^', '\$', '\=');
+        $from = ['\\', '(', ')', '-', '!', '@', '~', '"', '&', '/', '^', '$', '='];
+        $to = ['\\\\', '\(', '\)', '\-', '\!', '\@', '\~', '\"', '\&', '\/', '\^', '\$', '\='];
 
         return str_replace($from, $to, $string);
     }
@@ -175,7 +173,9 @@ class Db implements SingletonInterface
      */
     public function getSearchResultBySphinx()
     {
-        if (!class_exists(KeSearchPremium::class)) return [];
+        if (!class_exists(KeSearchPremium::class)) {
+            return [];
+        }
 
         $this->keSearchPremium = GeneralUtility::makeInstance(KeSearchPremium::class);
 
@@ -184,7 +184,7 @@ class Db implements SingletonInterface
 
         // set limit
         $limit = $this->getLimit();
-        $this->keSearchPremium->setLimit($limit[0], $limit[1], intval($this->pObj->extConfPremium['sphinxLimit']));
+        $this->keSearchPremium->setLimit($limit[0], $limit[1], (int)($this->pObj->extConfPremium['sphinxLimit']));
 
         // generate query
         $queryForSphinx = '';
@@ -259,14 +259,14 @@ class Db implements SingletonInterface
         $databaseConnection = self::getDatabaseConnection($this->table);
         $searchwordQuoted = $databaseConnection->quote($this->pObj->scoreAgainst, \PDO::PARAM_STR);
         $limit = $this->getLimit();
-        $queryParts = array(
+        $queryParts = [
             'SELECT' => $this->getFields($searchwordQuoted),
             'FROM' => $this->table,
             'WHERE' => '1=1' . $this->getWhere(),
             'GROUPBY' => '',
             'ORDERBY' => $this->getOrdering(),
-            'LIMIT' => $limit[0] . ',' . $limit[1]
-        );
+            'LIMIT' => $limit[0] . ',' . $limit[1],
+        ];
 
         // hook for third party applications to manipulate last part of query building
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getQueryParts'] ?? null)) {
@@ -279,19 +279,17 @@ class Db implements SingletonInterface
         return $queryParts;
     }
 
-
     /**
      * Counts the search results
      * It's better to make an additional query than working with
      * SQL_CALC_FOUND_ROWS. Further we don't have to lock tables.
      *
-     * @return integer Amount of SearchResults
+     * @return int Amount of SearchResults
      */
     public function getAmountOfSearchResults()
     {
-        return intval($this->numberOfResults);
+        return (int)($this->numberOfResults);
     }
-
 
     /**
      * get all tags which are found in search result
@@ -301,7 +299,7 @@ class Db implements SingletonInterface
      */
     public function getTagsFromSearchResult()
     {
-        $tags = $tagsForResult = array();
+        $tags = $tagsForResult = [];
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         $tagDivider = $tagChar . ',' . $tagChar;
 
@@ -338,7 +336,7 @@ class Db implements SingletonInterface
                 $this->searchResults
             );
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -368,7 +366,6 @@ class Db implements SingletonInterface
             $tagRows
         );
     }
-
 
     /**
      * In checkbox mode we have to create for each checkbox one MATCH-AGAINST-Construct
@@ -522,8 +519,8 @@ class Db implements SingletonInterface
                 // if sortByVisitor is not set OR not in the list of
                 // allowed fields then use fallback ordering in "sortWithoutSearchword"
             }
-            // if sortByVisitor is not set OR not in the list of
-            //allowed fields then use fallback ordering in "sortWithoutSearchword"
+        // if sortByVisitor is not set OR not in the list of
+        //allowed fields then use fallback ordering in "sortWithoutSearchword"
         } else {
             if (!empty($this->pObj->wordsAgainst)) { // if sorting is predefined by admin
                 $orderBy = $this->conf['sortByAdmin'];
@@ -560,7 +557,7 @@ class Db implements SingletonInterface
             }
         }
 
-        $startLimit = array($start, $limit);
+        $startLimit = [$start, $limit];
 
         // hook for third party pagebrowsers or for modification $this->pObj->piVars['page'] parameter
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'] ?? null)) {
@@ -576,7 +573,7 @@ class Db implements SingletonInterface
     /**
      * Check if Sphinx search is enabled
      *
-     * @return  boolean
+     * @return  bool
      */
     protected function sphinxSearchEnabled()
     {
@@ -622,5 +619,4 @@ class Db implements SingletonInterface
     {
         return $this->errors;
     }
-
 }

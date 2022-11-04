@@ -59,7 +59,7 @@ class ClearIndexCommand extends Command implements LoggerAwareInterface
             ->setAliases([
                 'kesearch:clearindex',
                 'ke_search:cleanindex',
-                'kesearch:cleanindex'
+                'kesearch:cleanindex',
             ]);
     }
 

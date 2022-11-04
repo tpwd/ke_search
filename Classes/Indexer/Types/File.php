@@ -37,15 +37,13 @@ use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Stefan Froemken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class File extends IndexerBase
 {
@@ -54,14 +52,14 @@ class File extends IndexerBase
      *
      * @var array
      */
-    public array $extConf = array();
+    public array $extConf = [];
 
     /**
      * saves the path to the executables
      *
      * @var array
      */
-    public array $app = array();
+    public array $app = [];
 
     /**
      * @var bool
@@ -111,7 +109,7 @@ class File extends IndexerBase
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
-            $files = array();
+            $files = [];
             $this->getFilesFromFal($files, $directoryArray);
         } else {
             $files = $this->getFilesFromDirectories($directoryArray);
@@ -165,7 +163,6 @@ class File extends IndexerBase
         return $message;
     }
 
-
     /** * fetches files recurively using FAL
      * @param array $files
      * @param array $directoryArray
@@ -190,7 +187,7 @@ class File extends IndexerBase
                 $subfolders = $folder->getSubFolders();
                 if (count($subfolders)) {
                     foreach ($subfolders as $subfolder) {
-                        $this->getFilesFromFal($files, array($subfolder->getIdentifier()));
+                        $this->getFilesFromFal($files, [$subfolder->getIdentifier()]);
                     }
                 }
             }
@@ -208,10 +205,10 @@ class File extends IndexerBase
     {
         $directoryArray = $this->getAbsoluteDirectoryPath($directoryArray);
         if (is_array($directoryArray) && count($directoryArray)) {
-            $files = array();
+            $files = [];
             foreach ($directoryArray as $directory) {
                 $foundFiles = GeneralUtility::getAllFilesAndFoldersInPath(
-                    array(),
+                    [],
                     $directory,
                     $this->indexerConfig['fileext']
                 );
@@ -223,9 +220,8 @@ class File extends IndexerBase
                 }
             }
             return $files;
-        } else {
-            return array();
         }
+        return [];
     }
 
     /**
@@ -241,9 +237,8 @@ class File extends IndexerBase
                 $directoryArray[$key] = Environment::getPublicPath() . '/' . $directory . '/';
             }
             return $directoryArray;
-        } else {
-            return array();
         }
+        return [];
     }
 
     /**
@@ -253,7 +248,7 @@ class File extends IndexerBase
      * Returns the number of files which have been indexed.
      *
      * @param array $files
-     * @return integer
+     * @return int
      */
     public function extractContentAndSaveToIndex(array $files): int
     {
@@ -317,28 +312,24 @@ class File extends IndexerBase
                     $fileContent = str_replace(self::METADATASEPARATOR, ' ', $fileContent);
 
                     return $fileContent;
-                } else {
-                    return false;
                 }
-            } else {
-                // if no indexer for this type of file exists, we do a fallback:
-                // we return an empty content. Doing this at least the FAL metadata
-                // can be indexed. So this makes only sense when using FAL.
-                if ($this->indexerConfig['fal_storage'] > 0) {
-                    return '';
-                } else {
-                    $errorMessage = 'No indexer for this type of file. (class ' . $className . ' does not exist).';
-                    $this->pObj->logger->error($errorMessage);
-                    $this->addError($errorMessage);
-                    return false;
-                }
+                return false;
             }
-        } else {
-            $errorMessage = $filePath . ' is not a file.';
+            // if no indexer for this type of file exists, we do a fallback:
+            // we return an empty content. Doing this at least the FAL metadata
+            // can be indexed. So this makes only sense when using FAL.
+            if ($this->indexerConfig['fal_storage'] > 0) {
+                return '';
+            }
+            $errorMessage = 'No indexer for this type of file. (class ' . $className . ' does not exist).';
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
             return false;
         }
+        $errorMessage = $filePath . ' is not a file.';
+        $this->pObj->logger->error($errorMessage);
+        $this->addError($errorMessage);
+        return false;
     }
 
     /**
@@ -387,7 +378,7 @@ class File extends IndexerBase
         $tags = '';
 
         // add tag "file" to all index records which represent a file
-        SearchHelper::makeTags($tags, array('file'));
+        SearchHelper::makeTags($tags, ['file']);
 
         // get data from FAL
         if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
@@ -407,7 +398,7 @@ class File extends IndexerBase
             $metaDataProperties = false;
         }
 
-        $indexRecordValues = array(
+        $indexRecordValues = [
             'storagepid' => $this->indexerConfig['storagepid'],
             'title' => $this->fileInfo->getName(),
             'type' => 'file:' . $this->fileInfo->getExtension(),
@@ -419,20 +410,19 @@ class File extends IndexerBase
             'starttime' => 0,
             'endtime' => 0,
             'fe_group' => 0,
-            'debug' => false
-        );
+            'debug' => false,
+        ];
 
-        $additionalFields = array(
+        $additionalFields = [
             'sortdate' => $this->fileInfo->getModificationTime(),
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
             'directory' => $this->fileInfo->getAbsolutePath(),
-            'hash' => $this->getUniqueHashForFile()
-        );
+            'hash' => $this->getUniqueHashForFile(),
+        ];
 
         // add metadata content, frontend groups and catagory tags if FAL is used
         if ($this->indexerConfig['fal_storage'] > 0) {
-
             // index meta data from FAL: title, description, alternative
             if ($fileProperties) {
                 $content = $this->addFileMetata($fileProperties, $content);

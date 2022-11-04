@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection PhpUndefinedClassInspection */
 /** @noinspection PhpUndefinedNamespaceInspection */
 /** @noinspection PhpPropertyOnlyWrittenInspection */
@@ -29,10 +30,10 @@ use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
@@ -41,8 +42,6 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
@@ -65,7 +64,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $wordsAgainst = '';
 
     // tagsphrase for boolean mode (+#category_213# +#city_42#)
-    public $tagsAgainst = array();
+    public $tagsAgainst = [];
 
     // searchphrase for score/non boolean mode (karl heinz)
     public $scoreAgainst = '';
@@ -80,13 +79,13 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $firstStartingPoint = 0;
 
     // FlexForm-Configuration
-    public $conf = array();
+    public $conf = [];
 
     // Extension-Configuration
-    public $extConf = array();
+    public $extConf = [];
 
     // Extension-Configuration of ke_search_premium if installed
-    public $extConfPremium = array();
+    public $extConfPremium = [];
 
     // count search results
     public $numberOfResults = 0;
@@ -101,15 +100,15 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public $tagsInSearchResult = false;
 
     // preselected filters by flexform
-    public $preselectedFilter = array();
+    public $preselectedFilter = [];
 
     // array with filter-uids as key and whole data as value
-    public $filtersFromFlexform = array();
+    public $filtersFromFlexform = [];
 
     // contains a boolean value which represents if there are too short words in the searchstring
     public $hasTooShortWords = false;
-    public $fileTypesWithPreviewPossible = array('pdf', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff');
-    public $fluidTemplateVariables = array();
+    public $fileTypesWithPreviewPossible = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff'];
+    public $fluidTemplateVariables = [];
 
     /**
      * @var Db
@@ -160,7 +159,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     /**
      * Initializes flexform, conf vars and some more
-     * @return void
      */
     public function init()
     {
@@ -195,7 +193,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord(
                 'tt_content',
-                intval($flexFormConfiguration['loadFlexformsFromOtherCE'])
+                (int)($flexFormConfiguration['loadFlexformsFromOtherCE'])
             );
             // PHPDoc of pi_getRecord says it will return an array or false,
             // but if no record has been found it will return 0
@@ -338,7 +336,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * Move all FlexForm data of current record to conf array ($this->conf)
      *
      * @param array $flexFormConfiguration
-     * @return void
      */
     public function moveFlexFormDataToConf(array $flexFormConfiguration)
     {
@@ -378,7 +375,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * creates the searchbox
      * fills fluid variables for the fluid template to $this->fluidTemplateVariables
-     * @return void
      */
     public function getSearchboxContent()
     {
@@ -421,7 +417,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // language parameter
         if (isset($lParam)) {
-            $hiddenFieldValue = intval($lParam);
+            $hiddenFieldValue = (int)$lParam;
             $this->fluidTemplateVariables['lparam'] = $hiddenFieldValue;
         }
 
@@ -434,7 +430,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // type param
         if ($typeParam) {
-            $hiddenFieldValue = intval($typeParam);
+            $hiddenFieldValue = (int)$typeParam;
             $this->fluidTemplateVariables['typeparam'] = $hiddenFieldValue;
         }
 
@@ -532,7 +528,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // loop through options
-        $checkboxOptions = array();
+        $checkboxOptions = [];
         if (is_array($allOptionsOfCurrentFilter)) {
             foreach ($allOptionsOfCurrentFilter as $key => $data) {
                 $data['key'] = 'tx_kesearch_pi1[filter_' . $filter['uid'] . '_' . $key . ']';
@@ -596,10 +592,9 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function findFilterOptionsToDisplay($filter)
     {
-        $optionsToDisplay = array();
+        $optionsToDisplay = [];
 
         foreach ($filter['options'] as $option) {
-
             // build link which selects this option for this filter and keeps all the other filters
             $localPiVars = $this->piVars;
             $localPiVars['filter'][$filter['uid']] = $option['tag'];
@@ -619,8 +614,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     (!count($filter['selectedOptions']) || in_array($option['uid'], $filter['selectedOptions']))
                     && $this->filters->checkIfTagMatchesRecords($option['tag'])
                 ) {
-
-                    $optionsToDisplay[$option['uid']] = array(
+                    $optionsToDisplay[$option['uid']] = [
                         'title' => $option['title'],
                         'value' => $option['tag'],
                         'results' => $this->tagsInSearchResult[$option['tag']],
@@ -628,20 +622,20 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                             is_array($filter['selectedOptions'])
                             && !empty($filter['selectedOptions'])
                             && in_array($option['uid'], $filter['selectedOptions']),
-                        'link' => $optionLink
-                    );
+                        'link' => $optionLink,
+                    ];
                 }
             } else {
                 // do not process any checks; show all filter options
-                $optionsToDisplay[$option['uid']] = array(
+                $optionsToDisplay[$option['uid']] = [
                     'title' => $option['title'],
                     'value' => $option['tag'],
                     'selected' =>
                         is_array($filter['selectedOptions'])
                         && !empty($filter['selectedOptions'])
                         && in_array($option['uid'], $filter['selectedOptions']),
-                    'link' => $optionLink
-                );
+                    'link' => $optionLink,
+                ];
 
                 // If no filter option has been selected yet, we can show the number of results per filter option.
                 // After a filter option has been selected this does not make sense anymore because the number of
@@ -664,7 +658,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * renders brackets around the number of results, returns an empty
      * string if there are no results or if an option for this filter already
      * has been selected.
-     * @param integer $numberOfResults
+     * @param int $numberOfResults
      * @param array $filter
      * @return string
      */
@@ -708,7 +702,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * creates the search result list
      * 1. does the actual searching (fetches the results to $rows)
      * 2. fills fluid variables for fluid templates to $this->fluidTemplateVariables
-     * @return void
      */
     public function getSearchResults()
     {
@@ -720,12 +713,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // set switch for too short words
         $this->fluidTemplateVariables['wordsTooShort'] = $this->hasTooShortWords ? 1 : 0;
 
-        if($this->isEmptySearch() && !$this->allowEmptySearch()) {
+        if ($this->isEmptySearch() && !$this->allowEmptySearch()) {
             return;
         }
 
         // get filters
-        if (intval($this->conf['includeFilters']) == 1) {
+        if ((int)($this->conf['includeFilters']) == 1) {
             $this->renderFilters();
         }
 
@@ -756,12 +749,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $resultCount = 1;
         $this->searchResult = GeneralUtility::makeInstance(Searchresult::class, $this);
 
-        $this->fluidTemplateVariables['resultrows'] = array();
+        $this->fluidTemplateVariables['resultrows'] = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
                 $this->searchResult->setRow($row);
 
-                $tempMarkerArray = array(
+                $tempMarkerArray = [
                     'orig_uid' => $row['orig_uid'],
                     'orig_pid' => $row['orig_pid'],
                     'orig_row' => $genericRepository->findByUidAndType($row['orig_uid'], $row['type']),
@@ -769,7 +762,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     'content_text' => $row['content'],
                     'title' => $this->searchResult->getTitle(),
                     'teaser' => $this->searchResult->getTeaser(),
-                );
+                ];
 
                 if (substr($row['type'], 0, 4) == 'file' && !empty($row['orig_uid'])) {
                     $tempMarkerArray['metadata'] = $fileMetaDataRepository->findByFileUidAndLanguageUid(
@@ -870,16 +863,19 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         switch ($type) {
             case 'page':
                 if ($this->conf['showPageImages'] ?? false) {
-
                     // first check if "tx_kesearch_resultimage" is set
                     $result = $this->getFirstFalRelationUid(
-                        'pages', 'tx_kesearch_resultimage', $row['orig_uid']
+                        'pages',
+                        'tx_kesearch_resultimage',
+                        $row['orig_uid']
                     );
 
                     // fallback to standard "media" field
                     if (empty($result)) {
                         $result = $this->getFirstFalRelationUid(
-                            'pages', 'media', $row['orig_uid']
+                            'pages',
+                            'media',
+                            $row['orig_uid']
                         );
                     }
                     return $result;
@@ -889,7 +885,9 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             case 'tt_news':
                 if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
-                        'tt_news', 'image', $row['orig_uid']
+                        'tt_news',
+                        'image',
+                        $row['orig_uid']
                     );
                 }
                 break;
@@ -897,7 +895,9 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             case 'news':
                 if ($this->conf['showNewsImages'] ?? false) {
                     return $this->getFirstFalRelationUid(
-                        'tx_news_domain_model_news', 'fal_media', $row['orig_uid']
+                        'tx_news_domain_model_news',
+                        'fal_media',
+                        $row['orig_uid']
                     );
                 }
                 break;
@@ -931,19 +931,18 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($this->conf['resultListTypeIcon'][$name] ?? false) {
             // custom icons defined by typoscript
             return $this->conf['resultListTypeIcon'][$name]['file'];
-        } else {
-            // default icons from ext:ke_search
-            $extensionIconPath = 'EXT:ke_search/Resources/Public/Icons/types/' . $name . '.gif';
-            if (is_file(GeneralUtility::getFileAbsFileName($extensionIconPath))) {
-                return $extensionIconPath;
-            } else if ($type == 'file') {
-                // fallback for file results: use default if no image for this file extension is available
-                return 'EXT:ke_search/Resources/Public/Icons/types/file.gif';
-            } else {
-                // fallback if no icon found
-                return 'EXT:ke_search/Resources/Public/Icons/types/default.gif';
-            }
         }
+        // default icons from ext:ke_search
+        $extensionIconPath = 'EXT:ke_search/Resources/Public/Icons/types/' . $name . '.gif';
+        if (is_file(GeneralUtility::getFileAbsFileName($extensionIconPath))) {
+            return $extensionIconPath;
+        }
+        if ($type == 'file') {
+            // fallback for file results: use default if no image for this file extension is available
+            return 'EXT:ke_search/Resources/Public/Icons/types/file.gif';
+        }
+        // fallback if no icon found
+        return 'EXT:ke_search/Resources/Public/Icons/types/default.gif';
     }
 
     /**
@@ -972,7 +971,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             [$this->languageId, -1]
         );
 
-        if ($this->languageId > 0 && !is_array($fileReferenceRow) ) {
+        if ($this->languageId > 0 && !is_array($fileReferenceRow)) {
             $fileReferenceRow = $fileReferenceRepository->findOneByTableAndFieldnameAndUidForeignAndLanguage(
                 $table,
                 $field,
@@ -1001,7 +1000,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return $value ?: ($this->conf[$param] ?? '');
     }
 
-
     /**
      * function betterSubstr
      * better substring function
@@ -1024,7 +1022,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         return $sub . (($len < strlen($str)) ? '...' : '');
     }
-
 
     /**
      * render parts for the pagebrowser
@@ -1092,7 +1089,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $view->assign('pagination', $pagination);
 
         // render pagebrowser content and pass it together with some variables to fluid template
-        $markerArray = array(
+        $markerArray = [
             'current' => $this->piVars['page'],
             'pages_total' => $pagesTotal,
             'pages_list' => $view->render(),
@@ -1102,7 +1099,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'results' => $this->pi_getLL('results'),
             'until' => $this->pi_getLL('until'),
             'of' => $this->pi_getLL('of'),
-        );
+        ];
 
         // hook for additional markers in pagebrowser
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['pagebrowseAdditionalMarker'] ?? null)) {
@@ -1117,7 +1114,6 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $this->fluidTemplateVariables['pagebrowser'] = $markerArray;
     }
-
 
     public function renderOrdering()
     {
@@ -1140,8 +1136,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     public function countSearchPhrase($searchPhrase, $searchWordsArray, $hits, $tagsAgainst)
     {
         // prepare "tagsAgainst"
-        $search = array('"', ' ', '+');
-        $replace = array('', '', '');
+        $search = ['"', ' ', '+'];
+        $replace = ['', '', ''];
         $tagsAgainst = str_replace($search, $replace, implode(' ', $tagsAgainst));
 
         if (extension_loaded('mbstring')) {
@@ -1153,14 +1149,14 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // count search phrase
         if (!empty($searchPhrase)) {
             $table = 'tx_kesearch_stat_search';
-            $fields_values = array(
+            $fields_values = [
                 'pid' => $this->firstStartingPoint,
                 'searchphrase' => $searchPhrase,
                 'tstamp' => time(),
                 'hits' => $hits,
                 'tagsagainst' => $tagsAgainst,
                 'language' => $this->languageId,
-            );
+            ];
             $queryBuilder = Db::getQueryBuilder($table);
             $queryBuilder
                 ->insert($table)
@@ -1178,14 +1174,14 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $table = 'tx_kesearch_stat_word';
             if (!empty($searchWord)) {
                 $queryBuilder = Db::getQueryBuilder($table);
-                $fields_values = array(
+                $fields_values = [
                     'pid' => $this->firstStartingPoint,
                     'word' => $searchWord,
                     'tstamp' => time(),
                     'pageid' => $GLOBALS['TSFE']->id,
                     'resultsfound' => $hits ? 1 : 0,
                     'language' => $this->languageId,
-                );
+                ];
                 $queryBuilder
                     ->insert($table)
                     ->values($fields_values)
@@ -1194,11 +1190,9 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
     }
 
-
     /**
      * gets all preselected filters from flexform
      * returns nothing but fills global var with needed data
-     * @return void
      */
     public function getFilterPreselect()
     {
@@ -1234,11 +1228,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
     }
 
-
     /**
      * function isEmptySearch
      * checks if an empty search was loaded / submitted
-     * @return boolean true if no searchparams given; otherwise false
+     * @return bool true if no searchparams given; otherwise false
      */
     public function isEmptySearch()
     {
@@ -1258,9 +1251,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         if ($emptySearchword && !$filterSet) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -1284,13 +1276,13 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ->execute()
             ->fetch(0);
 
-        return array(
+        return [
             'end_timestamp' => strtotime($row['end_date']) + $row['end_time'],
             'end_date' => strtotime($row['end_date']),
             'end_time' => $row['end_time'],
             'allday' => $row['allday'],
-            'sameday' => ($row['end_date'] == $row['start_date']) ? 1 : 0
-        );
+            'sameday' => ($row['end_date'] == $row['start_date']) ? 1 : 0,
+        ];
     }
 
     /**
@@ -1300,8 +1292,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function sortArrayRecursive($array, $field)
     {
-        $sortArray = array();
-        $mynewArray = array();
+        $sortArray = [];
+        $mynewArray = [];
 
         $i = 1;
         foreach ($array as $point) {
@@ -1369,12 +1361,11 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * Sort array by given column
      * @param array $arr the array
      * @param string $col the column
-     * @return void
      */
     public function sortArrayByColumn(&$arr, $col)
     {
         $newArray = [];
-        $sort_col = array();
+        $sort_col = [];
         foreach ($arr as $key => $row) {
             $sort_col[$key] = strtoupper($row[$col]);
         }

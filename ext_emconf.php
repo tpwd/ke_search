@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection PhpUndefinedVariableInspection */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Faceted Search',

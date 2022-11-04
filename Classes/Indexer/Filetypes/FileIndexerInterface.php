@@ -1,9 +1,9 @@
 <?php
+
 namespace Tpwd\KeSearch\Indexer\Filetypes;
 
 interface FileIndexerInterface
 {
-
     /**
      * get Content of file
      * @param string $file

@@ -2,9 +2,9 @@
 
 namespace Tpwd\KeSearch\Backend;
 
+use Tpwd\KeSearch\Lib\Db;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tpwd\KeSearch\Lib\Db;
 
 /***************************************************************
  *  Copyright notice
@@ -27,12 +27,9 @@ use Tpwd\KeSearch\Lib\Db;
 /**
  * User class 'user_filterlist' for the 'ke_search' extension.
  * @author  Andreas Kiefer
- * @package TYPO3
- * @subpackage  tx_kesearch
  */
 class Filterlist
 {
-
     /**
      * compiles a list of filters in order to display them to in the backend plugin configuration (pi1)
      * @param $config
@@ -43,7 +40,7 @@ class Filterlist
 
         // print message if no startingpoint is set in plugin config
         if (empty($pidList)) {
-            $config['items'][] = array('[SET STARTINGPOINT FIRST!]', '');
+            $config['items'][] = ['[SET STARTINGPOINT FIRST!]', ''];
             return;
         }
 
@@ -60,11 +57,10 @@ class Filterlist
 
         if ($res->rowCount()) {
             while ($row = $res->fetch()) {
-                $config['items'][] = array($row['title'], $row['uid']);
+                $config['items'][] = [$row['title'], $row['uid']];
             }
         }
     }
-
 
     /**
      * compiles the list of available filter options in order to display them in the page record
@@ -73,7 +69,6 @@ class Filterlist
      */
     public function getListOfAvailableFiltersForTCA(&$config)
     {
-
         // get current pid
         if ($config['table'] == 'pages') {
             $currentPid = $config['row']['uid'];
@@ -123,13 +118,12 @@ class Filterlist
                         ->execute();
 
                     while ($optionRow = $options->fetch()) {
-                        $config['items'][] = array($row['title'] . ': ' . $optionRow['title'], $optionRow['uid']);
+                        $config['items'][] = [$row['title'] . ': ' . $optionRow['title'], $optionRow['uid']];
                     }
                 }
             }
         }
     }
-
 
     /**
      * compiles a list of filter options in order to display them to in plugin (pi1)
@@ -141,7 +135,7 @@ class Filterlist
 
         // print message if no startingpoint is set in plugin config
         if (empty($pidList)) {
-            $config['items'][] = array('[SET STARTINGPOINT FIRST!]', '');
+            $config['items'][] = ['[SET STARTINGPOINT FIRST!]', ''];
             return;
         }
 
@@ -171,7 +165,7 @@ class Filterlist
                         ->where($whereOpts)
                         ->execute();
                     while ($rowOpts = $resOpts->fetch()) {
-                        $config['items'][] = array($rowFilter['title'] . ': ' . $rowOpts['title'], $rowOpts['uid']);
+                        $config['items'][] = [$rowFilter['title'] . ': ' . $rowOpts['title'], $rowOpts['uid']];
                     }
                 }
 
@@ -185,7 +179,6 @@ class Filterlist
             }
         }
     }
-
 
     /**
      * Get configured pages from "pages" attribute in plugin's row

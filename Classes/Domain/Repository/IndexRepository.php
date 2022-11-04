@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
@@ -23,13 +24,11 @@ use TYPO3\CMS\Core\Database\Connection;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class IndexRepository {
+class IndexRepository
+{
     /**
      * @var string
      */
@@ -91,7 +90,7 @@ class IndexRepository {
     }
 
     /**
-     * @param integer $uid
+     * @param int $uid
      * @param array $updateFields
      * @return mixed
      */

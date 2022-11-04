@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
@@ -56,12 +57,12 @@ class FileMetaDataRepository extends BaseRepository
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageUid, PDO::PARAM_INT))
+                    $queryBuilder->createNamedParameter($languageUid, PDO::PARAM_INT)
+                )
             )
             ->execute()
             ->fetch();
 
         return (empty($record)) ? [] : $record;
     }
-
 }

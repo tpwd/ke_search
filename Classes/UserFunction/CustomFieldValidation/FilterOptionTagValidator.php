@@ -25,7 +25,6 @@
 
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
-
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -34,8 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Validates given filter option tag. Checks length, which may not smaller than
  * basic.searchWordLength extension (and MySQL) setting.
- *
- * @package Tpwd\KeSearch\UserFunction\CustomFieldValidation
  */
 class FilterOptionTagValidator
 {
@@ -48,7 +45,7 @@ class FilterOptionTagValidator
     public function evaluateFieldValue($value)
     {
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
-        $minLength = isset($extConf['searchWordLength']) ? (int) $extConf['searchWordLength'] : 4;
+        $minLength = isset($extConf['searchWordLength']) ? (int)$extConf['searchWordLength'] : 4;
 
         if (strlen($value) < $minLength) {
             /** @var FlashMessage $message */

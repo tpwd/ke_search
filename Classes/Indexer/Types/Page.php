@@ -29,63 +29,59 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Christian Bülter
  */
 
+use Exception;
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
-use Exception;
 use Tpwd\KeSearch\Indexer\IndexerBase;
-use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use \TYPO3\CMS\Frontend\DataProcessing\FilesProcessor;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\DataProcessing\FilesProcessor;
 
 define('DONOTINDEX', -3);
-
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Page extends IndexerBase
 {
-
     /**
      * this array contains all data of all pages in the default language
      * @var array
      */
-    public $pageRecords = array();
+    public $pageRecords = [];
 
     /**
      * this array contains all data of all pages, but additionally with all available languages
      * @var array
      */
-    public $cachedPageRecords = array(); //
+    public $cachedPageRecords = []; //
 
     /**
      * this array contains the system languages
      * @var array
      */
-    public $sysLanguages = array();
+    public $sysLanguages = [];
 
     /**
      * this array contains the definition of which content element types should be indexed
      * @var array
      */
-    public $defaultIndexCTypes = array(
+    public $defaultIndexCTypes = [
         'text',
         'textmedia',
         'textpic',
@@ -94,8 +90,8 @@ class Page extends IndexerBase
         'html',
         'header',
         'uploads',
-        'shortcut'
-    );
+        'shortcut',
+    ];
 
     /**
      * this array contains the definition of which page
@@ -103,7 +99,7 @@ class Page extends IndexerBase
      * @var array
      * @see https://github.com/TYPO3/typo3/blob/10.4/typo3/sysext/core/Classes/Domain/Repository/PageRepository.php#L106
      */
-    public $indexDokTypes = array(CorePageRepository::DOKTYPE_DEFAULT);
+    public $indexDokTypes = [CorePageRepository::DOKTYPE_DEFAULT];
 
     /*
      * Name of indexed elements. Will be overwritten in content element indexer.
@@ -131,19 +127,19 @@ class Page extends IndexerBase
 
     /**
      * counter for how many pages we have indexed
-     * @var integer
+     * @var int
      */
     public $counter = 0;
 
     /**
      * counter for how many pages without content we found
-     * @var integer
+     * @var int
      */
     public $counterWithoutContent = 0;
 
     /**
      * counter for how many files we have indexed
-     * @var integer
+     * @var int
      */
     public $fileCounter = 0;
 
@@ -179,7 +175,7 @@ class Page extends IndexerBase
         }
 
         // create a mysql WHERE clause for the content element types
-        $cTypes = array();
+        $cTypes = [];
         foreach ($content_types_temp as $value) {
             $cTypes[] = 'CType="' . $value . '"';
         }
@@ -265,7 +261,9 @@ class Page extends IndexerBase
         // compile title of languages
         $languageTitles = '';
         foreach ($this->sysLanguages as $language) {
-            if (strlen($languageTitles)) $languageTitles .= ', ';
+            if (strlen($languageTitles)) {
+                $languageTitles .= ', ';
+            }
             $languageTitles .= $language['title'];
         }
 
@@ -343,7 +341,8 @@ class Page extends IndexerBase
             ->from($table)
             ->where(
                 $queryBuilder->expr()->in(
-                    'uid', implode(',', $uids)
+                    'uid',
+                    implode(',', $uids)
                 )
             )
             ->execute();
@@ -361,7 +360,6 @@ class Page extends IndexerBase
      * This is much faster than requesting the DB for each tt_content-record
      * @param array $pageRow
      * @param bool $removeRestrictions
-     * @return void
      */
     public function addLocalizedPagesToCache($pageRow, $removeRestrictions = false)
     {
@@ -371,7 +369,6 @@ class Page extends IndexerBase
         // create entry in cachedPageRecods for additional languages, skip default language 0
         foreach ($this->sysLanguages as $sysLang) {
             if ($sysLang['uid'] != 0) {
-
                 // get translations from "pages" not from "pages_language_overlay" if on TYPO3 9 or higher
                 // see https://docs.typo3.org/typo3cms/extensions/core/Changelog/9.0/Breaking-82445-PagesAndPageTranslations.html
                 $queryBuilder = Db::getQueryBuilder('pages');
@@ -402,7 +399,6 @@ class Page extends IndexerBase
         }
     }
 
-
     /**
      * Remove page records from $indexPids, $pageRecords and $cachedPageRecords which have not been modified since
      * last index run.
@@ -430,7 +426,7 @@ class Page extends IndexerBase
             /** @var ContentRepository $contentRepository */
             $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
             $newestContentElement = $contentRepository->findNewestByPid($uid, true);
-            if ( !empty($newestContentElement) && $newestContentElement['tstamp'] > $this->lastRunStartTime) {
+            if (!empty($newestContentElement) && $newestContentElement['tstamp'] > $this->lastRunStartTime) {
                 $modified = true;
             }
 
@@ -441,7 +437,7 @@ class Page extends IndexerBase
                     unset($cachedPageRecords[$sysLang['uid']][$uid]);
                 }
                 $key = array_search($uid, $indexPids);
-                if (false !== $key) {
+                if ($key !== false) {
                     unset($indexPids[$key]);
                 }
             }
@@ -457,17 +453,16 @@ class Page extends IndexerBase
      *        'starttime' => 0,
      *        'endtime' => 0
      *    );
-     * @param integer $currentPageUid
+     * @param int $currentPageUid
      * @return array
      */
     public function getInheritedAccessRestrictions($currentPageUid)
     {
-
         // get the rootline, start with the current page and go up
         $pageUid = $currentPageUid;
-        $tempRootline = array(intval($this->cachedPageRecords[0][$currentPageUid]['pageUid'] ?? 0));
+        $tempRootline = [(int)($this->cachedPageRecords[0][$currentPageUid]['pageUid'] ?? 0)];
         while (($this->cachedPageRecords[0][$pageUid]['pid'] ?? 0) > 0) {
-            $pageUid = intval($this->cachedPageRecords[0][$pageUid]['pid']);
+            $pageUid = (int)($this->cachedPageRecords[0][$pageUid]['pid']);
             if (is_array($this->cachedPageRecords[0][$pageUid] ?? null)) {
                 $tempRootline[] = $pageUid;
             }
@@ -476,7 +471,7 @@ class Page extends IndexerBase
         // revert the ordering of the rootline so it starts with the
         // page at the top of the tree
         krsort($tempRootline);
-        $rootline = array();
+        $rootline = [];
         foreach ($tempRootline as $pageUid) {
             $rootline[] = $pageUid;
         }
@@ -485,12 +480,12 @@ class Page extends IndexerBase
         // a) hidden field
         // b) frontend groups
         // c) publishing and expiration date
-        $inheritedAccessRestrictions = array(
+        $inheritedAccessRestrictions = [
             'hidden' => 0,
             'fe_group' => '',
             'starttime' => 0,
-            'endtime' => 0
-        );
+            'endtime' => 0,
+        ];
 
         // collect inherited access restrictions
         // since now we have a full rootline of the current page
@@ -507,7 +502,7 @@ class Page extends IndexerBase
 
         // use access restrictions of current page if set otherwise use
         // inherited access restrictions
-        $accessRestrictions = array(
+        $accessRestrictions = [
             'hidden' => $this->cachedPageRecords[0][$currentPageUid]['hidden']
                 ? $this->cachedPageRecords[0][$currentPageUid]['hidden'] : $inheritedAccessRestrictions['hidden'],
             'fe_group' => $this->cachedPageRecords[0][$currentPageUid]['fe_group']
@@ -516,7 +511,7 @@ class Page extends IndexerBase
                 ? $this->cachedPageRecords[0][$currentPageUid]['starttime'] : $inheritedAccessRestrictions['starttime'],
             'endtime' => $this->cachedPageRecords[0][$currentPageUid]['endtime']
                 ? $this->cachedPageRecords[0][$currentPageUid]['endtime'] : $inheritedAccessRestrictions['endtime'],
-        );
+        ];
 
         return $accessRestrictions;
     }
@@ -559,7 +554,7 @@ class Page extends IndexerBase
                     ->execute()
                     ->fetch();
 
-	        if ($referencedRow) {
+                if ($referencedRow) {
                     array_push($processedRows, ...$this->processShortcuts([$referencedRow], $fields, $depth));
                 }
             }
@@ -570,7 +565,7 @@ class Page extends IndexerBase
     /**
      * get content of current page and save data to db
      *
-     * @param integer $uid page-UID that has to be indexed
+     * @param int $uid page-UID that has to be indexed
      */
     public function getPageContent($uid)
     {
@@ -620,7 +615,7 @@ class Page extends IndexerBase
         $pageAccessRestrictions = $this->getInheritedAccessRestrictions($uid);
 
         // add ke_search tags current page
-        $tags = $this->pageRecords[intval($uid)]['tags'];
+        $tags = $this->pageRecords[(int)$uid]['tags'];
 
         // Compile content for this page from individual content elements with
         // respect to the language.
@@ -634,11 +629,10 @@ class Page extends IndexerBase
             ->execute()
             ->fetchAll();
 
-        $pageContent = array();
+        $pageContent = [];
         if (count($ttContentRows)) {
             $ttContentRows = $this->processShortcuts($ttContentRows, $fields);
             foreach ($ttContentRows as $ttContentRow) {
-
                 // Skip content elements inside hidden containers and for other (custom) reasons
                 if (!$this->contentElementShouldBeIndexed($ttContentRow)) {
                     continue;
@@ -669,7 +663,7 @@ class Page extends IndexerBase
 
                 // index the files found
                 if (!$pageAccessRestrictions['hidden']
-                    && $this->checkIfpageShouldBeIndexed($uid, $this->pageRecords[intval($uid)]['sys_language_uid'])
+                    && $this->checkIfpageShouldBeIndexed($uid, $this->pageRecords[(int)$uid]['sys_language_uid'])
                     && !empty($fileObjects)
                 ) {
                     $this->indexFiles($fileObjects, $ttContentRow, $pageAccessRestrictions['fe_group'], $tags);
@@ -703,17 +697,17 @@ class Page extends IndexerBase
         }
 
         // make it possible to modify the indexerConfig via hook
-        $additionalFields = array();
+        $additionalFields = [];
         $indexerConfig = $this->indexerConfig;
 
         // make it possible to modify the default values via hook
-        $indexEntryDefaultValues = array(
+        $indexEntryDefaultValues = [
             'type' => 'page',
             'uid' => $uid,
             'params' => '',
             'feGroupsPages' => $pageAccessRestrictions['fe_group'],
-            'debugOnly' => false
-        );
+            'debugOnly' => false,
+        ];
 
         // hook for custom modifications of the indexed data, e. g. the tags
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPagesIndexEntry'] ?? null)) {
@@ -731,7 +725,6 @@ class Page extends IndexerBase
                 );
             }
         }
-
 
         // store record in index table
         if (count($pageContent)) {
@@ -804,7 +797,7 @@ class Page extends IndexerBase
         if (ExtensionManagementUtility::isLoaded('gridelements') && $ttContentRow['tx_gridelements_container']) {
             $queryBuilder = Db::getQueryBuilder('tt_content');
             $gridelementsContainer = $queryBuilder
-                ->select(...['colPos','hidden'])
+                ->select(...['colPos', 'hidden'])
                 ->from('tt_content')
                 ->where(
                     $queryBuilder->expr()->eq(
@@ -817,15 +810,13 @@ class Page extends IndexerBase
 
             // If there's no gridelement container found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
-            if ($gridelementsContainer === FALSE) {
+            if ($gridelementsContainer === false) {
                 $contentElementShouldBeIndexed = false;
             } else {
-
                 // If the colPos of the gridelement container is -2, it is not on the page, so skip it.
                 if ($gridelementsContainer['colPos'] === -2) {
                     $contentElementShouldBeIndexed = false;
                 }
-
             }
         }
 
@@ -846,7 +837,7 @@ class Page extends IndexerBase
 
             // If there's no container found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
-            $contentElementShouldBeIndexed = !($container === FALSE);
+            $contentElementShouldBeIndexed = !($container === false);
         }
 
         // hook to add custom check if this content element should be indexed
@@ -870,9 +861,9 @@ class Page extends IndexerBase
      *
      * are set.
      *
-     * @param integer $uid
-     * @param integer $language_uid
-     * @return boolean
+     * @param int $uid
+     * @param int $language_uid
+     * @return bool
      */
     public function checkIfpageShouldBeIndexed($uid, $language_uid)
     {
@@ -890,7 +881,7 @@ class Page extends IndexerBase
             $index = false;
         }
 
-        if ((int) $language_uid === 0 && GeneralUtility::hideIfDefaultLanguage($this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'])) {
+        if ((int)$language_uid === 0 && GeneralUtility::hideIfDefaultLanguage($this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'])) {
             $index = false;
         }
 
@@ -982,7 +973,7 @@ class Page extends IndexerBase
                 $isHidden = false;
                 $isInList = false;
                 if ($fileObject instanceof FileInterface) {
-                    $isHidden = $fileObject->hasProperty('hidden') && intval($fileObject->getProperty('hidden')) === 1;
+                    $isHidden = $fileObject->hasProperty('hidden') && (int)($fileObject->getProperty('hidden')) === 1;
                     $isInList = GeneralUtility::inList(
                         $this->indexerConfig['fileext'],
                         $fileObject->getExtension()
@@ -1008,7 +999,7 @@ class Page extends IndexerBase
                     }
 
                     // add tag to identify this index record as file
-                    SearchHelper::makeTags($tags, array('file'));
+                    SearchHelper::makeTags($tags, ['file']);
 
                     // get file information and  file content (using external tools)
                     // write file data to the index as a seperate index entry
@@ -1059,12 +1050,12 @@ class Page extends IndexerBase
         $processedData = [];
 
         // set tt_content fields used for file references
-        if (empty($this->indexerConfig["file_reference_fields"])) {
-            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration(["media"]);
+        if (empty($this->indexerConfig['file_reference_fields'])) {
+            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration(['media']);
         } else {
             $fileReferenceFields = GeneralUtility::trimExplode(
                 ',',
-                $this->indexerConfig["file_reference_fields"]
+                $this->indexerConfig['file_reference_fields']
             );
             $filesProcessorConfiguration = $this->setFilesProcessorConfiguration($fileReferenceFields);
         }
@@ -1078,7 +1069,6 @@ class Page extends IndexerBase
         return $fileReferenceObjects;
     }
 
-
     /**
      * Finds files linked in rte text
      * returns them as array of file objects
@@ -1090,7 +1080,7 @@ class Page extends IndexerBase
      */
     public function findLinkedFilesInRte($ttContentRow, $field = 'bodytext')
     {
-        $fileObjects = array();
+        $fileObjects = [];
         // check if there are links to files in the rte text
         /* @var $rteHtmlParser RteHtmlParser */
         $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);
@@ -1114,7 +1104,6 @@ class Page extends IndexerBase
 
         return $fileObjects;
     }
-
 
     /**
      * Store the file content and additional information to the index
@@ -1175,13 +1164,13 @@ class Page extends IndexerBase
         $storagePid = $this->indexerConfig['storagepid'];
         $type = 'file:' . $fileObject->getExtension();
 
-        $additionalFields = array(
+        $additionalFields = [
             'sortdate' => $fileIndexerObject->fileInfo->getModificationTime(),
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
             'directory' => $fileIndexerObject->fileInfo->getAbsolutePath(),
-            'hash' => $fileIndexerObject->getUniqueHashForFile()
-        );
+            'hash' => $fileIndexerObject->getUniqueHashForFile(),
+        ];
 
         //hook for custom modifications of the indexed data, e. g. the tags
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] ?? null)) {
@@ -1252,7 +1241,7 @@ class Page extends IndexerBase
         // remove script and style tags
         // thanks to the wordpress project
         // https://core.trac.wordpress.org/browser/tags/5.3/src/wp-includes/formatting.php#L5178
-        $content = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $content );
+        $content = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $content);
 
         // remove other tags
         $content = strip_tags($content);
@@ -1286,15 +1275,15 @@ class Page extends IndexerBase
             $filesProcessorConfiguration[] = [
                 'references.' => [
                     'fieldName' => $fileReferenceField,
-                    'table' => 'tt_content'
+                    'table' => 'tt_content',
                 ],
                 'collections.' => [
-                    'field' => 'file_collections'
+                    'field' => 'file_collections',
                 ],
                 'sorting.' => [
-                    'field ' => 'filelink_sorting'
+                    'field ' => 'filelink_sorting',
                 ],
-                'as' => 'files'
+                'as' => 'files',
             ];
         }
         return $filesProcessorConfiguration;

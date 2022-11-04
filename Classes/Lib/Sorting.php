@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,18 +23,14 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Sorting
 {
-
-    public $conf = array();
-    public $subpartArray = array();
+    public $conf = [];
+    public $subpartArray = [];
     public $sortBy = '';
 
     /**
@@ -66,11 +63,9 @@ class Sorting
         $this->init($pObj);
     }
 
-
     /**
      * Initializes this object
      * @param Pluginbase $pObj
-     * @return void
      */
     public function init(Pluginbase $pObj)
     {
@@ -83,11 +78,8 @@ class Sorting
         $this->sortBy = GeneralUtility::trimExplode(',', $this->conf['sortByVisitor'] ?? '', true);
     }
 
-
     /**
      * The main entry point of this class
-     *
-     * @return void
      */
     public function renderSorting(&$fluidTemplateVariables)
     {
@@ -116,18 +108,17 @@ class Sorting
                         $sortByDir = $this->changeOrdering($sortByDir);
                     }
 
-                    $fluidTemplateVariables['sortingLinks'][] = array(
+                    $fluidTemplateVariables['sortingLinks'][] = [
                         'field' => $field,
                         'url' => $this->generateSortingLink($field, $sortByDir),
                         'urlOnly' => $this->generateSortingLink($field, $sortByDir, true),
                         'class' => $this->getClassNameForUpDownArrow($field, $dbOrdering),
                         'label' => $this->pObj->pi_getLL('orderlink_' . $field, $field),
-                    );
+                    ];
                 }
             }
         }
     }
-
 
     /**
      * get default sorting direction
@@ -152,11 +143,9 @@ class Sorting
                     break;
             }
             return $orderBy;
-        } else {
-            return 'asc';
         }
+        return 'asc';
     }
-
 
     /**
      * change ordering
@@ -167,7 +156,7 @@ class Sorting
      */
     public function changeOrdering($direction)
     {
-        $allowedDirections = array('asc', 'desc');
+        $allowedDirections = ['asc', 'desc'];
         $direction = strtolower($direction);
         $isInArray = in_array($direction, $allowedDirections, true);
         if (!empty($direction) && $isInArray) {
@@ -179,7 +168,6 @@ class Sorting
         }
         return $direction;
     }
-
 
     /**
      * get a class name for up and down arrows of sorting links
@@ -201,7 +189,6 @@ class Sorting
         }
         return $className;
     }
-
 
     /**
      * Generate the link for the given sorting value.
@@ -225,13 +212,12 @@ class Sorting
                 $this->pObj->conf['resultPage'],
                 $localPiVars
             );
-        } else {
-            return SearchHelper::searchLink(
-                $this->pObj->conf['resultPage'],
-                $localPiVars,
-                [],
-                $this->pObj->pi_getLL('orderlink_' . $field, $field)
-            );
         }
+        return SearchHelper::searchLink(
+            $this->pObj->conf['resultPage'],
+            $localPiVars,
+            [],
+            $this->pObj->pi_getLL('orderlink_' . $field, $field)
+        );
     }
 }

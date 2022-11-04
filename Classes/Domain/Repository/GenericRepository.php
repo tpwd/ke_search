@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\DBALException;
@@ -26,15 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class GenericRepository {
-
-
+class GenericRepository
+{
     /**
      * Tries to find a table matching the type, either by checking hardcoded values or if the type is the same
      * as the table name.
@@ -47,8 +44,10 @@ class GenericRepository {
      */
     public function findByUidAndType($uid, string $type)
     {
-        $uid = intval($uid);
-        if ($uid<=0) return false;
+        $uid = (int)$uid;
+        if ($uid<=0) {
+            return false;
+        }
 
         $row = false;
         $tableName = '';
@@ -105,7 +104,7 @@ class GenericRepository {
      * @param string $table
      * @param int $uid
      * @param int $languageId
-     * @return null|array
+     * @return array|null
      * @throws DBALException
      */
     public function findLangaugeOverlayByUidAndLanguage(string $table, int $uid, int $languageId)

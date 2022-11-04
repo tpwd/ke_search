@@ -28,16 +28,12 @@ namespace Tpwd\KeSearch\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 
 /**
  * Class AbstractBackendModuleController
- * @package Tpwd\KeSearch\Controller
  */
 abstract class AbstractBackendModuleController extends ActionController
 {
-
     /**
      * @var int
      */
@@ -46,7 +42,7 @@ abstract class AbstractBackendModuleController extends ActionController
     /**
      * @var array
      */
-    protected $excludedArguments = array();
+    protected $excludedArguments = [];
 
     protected $argumentsKey = 'tx_kesearch_web_kesearchbackendmodule';
 
@@ -58,8 +54,8 @@ abstract class AbstractBackendModuleController extends ActionController
     protected function forwardToLastModule()
     {
         $moduleData = BackendUtility::getModuleData(
-            array('controller' => ''),
-            array(),
+            ['controller' => ''],
+            [],
             $this->argumentsKey
         );
 
@@ -89,13 +85,11 @@ abstract class AbstractBackendModuleController extends ActionController
      */
     protected function getControllerName()
     {
-        return (string)preg_replace('/^.*\\\([^\\\]+)Controller$/', '\1', get_class($this));
+        return (string)preg_replace('/^.*\\\([^\\\]+)Controller$/', '\1', static::class);
     }
 
     /**
      * Initializes all actions.
-     *
-     * @return void
      */
     protected function initializeAction()
     {
@@ -128,8 +122,8 @@ abstract class AbstractBackendModuleController extends ActionController
     {
         // Probably should store also arguments (except pager?)
         BackendUtility::getModuleData(
-            array('controller' => '', 'action' => ''),
-            array('controller' => $this->getControllerName(), 'action' => $this->getActionName()),
+            ['controller' => '', 'action' => ''],
+            ['controller' => $this->getControllerName(), 'action' => $this->getActionName()],
             $this->argumentsKey
         );
     }

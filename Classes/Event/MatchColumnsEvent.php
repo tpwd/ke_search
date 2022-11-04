@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Event;
 
 class MatchColumnsEvent
 {
-
     private string $matchColumns;
 
     public function __construct(string $matchColumns)
@@ -27,5 +27,4 @@ class MatchColumnsEvent
     {
         $this->matchColumns = $matchColumns;
     }
-
 }

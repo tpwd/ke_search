@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Hooks;
 
 /***************************************************************
@@ -22,12 +23,9 @@ namespace Tpwd\KeSearch\Hooks;
 /**
  * Hooks for ke_search
  * @author Stefan Froemken
- * @package    TYPO3
- * @subpackage    ke_search
  */
 class AdditionalFields
 {
-
     public function registerAdditionalFields(&$additionalFields)
     {
         $additionalFields[] = 'sortdate';
@@ -85,5 +83,4 @@ class AdditionalFields
             $additionalFields['orig_pid'] = $contentRecord['pid'];
         }
     }
-
 }

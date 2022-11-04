@@ -1,10 +1,10 @@
 <?php
+
 namespace Tpwd\KeSearch\Utility;
 
 /**
  * Class OoxmlConversion
  *
- * @package Tpwd\KeSearch\Utility
  * @see https://stackoverflow.com/questions/19503653/how-to-extract-text-from-word-file-doc-docx-xlsx-pptx-php
  */
 class OoxmlConversion
@@ -67,7 +67,7 @@ class OoxmlConversion
     {
         $zipHandle = new \ZipArchive();
         $outputText = '';
-        if (true === $zipHandle->open($this->filename)) {
+        if ($zipHandle->open($this->filename) === true) {
             if (($xmlIndex = $zipHandle->locateName('xl/sharedStrings.xml')) !== false) {
                 $xmlData = $zipHandle->getFromIndex($xmlIndex);
                 $domDocument = new \DOMDocument();
@@ -92,7 +92,7 @@ class OoxmlConversion
     {
         $zipHandle = new \ZipArchive();
         $outputText = '';
-        if (true === $zipHandle->open($this->filename)) {
+        if ($zipHandle->open($this->filename) === true) {
             $slideNumber = 1; //loop through slide files
             while (($xml_index = $zipHandle->locateName('ppt/slides/slide' . $slideNumber . '.xml')) !== false) {
                 $xmlData = $zipHandle->getFromIndex($xml_index);
@@ -132,5 +132,4 @@ class OoxmlConversion
                 throw new \InvalidArgumentException('File extension "' . $pathInfo['extension'] . '" not supported!');
         }
     }
-
 }

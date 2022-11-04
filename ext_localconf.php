@@ -1,8 +1,8 @@
 <?php
+
 defined('TYPO3') or die();
 
 (function () {
-
     // add Searchbox Plugin, override class name with namespace
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi1');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
@@ -55,9 +55,9 @@ defined('TYPO3') or die();
     $GLOBALS['TYPO3_CONF_VARS']['LOG']['Tpwd']['KeSearch']['writerConfiguration'] = [
         $loglevel => [
             \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-                'logFileInfix' => 'kesearch'
-            ]
-        ]
+                'logFileInfix' => 'kesearch',
+            ],
+        ],
     ];
 
     // register "after save" hook

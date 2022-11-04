@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\ViewHelpers;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
@@ -6,7 +7,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper to render links to search results including filters
- *
  */
 class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
@@ -46,8 +46,7 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $searchWordParameter = SearchHelper::getSearchWordParameter();
         if ($searchWordParameter != 'tx_kesearch_pi1[sword]'
             && !isset($piVars['sword'])
-            && GeneralUtility::_GP($searchWordParameter))
-        {
+            && GeneralUtility::_GP($searchWordParameter)) {
             $piVars['sword'] = GeneralUtility::_GP($searchWordParameter);
         }
 
@@ -93,5 +92,5 @@ class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedV
         $this->tag->setContent($content);
 
         return $this->tag->render();
-   }
+    }
 }

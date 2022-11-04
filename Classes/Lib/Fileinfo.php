@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
 use TYPO3\CMS\Core\Core\Environment;
@@ -25,28 +26,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Fileinfo
 {
-
     /**
      * File
      * @var \TYPO3\CMS\Core\Resource\File
      */
-    protected $file = null;
+    protected $file;
 
     /**
      * File info
      * @var array
      */
-    protected $fileInfo = array();
+    protected $fileInfo = [];
 
     /**
      * set a filename to get informations of
      * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $file
-     * @return boolean is valid file
+     * @return bool is valid file
      */
     public function setFile($file)
     {
@@ -57,11 +55,11 @@ class Fileinfo
      * collect all fileinformations of given file and
      * save them to the global fileinformation array
      * @param $file
-     * @return boolean is valid file?
+     * @return bool is valid file?
      */
     protected function setFileInformations($file)
     {
-        $this->fileInfo = array(); // reset previously information to have a cleaned object
+        $this->fileInfo = []; // reset previously information to have a cleaned object
         if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
             $this->file = $file;
         } elseif ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
@@ -82,12 +80,12 @@ class Fileinfo
             $this->fileInfo['is_link'] = is_link($file);
             $this->fileInfo['is_readable'] = is_readable($file);
             $this->fileInfo['is_uploaded'] = is_uploaded_file($file);
-            $this->fileInfo['is_writeable'] = is_writeable($file);
+            $this->fileInfo['is_writeable'] = is_writable($file);
         }
 
         if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
             $pathInfo = \TYPO3\CMS\Core\Utility\PathUtility::pathinfo($file->getName());
-            $this->fileInfo = array(
+            $this->fileInfo = [
                 'file' => $file->getName(),
                 'filebody' => $file->getNameWithoutExtension(),
                 'fileext' => $file->getExtension(),
@@ -110,9 +108,9 @@ class Fileinfo
                 'is_readable' => true,
                 'is_uploaded' => false,
                 'is_writeable' => false,
-            );
+            ];
         }
-        return $this->fileInfo !== array();
+        return $this->fileInfo !== [];
     }
 
     /**
@@ -124,9 +122,8 @@ class Fileinfo
     {
         if ($this->file !== null) {
             return dirname($this->file->getForLocalProcessing(false)) . '/';
-        } else {
-            return $this->fileInfo['path'];
         }
+        return $this->fileInfo['path'];
     }
 
     /**
@@ -146,9 +143,8 @@ class Fileinfo
     {
         if ($this->file !== null) {
             return $this->file->getForLocalProcessing(false);
-        } else {
-            return $this->fileInfo['path'];
         }
+        return $this->fileInfo['path'];
     }
 
     /**
@@ -252,7 +248,7 @@ class Fileinfo
 
     /**
      * return if file is a directory
-     * @return boolean is file a directory
+     * @return bool is file a directory
      */
     public function getIsDirectory()
     {
@@ -261,7 +257,7 @@ class Fileinfo
 
     /**
      * return if file is a file
-     * @return boolean is file a file
+     * @return bool is file a file
      */
     public function getIsFile()
     {
@@ -270,7 +266,7 @@ class Fileinfo
 
     /**
      * return if file is a (sym)link
-     * @return boolean is file a (sym)link
+     * @return bool is file a (sym)link
      */
     public function getIsSymLink()
     {
@@ -279,7 +275,7 @@ class Fileinfo
 
     /**
      * return if file is readable
-     * @return boolean is file readable
+     * @return bool is file readable
      */
     public function getIsReadable()
     {
@@ -288,7 +284,7 @@ class Fileinfo
 
     /**
      * return if file is uploaded
-     * @return boolean is file an uploaded file from POST/GET
+     * @return bool is file an uploaded file from POST/GET
      */
     public function getIsUploaded()
     {
@@ -297,7 +293,7 @@ class Fileinfo
 
     /**
      * return if file is writable
-     * @return boolean is file writeable
+     * @return bool is file writeable
      */
     public function getIsWriteable()
     {

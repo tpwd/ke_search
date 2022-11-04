@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /***************************************************************
@@ -28,7 +29,6 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
- * @package Tpwd\KeSearch\Updates
  */
 class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
 {
@@ -73,7 +73,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
                 $query
                     ->update('tx_kesearch_filteroptions')
                     ->where($query->expr()->eq('uid', $query->createNamedParameter($filterOptionRow['uid'], \PDO::PARAM_INT)))
-                    ->set('tag', preg_replace("/[^A-Za-z0-9]/", '', $filterOptionRow['tag']))
+                    ->set('tag', preg_replace('/[^A-Za-z0-9]/', '', $filterOptionRow['tag']))
                     ->execute();
             }
         }
@@ -91,7 +91,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
         $statement = $connection->prepare('SELECT COUNT(*) FROM tx_kesearch_filteroptions WHERE tag REGEXP "[^a-z0-9]+"');
         $statement->execute();
         $countResult = $statement->fetch(FetchMode::NUMERIC);
-        return (!empty($countResult) && $countResult[0]);
+        return !empty($countResult) && $countResult[0];
     }
 
     /**

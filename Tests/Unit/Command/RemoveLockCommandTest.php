@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-
 namespace Tpwd\KeSearch\Tests\Unit\Command;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Tester\CommandTester;
 use Tpwd\KeSearch\Command\RemoveLockCommand;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Registry;
 
 class RemoveLockCommandTest extends TestCase

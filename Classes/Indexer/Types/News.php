@@ -26,17 +26,13 @@ use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use TYPO3\CMS\Core\Resource\FileReference;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Andreas Kiefer
  * @author    Stefan Frömken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class News extends IndexerBase
 {
@@ -138,7 +134,6 @@ class News extends IndexerBase
                 // mode 1 means 'index all news no matter what category
                 // they have'
                 if ($this->indexerConfig['index_news_category_mode'] == '2' && $this->indexerConfig['index_extnews_category_selection']) {
-
                     // load category configuration
                     $selectedCategoryUids = $this->getSelectedCategoriesUidList($this->indexerConfig['uid']);
 
@@ -162,13 +157,13 @@ class News extends IndexerBase
                 }
 
                 if ($shouldBeIndexed) {
-                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] .'"', [
+                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] . '"', [
                         'uid' => $newsRecord['uid'],
                         'pid' => $newsRecord['pid'],
                         'sys_language_uid' => $newsRecord['sys_language_uid'],
                     ]);
                 } else {
-                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] .'"', [
+                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] . '"', [
                         'uid' => $newsRecord['uid'],
                         'pid' => $newsRecord['pid'],
                         'sys_language_uid' => $newsRecord['sys_language_uid'],
@@ -259,7 +254,7 @@ class News extends IndexerBase
 
                 // add tags from pages
                 if ($indexerConfig['index_use_page_tags']) {
-                    $tags = $this->pageRecords[intval($newsRecord['pid'])]['tags'];
+                    $tags = $this->pageRecords[(int)($newsRecord['pid'])]['tags'];
                 } else {
                     $tags = '';
                 }
@@ -277,7 +272,7 @@ class News extends IndexerBase
                 SearchHelper::makeSystemCategoryTags($tags, $newsRecord['uid'], $table);
 
                 // set additional fields
-                $additionalFields = array();
+                $additionalFields = [];
                 $additionalFields['orig_uid'] = $newsRecord['uid'];
                 $additionalFields['orig_pid'] = $newsRecord['pid'];
                 $additionalFields['sortdate'] = $newsRecord['crdate'];
@@ -326,7 +321,7 @@ class News extends IndexerBase
             }
 
             $logMessage = 'Indexer "' . $this->indexerConfig['title'] . '" finished'
-                . ' ('.$indexedNewsCounter.' records processed)';
+                . ' (' . $indexedNewsCounter . ' records processed)';
             $this->pObj->logger->info($logMessage);
         } else {
             $this->pObj->logger->info('No news records found for indexing.');
@@ -392,11 +387,11 @@ class News extends IndexerBase
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
-        $categoryData = array(
+        $categoryData = [
             'single_pid' => 0,
-            'uid_list' => array(),
-            'title_list' => array()
-        );
+            'uid_list' => [],
+            'title_list' => [],
+        ];
 
         $queryBuilder = Db::getQueryBuilder('sys_category');
 
@@ -457,7 +452,7 @@ class News extends IndexerBase
         if (!empty($newsRecord['keywords'])) {
             $keywordsList = GeneralUtility::trimExplode(',', $newsRecord['keywords']);
             foreach ($keywordsList as $keyword) {
-                SearchHelper::makeTags($tags, array($keyword));
+                SearchHelper::makeTags($tags, [$keyword]);
             }
         }
 
@@ -498,7 +493,7 @@ class News extends IndexerBase
             ->execute();
 
         while (($newsTag = $resTag->fetch())) {
-            SearchHelper::makeTags($tags, array($newsTag['title']));
+            SearchHelper::makeTags($tags, [$newsTag['title']]);
         }
 
         return $tags;
@@ -541,7 +536,7 @@ class News extends IndexerBase
             )
             ->execute();
 
-        $contentElements = array();
+        $contentElements = [];
         if ($res->rowCount()) {
             while (($contentElement = $res->fetch())) {
                 $contentElements[] = $contentElement;
@@ -550,7 +545,6 @@ class News extends IndexerBase
 
         return $contentElements;
     }
-
 
     /**
      * fetches the bare text content of an array of content elements.
@@ -626,5 +620,4 @@ class News extends IndexerBase
     {
         return $this->getContentFromFiles($relatedFiles);
     }
-
 }

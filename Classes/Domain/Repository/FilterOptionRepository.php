@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
@@ -27,14 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class FilterOptionRepository {
-
+class FilterOptionRepository
+{
     /**
      * Internal storage for database table fields
      *
@@ -140,7 +138,8 @@ class FilterOptionRepository {
             ->select('*')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->in('uid',
+                $queryBuilder->expr()->in(
+                    'uid',
                     $queryBuilder->createNamedParameter(
                         GeneralUtility::trimExplode(',', $filter['options']),
                         Connection::PARAM_INT_ARRAY
@@ -263,7 +262,7 @@ class FilterOptionRepository {
             'crdate' => $GLOBALS['EXEC_TIME'],
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
-            'l10n_diffsource' => ''
+            'l10n_diffsource' => '',
         ];
         $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $newRecord = array_merge($newRecord, $additionalFields);

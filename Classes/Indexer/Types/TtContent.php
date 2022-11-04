@@ -2,11 +2,11 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
+use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tpwd\KeSearch\Lib\Db;
 
 /***************************************************************
  *  Copyright notice
@@ -30,8 +30,6 @@ use Tpwd\KeSearch\Lib\Db;
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class TtContent extends Page
 {
@@ -48,7 +46,7 @@ class TtContent extends Page
         // get content elements for this page
         $fields = '*';
         $table = 'tt_content';
-        $where = 'pid = ' . intval($uid);
+        $where = 'pid = ' . (int)$uid;
         $where .= ' AND (' . $this->whereClauseForCType . ')';
 
         $table = 'tt_content';
@@ -93,10 +91,8 @@ class TtContent extends Page
             ->execute()
             ->fetchAll();
 
-
         if (count($rows)) {
             foreach ($rows as $row) {
-
                 // skip this content element if the page itself is hidden or a
                 // parent page with "extendToSubpages" set is hidden
                 if ($pageAccessRestrictions['hidden']) {
@@ -107,7 +103,6 @@ class TtContent extends Page
                 if (!$this->checkIfpageShouldBeIndexed($uid, $row['sys_language_uid'])) {
                     continue;
                 }
-
 
                 // combine group access restrictons from page(s) and content element
                 $feGroups = $this->getCombinedFeGroupsForContentElement(
@@ -123,11 +118,11 @@ class TtContent extends Page
                 }
 
                 $logMessage = 'Indexing tt_content record';
-                $logMessage .= $row['header'] ? ' "' . $row['header'] .'"' : '';
-                $this->pObj->logger->debug( $logMessage, [
+                $logMessage .= $row['header'] ? ' "' . $row['header'] . '"' : '';
+                $this->pObj->logger->debug($logMessage, [
                     'uid' => $row['uid'],
                     'pid' => $row['pid'],
-                    'CType' => $row['CType']
+                    'CType' => $row['CType'],
                 ]);
 
                 // get content for this content element
@@ -194,7 +189,7 @@ class TtContent extends Page
                 }
 
                 // prepare additionalFields (to be added via hook)
-                $additionalFields = array();
+                $additionalFields = [];
 
                 // make it possible to modify the indexerConfig via hook
                 $indexerConfig = $this->indexerConfig;

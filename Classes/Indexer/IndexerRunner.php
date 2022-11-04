@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection SqlNoDataSourceInspection */
 
 namespace Tpwd\KeSearch\Indexer;
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\DebugUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -41,17 +42,15 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class IndexerRunner
 {
     public $counter;
     public $extConf; // extension configuration
-    public $extConfPremium = array(); // extension configuration of ke_search_premium, if installed
-    public $indexerConfig = array(); // saves the indexer configuration of current loop
-    public $additionalFields = array();
-    public $indexingErrors = array();
+    public $extConfPremium = []; // extension configuration of ke_search_premium, if installed
+    public $indexerConfig = []; // saves the indexer configuration of current loop
+    public $additionalFields = [];
+    public $indexingErrors = [];
 
     /**
      * @var int
@@ -67,7 +66,7 @@ class IndexerRunner
      * current row which have to be inserted/updated to database
      * @var array
      */
-    public $currentRow = array();
+    public $currentRow = [];
 
     /**
      * @var Registry
@@ -115,13 +114,13 @@ class IndexerRunner
      * @param int $indexingMode integer full or incremental indexing (possible values: IndexerBase::INDEXING_MODE_FULL or IndexerBase::INDEXING_MODE_INCREMENTAL)
      * @return string output is done only if param $verbose is true
      */
-    public function startIndexing($verbose = true, $extConf = array(), $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
+    public function startIndexing($verbose = true, $extConf = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
     {
         $content = '<div class="row"><div class="col-md-6">';
         $content .= '<div class="alert alert-info">';
         $message = 'Running indexing process in '
             . LocalizationUtility::translate('backend.indexingMode_' . $indexingMode, 'ke_search')
-            .  ' mode';
+            . ' mode';
         if ($indexingMode == IndexerBase::INDEXING_MODE_INCREMENTAL) {
             if (SearchHelper::getIndexerLastRunTime() == 0) {
                 $message .= ', but last run time is not available. Switching to full mode.';
@@ -148,7 +147,7 @@ class IndexerRunner
                 // lock is older than 12 hours - remove
                 $this->registry->remove('tx_kesearch', 'startTimeOfIndexer');
                 $this->registry->set('tx_kesearch', 'startTimeOfIndexer', time());
-                $this->logger->notice('lock has been removed because it is older than 12 hours'. time());
+                $this->logger->notice('lock has been removed because it is older than 12 hours' . time());
             } else {
                 $this->logger->warning('lock is set, you can\'t start indexer twice.');
                 return 'You can\'t start the indexer twice. Please wait '
@@ -176,7 +175,6 @@ class IndexerRunner
         $content .= '<table class="table table-striped table-hover">';
         $content .= '<tr><th>Indexer</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
         foreach ($configurations as $indexerConfig) {
-
             $this->indexerConfig = $indexerConfig;
 
             // run default indexers shipped with ke_search
@@ -281,8 +279,8 @@ class IndexerRunner
                 // send the notification message
                 /** @var MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
-                $mail->setFrom(array($this->extConf['notificationSender']));
-                $mail->setTo(array($this->extConf['notificationRecipient']));
+                $mail->setFrom([$this->extConf['notificationSender']]);
+                $mail->setTo([$this->extConf['notificationRecipient']]);
                 $mail->setSubject($this->extConf['notificationSubject']);
                 $mail->text($plaintextReport);
                 $mail->send();
@@ -339,7 +337,7 @@ class IndexerRunner
         $content .= '</td>';
 
         // message
-        $message = str_ireplace(['<br />','<br>','<br/>','</span>'], "\n", $message);
+        $message = str_ireplace(['<br />', '<br>', '<br/>', '</span>'], "\n", $message);
         $message = strip_tags($message);
         $content .= '<td>';
         $content .= nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
@@ -362,7 +360,7 @@ class IndexerRunner
                 $content .= '<i>Indexing process took ';
                 if ($duration > 1000) {
                     $duration /= 1000;
-                    $duration = intval($duration);
+                    $duration = (int)$duration;
                     $content .= $duration . ' s.';
                 } else {
                     $content .= $duration . ' ms.';
@@ -383,7 +381,7 @@ class IndexerRunner
      */
     public function createPlaintextReport($content)
     {
-        $content = str_ireplace(['<span class="title">','<br />','<br>','<br/>','</span>','</p>'], chr(10), $content);
+        $content = str_ireplace(['<span class="title">', '<br />', '<br>', '<br/>', '</span>', '</p>'], chr(10), $content);
         $report = preg_replace('~[ ]{2,}~', '', strip_tags($content));
         return $report;
     }
@@ -394,7 +392,8 @@ class IndexerRunner
      * @param $time int Indexing time in seconds
      * @return float|int|string
      */
-    protected function formatTime($time) {
+    protected function formatTime($time)
+    {
         if ($time > 3600) {
             // format hours
             $time = $time / 3600;
@@ -414,10 +413,8 @@ class IndexerRunner
         return $time;
     }
 
-
     /**
      * prepare sql-statements for indexer
-     * @return void
      * @throws DBALException
      */
     public function prepareStatements()
@@ -489,10 +486,8 @@ class IndexerRunner
         }
     }
 
-
     /**
      * clean up statements
-     * @return void
      * @throws DBALException
      */
     public function cleanUpProcessAfterIndexing()
@@ -514,7 +509,6 @@ class IndexerRunner
         $this->registry->removeAllByNamespace('tx_kesearch');
     }
 
-
     /**
      * Delete all index elements that are older than starting timestamp in registry
      * @return string content for BE
@@ -534,7 +528,7 @@ class IndexerRunner
             $where = $queryBuilder->expr()->lt(
                 'tstamp',
                 $queryBuilder->quote(
-                    $this->registry->get('tx_kesearch','startTimeOfIndexer'),
+                    $this->registry->get('tx_kesearch', 'startTimeOfIndexer'),
                     PDO::PARAM_INT
                 )
             );
@@ -600,13 +594,13 @@ class IndexerRunner
                 if (function_exists('exec')) {
                     // check if daemon is running
                     $content .= '<p>';
-                    $retArr = array();
+                    $retArr = [];
                     exec($this->extConfPremium['sphinxSearchdPath'] . ' --status', $retArr);
                     $content .= '<b>Checking status of Sphinx daemon:</b> ';
                     $sphinxFailedToConnect = false;
                     foreach ($retArr as $retRow) {
                         if (strpos($retRow, 'WARNING') !== false) {
-                            $this->logger->warning('Sphinx: ' .$retRow);
+                            $this->logger->warning('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                             $sphinxFailedToConnect = true;
                         }
@@ -614,7 +608,7 @@ class IndexerRunner
 
                     // try to start the sphinx daemon
                     if ($sphinxFailedToConnect) {
-                        $retArr = array();
+                        $retArr = [];
                         exec($this->extConfPremium['sphinxSearchdPath'], $retArr);
                         $this->logger->info('Sphinx: Trying to start deamon');
                         $content .= '<p><b>Trying to start Sphinx daemon.</b><br />'
@@ -627,7 +621,7 @@ class IndexerRunner
                     $content .= '</p>' . "\n";
 
                     // update the index
-                    $retArr = array();
+                    $retArr = [];
                     exec(
                         $this->extConfPremium['sphinxIndexerPath']
                         . ' --rotate '
@@ -642,7 +636,7 @@ class IndexerRunner
                         . "\n\n";
                     foreach ($retArr as $retRow) {
                         if (strpos($retRow, 'WARNING') !== false) {
-                            $this->logger->error('Sphinx: ' .$retRow);
+                            $this->logger->error('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                         }
                     }
@@ -664,7 +658,7 @@ class IndexerRunner
 
     /**
      * store collected data of defined indexers to db
-     * @param integer $storagePid
+     * @param int $storagePid
      * @param string $title
      * @param string $type
      * @param string $targetPid
@@ -672,13 +666,13 @@ class IndexerRunner
      * @param string $tags
      * @param string $params
      * @param string $abstract
-     * @param integer $language
-     * @param integer $starttime
-     * @param integer $endtime
+     * @param int $language
+     * @param int $starttime
+     * @param int $endtime
      * @param string $fe_group
-     * @param boolean $debugOnly
+     * @param bool $debugOnly
      * @param array $additionalFields
-     * @return boolean|integer
+     * @return bool|int
      */
     public function storeInIndex(
         $storagePid,
@@ -694,9 +688,8 @@ class IndexerRunner
         $endtime = 0,
         $fe_group = '',
         $debugOnly = false,
-        $additionalFields = array()
+        $additionalFields = []
     ) {
-
         // if there are errors found in current record return false and break processing
         if (!$this->checkIfRecordHasErrorsBeforeIndexing($storagePid, $title, $type, $targetPid)) {
             return false;
@@ -739,7 +732,7 @@ class IndexerRunner
 
         // Hook to manipulate the field values before they go to the database
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] ?? null)) {
-            foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] as $_classRef) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFieldValuesBeforeStoring'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $fieldValues = $_procObj->modifyFieldValuesBeforeStoring($this->indexerConfig, $fieldValues);
             }
@@ -773,7 +766,7 @@ class IndexerRunner
         }
 
         if ($recordExists) { // update existing record
-            $where = 'uid=' . intval($this->currentRow['uid']);
+            $where = 'uid=' . (int)($this->currentRow['uid']);
             unset($fieldValues['crdate']);
             if ($debugOnly) { // do not process - just debug query
                 DebugUtility::debug(
@@ -781,7 +774,7 @@ class IndexerRunner
                         ->update(
                             $table,
                             $fieldValues,
-                            ['uid' => intval($this->currentRow['uid'])]
+                            ['uid' => (int)($this->currentRow['uid'])]
                         ),
                     '1',
                     '1'
@@ -817,7 +810,7 @@ class IndexerRunner
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
-        $queryArray = array();
+        $queryArray = [];
         $queryArray['set'] = 'SET
 			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
 			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
@@ -853,13 +846,12 @@ class IndexerRunner
             . '@crdate'
             . $addQueryPartFor['execute'] . ';';
 
-        try  {
+        try {
             Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['execute']);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
     }
 
     /**
@@ -872,7 +864,7 @@ class IndexerRunner
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
-        $queryArray = array();
+        $queryArray = [];
         $queryArray['set'] = 'SET
 			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
 			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
@@ -908,15 +900,13 @@ class IndexerRunner
             . $addQueryPartFor['execute']
             . ', @uid;';
 
-        try  {
+        try {
             Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['execute']);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
     }
-
 
     /**
      * Return the query part for additional fields to get prepare statements dynamic
@@ -934,9 +924,8 @@ class IndexerRunner
             $queryForSet .= ', @' . $value . ' = ' . $queryBuilder->quote($fieldValues[$value], PDO::PARAM_STR);
             $queryForExecute .= ', @' . $value;
         }
-        return array('set' => $queryForSet, 'execute' => $queryForExecute);
+        return ['set' => $queryForSet, 'execute' => $queryForExecute];
     }
-
 
     /**
      * try to find an already indexed record
@@ -944,10 +933,10 @@ class IndexerRunner
      * parameters should be already fullQuoted. see storeInIndex
      * TODO: We should create an index to column type
      * @param string $uid
-     * @param integer $pid
+     * @param int $pid
      * @param string $type
-     * @param integer $language
-     * @return boolean true if record was found, false if not
+     * @param int $language
+     * @return bool true if record was found, false if not
      */
     public function checkIfRecordWasIndexed($uid, $pid, $type, $language)
     {
@@ -968,14 +957,12 @@ class IndexerRunner
         if (count($res)) {
             if ($this->currentRow = reset($res)) {
                 return true;
-            } else {
-                $this->currentRow = array();
-                return false;
             }
-        } else {
-            $this->currentRow = array();
+            $this->currentRow = [];
             return false;
         }
+        $this->currentRow = [];
+        return false;
     }
 
     /**
@@ -985,9 +972,9 @@ class IndexerRunner
      * TODO: We should create an index to column type
      * @param string $type
      * @param string $hash
-     * @param integer $pid
-     * @param integer $sortdate contains the file modification time
-     * @return boolean true if record was found, false if not
+     * @param int $pid
+     * @param int $sortdate contains the file modification time
+     * @return bool true if record was found, false if not
      * @throws DBALException
      */
     public function checkIfFileWasIndexed(string $type, string $hash, int $pid, int $sortdate): bool
@@ -1020,21 +1007,18 @@ class IndexerRunner
         if ($res->rowCount()) {
             if ($this->currentRow = $res->fetch()) {
                 return true;
-            } else {
-                $this->currentRow = array();
-                return false;
             }
-        } else {
-            $this->currentRow = array();
+            $this->currentRow = [];
             return false;
         }
+        $this->currentRow = [];
+        return false;
     }
-
 
     /**
      * Create fieldValues to save them in db later on
      * sets some default values, too
-     * @param integer $storagepid
+     * @param int $storagepid
      * @param string $title
      * @param string $type
      * @param string $targetpid
@@ -1042,9 +1026,9 @@ class IndexerRunner
      * @param string $tags
      * @param string $params
      * @param string $abstract
-     * @param integer $language
-     * @param integer $starttime
-     * @param integer $endtime
+     * @param int $language
+     * @param int $starttime
+     * @param int $endtime
      * @param string $fe_group
      * @param array $additionalFields
      * @return array
@@ -1062,12 +1046,11 @@ class IndexerRunner
         $starttime = 0,
         $endtime = 0,
         $fe_group = '',
-        $additionalFields = array()
-    ): array
-    {
+        $additionalFields = []
+    ): array {
         $now = time();
-        $fieldsValues = array(
-            'pid' => intval($storagepid),
+        $fieldsValues = [
+            'pid' => (int)$storagepid,
             'title' => $this->stripControlCharacters($title),
             'type' => $type,
             'targetpid' => $targetpid,
@@ -1075,13 +1058,13 @@ class IndexerRunner
             'tags' => $tags,
             'params' => $params,
             'abstract' => $this->stripControlCharacters($abstract),
-            'language' => intval($language),
-            'starttime' => intval($starttime),
-            'endtime' => intval($endtime),
+            'language' => (int)$language,
+            'starttime' => (int)$starttime,
+            'endtime' => (int)$endtime,
             'fe_group' => $fe_group,
             'tstamp' => $now,
             'crdate' => $now,
-        );
+        ];
 
         // add all registered additional fields to field value and set default values
         foreach ($this->additionalFields as $fieldName) {
@@ -1100,18 +1083,17 @@ class IndexerRunner
         return $fieldsValues;
     }
 
-
     /**
      * check if there are errors found in record before storing to db
-     * @param integer $storagePid
+     * @param int $storagePid
      * @param string $title
      * @param string $type
      * @param string $targetPid
-     * @return boolean
+     * @return bool
      */
     public function checkIfRecordHasErrorsBeforeIndexing($storagePid, $title, $type, $targetPid)
     {
-        $errors = array();
+        $errors = [];
 
         // check for empty values
         if (empty($storagePid)) {
@@ -1144,9 +1126,8 @@ class IndexerRunner
 
             // break indexing and wait for next record to store
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
@@ -1174,11 +1155,9 @@ class IndexerRunner
 
         if ($clearText) {
             return $row['title'];
-        } else {
-            return $row['tag'];
         }
+        return $row['tag'];
     }
-
 
     /**
      * Strips control characters
@@ -1192,7 +1171,6 @@ class IndexerRunner
         // Printable utf-8 does not include any of these chars below x7F
         return preg_replace('@[\x00-\x08\x0B\x0C\x0E-\x1F]@', ' ', $content);
     }
-
 
     /**
      * this function returns all indexer configurations found in DB

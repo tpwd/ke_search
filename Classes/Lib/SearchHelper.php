@@ -24,7 +24,6 @@ use PDO;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Registry;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -45,7 +43,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class SearchHelper
 {
-    public CONST PI_VARS = ['sword', 'sortByField', 'sortByDir', 'page', 'resetFilters', 'filter'];
+    public const PI_VARS = ['sword', 'sortByField', 'sortByDir', 'page', 'resetFilters', 'filter'];
     public static $systemCategoryPrefix = 'syscat';
 
     /**
@@ -105,7 +103,7 @@ class SearchHelper
                 $extConfPremium['prePostTagChar'] = '_';
             }
         } else {
-            $extConfPremium = array();
+            $extConfPremium = [];
         }
 
         // override extConfPremium with TS Setup
@@ -127,10 +125,10 @@ class SearchHelper
      */
     public static function getCategories(int $uid, string $table)
     {
-        $categoryData = array(
-            'uid_list' => array(),
-            'title_list' => array()
-        );
+        $categoryData = [
+            'uid_list' => [],
+            'title_list' => [],
+        ];
 
         if ($uid && $table) {
             $queryBuilder = Db::getQueryBuilder($table);
@@ -218,7 +216,7 @@ class SearchHelper
             $extConf = SearchHelper::getExtConf();
 
             foreach ($tagTitles as $title) {
-                $tag = preg_replace("/[^A-Za-z0-9]/", '', $title);
+                $tag = preg_replace('/[^A-Za-z0-9]/', '', $title);
                 if (!empty($tags)) {
                     $tags .= ',';
                 }
@@ -241,7 +239,7 @@ class SearchHelper
         $categories = SearchHelper::getCategories($uid, $tablename);
         if (count($categories['uid_list'])) {
             foreach ($categories['uid_list'] as $category_uid) {
-                SearchHelper::makeTags($tags, array(SearchHelper::createTagnameFromSystemCategoryUid($category_uid)));
+                SearchHelper::makeTags($tags, [SearchHelper::createTagnameFromSystemCategoryUid($category_uid)]);
             }
         }
     }
@@ -267,7 +265,7 @@ class SearchHelper
      */
     public static function getResultLinkConfiguration(array $resultRow, $targetDefault = '', $targetFiles = '')
     {
-        $linkConf = array();
+        $linkConf = [];
 
         list($type) = explode(':', $resultRow['type']);
 
@@ -312,7 +310,7 @@ class SearchHelper
 
     /**
      * @param int $uid
-     * @return File|NULL
+     * @return File|null
      */
     public static function getFile(int $uid)
     {
@@ -336,11 +334,11 @@ class SearchHelper
      * @param string $additionalAllowedPiVars comma-separated list
      * @return array
      */
-    static public function explodePiVars(array $piVars, string $additionalAllowedPiVars = ''): array
+    public static function explodePiVars(array $piVars, string $additionalAllowedPiVars = ''): array
     {
         foreach ($piVars as $key => $value) {
             if (strstr($key, '_')) {
-                $newKeys = explode('_', $key,2);
+                $newKeys = explode('_', $key, 2);
                 if (strstr($newKeys[1], '_')) {
                     $newKeys2 = explode('_', $newKeys[1], 2);
                     $piVars[$newKeys[0]][$newKeys2[0]][$newKeys2[1]] = $value;
@@ -350,13 +348,12 @@ class SearchHelper
             }
         }
         foreach ($piVars as $key => $value) {
-           if (!in_array($key, self::getAllowedPiVars($additionalAllowedPiVars)) || empty($piVars[$key])) {
-               unset($piVars[$key]);
-           }
+            if (!in_array($key, self::getAllowedPiVars($additionalAllowedPiVars)) || empty($piVars[$key])) {
+                unset($piVars[$key]);
+            }
         }
         return $piVars;
     }
-
 
     /**
      * Creates a link to the search result on the given page, flattens the piVars, resets given filters.
@@ -368,7 +365,7 @@ class SearchHelper
      * @param string $linkText
      * @return string
      */
-    static public function searchLink(int $parameter, array $piVars=[], $resetFilters=[], $linkText = ''): string
+    public static function searchLink(int $parameter, array $piVars=[], $resetFilters=[], $linkText = ''): string
     {
         // If no cObj is available we cannot render the link.
         // This might be the case if the current request is headless (ke_search_premium feature).
@@ -380,7 +377,7 @@ class SearchHelper
         $keepPiVars = self::PI_VARS;
         $linkconf = [
             'parameter' => $parameter,
-            'additionalParams' => ''
+            'additionalParams' => '',
         ];
         unset($keepPiVars[array_search('filter', $keepPiVars)]);
 
@@ -416,9 +413,8 @@ class SearchHelper
         // Build the link
         if (empty($linkText)) {
             return $GLOBALS['TSFE']->cObj->typoLink_URL($linkconf);
-        } else {
-            return $GLOBALS['TSFE']->cObj->typoLink($linkText, $linkconf);
         }
+        return $GLOBALS['TSFE']->cObj->typoLink($linkText, $linkconf);
     }
 
     /**
@@ -426,7 +422,7 @@ class SearchHelper
      * @return string
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    static public function createFilterOptionSlug($filterOptionRecord): string
+    public static function createFilterOptionSlug($filterOptionRecord): string
     {
         /** @var SlugHelper $slugHelper */
         $slugHelper = GeneralUtility::makeInstance(
@@ -453,7 +449,7 @@ class SearchHelper
      *
      * @return int
      */
-    static public function getIndexerStartTime(): int
+    public static function getIndexerStartTime(): int
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $indexerStartTime = $registry->get('tx_kesearch', 'startTimeOfIndexer');
@@ -466,11 +462,11 @@ class SearchHelper
      *
      * @return int
      */
-    static public function getIndexerLastRunTime(): int
+    public static function getIndexerLastRunTime(): int
     {
         $registry = GeneralUtility::makeInstance(Registry::class);
         $lastRun = $registry->get('tx_kesearch', 'lastRun');
-        if (!empty($lastRun) && !empty($lastRun['startTime']) ) {
+        if (!empty($lastRun) && !empty($lastRun['startTime'])) {
             $lastRunStartTime = $lastRun['startTime'];
         } else {
             $lastRunStartTime = 0;
@@ -482,7 +478,7 @@ class SearchHelper
      * @param int $timestamp
      * @return string
      */
-    static public function formatTimestamp(int $timestamp): string
+    public static function formatTimestamp(int $timestamp): string
     {
         return date(
             LocalizationUtility::translate('backend.date.format.day', 'ke_search')
@@ -495,7 +491,7 @@ class SearchHelper
      * @param $additionalAllowedPiVars
      * @return array
      */
-    static public function getAllowedPiVars($additionalAllowedPiVars = ''): array
+    public static function getAllowedPiVars($additionalAllowedPiVars = ''): array
     {
         return array_merge(self::PI_VARS, GeneralUtility::trimExplode(',', $additionalAllowedPiVars));
     }
@@ -503,7 +499,7 @@ class SearchHelper
     /**
      * @return string
      */
-    static public function getSearchWordParameter(): string
+    public static function getSearchWordParameter(): string
     {
         return htmlspecialchars($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_kesearch_pi1.']['searchWordParameter'] ?? 'tx_kesearch_pi1[sword]');
     }

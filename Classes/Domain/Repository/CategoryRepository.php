@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
@@ -24,13 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class CategoryRepository {
+class CategoryRepository
+{
     /**
      * @var string
      */
@@ -100,7 +99,7 @@ class CategoryRepository {
      */
     public function findByTag(string $tag)
     {
-        $uid = intval(str_replace(SearchHelper::$systemCategoryPrefix, '', $tag));
+        $uid = (int)(str_replace(SearchHelper::$systemCategoryPrefix, '', $tag));
         return $this->findOneByUid($uid);
     }
 }

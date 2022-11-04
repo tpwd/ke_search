@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Indexer;
 
 /***************************************************************
@@ -30,7 +31,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base class for indexer classes.
@@ -38,8 +39,6 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @author    Christian Bülter
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class IndexerBase
 {
@@ -47,7 +46,7 @@ class IndexerBase
     public const INDEXING_MODE_INCREMENTAL = 1;
 
     public $startMicrotime = 0;
-    public $indexerConfig = array(); // current indexer configuration
+    public $indexerConfig = []; // current indexer configuration
 
     // string which separates metadata from file content in the index record
     const METADATASEPARATOR = "\n";
@@ -63,7 +62,7 @@ class IndexerBase
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * @var array
@@ -91,7 +90,6 @@ class IndexerBase
         $this->indexerConfig = $this->pObj->indexerConfig;
         $this->lastRunStartTime = SearchHelper::getIndexerLastRunTime();
     }
-
 
     /**
      * get all recursive contained pids of given Page-UID
@@ -123,7 +121,6 @@ class IndexerBase
 
         return $pageUidArray;
     }
-
 
     /**
      * get array with all pages
@@ -165,7 +162,7 @@ class IndexerBase
             $where[] = $whereClause;
         }
 
-        $tables = GeneralUtility::trimExplode(',',$table);
+        $tables = GeneralUtility::trimExplode(',', $table);
         $query = $queryBuilder
             ->select($fields);
         foreach ($tables as $table) {
@@ -182,7 +179,6 @@ class IndexerBase
 
         return $pages;
     }
-
 
     /**
      * Creates the list of page which should be indexed and returns it as an array page UIDs.
@@ -208,24 +204,21 @@ class IndexerBase
         if (count($this->pageRecords)) {
             // create a new list of allowed pids
             return array_keys($this->pageRecords);
-        } else {
-            return array('0' => 0);
         }
+        return ['0' => 0];
     }
-
 
     /**
      * Add Tags to records array
      *
      * @param array $uids Simple array with uids of pages
      * @param string $pageWhere additional where-clause
-     * @return void
      */
     public function addTagsToRecords($uids, $pageWhere = '1=1')
     {
         if (empty($uids)) {
             $this->pObj->logger->warning('No pages/sysfolders given to add tags for.');
-            return ;
+            return;
         }
 
         $tagChar = $this->pObj->extConf['prePostTagChar'];
@@ -273,7 +266,7 @@ class IndexerBase
             ->where(
                 $queryBuilder->expr()->neq(
                     'automated_tagging',
-                    $queryBuilder->quote("", PDO::PARAM_STR)
+                    $queryBuilder->quote('', PDO::PARAM_STR)
                 )
             )
             ->execute()
@@ -288,7 +281,7 @@ class IndexerBase
                 $whereRow = $where;
             }
 
-            $pageList = array();
+            $pageList = [];
             $automated_tagging_arr = explode(',', $row['automated_tagging']);
             foreach ($automated_tagging_arr as $key => $value) {
                 $tmpPageList = GeneralUtility::trimExplode(
@@ -340,7 +333,7 @@ class IndexerBase
      */
     public function getDuration()
     {
-        return intval(ceil((microtime(true) - $this->startMicrotime) * 1000));
+        return (int)(ceil((microtime(true) - $this->startMicrotime) * 1000));
     }
 
     /**
@@ -370,15 +363,15 @@ class IndexerBase
         $metadataContent = '';
 
         if (!empty($fileProperties['title'])) {
-            $metadataContent = $fileProperties['title'] . " ";
+            $metadataContent = $fileProperties['title'] . ' ';
         }
 
         if (!empty($fileProperties['description'])) {
-            $metadataContent .= $fileProperties['description'] . " ";
+            $metadataContent .= $fileProperties['description'] . ' ';
         }
 
         if (!empty($fileProperties['alternative'])) {
-            $metadataContent .= $fileProperties['alternative'] . " ";
+            $metadataContent .= $fileProperties['alternative'] . ' ';
         }
 
         if (!empty($metadataContent)) {
@@ -433,7 +426,7 @@ class IndexerBase
      * @param $language
      * @return array An array of file references.
      */
-    protected function getFilesToIndex($table, $fieldname,  $uid, $language): array
+    protected function getFilesToIndex($table, $fieldname, $uid, $language): array
     {
         /** @var FileRepository $fileRepository  */
         $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
@@ -469,7 +462,6 @@ class IndexerBase
             ->orderBy('ref.sorting_foreign')
             ->execute();
 
-
         if ($relatedFilesQuery->rowCount()) {
             $relatedFiles = $relatedFilesQuery->fetchAll();
             foreach ($relatedFiles as $key => $relatedFile) {
@@ -498,9 +490,8 @@ class IndexerBase
 
         /** @var FileReference $fileReference */
         foreach ($fileReferences as $fileReference) {
-
             /* @var $fileIndexerObject File */
-            $fileIndexerObject = GeneralUtility::makeInstance( File::class, $this->pObj);
+            $fileIndexerObject = GeneralUtility::makeInstance(File::class, $this->pObj);
 
             if ($fileIndexerObject->fileInfo->setFile($fileReference)) {
                 $fileContent .= $fileIndexerObject->getFileContent($fileReference->getForLocalProcessing(false)) . "\n";
@@ -555,7 +546,6 @@ class IndexerBase
                 }
             }
         }
-
     }
 
     /**
@@ -584,13 +574,12 @@ class IndexerBase
         int $starttime = 0,
         int $endtime = 0,
         string $logMessage = ''
-    )
-    {
+    ) {
         /* @var $fileIndexerObject File */
         $fileIndexerObject = GeneralUtility::makeInstance(File::class, $this->pObj);
         $fileIndexerObject->fileInfo->setFile($fileReference);
 
-            // get metadata
+        // get metadata
         $orig_uid = $fileReference->getOriginalFile()->getUid();
         $fileProperties = $fileReference->getOriginalFile()->getProperties();
 
@@ -626,7 +615,7 @@ class IndexerBase
             'orig_uid' => $orig_uid,
             'orig_pid' => 0,
             'directory' => $fileIndexerObject->fileInfo->getPath(),
-            'hash' => $fileIndexerObject->getUniqueHashForFile()
+            'hash' => $fileIndexerObject->getUniqueHashForFile(),
         ];
 
         // Store record in index table
@@ -643,11 +632,11 @@ class IndexerBase
             $starttime,                                 // starttime
             $endtime,                                   // endtime
             $feGroups,                                  // fe_group
-            FALSE,                                      // debug only?
+            false,                                      // debug only?
             $additionalFields                           // additional fields added by hooks
         );
 
-        $this->pObj->logger->debug(($logMessage ? $logMessage : 'File has been stored'),[$fileReference->getPublicUrl()]);
+        $this->pObj->logger->debug(($logMessage ? $logMessage : 'File has been stored'), [$fileReference->getPublicUrl()]);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
 use Tpwd\KeSearch\Indexer\IndexerRunner;
@@ -22,12 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Items
 {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
@@ -25,13 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class BaseRepository {
+class BaseRepository
+{
     /**
      * @var string
      */
@@ -93,8 +92,8 @@ class BaseRepository {
                 $queryBuilder->expr()->eq('hidden', 1)
             )
             ->andWhere(
-                $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($pidList,Connection::PARAM_INT_ARRAY)),
-                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp,PDO::PARAM_INT))
+                $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
             )
             ->execute()
             ->fetchAll();

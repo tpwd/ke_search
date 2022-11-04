@@ -26,8 +26,8 @@ namespace Tpwd\KeSearch\Indexer\Filetypes;
  * ************************************************************* */
 
 use Tpwd\KeSearch\Indexer\IndexerRunner;
-use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Lib\Fileinfo;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -36,14 +36,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Pdf extends File implements FileIndexerInterface
 {
-
-    public array $extConf = array();
-    public array $app = array(); // saves the path to the executables
+    public array $extConf = [];
+    public array $app = []; // saves the path to the executables
     public bool $isAppArraySet = false;
 
     /** @var IndexerRunner */
@@ -134,9 +131,8 @@ class Pdf extends File implements FileIndexerInterface
             $content = $this->removeReplacementChar($content);
 
             return $this->removeEndJunk($content);
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**
@@ -168,7 +164,7 @@ class Pdf extends File implements FileIndexerInterface
      */
     public function splitPdfInfo($pdfInfoArray)
     {
-        $res = array();
+        $res = [];
         if (is_array($pdfInfoArray)) {
             foreach ($pdfInfoArray as $line) {
                 $parts = explode(':', $line, 2);

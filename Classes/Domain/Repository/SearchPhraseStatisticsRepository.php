@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
@@ -24,13 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class SearchPhraseStatisticsRepository {
+class SearchPhraseStatisticsRepository
+{
     /**
      * @var string
      */
@@ -59,7 +58,7 @@ class SearchPhraseStatisticsRepository {
     }
 
     /**
-     * @param integer $uid
+     * @param int $uid
      * @param array $updateFields
      * @return mixed
      */

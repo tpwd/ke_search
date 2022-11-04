@@ -7,11 +7,13 @@ Upcoming version
 [BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
 [TASK]     Add PHPStan as dev requirement
+[TASK]     Add TYPO3/coding-standards as dev requirement
 [TASK]     Code cleanup according to PHPStan
 [TASK]     Code cleanup according to PHPStorm code inspections
+[TASK]     Code cleanup according to php-cs-fixer
 [TASK]     Add PHPStan check as a GitHub Action
+[TASK]     Add php-cs-fixer check as a GitHub Action
 [TASK]     Remove unused Behat tests for now
-[TASK]     Add .editorconfig from TYPO3 main project
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
 [DOCS]     Add information about contributing in README.rst
 

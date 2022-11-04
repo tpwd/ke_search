@@ -34,14 +34,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Ppt extends File implements FileIndexerInterface
 {
-
-    public array $extConf = array();
-    public array $app = array(); // saves the path to the executables
+    public array $extConf = [];
+    public array $app = []; // saves the path to the executables
     public bool $isAppArraySet = false;
 
     /**
@@ -106,8 +103,7 @@ class Ppt extends File implements FileIndexerInterface
         // check if content was found
         if (strlen($content)) {
             return $content;
-        } else {
-            return '';
         }
+        return '';
     }
 }

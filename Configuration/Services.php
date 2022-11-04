@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +27,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'small',
-                    'width' => 'small'
+                    'width' => 'small',
                 ]
             );
 
@@ -43,7 +44,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'medium',
-                    'width' => 'medium'
+                    'width' => 'medium',
                 ]
             );
 
@@ -60,7 +61,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchTrendingSearchphrases.description',
                     'iconIdentifier' => 'ext-kesearch-wizard-icon',
                     'height' => 'medium',
-                    'width' => 'medium'
+                    'width' => 'medium',
                 ]
             );
     }

@@ -2,8 +2,8 @@
 
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters',
         'label' => 'title',
         'tstamp' => 'tstamp',
@@ -15,122 +15,122 @@ return array(
         'default_sortby' => 'ORDER BY crdate',
         'delete' => 'deleted',
         'type' => 'rendertype',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
-        ),
+        ],
         'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_filters.gif',
-        'searchFields' => 'title'
-    ),
-    'columns' => array(
-        'sys_language_uid' => array(
+        'searchFields' => 'title',
+    ],
+    'columns' => [
+        'sys_language_uid' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.language',
-            'config' => array(
+            'config' => [
                 'default' => 0,
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => array(
-                    array($langGeneralPath . 'LGL.allLanguages', -1),
-                    array($langGeneralPath . 'LGL.default_value', 0)
-                )
-            )
-        ),
-        'l10n_parent' => array(
+                'items' => [
+                    [$langGeneralPath . 'LGL.allLanguages', -1],
+                    [$langGeneralPath . 'LGL.default_value', 0],
+                ],
+            ],
+        ],
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => $langGeneralPath . 'LGL.l18n_parent',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                ),
+                'items' => [
+                    ['', 0],
+                ],
                 'foreign_table' => 'tx_kesearch_filters',
                 'foreign_table_where' => 'AND tx_kesearch_filters.pid=###CURRENT_PID###'
                     . ' AND tx_kesearch_filters.sys_language_uid IN (-1,0)',
-            )
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
-                'type' => 'passthrough'
-            )
-        ),
-        'hidden' => array(
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'hidden' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.hidden',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'default' => '0'
-            )
-        ),
-        'title' => array(
+                'default' => '0',
+            ],
+        ],
+        'title' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.title',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => '30',
-            )
-        ),
-        'rendertype' => array(
+            ],
+        ],
+        'rendertype' => [
             'exclude' => 0,
             'l10n_display' => 'defaultAsReadonly',
             'displayCond' => 'FIELD:l10n_parent:<:1',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0', 'select'),
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1', 'list'),
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2', 'checkbox'),
-                    array('LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3', 'dateRange'),
-                ),
+                'items' => [
+                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0', 'select'],
+                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1', 'list'],
+                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2', 'checkbox'],
+                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3', 'dateRange'],
+                ],
                 'size' => 1,
                 'maxitems' => 1,
                 'default' => 'select',
-            )
-        ),
+            ],
+        ],
 
-        'markAllCheckboxes' => array(
+        'markAllCheckboxes' => [
             'exclude' => 0,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.markAllCheckboxes',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'default' => '0'
-            )
-        ),
-        'options' => array(
+                'default' => '0',
+            ],
+        ],
+        'options' => [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.options',
             'l10n_mode' => 'exclude',
-            'config' => array(
+            'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_kesearch_filteroptions',
                 'maxitems' => 500,
-                'appearance' => array(
+                'appearance' => [
                     'collapseAll' => true,
                     'expandSingle' => true,
                     'useSortable' => true,
                     'showPossibleLocalizationRecords' => true,
                     'showAllSynchronizationLink' => true,
                     'showSynchronizationLink' => true,
-                    'enabledControls' => array(
+                    'enabledControls' => [
                         'info' => true,
                         'dragdrop' => true,
                         'sort' => true,
                         'hide' => true,
                         'delete' => true,
                         'localize' => true,
-                    )
-                )
-            ),
-        ),
-        'target_pid' => array(
+                    ],
+                ],
+            ],
+        ],
+        'target_pid' => [
             'exclude' => 1,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.target_pid',
-            'config' => array(
+            'config' => [
                 'default' => 0,
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -138,47 +138,47 @@ return array(
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-            )
-        ),
-        'amount' => array(
+            ],
+        ],
+        'amount' => [
             'exclude' => 0,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.amount',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'default' => '10',
                 'size' => '30',
                 'eval' => 'trim,int',
-            )
-        ),
-        'shownumberofresults' => array(
+            ],
+        ],
+        'shownumberofresults' => [
             'exclude' => 0,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.shownumberofresults',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
-                'default' => '1'
-            )
-        ),
-        'alphabeticalsorting' => array(
+                'default' => '1',
+            ],
+        ],
+        'alphabeticalsorting' => [
             'exclude' => 0,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.alphabeticalsorting',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => '1',
-            )
-        ),
-    ),
-    'types' => array(
-        'select' => array('showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
-            . ' title,rendertype, options, shownumberofresults, alphabeticalsorting'),
-        'list' => array('showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
-            . ' title,rendertype, options, shownumberofresults, alphabeticalsorting'),
-        'checkbox' => array('showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
+            ],
+        ],
+    ],
+    'types' => [
+        'select' => ['showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
+            . ' title,rendertype, options, shownumberofresults, alphabeticalsorting', ],
+        'list' => ['showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
+            . ' title,rendertype, options, shownumberofresults, alphabeticalsorting', ],
+        'checkbox' => ['showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
             . ' title,rendertype, markAllCheckboxes, options, shownumberofresults,'
-            . ' alphabeticalsorting'),
-        'dateRange' => array('showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
-            . ' title,rendertype'),
-    )
-);
+            . ' alphabeticalsorting', ],
+        'dateRange' => ['showitem' => 'sys_language_uid,l10n_parent, l10n_diffsource, hidden,'
+            . ' title,rendertype', ],
+    ],
+];

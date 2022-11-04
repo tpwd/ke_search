@@ -37,7 +37,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Class BackendModuleController
- * @package Tpwd\KeSearch\Controller
  */
 class BackendModuleController extends AbstractBackendModuleController
 {
@@ -80,7 +79,7 @@ class BackendModuleController extends AbstractBackendModuleController
      * @param Registry $registry
      * @param PageRenderer $pageRenderer
      */
-    public function __construct( Registry $registry, PageRenderer $pageRenderer)
+    public function __construct(Registry $registry, PageRenderer $pageRenderer)
     {
         $this->registry = $registry;
         $this->pageRenderer = $pageRenderer;
@@ -97,7 +96,7 @@ class BackendModuleController extends AbstractBackendModuleController
 
         $this->do = GeneralUtility::_GET('do');
 
-        if (!empty(GeneralUtility::_GET('indexingMode')) && intval(GeneralUtility::_GET('indexingMode')) == IndexerBase::INDEXING_MODE_INCREMENTAL) {
+        if (!empty(GeneralUtility::_GET('indexingMode')) && (int)(GeneralUtility::_GET('indexingMode')) == IndexerBase::INDEXING_MODE_INCREMENTAL) {
             $this->indexingMode = IndexerBase::INDEXING_MODE_INCREMENTAL;
         } else {
             $this->indexingMode = IndexerBase::INDEXING_MODE_FULL;
@@ -164,7 +163,6 @@ class BackendModuleController extends AbstractBackendModuleController
             }
         }
 
-
         // check for index process lock in registry
         // remove lock if older than 12 hours
         $lockTime = SearchHelper::getIndexerStartTime();
@@ -202,7 +200,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     'web_KeSearchBackendModule',
                     [
                         'id' => $this->id,
-                        'do' => 'rmLock'
+                        'do' => 'rmLock',
                     ]
                 );
                 $content .= '<p><a class="btn btn-danger" href="' . $moduleUrl . '">Remove Lock</a></p>';
@@ -214,7 +212,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     'web_KeSearchBackendModule',
                     [
                         'id' => $this->id,
-                        'do' => 'startindexer'
+                        'do' => 'startindexer',
                     ]
                 );
                 $content .= '<a class="btn btn-primary" href="' . $moduleUrl . '">'
@@ -225,7 +223,7 @@ class BackendModuleController extends AbstractBackendModuleController
                     [
                         'id' => $this->id,
                         'do' => 'startindexer',
-                        'indexingMode' => IndexerBase::INDEXING_MODE_INCREMENTAL
+                        'indexingMode' => IndexerBase::INDEXING_MODE_INCREMENTAL,
                     ]
                 );
                 $content .= '<a class="btn btn-default" href="' . $moduleUrl . '">'
@@ -330,7 +328,7 @@ class BackendModuleController extends AbstractBackendModuleController
             'web_KeSearchBackendModule',
             [
                 'id' => $this->id,
-                'do' => 'clear'
+                'do' => 'clear',
             ]
         );
 
@@ -338,7 +336,6 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('isAdmin', $this->getBackendUser()->isAdmin());
         $this->view->assign('indexCount', $this->getNumberOfRecordsInIndex());
         $this->storeLastModuleInformation();
-
     }
 
     /**
@@ -378,7 +375,7 @@ class BackendModuleController extends AbstractBackendModuleController
      * returns the number of records the index contains
      * @author Christian Bülter
      * @since 26.03.15
-     * @return integer
+     * @return int
      */
     public function getNumberOfRecordsInIndex()
     {
@@ -553,12 +550,11 @@ class BackendModuleController extends AbstractBackendModuleController
      */
     public function formatFilesize($size, $decimals = 0)
     {
-        $sizes = array(" B", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
+        $sizes = [' B', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB'];
         if ($size == 0) {
-            return ('n/a');
-        } else {
-            return (round($size / pow(1024, ($i = floor(log($size, 1024)))), $decimals) . $sizes[$i]);
+            return 'n/a';
         }
+        return round($size / pow(1024, ($i = floor(log($size, 1024)))), $decimals) . $sizes[$i];
     }
 
     /*
@@ -573,12 +569,12 @@ class BackendModuleController extends AbstractBackendModuleController
             ->from('tx_kesearch_index')
             ->where(
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('page')),
-                $queryBuilder->expr()->eq('targetpid', intval($pageUid))
+                $queryBuilder->expr()->eq('targetpid', (int)$pageUid)
             )
             ->orWhere(
                 $queryBuilder->expr()->neq('type', $queryBuilder->createNamedParameter('page')) .
                 ' AND ' .
-                $queryBuilder->expr()->eq('pid', intval($pageUid))
+                $queryBuilder->expr()->eq('pid', (int)$pageUid)
             )
             ->execute();
 
@@ -670,8 +666,8 @@ class BackendModuleController extends AbstractBackendModuleController
     }
 
     /**
-     * @param integer $pageUid
-     * @param integer $days
+     * @param int $pageUid
+     * @param int $days
      * @return array
      */
     public function getSearchwordStatistics($pageUid, $days)
@@ -693,7 +689,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $isSysFolder = $this->checkSysfolder();
 
         // set folder or single page where the data is selected from
-        $pidWhere = $isSysFolder ? ' AND pid=' . intval($pageUid) . ' ' : ' AND pageid=' . intval($pageUid) . ' ';
+        $pidWhere = $isSysFolder ? ' AND pid=' . (int)$pageUid . ' ' : ' AND pageid=' . (int)$pageUid . ' ';
 
         // get languages
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_stat_word');
@@ -750,8 +746,8 @@ class BackendModuleController extends AbstractBackendModuleController
 
     /**
      * @param string $table
-     * @param integer $language
-     * @param integer $timestampStart
+     * @param int $language
+     * @param int $timestampStart
      * @param string $pidWhere
      * @param string $tableCol
      */

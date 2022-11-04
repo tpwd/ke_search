@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
  * @author    Armin Vieweg
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Xlsx extends File implements FileIndexerInterface
 {

@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-
 namespace Tpwd\KeSearch\Tests\Unit\Command;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Tester\CommandTester;
 use Tpwd\KeSearch\Command\ClearIndexCommand;
-use PHPUnit\Framework\TestCase;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 
 class ClearIndexCommandTest extends TestCase
@@ -54,7 +53,7 @@ class ClearIndexCommandTest extends TestCase
             $this->commandTester->getDisplay()
         );
     }
-    
+
     /**
      * @test
      */

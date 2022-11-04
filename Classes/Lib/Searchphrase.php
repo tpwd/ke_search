@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
 /***************************************************************
@@ -20,13 +21,11 @@ namespace Tpwd\KeSearch\Lib;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Searchphrase
 {
@@ -57,7 +56,7 @@ class Searchphrase
      */
     public function buildSearchPhrase()
     {
-        $cleanSearchStringParts = array();
+        $cleanSearchStringParts = [];
         $tagsAgainst = $this->buildTagsAgainst();
         $searchString = trim($this->pObj->piVars['sword'] ?? '');
         $searchString = $this->checkAgainstDefaultValue($searchString);
@@ -69,13 +68,13 @@ class Searchphrase
             }
         }
 
-        $searchArray = array(
+        $searchArray = [
             'sword' => implode(' ', $cleanSearchStringParts), // f.e. hello karl-heinz +mueller
             'swords' => $cleanSearchStringParts, // f.e. Array: hello|karl|heinz|mueller
             'wordsAgainst' => implode(' ', $searchStringParts), // f.e. +hello* +karl* +heinz* +mueller*
             'tagsAgainst' => $tagsAgainst, // f.e. Array: +#category_213# +#color_123# +#city_42#
-            'scoreAgainst' => implode(' ', $cleanSearchStringParts) // f.e. hello karl heinz mueller
-        );
+            'scoreAgainst' => implode(' ', $cleanSearchStringParts), // f.e. hello karl heinz mueller
+        ];
 
         return $searchArray;
     }
@@ -95,7 +94,6 @@ class Searchphrase
 
         return $searchString;
     }
-
 
     /**
      * explode search string and remove too short words
@@ -138,7 +136,7 @@ class Searchphrase
                     if (
                         ($this->pObj->extConf['enablePartSearch'] ?? true)
                         ||
-                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
                         ||
                         (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
                     ) {
@@ -157,7 +155,7 @@ class Searchphrase
             }
             return array_values($searchParts);
         }
-        return array();
+        return [];
     }
 
     /**
@@ -166,7 +164,7 @@ class Searchphrase
      */
     public function buildTagsAgainst()
     {
-        $tagsAgainst = array();
+        $tagsAgainst = [];
         $this->buildPreselectedTagsAgainst($tagsAgainst);
         $this->buildPiVarsTagsAgainst($tagsAgainst);
 
@@ -198,7 +196,7 @@ class Searchphrase
                         . implode($tagChar . '" "' . $tagChar, $filterTags)
                         . $tagChar
                         . '"';
-                    // if we are in select or list mode
+                // if we are in select or list mode
                 } elseif (count($this->pObj->preselectedFilter[$key]) == 1) {
                     $tagsAgainst[$key] .= ' +"' . $tagChar . array_shift($filterTags) . $tagChar . '"';
                 }

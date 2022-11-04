@@ -58,11 +58,12 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
         $this->setDescription('Starts the indexing process for ke_search')
             ->setHelp(
                 'Will process all active indexer configuration records that are present in the database. '
-                . 'There is no possibility to start indexing for a single indexer configuration')
+                . 'There is no possibility to start indexing for a single indexer configuration'
+            )
             ->setAliases([
                 'kesearch:index',
                 'ke_search:indexing',
-                'kesearch:indexing'
+                'kesearch:indexing',
             ]);
 
         $this->addOption(
@@ -102,12 +103,11 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
         }
 
         // set custom style
-        $titleStyle = new OutputFormatterStyle('blue', 'black', array('bold'));
+        $titleStyle = new OutputFormatterStyle('blue', 'black', ['bold']);
         $output->getFormatter()->setStyle('title', $titleStyle);
         $warning = false;
 
         foreach (explode(chr(10), $indexerResponse) as $line) {
-
             // skip empty lines
             if (empty(strip_tags($line))) {
                 continue;
@@ -116,9 +116,9 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
             // format lines and catch warnings
             if (str_contains($line, 'There were errors')) {
                 $warning = strip_tags(str_replace('[DANGER] ', '', $line));
-            } else if (str_contains($line, 'Index contains')) {
+            } elseif (str_contains($line, 'Index contains')) {
                 $io->writeln('<info>' . strip_tags($line) . '</info>');
-            } else if (str_contains($line, '<p><b>')) {
+            } elseif (str_contains($line, '<p><b>')) {
                 $io->writeln(chr(10) . '<title>' . strip_tags($line) . '</>');
             } else {
                 $io->writeln(strip_tags($line));

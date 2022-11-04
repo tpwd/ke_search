@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3') or die();
 
 // add field tx_keasearch_filter
@@ -10,7 +11,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
             'l10n_display' => 'defaultAsReadonly',
             'exclude' => 1,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:sys_category.tx_kesearch_filter',
-            'config' => array(
+            'config' => [
                 'default' => 0,
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -19,14 +20,14 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
                 'size' => 10,
                 'minitems' => 0,
                 'maxitems' => 99,
-            )
+            ],
         ],
         'tx_kesearch_filtersubcat' => [
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'exclude' => 1,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:sys_category.tx_kesearch_filtersubcat',
-            'config' => array(
+            'config' => [
                 'default' => 0,
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -35,7 +36,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
                 'size' => 10,
                 'minitems' => 0,
                 'maxitems' => 99,
-            )
+            ],
         ],
     ]
 );

@@ -56,7 +56,8 @@ class RemoveLockCommand extends Command implements LoggerAwareInterface
             ->setHelp(
                 'Removing the lock for the ke_search index process can be useful when errors occured '
                 . 'while indexing. In this case, the lock won\'t be removed automatically and can be done '
-                . 'manually by this command.')
+                . 'manually by this command.'
+            )
             ->setAliases(['kesearch:removelock']);
     }
 
@@ -71,7 +72,7 @@ class RemoveLockCommand extends Command implements LoggerAwareInterface
         $this->logger->notice('Remove indexer lock started by command.');
 
         try {
-            if (intval($this->registry->get('tx_kesearch', 'startTimeOfIndexer')) === 0) {
+            if ((int)($this->registry->get('tx_kesearch', 'startTimeOfIndexer')) === 0) {
                 $io->note('Indexer lock is not set.');
                 $this->logger->notice('Indexer lock is not set');
             } else {

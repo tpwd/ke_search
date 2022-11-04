@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /***************************************************************
  *  Copyright notice
@@ -63,7 +65,7 @@ class StatusWidget implements WidgetInterface
                 [
                     'h' => floor($indexerRunningTime / 3600),
                     'm' => (int)($indexerRunningTime / 60) % 60,
-                    's' => $indexerRunningTime % 60
+                    's' => $indexerRunningTime % 60,
                 ]
                 : [];
         $this->view->assignMultiple([
@@ -80,7 +82,7 @@ class StatusWidget implements WidgetInterface
                 [
                     'h' => floor($lastRun['indexingTime'] / 3600),
                     'm' => (int)($lastRun['indexingTime'] / 60) % 60,
-                    's' => $lastRun['indexingTime'] % 60
+                    's' => $lastRun['indexingTime'] % 60,
                 ]
                 : [];
             $this->view->assignMultiple([

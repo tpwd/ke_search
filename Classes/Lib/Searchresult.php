@@ -1,7 +1,7 @@
 <?php
+
 namespace Tpwd\KeSearch\Lib;
 
-use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -23,18 +23,14 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
  * @author    Stefan Froemken
- * @package    TYPO3
- * @subpackage    tx_kesearch
  */
 class Searchresult
 {
-
-    protected $conf = array();
-    protected $row = array();
+    protected $conf = [];
+    protected $row = [];
 
     /**
      * @var Pluginbase
@@ -51,7 +47,6 @@ class Searchresult
      */
     protected $div;
 
-
     /**
      * The constructor of this class
      * @param Pluginbase $pObj
@@ -62,11 +57,9 @@ class Searchresult
         $this->init($pObj);
     }
 
-
     /**
      * Initializes this object
      * @param Pluginbase $pObj
-     * @return void
      */
     public function init(Pluginbase $pObj)
     {
@@ -75,17 +68,14 @@ class Searchresult
         $this->conf = $this->pObj->conf;
     }
 
-
     /**
      * set row array with current result element
      * @param array $row
-     * @return void
      */
     public function setRow(array $row)
     {
         $this->row = $row;
     }
-
 
     /**
      * get title for result row
@@ -187,9 +177,9 @@ class Searchresult
      * @param array $wordArray A single dimmed Array containing words
      * to search for. F.E. array('hello', 'georg', 'company')
      * @param string $content The string to search in
-     * @param boolean $checkAll If this is checked, then all words have to be found in string.
+     * @param bool $checkAll If this is checked, then all words have to be found in string.
      * If false: The method returns true directly, if one of the words was found
-     * @return boolean Returns true if the word(s) are found
+     * @return bool Returns true if the word(s) are found
      */
     public function isArrayOfWordsInString(array $wordArray, $content, $checkAll = false)
     {
@@ -229,7 +219,7 @@ class Searchresult
                 $word = htmlspecialchars($word);
                 // Highlight hits within words when using ke_seaarch_premium "in word search"
                 if (
-                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && intval($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
                     ||
                     (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
                 ) {
@@ -269,26 +259,25 @@ class Searchresult
                 if (count($teaserArray) > 0) {
                     foreach ($teaserArray as $teaserArrayItem) {
                         $searchWordPositionInTeaserArray = mb_stripos($teaserArrayItem, $word);
-                        if (false === $searchWordPositionInTeaserArray) {
+                        if ($searchWordPositionInTeaserArray === false) {
                             continue;
-                        } else {
-                            // One finding in teaser text array is sufficient
-                            $aSearchWordWasFound = true;
-                            break;
                         }
+                        // One finding in teaser text array is sufficient
+                        $aSearchWordWasFound = true;
+                        break;
                     }
                 }
 
                 // Only search for current search word in content if it wasn't found in teaser text array already
-                if (false === $aSearchWordWasFound) {
+                if ($aSearchWordWasFound === false) {
                     $pos = mb_stripos($content, $word);
-                    if (false === $pos) {
+                    if ($pos === false) {
                         continue;
                     }
                     $aSearchWordWasFound = true;
 
                     // if search word is the first word
-                    if (0 === $pos) {
+                    if ($pos === 0) {
                         $isSearchWordAtTheBeginning = true;
                     }
 
@@ -298,9 +287,9 @@ class Searchresult
                         $startPos = 0;
                     }
 
-                // crop some words behind searchword
-                $partWithSearchWord = mb_substr($content, $startPos);
-                $temp = $this->cObj->crop($partWithSearchWord, $charsForEachSearchWord . '|…|1');
+                    // crop some words behind searchword
+                    $partWithSearchWord = mb_substr($content, $startPos);
+                    $temp = $this->cObj->crop($partWithSearchWord, $charsForEachSearchWord . '|…|1');
 
                     // crop some words before search word
                     // after last cropping our text is too short now. So we have to find a new cutting position
@@ -326,8 +315,7 @@ class Searchresult
                 $teaser = $this->highlightArrayOfWordsInContent($this->pObj->swords, $teaser);
             }
             return $teaser;
-        } else {
-            return $this->cObj->crop($content, $this->conf['resultChars'] . '|…|1');
         }
+        return $this->cObj->crop($content, $this->conf['resultChars'] . '|…|1');
     }
 }

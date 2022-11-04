@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
@@ -20,13 +21,11 @@ namespace Tpwd\KeSearch\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * @author Christian Bülter
- * @package TYPO3
- * @subpackage ke_search
  */
-class TtNewsRepository extends BaseRepository {
+class TtNewsRepository extends BaseRepository
+{
     /**
      * @var string
      */

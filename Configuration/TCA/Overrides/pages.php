@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3') or die();
 
 // add tag field to pages
@@ -15,7 +16,7 @@ $tempColumns = [
             'items' => [],
             'allowNonIdValues' => true,
             'itemsProcFunc' => 'Tpwd\KeSearch\Backend\Filterlist->getListOfAvailableFiltersForTCA',
-        ]
+        ],
     ],
     'tx_kesearch_abstract' => [
         'exclude' => 1,
@@ -23,8 +24,8 @@ $tempColumns = [
         'config' => [
             'type' => 'text',
             'cols' => 40,
-            'rows' => 15
-        ]
+            'rows' => 15,
+        ],
     ],
     'tx_kesearch_resultimage' => [
         'exclude' => true,
@@ -37,12 +38,12 @@ $tempColumns = [
                         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                             'showitem' => '
                                     --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                    --palette--;;filePalette'
-                        ]
+                                    --palette--;;filePalette',
+                        ],
                     ],
                 ],
             ]
-        )
+        ),
     ],
 ];
 
