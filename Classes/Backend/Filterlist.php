@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\Backend;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -43,7 +44,7 @@ class Filterlist
         // print message if no startingpoint is set in plugin config
         if (empty($pidList)) {
             $config['items'][] = array('[SET STARTINGPOINT FIRST!]', '');
-            return ;
+            return;
         }
 
         // get filters
@@ -141,7 +142,7 @@ class Filterlist
         // print message if no startingpoint is set in plugin config
         if (empty($pidList)) {
             $config['items'][] = array('[SET STARTINGPOINT FIRST!]', '');
-            return ;
+            return;
         }
 
         // get filters
@@ -199,8 +200,7 @@ class Filterlist
     {
         // check if the tt_content row is available and if not load it manually
         // flexParentDatabaseRow not set can be caused by compatibility6 extension
-        if (!isset($config['flexParentDatabaseRow']) || !is_array($config['flexParentDatabaseRow']))
-        {
+        if (!isset($config['flexParentDatabaseRow']) || !is_array($config['flexParentDatabaseRow'])) {
             $parentRow = BackendUtility::getRecord(
                 'tt_content',
                 $config['row']['uid']
