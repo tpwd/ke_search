@@ -68,12 +68,15 @@ To run the unit tests:
 composer test:unit
 ```
 
-The tests are also executed by a GitHub pipeline.
-
 To check the code with PHPStan
 
 ```
 composer test:phpstan
 ```
 
-(this will create a file `phpstan-report.log`)
+(This will create a file `phpstan-report.log` which contains the errors.)
+
+Automated tests
+---------------
+
+The tests are automatically executed by a GitHub pipeline on a merge request.
