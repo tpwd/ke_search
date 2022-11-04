@@ -61,3 +61,6 @@ jobs:
       - name: Run PHPStan
         run: |
           .Build/bin/phpstan --configuration=Tests/phpstan.neon --no-progress
+      - name: Run php-cs-fixer
+        run: |
+          .Build/bin/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no
