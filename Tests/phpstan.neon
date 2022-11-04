@@ -10,4 +10,5 @@ parameters:
 		- '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
 		- '#has unknown class Tpwd\\KeSearchPremium\\KeSearchPremium as its type\.#'
 		- '#contains unknown class Tpwd\\KeSearchPremium\\Headless\\HeadlessApi\.#'
+		- '#Cannot call method rowCount\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
 	reportUnmatchedIgnoredErrors: false
