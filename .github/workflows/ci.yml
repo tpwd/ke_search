@@ -51,7 +51,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install composer dependencies
         run: |
-          composer require typo3/cms-core=${{ matrix.typo3-versions }} typo3/cms-install=${{ matrix.typo3-versions }} --no-progress --prefer-dist --optimize-autoloader
+          composer require typo3/cms-core=${{ matrix.typo3-versions }} typo3/cms-install=${{ matrix.typo3-versions }} --no-progress --prefer-dist --optimize-autoloader && composer exec typo3-coding-standards extension
       - name: Run PHP linter
         run: |
           find . -name \*.php  ! -path "./.Build/*" -exec php -l {} \;
