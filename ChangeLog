@@ -15,6 +15,7 @@ Upcoming version
 [TASK]     Add PHPStan check as a GitHub Action
 [TASK]     Add php-cs-fixer check as a GitHub Action
 [TASK]     Remove unused Behat tests for now
+[TASK]     Add startingPoints public method to Filter class. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/132
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
 [DOCS]     Add information about contributing in README.rst
 
