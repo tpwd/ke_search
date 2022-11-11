@@ -99,7 +99,7 @@ To check the code with php-cs-fixer
 composer test:php-cs-fixer
 ```
 
-This will create a file `phpstan-report.log` which contains the errors.
+This will create a file `php-cs-fixer-report.log` which contains the errors.
 
 To fix the code styling according to the TYPO3 coding guidelines automatically
 run
