@@ -718,7 +718,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         // get filters
-        if ((int)($this->conf['includeFilters']) == 1) {
+        if (isset($this->conf['includeFilters']) && (int)($this->conf['includeFilters']) == 1) {
             $this->renderFilters();
         }
 
