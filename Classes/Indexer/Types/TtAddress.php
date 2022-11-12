@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
-use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\TtAddressRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
