@@ -6,10 +6,13 @@
 Using system categories for filtering
 =====================================
 
-You can use the system categories the TYPO3 core provides for filtering in ke_search.
+You can use the system categories the TYPO3 core provides for filtering.
 
-ke_search automatically creates tags for assigned system categories, this applies
-*only to the pages, files and news indexer* as these records can have categories assigned by default.
+ke_search automatically creates tags for assigned system categories, this
+applies only to the indexers for
+*pages, files, news (EXT:news and EXT:tt_news) and (since version 4.6.0) tt_address*
+as these records can have system categories assigned by default.
+
 If you want to use system categories as filter options for other
 content, you will have to write a custom indexer or extend existing ones via a hook.
 

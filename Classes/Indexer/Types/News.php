@@ -20,6 +20,7 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\NewsRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
@@ -386,52 +387,19 @@ class News extends IndexerBase
     {
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
 
-        $categoryData = [
-            'single_pid' => 0,
-            'uid_list' => [],
-            'title_list' => [],
-        ];
+        $categoryData = SearchHelper::getCategories($newsRecord['uid'], 'tx_news_domain_model_news');
+        $categoryData['single_pid'] = 0;
 
-        $queryBuilder = Db::getQueryBuilder('sys_category');
-
-        $where = [];
-        $where[] = $queryBuilder->expr()->eq(
-            'sys_category.uid',
-            $queryBuilder->quoteIdentifier('sys_category_record_mm.uid_local')
-        );
-        $where[] = $queryBuilder->expr()->eq(
-            'tx_news_domain_model_news.uid',
-            $queryBuilder->quoteIdentifier('sys_category_record_mm.uid_foreign')
-        );
-        $where[] = $queryBuilder->expr()->eq(
-            'tx_news_domain_model_news.uid',
-            $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
-        );
-        $where[] = $queryBuilder->expr()->eq(
-            'sys_category_record_mm.tablenames',
-            $queryBuilder->createNamedParameter('tx_news_domain_model_news', \PDO::PARAM_STR)
-        );
-
-        $catRes = $queryBuilder
-            ->select(
-                'sys_category.uid',
-                'sys_category.single_pid',
-                'sys_category.title'
-            )
-            ->from('sys_category')
-            ->from('sys_category_record_mm')
-            ->from('tx_news_domain_model_news')
-            ->orderBy('sys_category_record_mm.sorting')
-            ->where(...$where)
-            ->execute();
-
-        while (($newsCat = $catRes->fetch())) {
-            $categoryData['uid_list'][] = $newsCat['uid'];
-            $categoryData['title_list'][] = $newsCat['title'];
-            // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
-            if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findOneByUid($newsCat['single_pid'])) {
-                $categoryData['single_pid'] = $newsCat['single_pid'];
+        if ($categoryData['uid_list']) {
+            foreach ($categoryData['uid_list']as $categoryUid) {
+                $newsCat = $categoryRepository->findOneByUid($categoryUid);
+                // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
+                if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findOneByUid($newsCat['single_pid'])) {
+                    $categoryData['single_pid'] = $newsCat['single_pid'];
+                }
             }
         }
 

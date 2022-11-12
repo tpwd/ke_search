@@ -102,4 +102,45 @@ class CategoryRepository
         $uid = (int)(str_replace(SearchHelper::$systemCategoryPrefix, '', $tag));
         return $this->findOneByUid($uid);
     }
+
+    /**
+     * Returns the system categories assigend to the record $uid in the table $tablename
+     *
+     * @param string $tableName
+     * @param int $uid
+     * @return mixed
+     */
+    public function findAssignedToRecord(string $tableName, int $uid)
+    {
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+
+        return $queryBuilder
+            ->select('sys_category.*')
+            ->from('sys_category')
+            ->from('sys_category_record_mm')
+            ->from($tableName)
+            ->orderBy('sys_category_record_mm.sorting')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_category.uid',
+                    $queryBuilder->quoteIdentifier('sys_category_record_mm.uid_local')
+                ),
+                $queryBuilder->expr()->eq(
+                    $tableName . '.uid',
+                    $queryBuilder->quoteIdentifier('sys_category_record_mm.uid_foreign')
+                ),
+                $queryBuilder->expr()->eq(
+                    $tableName . '.uid',
+                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_category_record_mm.tablenames',
+                    $queryBuilder->createNamedParameter($tableName)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+    }
 }

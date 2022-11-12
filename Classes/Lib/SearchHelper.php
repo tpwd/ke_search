@@ -21,6 +21,7 @@ namespace Tpwd\KeSearch\Lib;
  ***************************************************************/
 
 use PDO;
+use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -123,7 +124,7 @@ class SearchHelper
      * @param string $table
      * @return array
      */
-    public static function getCategories(int $uid, string $table)
+    public static function getCategories(int $uid, string $table): array
     {
         $categoryData = [
             'uid_list' => [],
@@ -131,42 +132,9 @@ class SearchHelper
         ];
 
         if ($uid && $table) {
-            $queryBuilder = Db::getQueryBuilder($table);
-
-            $categoryRecords = $queryBuilder
-                ->select('sys_category.uid', 'sys_category.title')
-                ->from('sys_category')
-                ->from('sys_category_record_mm')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'sys_category.uid',
-                        $queryBuilder->quoteIdentifier(
-                            'sys_category_record_mm.uid_local'
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $table . '.uid',
-                        $queryBuilder->quoteIdentifier(
-                            'sys_category_record_mm.uid_foreign'
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $table . '.uid',
-                        $queryBuilder->createNamedParameter(
-                            $uid,
-                            PDO::PARAM_INT
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'sys_category_record_mm.tablenames',
-                        $queryBuilder->quote($table, PDO::PARAM_STR)
-                    )
-                )
-                ->orderBy('sys_category_record_mm.sorting')
-                ->execute()
-                ->fetchAll();
-
+            /** @var CategoryRepository $categoryRepository */
+            $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
+            $categoryRecords = $categoryRepository->findAssignedToRecord($table, $uid);
             if (!empty($categoryRecords)) {
                 foreach ($categoryRecords as $cat) {
                     $categoryData['uid_list'][] = $cat['uid'];

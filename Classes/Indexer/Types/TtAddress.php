@@ -2,10 +2,12 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
+use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\TtAddressRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -199,6 +201,13 @@ class TtAddress extends IndexerBase
             // fill orig_pid
             if (isset($addressRow['pid']) && $addressRow['pid'] > 0) {
                 $additionalFields['orig_pid'] = $addressRow['pid'];
+            }
+
+            // Create tags from categories
+            if (isset($addressRow['categories'])) {
+                $categories = SearchHelper::getCategories($addressRow['uid'], $table);
+                SearchHelper::makeTags($tagContent, $categories['title_list']);
+                SearchHelper::makeSystemCategoryTags($tagContent, $addressRow['uid'], $table);
             }
 
             // make it possible to modify the indexerConfig via hook
