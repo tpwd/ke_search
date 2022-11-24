@@ -292,7 +292,9 @@ class IndexerBase
             }
 
             foreach ($pageList as $uid) {
-                $this->pageRecords[$uid]['tags'] = SearchHelper::addTag($row['tag'], $this->pageRecords[$uid]['tags']);
+                if(isset($this->pageRecords[$uid])) {
+                    $this->pageRecords[$uid]['tags'] = SearchHelper::addTag($row['tag'], $this->pageRecords[$uid]['tags']);
+                }
             }
         }
     }
