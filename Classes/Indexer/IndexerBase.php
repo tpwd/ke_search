@@ -250,12 +250,16 @@ class IndexerBase
             ->execute();
 
         while ($row = $tagQuery->fetch()) {
-            $this->pageRecords[$row['uid']]['tags'] = $row['tags'];
+            if (isset($this->pageRecords[$row['uid']])) {
+                $this->pageRecords[$row['uid']]['tags'] = $row['tags'];
+            }
         }
 
         // add system categories as tags
         foreach ($uids as $page_uid) {
-            SearchHelper::makeSystemCategoryTags($this->pageRecords[$page_uid]['tags'], $page_uid, 'pages');
+            if (isset($this->pageRecords[$page_uid])) {
+                SearchHelper::makeSystemCategoryTags($this->pageRecords[$page_uid]['tags'], $page_uid, 'pages');
+            }
         }
 
         // add tags which are defined by filteroption records
@@ -293,7 +297,9 @@ class IndexerBase
             }
 
             foreach ($pageList as $uid) {
-                $this->pageRecords[$uid]['tags'] = SearchHelper::addTag($row['tag'], $this->pageRecords[$uid]['tags']);
+                if (isset($this->pageRecords[$uid])) {
+                    $this->pageRecords[$uid]['tags'] = SearchHelper::addTag($row['tag'], $this->pageRecords[$uid]['tags']);
+                }
             }
         }
     }

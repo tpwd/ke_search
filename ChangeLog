@@ -10,6 +10,7 @@ Upcoming version
 [FEATURE]  Exclude files from indexing by deactivating "Include in search" in the new tab "Search" in file metadata. https://github.com/tpwd/ke_search/issues/20
 [BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
 [BUGFIX]   Fix undefined array key includeFilters in Pluginbase.php. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/133
+[BUGFIX]   Add tags only to pages which are in the list of to be indexed pages. Thanks to ped. https://github.com/tpwd/ke_search/issues/135
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
 [TASK]     Add PHPStan as dev requirement
 [TASK]     Add TYPO3/coding-standards as dev requirement
