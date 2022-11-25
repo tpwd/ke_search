@@ -26,6 +26,10 @@ There are two ways to index files:
 An incremental indexer is available. It will detect changes by comparing the file modification time against the last
 indexing time and re-index those files.
 
+Since version 4.6.0 it is possible to exclude files from indexing by
+deactivating the "Include in search" checkbox in the new "Search" tab of the
+file metadata.
+
 System requirements
 ===================
 
@@ -80,5 +84,5 @@ Leaving the field empty will have the effect that no files will be indexed.
 
 Content restrictions from the linking content elements will be taken into account.
 
-FAL metadata will be indexed if you select a FAL storage (title, alternative text and description).
+FAL metadata will be indexed (title, alternative text and description).
 Tags will be generated from categories (like in the news and pages indexer), see also :ref:`systemcategories`.

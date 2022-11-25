@@ -15,6 +15,12 @@
 			<trans-unit id="pages.tx_kesearch_abstract" resname="pages.tx_kesearch_abstract" >
 				<source>Abstract for search result</source>
 			</trans-unit>
+			<trans-unit id="sys_file_metadata.tx_kesearch_label" resname="sys_file_metadata.tx_kesearch_label" >
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="sys_file_metadata.tx_kesearch_no_search" resname="sys_file_metadata.tx_kesearch_no_search" >
+				<source>Include in search</source>
+			</trans-unit>
 			<trans-unit id="sys_category.tx_kesearch_filter" resname="sys_category.tx_kesearch_filter" >
 				<source>Category acts as a filter option for these filters</source>
 			</trans-unit>

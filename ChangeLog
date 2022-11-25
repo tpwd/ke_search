@@ -3,8 +3,11 @@ ChangeLog
 Upcoming version
 [!!!]      In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
 [!!!]      To use the feature "Make search word parameter changeable" you will need to adapt the changes in the template "SearchForm.html" (line 13-17, line 31) to your own template.
+[!!!]      This version changes the database structure.
+[!!!]      This version does not respect the field "hidden" for disabling indexing for files anymore (not a default field for files). Use the new field "tx_kesearch_no_search" in file metadata ("Include in search" in the new tab "Search").
 [FEATURE]  Make search word parameter changeable to be able to track search words with GA4. Thanks to Mike Street. https://github.com/tpwd/ke_search/issues/124
 [FEATURE]  Create tags for assigned categories for tt_news indexer. Thanks for sponsoring to Nervenschoner Informatik GmbH.
+[FEATURE]  Exclude files from indexing by deactivating "Include in search" in the new tab "Search" in file metadata. https://github.com/tpwd/ke_search/issues/20
 [BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
 [BUGFIX]   Fix undefined array key includeFilters in Pluginbase.php. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/133
 [TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
