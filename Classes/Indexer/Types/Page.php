@@ -36,6 +36,7 @@ use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\FileService;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
@@ -968,25 +969,19 @@ class Page extends IndexerBase
         $feGroups = $this->getCombinedFeGroupsForContentElement($feGroupsPages, $ttContentRow['fe_group']);
 
         if (count($fileObjects) && $feGroups != DONOTINDEX) {
-            // loop through files
             foreach ($fileObjects as $fileObject) {
-                $isHidden = false;
-                $isInList = false;
+                $isIndexable = false;
                 if ($fileObject instanceof FileInterface) {
-                    $isHidden = $fileObject->hasProperty('hidden') && (int)($fileObject->getProperty('hidden')) === 1;
-                    $isInList = GeneralUtility::inList(
-                        $this->indexerConfig['fileext'],
-                        $fileObject->getExtension()
-                    );
+                    $file = ($fileObject instanceof FileReference) ? $fileObject->getOriginalFile() : $fileObject;
+                    $isIndexable = $file instanceof \TYPO3\CMS\Core\Resource\File
+                        && FileService::isFileIndexable($file, $this->indexerConfig);
                 } else {
                     $errorMessage = 'Could not index file in content element #' . $ttContentRow['uid'] . ' (no file object).';
                     $this->pObj->logger->warning($errorMessage);
                     $this->addError($errorMessage);
                 }
 
-                // check if the file extension fits in the list of extensions
-                // to index defined in the indexer configuration
-                if (!$isHidden && $isInList) {
+                if ($isIndexable) {
                     // get file path and URI
                     $filePath = $fileObject->getForLocalProcessing(false);
 

@@ -177,3 +177,11 @@ CREATE TABLE tx_kesearch_stat_word (
   language int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid)
 );
+
+#
+# Table structure for table 'sys_file_metadata'
+#
+CREATE TABLE sys_file_metadata
+(
+	tx_kesearch_no_search tinyint(4) DEFAULT '0' NOT NULL
+);

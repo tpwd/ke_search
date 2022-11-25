@@ -24,6 +24,7 @@ use PDO;
 use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\FileService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -466,10 +467,9 @@ class IndexerBase
             $relatedFiles = $relatedFilesQuery->fetchAll();
             foreach ($relatedFiles as $key => $relatedFile) {
                 $fileReference = $fileRepository->findFileReferenceByUid($relatedFile['uid']);
-                if (GeneralUtility::inList(
-                    $this->indexerConfig['fileext'],
-                    $fileReference->getExtension()
-                )) {
+                $file = $fileReference->getOriginalFile();
+                if ($file instanceof \TYPO3\CMS\Core\Resource\File
+                    && FileService::isFileIndexable($file, $this->indexerConfig)) {
                     $filesToIndex[] = $fileReference;
                 }
             }
