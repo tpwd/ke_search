@@ -358,6 +358,9 @@ class SearchHelper
         // Compile the link parameters
         foreach ($keepPiVars as $piVarKey) {
             if (!empty($piVars[$piVarKey])) {
+                if (!is_string($piVars[$piVarKey])) {
+                    $piVars[$piVarKey] = '';
+                }
                 $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . urlencode($piVars[$piVarKey]);
             }
         }

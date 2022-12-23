@@ -145,6 +145,9 @@ class PluginBaseHelper
                     // string, no further XSS cleaning here
                     // cleaning is done on output
                 case 'sword':
+                    if (!is_string(($piVars[$key]))) {
+                        $piVars[$key] = '';
+                    }
                     $piVars[$key] = trim($piVars[$key]);
                     break;
 
