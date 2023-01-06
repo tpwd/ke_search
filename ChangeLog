@@ -22,6 +22,7 @@ Upcoming version
 [TASK]     Remove unused Behat tests for now
 [TASK]     Add startingPoints public method to Filter class. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/132
 [TASK]     Make sword is a string. Thanks to Chris Müller. https://github.com/tpwd/ke_search/issues/137
+[TASK]     Log errors during PDF indexing to ke_search error log. Thanks to Markus Tobler. https://github.com/tpwd/ke_search/issues/140.
 [DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
 [DOCS]     Add information about contributing in README.rst
 

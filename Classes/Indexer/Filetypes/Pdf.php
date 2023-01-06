@@ -102,7 +102,7 @@ class Pdf extends File implements FileIndexerInterface
         }
 
         // proceed only of there are any pages found
-        if ((int)$pdfInfo['pages'] && $this->isAppArraySet) {
+        if (isset($pdfInfo['pages']) && (int)$pdfInfo['pages'] && $this->isAppArraySet) {
             // create the tempfile which will contain the content
             $tempFileName = GeneralUtility::tempnam('pdf_files-Indexer');
 
@@ -111,9 +111,17 @@ class Pdf extends File implements FileIndexerInterface
 
             // generate and execute the pdftotext commandline tool
             $fileEscaped = CommandUtility::escapeShellArgument($file);
-            $cmd = "{$this->app['pdftotext']} -enc UTF-8 -q $fileEscaped $tempFileName";
+            $cmd = "{$this->app['pdftotext']} -enc UTF-8 $fileEscaped $tempFileName 2>&1";
 
-            CommandUtility::exec($cmd);
+            CommandUtility::exec($cmd, $output);
+
+            if (is_array($output) && count($output)) {
+                $errorMessage =
+                    'There have been problems while extracting the content for PDF file '
+                    . $file . '. Output from pdftotext: ' . json_encode($output);
+                $this->pObj->logger->error($errorMessage);
+                $this->addError($errorMessage);
+            }
 
             // check if the tempFile was successfully created
             if (@is_file($tempFileName)) {
@@ -132,6 +140,12 @@ class Pdf extends File implements FileIndexerInterface
 
             return $this->removeEndJunk($content);
         }
+        $errorMessage =
+            'Could not find pages for file ' . $file
+            . '. Maybe it is not a PDF file? Messages from pdftotext: ' . json_encode($pdfInfo);
+        $this->pObj->logger->error($errorMessage);
+        $this->addError($errorMessage);
+
         return '';
     }
 
@@ -147,7 +161,7 @@ class Pdf extends File implements FileIndexerInterface
             && $this->isAppArraySet
         ) {
             $fileEscaped = CommandUtility::escapeShellArgument($file);
-            $cmd = "{$this->app['pdfinfo']} $fileEscaped";
+            $cmd = "{$this->app['pdfinfo']} $fileEscaped 2>&1";
             CommandUtility::exec($cmd, $pdfInfoArray);
             $pdfInfo = $this->splitPdfInfo($pdfInfoArray);
 
@@ -158,9 +172,10 @@ class Pdf extends File implements FileIndexerInterface
     }
 
     /**
-     * Analysing PDF info into a useable format.
+     * Transform PDF info into a usable format.
+     *
      * @param array $pdfInfoArray Data of PDF content, coming from the pdfinfo tool
-     * @return array The pdf informations as array in a useable format
+     * @return array The pdf information as array in a usable format
      */
     public function splitPdfInfo($pdfInfoArray)
     {
@@ -169,7 +184,14 @@ class Pdf extends File implements FileIndexerInterface
             foreach ($pdfInfoArray as $line) {
                 $parts = explode(':', $line, 2);
                 if (count($parts) > 1 && trim($parts[0])) {
-                    $res[strtolower(trim($parts[0]))] = trim($parts[1]);
+                    $key = strtolower(trim($parts[0]));
+                    $newKey = $key;
+                    $i = 1;
+                    while (array_key_exists($newKey, $res)) {
+                        $newKey = $key . $i;
+                        $i++;
+                    }
+                    $res[$newKey] = trim($parts[1]);
                 }
             }
         }
