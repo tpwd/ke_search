@@ -105,9 +105,16 @@ class PluginBaseHelper
      */
     public function cleanPiVars(array $piVars, string $additionalAllowedPiVars = ''): array
     {
-        // run through all piVars
         foreach ($piVars as $key => $value) {
-            // process further cleaning regarding to param type
+            if (in_array($key, SearchHelper::PI_VARS_STRING)) {
+                if (!is_string(($value))) {
+                    $piVars[$key] = '';
+                }
+            }
+        }
+
+        // process further cleaning regarding to param type
+        foreach ($piVars as $key => $value) {
             switch ($key) {
                 // integer - default 1
                 case 'page':
@@ -145,21 +152,16 @@ class PluginBaseHelper
                     // string, no further XSS cleaning here
                     // cleaning is done on output
                 case 'sword':
-                    if (!is_string(($piVars[$key]))) {
-                        $piVars[$key] = '';
-                    }
                     $piVars[$key] = trim($piVars[$key]);
                     break;
 
                     // only characters
                 case 'sortByField':
-                case 'orderByField':
                     $piVars[$key] = preg_replace('/[^a-zA-Z0-9]/', '', $piVars[$key]);
                     break;
 
                     // "asc" or "desc"
                 case 'sortByDir':
-                case 'orderByDir':
                     if ($piVars[$key] != 'asc' && $piVars[$key] != 'desc') {
                         $piVars[$key] = 'asc';
                     }

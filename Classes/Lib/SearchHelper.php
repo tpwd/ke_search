@@ -44,6 +44,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class SearchHelper
 {
     public const PI_VARS = ['sword', 'sortByField', 'sortByDir', 'page', 'resetFilters', 'filter'];
+    public const PI_VARS_STRING = ['sword', 'sortByField', 'sortByDir'];
     public static $systemCategoryPrefix = 'syscat';
 
     /**
@@ -358,7 +359,7 @@ class SearchHelper
         // Compile the link parameters
         foreach ($keepPiVars as $piVarKey) {
             if (!empty($piVars[$piVarKey])) {
-                if (!is_string($piVars[$piVarKey])) {
+                if (in_array($piVarKey, self::PI_VARS_STRING) && !is_string($piVars[$piVarKey])) {
                     $piVars[$piVarKey] = '';
                 }
                 $linkconf['additionalParams'] .= '&tx_kesearch_pi1[' . $piVarKey . ']=' . urlencode($piVars[$piVarKey]);
