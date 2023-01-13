@@ -231,7 +231,7 @@ class IndexerBase
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-        $fields = 'pages.*, GROUP_CONCAT(CONCAT("'
+        $fields = 'pages.uid, GROUP_CONCAT(CONCAT("'
             . $tagChar
             . '", tx_kesearch_filteroptions.tag, "'
             . $tagChar

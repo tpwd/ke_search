@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 4.6.2, 13 January 2023
+[BUGFIX]   Fix SQL query for assigning tags from page properties to work with sql_mode ONLY_FULL_GROUP_BY. Thanks to p-view. https://github.com/teaminmedias-pluswerk/ke_search/issues/448
+
 Version 4.6.1, 13 January 2023
 [TASK]     Respect workspace flag for content elements. Thanks to alexmari81. https://github.com/tpwd/ke_search/issues/139
 
