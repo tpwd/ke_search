@@ -574,6 +574,7 @@ class Page extends IndexerBase
         $contentFields = GeneralUtility::trimExplode(',', $this->indexerConfig['content_fields'] ?: 'bodytext');
         $fields =
             'uid,pid,header,CType,sys_language_uid,header_layout,fe_group,file_collections,filelink_sorting,records'
+            . ',t3ver_state,t3ver_wsid'
             . ',' . implode(',', $contentFields);
 
         // If EXT:gridelements is installed, add the field containing the gridelement to the list
@@ -839,6 +840,10 @@ class Page extends IndexerBase
             // If there's no container found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
             $contentElementShouldBeIndexed = !($container === false);
+        }
+
+        if (!$this->recordIsLive($ttContentRow)) {
+            $contentElementShouldBeIndexed = false;
         }
 
         // hook to add custom check if this content element should be indexed

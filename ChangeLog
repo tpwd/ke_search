@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 4.6.1, 13 January 2023
+[TASK]     Respect workspace flag for content elements. Thanks to alexmari81. https://github.com/tpwd/ke_search/issues/139
+
 Version 4.6.0, 6 January 2023
 [!!!]      In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
 [!!!]      To use the feature "Make search word parameter changeable" you will need to adapt the changes in the template "SearchForm.html" (line 13-17, line 31) to your own template.
