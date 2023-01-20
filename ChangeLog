@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[!!!]      If you use the RouteEnhancer you will need to set one character default values for list and select filters. see Documentation/Configuration/RoutingSpeakingUrls.rst or https://github.com/tpwd/ke_search/commit/add3cb93c0c570f65b27bdb6edf28aa3bdbae5f6#diff-4df14275bdd91be559ccf5c988e352bd5f89da95790065d9015f1a32e60ca97f
 [BUGFIX]   Make it possible to reset preselected filters. https://github.com/tpwd/ke_search/issues/134 and https://github.com/tpwd/ke_search/issues/126
 
 Version 4.6.2, 13 January 2023
