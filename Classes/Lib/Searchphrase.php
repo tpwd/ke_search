@@ -179,8 +179,12 @@ class Searchphrase
     {
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         foreach ($this->pObj->preselectedFilter as $key => $filterTags) {
-            // add it only, if no other filter options of this filter has been selected in the frontend
-            if (!isset($this->pObj->piVars['filter'][$key]) || empty($this->pObj->piVars['filter'][$key])) {
+            // Add it only, if no other filter options of this filter has been selected in the frontend.
+            // We ignore values with one character length here (e.g. "-"), those are coming from the routing
+            // configuration and are necessary for the routing but should be ignored here.
+            if (!isset($this->pObj->piVars['filter'][$key])
+                || (is_string($this->pObj->piVars['filter'][$key]) && strlen($this->pObj->piVars['filter'][$key]) === 1)
+            ) {
                 if (!isset($tagsAgainst[$key])) {
                     $tagsAgainst[$key] = '';
                 }
@@ -236,6 +240,7 @@ class Searchphrase
                     // Don't add the tag if it is already inserted by preselected filters
                     if (
                         !empty($tag)
+                        && (strlen($tag) > 1)
                         && strstr($tagsAgainst[$key] ?? '', $tag) === false
                         && !in_array($key, self::IGNORE_FOR_TAG_BUILDING)
                     ) {

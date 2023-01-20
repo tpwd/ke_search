@@ -109,30 +109,42 @@ class Filters
     {
         $selectedOptions = [];
 
-        // run through all the filter options and check if one of them
-        // has been selected.
+        // Run through all the filter options and check if one of them has been selected.
+        // The filter option can be selected in the frontend via piVars
+        // or in the backend via flexform configuration ("preselected filters").
         foreach ($filter['options'] as $option) {
-            // Is the filter option selected in the frontend via piVars
-            // or in the backend via flexform configuration ("preselected filters")?
             $selected = false;
 
-            if (isset($this->pObj->piVars['filter'][$filter['uid']]) && $this->pObj->piVars['filter'][$filter['uid']] == $option['tag']) {
+            if (
+                isset($this->pObj->piVars['filter'][$filter['uid']])
+                && $this->pObj->piVars['filter'][$filter['uid']] == $option['tag']
+            ) {
+                // one-dimensional piVar: filter option is set
                 $selected = true;
-            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) { // if a this filter is set
-                // test pre selected filter again
-                if (is_array($this->pObj->preselectedFilter)
-                    && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
+            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) {
+                // multi-dimensional piVars
+                if (
+                    is_array($this->pObj->preselectedFilter)
+                    && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)
+                ) {
                     $selected = true;
                     // add preselected filter to piVars
                     $this->pObj->piVars['filter'][$filter['uid']][$option['uid']] = $option['tag'];
-                } else { // else test all other filter
-                    $isInArray = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
-                    if ($isInArray) {
-                        $selected = true;
-                    }
+                } else {
+                    // already selected via piVars?
+                    $selected = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
                 }
-            } elseif (!isset($this->pObj->piVars['filter'][$filter['uid']])) {
-                if (is_array($this->pObj->preselectedFilter)
+            // No piVars for this filter are set or the length of the option is one character (dummy placeholder
+            // for the routing configuration).
+            } elseif (
+                !isset($this->pObj->piVars['filter'][$filter['uid']])
+                || (
+                    is_string($this->pObj->piVars['filter'][$filter['uid']])
+                    && strlen($this->pObj->piVars['filter'][$filter['uid']]) === 1
+                )
+            ) {
+                if (
+                    is_array($this->pObj->preselectedFilter)
                     && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)
                 ) {
                     $selected = true;

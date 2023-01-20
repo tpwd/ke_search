@@ -43,6 +43,12 @@ Notes
   or if you have huge amounts of tags and want to improve performance (the `KeSearchTagToSlugMapper` accesses the database
   once for each routing parameter on every request).
 
+* For filters of type "select" or "list" you will need to set one character
+  default value. That will be ignored in the filtering, but that is necessary
+  to differentiate if the value is coming from the routing configuration or
+  if the user wants to reset the filter (in that case an empty value is given).
+  See also https://github.com/tpwd/ke_search/issues/126
+
 Examples
 ========
 
@@ -78,7 +84,7 @@ If additionally a searchword is given, this will result in
             resetFilters: '0'
             page: '1'
             sword: ''
-            filter_13: ''
+            filter_13: '-'
          requirements:
             sortByField: '(score|title|customranking|sortdate)?'
             sortByDir: '(asc|desc)?'
@@ -128,8 +134,8 @@ a "checkbox" filter, therefore each filter option has to be a configured individ
             sortByDir: 'desc'
             resetFilters: '0'
             page: '1'
-            filter_13: ''
-            filter_14: ''
+            filter_13: '-'
+            filter_14: '-'
             filter_3_267: ''
             filter_3_273: ''
             filter_3_278: ''
