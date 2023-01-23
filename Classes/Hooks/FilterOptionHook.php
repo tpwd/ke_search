@@ -94,6 +94,10 @@ class FilterOptionHook
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
         $category = $categoryRepository->findOneByUid($categoryUid);
 
+        if (empty($category)) {
+            return ;
+        }
+
         if ($category['tx_kesearch_filter']) {
             $filters = GeneralUtility::trimExplode(',', $category['tx_kesearch_filter']);
             $this->createOrUpdateFilterOptions($filters, $category);
