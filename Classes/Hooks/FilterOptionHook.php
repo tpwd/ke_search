@@ -92,7 +92,7 @@ class FilterOptionHook
     {
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
-        $category = $categoryRepository->findOneByUid($categoryUid);
+        $category = $categoryRepository->findByUid($categoryUid, true);
 
         if ($category['tx_kesearch_filter']) {
             $filters = GeneralUtility::trimExplode(',', $category['tx_kesearch_filter']);
@@ -100,7 +100,7 @@ class FilterOptionHook
         }
         if ($category['tx_kesearch_filtersubcat']) {
             $filters = GeneralUtility::trimExplode(',', $category['tx_kesearch_filtersubcat']);
-            $subCats = $categoryRepository->findAllSubcategoriesByParentUid($categoryUid);
+            $subCats = $categoryRepository->findAllSubcategoriesByParentUid($categoryUid, true);
             if ($subCats) {
                 foreach ($subCats as $subCat) {
                     $this->createOrUpdateFilterOptions($filters, $subCat);
@@ -108,7 +108,7 @@ class FilterOptionHook
             }
         }
         if ($category['parent']) {
-            $parentCat = $categoryRepository->findOneByUid($category['parent']);
+            $parentCat = $categoryRepository->findByUid($category['parent'], true);
             if ($parentCat['tx_kesearch_filtersubcat']) {
                 $filters = GeneralUtility::trimExplode(',', $parentCat['tx_kesearch_filtersubcat']);
                 $this->createOrUpdateFilterOptions($filters, $category);
@@ -131,14 +131,14 @@ class FilterOptionHook
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
 
         // get all filter options in default language which are connected to system categories
-        $filterOptions = $filterOptionRepository->findByTagPrefixAndLanguage(SearchHelper::$systemCategoryPrefix, 0);
+        $filterOptions = $filterOptionRepository->findByTagPrefixAndLanguage(SearchHelper::$systemCategoryPrefix, 0, true);
         if ($filterOptions) {
             foreach ($filterOptions as $filterOption) {
                 $filterIsConnectedToCategory = false;
                 // get the category connected to this filter option
-                $category = $categoryRepository->findByTag($filterOption['tag']);
+                $category = $categoryRepository->findByTag($filterOption['tag'], true);
                 // get the filter this filter option is assigned to
-                $filter = $filterRepository->findByAssignedFilterOption($filterOption['uid']);
+                $filter = $filterRepository->findByAssignedFilterOption($filterOption['uid'], true);
                 if ($filter) {
                     // Check if this category has this filter assigned in field "tx_kesearch_filter"
                     if (GeneralUtility::inList($category['tx_kesearch_filter'], $filter['uid'])) {
@@ -146,7 +146,7 @@ class FilterOptionHook
                     }
                     // Check if parent category has this filter assigned in field "tx_kesearch_filtersubcat"
                     if ($category['parent']) {
-                        $parentCat = $categoryRepository->findOneByUid($category['parent']);
+                        $parentCat = $categoryRepository->findByUid($category['parent'], true);
                         if ($parentCat['tx_kesearch_filtersubcat']) {
                             if (GeneralUtility::inList($parentCat['tx_kesearch_filtersubcat'], $filter['uid'])) {
                                 $filterIsConnectedToCategory = true;
@@ -185,7 +185,7 @@ class FilterOptionHook
         if (in_array($category['sys_language_uid'], [0, -1])) {
             $tag = SearchHelper::createTagnameFromSystemCategoryUid($category['uid']);
             foreach ($filters as $filterUid) {
-                $filterOptions = $filterOptionRepository->findByFilterUidAndTag($filterUid, $tag);
+                $filterOptions = $filterOptionRepository->findByFilterUidAndTag($filterUid, $tag, true);
                 if (empty($filterOptions)) {
                     // create
                     $filterOptionRepository->create(
@@ -204,13 +204,13 @@ class FilterOptionHook
             }
         } else {
             if ($category['l10n_parent']) {
-                $l10nParentCategory = $categoryRepository->findOneByUid($category['l10n_parent']);
+                $l10nParentCategory = $categoryRepository->findByUid($category['l10n_parent'], true);
                 if ($l10nParentCategory) {
                     $origTag = SearchHelper::createTagnameFromSystemCategoryUid($l10nParentCategory['uid']);
-                    $origFilterOptions = $filterOptionRepository->findByTagAndLanguage($origTag, 0);
+                    $origFilterOptions = $filterOptionRepository->findByTagAndLanguage($origTag, 0, true);
                     if (!empty($origFilterOptions)) {
                         foreach ($origFilterOptions as $origFilterOption) {
-                            $localizedFilterOptions = $filterOptionRepository->findByL10nParent($origFilterOption['uid']);
+                            $localizedFilterOptions = $filterOptionRepository->findByL10nParent($origFilterOption['uid'], true);
                             if (!$localizedFilterOptions) {
                                 // create
                                 $localizedFilterOption = [
@@ -221,7 +221,7 @@ class FilterOptionHook
                                     'l10n_parent' => $origFilterOption['uid'],
                                 ];
                                 foreach ($filters as $origFilter) {
-                                    $localizedFilter = $filterRepository->findByL10nParent((int)$origFilter);
+                                    $localizedFilter = $filterRepository->findByL10nParent((int)$origFilter, true);
                                     $filterOptionRepository->create(
                                         (int)$localizedFilter['uid'],
                                         $localizedFilterOption

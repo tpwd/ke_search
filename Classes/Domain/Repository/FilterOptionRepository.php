@@ -7,7 +7,6 @@ use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -31,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @author Christian Bülter
  */
-class FilterOptionRepository
+class FilterOptionRepository extends BaseRepository
 {
     /**
      * Internal storage for database table fields
@@ -51,29 +50,13 @@ class FilterOptionRepository
     protected $parentTableName = 'tx_kesearch_filters';
 
     /**
-     * @return mixed
-     */
-    public function findAll()
-    {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
-        return $queryBuilder
-            ->select('*')
-            ->from($this->tableName)
-            ->execute()
-            ->fetchAll();
-    }
-
-    /**
      * @param string $tagPrefix
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByTagPrefix(string $tagPrefix)
+    public function findByTagPrefix(string $tagPrefix, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -90,13 +73,15 @@ class FilterOptionRepository
     /**
      * @param string $tagPrefix
      * @param int $sys_language_uid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByTagPrefixAndLanguage(string $tagPrefix, int $sys_language_uid)
-    {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+    public function findByTagPrefixAndLanguage(
+        string $tagPrefix,
+        int $sys_language_uid,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -118,22 +103,20 @@ class FilterOptionRepository
      * Returns all filter options for a given filter uid.
      *
      * @param $filterUid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return array|mixed[]
      */
-    public function findByFilterUid($filterUid)
+    public function findByFilterUid($filterUid, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
         /** @var FilterRepository $filterRepository */
         $filterRepository = GeneralUtility::makeInstance(FilterRepository::class);
-        $filter = $filterRepository->findByUid($filterUid);
+        $filter = $filterRepository->findByUid($filterUid, $includeHiddenAndTimeRestricted);
 
         if (empty($filter) || empty($filter['options'])) {
             return [];
         }
 
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -152,13 +135,12 @@ class FilterOptionRepository
 
     /**
      * @param int $l10n_parent
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByL10nParent(int $l10n_parent)
+    public function findByL10nParent(int $l10n_parent, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -174,13 +156,12 @@ class FilterOptionRepository
 
     /**
      * @param string $tag
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByTag(string $tag)
+    public function findByTag(string $tag, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -197,13 +178,15 @@ class FilterOptionRepository
     /**
      * @param string $tag
      * @param int $sys_language_uid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByTagAndLanguage(string $tag, int $sys_language_uid)
-    {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+    public function findByTagAndLanguage(
+        string $tag,
+        int $sys_language_uid,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -226,11 +209,12 @@ class FilterOptionRepository
      *
      * @param $filterUid
      * @param $tag
+     * @param bool $includeHiddenAndTimeRestricted
      * @return array|mixed[]
      */
-    public function findByFilterUidAndTag($filterUid, $tag)
+    public function findByFilterUidAndTag($filterUid, $tag, bool $includeHiddenAndTimeRestricted = false)
     {
-        $options = $this->findByFilterUid($filterUid);
+        $options = $this->findByFilterUid($filterUid, $includeHiddenAndTimeRestricted);
         if (empty($options)) {
             return [];
         }
@@ -255,7 +239,7 @@ class FilterOptionRepository
     {
         /** @var FilterRepository $filterRepository */
         $filterRepository = GeneralUtility::makeInstance(FilterRepository::class);
-        $filter = $filterRepository->findByUid($filterUid);
+        $filter = $filterRepository->findByUid($filterUid, true);
 
         $newRecord = [
             'pid' => $filter['pid'],
@@ -303,9 +287,7 @@ class FilterOptionRepository
         $filterRepository = GeneralUtility::makeInstance(FilterRepository::class);
         $filterRepository->removeFilterOptionFromFilter($filterOptionUid);
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder();
         return $queryBuilder
             ->delete($this->tableName)
             ->where(
@@ -324,7 +306,7 @@ class FilterOptionRepository
      */
     public function deleteByTag(string $tag)
     {
-        $filterOptions = $this->findByTag($tag);
+        $filterOptions = $this->findByTag($tag, true);
         if (!empty($filterOptions)) {
             foreach ($filterOptions as $filterOption) {
                 $this->deleteByUid($filterOption['uid']);
@@ -355,9 +337,7 @@ class FilterOptionRepository
      */
     public function update(int $uid, array $updateFields)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->update($this->tableName)
             ->where(

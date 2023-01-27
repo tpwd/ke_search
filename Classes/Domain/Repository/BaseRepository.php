@@ -6,6 +6,10 @@ namespace Tpwd\KeSearch\Domain\Repository;
 use PDO;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -36,14 +40,28 @@ class BaseRepository
      */
     protected $tableName = '';
 
-    /**
-     * @return mixed
-     */
-    public function findAll()
+    public function getQueryBuilder(bool $includeHiddenAndTimeRestricted = false): QueryBuilder
     {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        if ($includeHiddenAndTimeRestricted) {
+            $queryBuilder
+                ->getRestrictions()
+                ->removeByType(HiddenRestriction::class)
+                ->removeByType(StartTimeRestriction::class)
+                ->removeByType(EndTimeRestriction::class);
+        }
+        return $queryBuilder;
+    }
+
+    /**
+     * @param bool $includeHiddenAndTimeRestricted
+     * @return mixed
+     */
+    public function findAll(bool $includeHiddenAndTimeRestricted = false)
+    {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -53,13 +71,12 @@ class BaseRepository
 
     /**
      * @param $uid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed
      */
-    public function findOneByUid($uid)
+    public function findByUid($uid, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)

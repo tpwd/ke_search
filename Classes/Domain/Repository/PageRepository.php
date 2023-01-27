@@ -5,8 +5,6 @@ namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -43,9 +41,7 @@ class PageRepository extends BaseRepository
      */
     public function findAllDeletedAndHiddenByUidListAndTimestampInAllLanguages(array $uidList, int $tstamp)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
         return $queryBuilder
             ->select('*')

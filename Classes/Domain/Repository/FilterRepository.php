@@ -2,8 +2,6 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -27,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @author Christian Bülter
  */
-class FilterRepository
+class FilterRepository extends BaseRepository
 {
     /**
      * @var string
@@ -35,36 +33,13 @@ class FilterRepository
     protected $tableName = 'tx_kesearch_filters';
 
     /**
-     * @param int $uid
-     * @return mixed
-     */
-    public function findByUid(int $uid)
-    {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
-        return $queryBuilder
-            ->select('*')
-            ->from($this->tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetch();
-    }
-
-    /**
      * @param int $l10n_parent
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed
      */
-    public function findByL10nParent(int $l10n_parent)
+    public function findByL10nParent(int $l10n_parent, bool $includeHiddenAndTimeRestricted)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -85,9 +60,7 @@ class FilterRepository
      */
     public function update(int $uid, array $updateFields)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->update($this->tableName)
             ->where(
@@ -106,13 +79,12 @@ class FilterRepository
      * Returns the filter which has the given filter option assigned
      *
      * @param int $filterOptionUid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed[]
      */
-    public function findByAssignedFilterOption(int $filterOptionUid)
+    public function findByAssignedFilterOption(int $filterOptionUid, bool $includeHiddenAndTimeRestricted)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -133,7 +105,7 @@ class FilterRepository
      */
     public function removeFilterOptionFromFilter(int $filterOptionUid)
     {
-        $filter = $this->findByAssignedFilterOption($filterOptionUid);
+        $filter = $this->findByAssignedFilterOption($filterOptionUid, true);
         if (!empty($filter)) {
             $updateFields = [
                 'options' => GeneralUtility::rmFromList((string)$filterOptionUid, $filter['options']),

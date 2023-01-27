@@ -311,7 +311,7 @@ class TtNews extends IndexerBase
             $categoryData['uid_list'][] = $newsCat['uid'];
             $categoryData['title_list'][] = $newsCat['title'];
             // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
-            if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findOneByUid($newsCat['single_pid'])) {
+            if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findByUid($newsCat['single_pid'])) {
                 $categoryData['single_pid'] = $newsCat['single_pid'];
             }
         }

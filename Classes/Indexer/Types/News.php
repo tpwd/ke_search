@@ -395,9 +395,9 @@ class News extends IndexerBase
 
         if ($categoryData['uid_list']) {
             foreach ($categoryData['uid_list']as $categoryUid) {
-                $newsCat = $categoryRepository->findOneByUid($categoryUid);
+                $newsCat = $categoryRepository->findByUid($categoryUid);
                 // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
-                if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findOneByUid($newsCat['single_pid'])) {
+                if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findByUid($newsCat['single_pid'])) {
                     $categoryData['single_pid'] = $newsCat['single_pid'];
                 }
             }

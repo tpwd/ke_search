@@ -4,8 +4,6 @@ namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -28,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * @author Christian Bülter
  */
-class CategoryRepository
+class CategoryRepository extends BaseRepository
 {
     /**
      * @var string
@@ -36,51 +34,13 @@ class CategoryRepository
     protected $tableName = 'sys_category';
 
     /**
-     * @return mixed
-     */
-    public function findAll()
-    {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
-        return $queryBuilder
-            ->select('*')
-            ->from($this->tableName)
-            ->execute()
-            ->fetchAll();
-    }
-
-    /**
      * @param $categoryUid
+     * @param bool $includeHiddenAndTimeRestricted
      * @return mixed
      */
-    public function findOneByUid($categoryUid)
+    public function findAllSubcategoriesByParentUid($categoryUid, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
-        return $queryBuilder
-            ->select('*')
-            ->from($this->tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($categoryUid, PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetch();
-    }
-
-    /**
-     * @param $categoryUid
-     * @return mixed
-     */
-    public function findAllSubcategoriesByParentUid($categoryUid)
-    {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
@@ -96,11 +56,13 @@ class CategoryRepository
 
     /**
      * @param string $tag
+     * @param bool $includeHiddenAndTimeRestricted
+     * @return mixed
      */
-    public function findByTag(string $tag)
+    public function findByTag(string $tag, bool $includeHiddenAndTimeRestricted = false)
     {
         $uid = (int)(str_replace(SearchHelper::$systemCategoryPrefix, '', $tag));
-        return $this->findOneByUid($uid);
+        return $this->findByUid($uid, $includeHiddenAndTimeRestricted);
     }
 
     /**
@@ -110,12 +72,9 @@ class CategoryRepository
      * @param int $uid
      * @return mixed
      */
-    public function findAssignedToRecord(string $tableName, int $uid)
+    public function findAssignedToRecord(string $tableName, int $uid, bool $includeHiddenAndTimeRestricted = false)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
-
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
         return $queryBuilder
             ->select('sys_category.*')
             ->from('sys_category')

@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use PDO;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -43,10 +41,7 @@ class FileMetaDataRepository extends BaseRepository
      */
     public function findByFileUidAndLanguageUid(int $fileUid, $languageUid)
     {
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable($this->tableName);
-
+        $queryBuilder = $this->getQueryBuilder();
         $record = $queryBuilder
             ->select('*')
             ->from($this->tableName)
