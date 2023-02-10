@@ -30,6 +30,9 @@ services:
         command: 'ke_search:removelock'
         description: 'Removes the ke_search lock'
 
+  Tpwd\KeSearch\Backend\Flexform:
+    public: true
+
   Tpwd\KeSearch\Domain\Repository\IndexRepository:
     public: true
     arguments:

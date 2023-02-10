@@ -5,6 +5,7 @@ namespace Tpwd\KeSearch\Domain\Repository;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -29,14 +30,13 @@ use TYPO3\CMS\Core\Database\Connection;
  */
 class IndexRepository
 {
-    /**
-     * @var string
-     */
-    protected $tableName = 'tx_kesearch_index';
-    /**
-     * @var Connection
-     */
-    private $connection;
+    public const IGNORE_COLS_FOR_SORTING =
+        'uid,pid,tstamp,crdate,cruser_id,starttime,endtime'
+        . ',fe_group,targetpid,content,hidden_content,params,type,tags,abstract,language'
+        . ',orig_uid,orig_pid,hash,lat,lon,externalurl,lastremotetransfer';
+
+    protected string $tableName = 'tx_kesearch_index';
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -253,5 +253,23 @@ class IndexRepository
             )
             ->executeQuery()
             ->fetchAll();
+    }
+
+    /**
+     * Returns a list of columns which are relevant as columns for sorting. Takes out system columns, like crdate,
+     * tstamp etc. but includes custom columns.
+     *
+     * @return array
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getColumnsRelevantForSorting(): array
+    {
+        $result = $this->connection->fetchAllAssociative('SHOW COLUMNS FROM tx_kesearch_index');
+        foreach ($result as $key => $col) {
+            if (GeneralUtility::inList(self::IGNORE_COLS_FOR_SORTING, $col['Field'])) {
+                unset($result[$key]);
+            }
+        }
+        return $result;
     }
 }
