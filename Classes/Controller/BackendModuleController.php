@@ -365,7 +365,7 @@ class BackendModuleController extends AbstractBackendModuleController
             )
             ->orderBy('tstamp', 'DESC')
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         return $logResults;
@@ -383,7 +383,7 @@ class BackendModuleController extends AbstractBackendModuleController
         return $queryBuilder
             ->count('*')
             ->from('tx_kesearch_index')
-            ->execute()
+            ->executeQuery()
             ->fetchColumn(0);
     }
 
@@ -576,7 +576,7 @@ class BackendModuleController extends AbstractBackendModuleController
                 ' AND ' .
                 $queryBuilder->expr()->eq('pid', (int)$pageUid)
             )
-            ->execute();
+            ->executeQuery();
 
         $content = '<table class="table table-hover">'
             . '<thead>'
@@ -708,7 +708,7 @@ class BackendModuleController extends AbstractBackendModuleController
                 )
             )
             ->groupBy('language')
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         $content = '';
@@ -767,7 +767,7 @@ class BackendModuleController extends AbstractBackendModuleController
             )
             ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
             ->add('orderBy', 'num desc')
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         return $statisticData;
@@ -791,7 +791,7 @@ class BackendModuleController extends AbstractBackendModuleController
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetch(0);
 
         return $page['doktype'] == 254 ? true : false;
@@ -818,7 +818,7 @@ class BackendModuleController extends AbstractBackendModuleController
         $languageRows = $queryBuilder
             ->select('uid', 'title')
             ->from('sys_language')
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         foreach ($languageRows as $row) {

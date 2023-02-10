@@ -60,7 +60,7 @@ class PageRepository extends BaseRepository
                 . ')',
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 }

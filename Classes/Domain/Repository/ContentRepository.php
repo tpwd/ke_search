@@ -46,7 +46,7 @@ class ContentRepository
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -68,7 +68,7 @@ class ContentRepository
                     $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -97,7 +97,7 @@ class ContentRepository
                 )
             )
             ->orderBy('tstamp', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 }

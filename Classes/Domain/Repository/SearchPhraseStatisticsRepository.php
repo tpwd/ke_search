@@ -53,7 +53,7 @@ class SearchPhraseStatisticsRepository
                     $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -78,7 +78,7 @@ class SearchPhraseStatisticsRepository
         foreach ($updateFields as $key => $value) {
             $queryBuilder->set($key, $value);
         }
-        return $queryBuilder->execute();
+        return $queryBuilder->executeStatement();
     }
 
     /**
@@ -107,7 +107,7 @@ class SearchPhraseStatisticsRepository
             )
             ->add('groupBy', $col . ' HAVING count(' . $col . ')>0')
             ->add('orderBy', 'num desc')
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         return $statisticData;

@@ -236,7 +236,7 @@ class IndexerRunner
         $count = $queryBuilder
             ->count('*')
             ->from('tx_kesearch_index')
-            ->execute()
+            ->executeQuery()
             ->fetchColumn(0);
 
         // clean up process after indexing to free memory
@@ -479,7 +479,7 @@ class IndexerRunner
         $countIndex = $queryBuilder
             ->count('*')
             ->from('tx_kesearch_index')
-            ->execute()
+            ->executeQuery()
             ->fetchColumn(0);
         if ($countIndex == 0) {
             Db::getDatabaseConnection('tx_kesearch_index')->exec('ALTER TABLE tx_kesearch_index DISABLE KEYS');
@@ -546,13 +546,13 @@ class IndexerRunner
                 ->count('*')
                 ->from($table)
                 ->where($where)
-                ->execute()
+                ->executeQuery()
                 ->fetchColumn(0);
 
             $queryBuilder
                 ->delete($table)
                 ->where($where)
-                ->execute();
+                ->executeStatement();
 
             $content .= '<p><strong>' . $count . '</strong> entries deleted.</p>' . "\n";
             $this->logger->info('CleanUpIndex: ' . $count . ' entries deleted.');
@@ -847,8 +847,8 @@ class IndexerRunner
             . $addQueryPartFor['execute'] . ';';
 
         try {
-            Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['set']);
-            Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['execute']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -901,8 +901,8 @@ class IndexerRunner
             . ', @uid;';
 
         try {
-            Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['set']);
-            Db::getDatabaseConnection('tx_kesearch_index')->exec($queryArray['execute']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -951,7 +951,7 @@ class IndexerRunner
                 $queryBuilder->expr()->eq('language', $queryBuilder->quote($language, PDO::PARAM_INT))
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         if (count($res)) {
@@ -1002,7 +1002,7 @@ class IndexerRunner
                     $queryBuilder->quote($sortdate, PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         if ($res->rowCount()) {
             if ($this->currentRow = $res->fetch()) {
@@ -1150,7 +1150,7 @@ class IndexerRunner
             ->select('title', 'tag')
             ->from($table)
             ->where($where)
-            ->execute()
+            ->executeQuery()
             ->fetch();
 
         if ($clearText) {
@@ -1184,7 +1184,7 @@ class IndexerRunner
         return $queryBuilder
             ->select($fields)
             ->from($table)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 

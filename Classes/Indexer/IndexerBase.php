@@ -171,7 +171,7 @@ class IndexerBase
         }
         $query->where(...$where);
 
-        $pageRows = $query->execute()->fetchAll();
+        $pageRows = $query->executeQuery()->fetchAll();
 
         $pages = [];
         foreach ($pageRows as $row) {
@@ -247,7 +247,7 @@ class IndexerBase
             ->from('tx_kesearch_filteroptions')
             ->add('where', $where)
             ->groupBy('pages.uid')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $tagQuery->fetch()) {
             if (isset($this->pageRecords[$row['uid']])) {
@@ -274,7 +274,7 @@ class IndexerBase
                     $queryBuilder->quote('', PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         $where = $pageWhere . ' AND no_search <> 1 ';
@@ -404,7 +404,7 @@ class IndexerBase
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($indexerConfigUid, PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tx_kesearch_indexerconfig'))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         if ($selectedCategories) {
@@ -467,7 +467,7 @@ class IndexerBase
                 )
             )
             ->orderBy('ref.sorting_foreign')
-            ->execute();
+            ->executeQuery();
 
         if ($relatedFilesQuery->rowCount()) {
             $relatedFiles = $relatedFilesQuery->fetchAll();
@@ -712,7 +712,7 @@ class IndexerBase
             if ($permClause !== '') {
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
             while ($row = $statement->fetch()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];

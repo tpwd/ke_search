@@ -50,7 +50,7 @@ class CategoryRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($categoryUid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -99,7 +99,7 @@ class CategoryRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($tableName)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 }

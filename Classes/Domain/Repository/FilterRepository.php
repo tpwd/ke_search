@@ -49,7 +49,7 @@ class FilterRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($l10n_parent, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -72,7 +72,7 @@ class FilterRepository extends BaseRepository
         foreach ($updateFields as $key => $value) {
             $queryBuilder->set($key, $value);
         }
-        return $queryBuilder->execute();
+        return $queryBuilder->executeStatement();
     }
 
     /**
@@ -94,7 +94,7 @@ class FilterRepository extends BaseRepository
                     (string)(int)$filterOptionUid
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 

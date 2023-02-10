@@ -212,7 +212,7 @@ class Filters
             ->from($table)
             ->add('where', $where)
             ->add('orderBy', 'find_in_set(uid, "' . $filterUids . '")')
-            ->execute();
+            ->executeQuery();
 
         $filterRows = [];
         while ($row = $filterQuery->fetch()) {
@@ -245,7 +245,7 @@ class Filters
             ->from($table)
             ->add('where', $where)
             ->add('orderBy', 'FIND_IN_SET(uid, "' . $optionUids . '")')
-            ->execute();
+            ->executeQuery();
 
         $optionsRows = [];
         while ($row = $optionsQuery->fetch()) {

@@ -53,7 +53,7 @@ class Filterlist
                 $queryBuilder->expr()->in('pid', $pidList),
                 $queryBuilder->expr()->in('sys_language_uid', '0,-1')
             )
-            ->execute();
+            ->executeQuery();
 
         if ($res->rowCount()) {
             while ($row = $res->fetch()) {
@@ -102,7 +102,7 @@ class Filterlist
             ->select($fields)
             ->from($table)
             ->where($where)
-            ->execute();
+            ->executeQuery();
 
         if ($res->rowCount()) {
             while ($row = $res->fetch()) {
@@ -115,7 +115,7 @@ class Filterlist
                             $queryBuilder->expr()->in('uid', $row['options']),
                             $queryBuilder->expr()->in('sys_language_uid', '0,-1')
                         )
-                        ->execute();
+                        ->executeQuery();
 
                     while ($optionRow = $options->fetch()) {
                         $config['items'][] = [$row['title'] . ': ' . $optionRow['title'], $optionRow['uid']];
@@ -148,7 +148,7 @@ class Filterlist
                 $queryBuilder->expr()->in('pid', $pidList),
                 $queryBuilder->expr()->in('sys_language_uid', '0,-1')
             )
-            ->execute();
+            ->executeQuery();
 
         if ($res->rowCount()) {
             while ($rowFilter = $res->fetch()) {
@@ -163,7 +163,7 @@ class Filterlist
                         ->select($fieldsOpts)
                         ->from($tableOpts)
                         ->where($whereOpts)
-                        ->execute();
+                        ->executeQuery();
                     while ($rowOpts = $resOpts->fetch()) {
                         $config['items'][] = [$rowFilter['title'] . ': ' . $rowOpts['title'], $rowOpts['uid']];
                     }

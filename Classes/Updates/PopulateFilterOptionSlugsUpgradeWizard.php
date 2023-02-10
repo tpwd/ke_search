@@ -95,7 +95,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
                 )
             )
             ->addOrderBy('pid', 'asc')
-            ->execute();
+            ->executeQuery();
 
         $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
         /** @var SlugHelper $slugHelper */
@@ -137,7 +137,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
                     $queryBuilder->expr()->isNull($this->fieldName)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchColumn();
         return $numberOfEntries > 0;
     }

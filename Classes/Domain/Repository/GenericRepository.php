@@ -69,7 +69,7 @@ class GenericRepository
                 $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $connection = $connectionPool->getConnectionForTable($tableNameToCheck);
                 $statement = $connection->prepare('SHOW TABLES LIKE "' . $tableNameToCheck . '"');
-                $statement->execute();
+                $statement->executeQuery();
                 if ($statement->fetch(FetchMode::ASSOCIATIVE)) {
                     $tableName = $tableNameToCheck;
                 }
@@ -94,7 +94,7 @@ class GenericRepository
                         $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetch();
         }
         return $row;
@@ -130,7 +130,7 @@ class GenericRepository
                         $queryBuilder->createNamedParameter($languageId, PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetch();
         }
         return $overlayRecord;

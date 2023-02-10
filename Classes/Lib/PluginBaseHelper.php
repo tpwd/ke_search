@@ -56,7 +56,7 @@ class PluginBaseHelper
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetch(0);
             if (is_array($pageResult) && count($pageResult)) {
                 $startingpoint['pages'] = $pageResult['pages'];

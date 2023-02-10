@@ -66,7 +66,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($tagPrefix . '%', PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -95,7 +95,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -129,7 +129,7 @@ class FilterOptionRepository extends BaseRepository
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -150,7 +150,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($l10n_parent, PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -171,7 +171,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($tag, PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -200,7 +200,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -296,7 +296,7 @@ class FilterOptionRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($filterOptionUid, PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -349,6 +349,6 @@ class FilterOptionRepository extends BaseRepository
         foreach ($updateFields as $key => $value) {
             $queryBuilder->set($key, $value);
         }
-        return $queryBuilder->execute();
+        return $queryBuilder->executeStatement();
     }
 }

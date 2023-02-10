@@ -59,7 +59,7 @@ class IndexRepository
                     $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -85,7 +85,7 @@ class IndexRepository
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -108,7 +108,7 @@ class IndexRepository
         foreach ($updateFields as $key => $value) {
             $queryBuilder->set($key, $value);
         }
-        return $queryBuilder->execute();
+        return $queryBuilder->executeStatement();
     }
 
     /**
@@ -120,7 +120,7 @@ class IndexRepository
         return $this->connection->createQueryBuilder()
             ->count('*')
             ->from('tx_kesearch_index')
-            ->execute()
+            ->executeQuery()
             ->fetchColumn(0);
     }
 
@@ -139,7 +139,7 @@ class IndexRepository
             )
             ->from('tx_kesearch_index')
             ->groupBy('tx_kesearch_index.type')
-            ->execute();
+            ->executeQuery();
 
         $resultsPerType = [];
         while ($row = $typeCount->fetch()) {
@@ -164,7 +164,7 @@ class IndexRepository
                     $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -188,7 +188,7 @@ class IndexRepository
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter($type)),
                 $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -251,7 +251,7 @@ class IndexRepository
                     $queryBuilder->createNamedParameter($timestamp, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 }

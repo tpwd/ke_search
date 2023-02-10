@@ -65,7 +65,7 @@ class BaseRepository
         return $queryBuilder
             ->select('*')
             ->from($this->tableName)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 
@@ -86,7 +86,7 @@ class BaseRepository
                     $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
     }
 
@@ -112,7 +112,7 @@ class BaseRepository
                 $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)),
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
     }
 }

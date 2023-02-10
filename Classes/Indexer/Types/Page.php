@@ -346,7 +346,7 @@ class Page extends IndexerBase
                     implode(',', $uids)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $pageRows = [];
         while ($row = $pageQuery->fetch()) {
@@ -389,7 +389,7 @@ class Page extends IndexerBase
                             $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAll();
 
                 $pageOverlay = $results[0] ?? false;
@@ -552,7 +552,7 @@ class Page extends IndexerBase
                     ->select(...$fieldArray)
                     ->from($tableName)
                     ->where(...$where)
-                    ->execute()
+                    ->executeQuery()
                     ->fetch();
 
                 if ($referencedRow) {
@@ -628,7 +628,7 @@ class Page extends IndexerBase
             ->select(...$fieldArray)
             ->from($table)
             ->where(...$where)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         $pageContent = [];
@@ -807,7 +807,7 @@ class Page extends IndexerBase
                         $queryBuilder->createNamedParameter($ttContentRow['tx_gridelements_container'])
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetch();
 
             // If there's no gridelement container found, it means it is hidden or deleted or time restricted.
@@ -834,7 +834,7 @@ class Page extends IndexerBase
                         $queryBuilder->createNamedParameter($ttContentRow['tx_container_parent'])
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetch();
 
             // If there's no container found, it means it is hidden or deleted or time restricted.

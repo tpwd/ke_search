@@ -116,7 +116,7 @@ class News extends IndexerBase
             ->select($fields)
             ->from($table)
             ->where(...$where)
-            ->execute();
+            ->executeQuery();
 
         $indexedNewsCounter = 0;
         $resCount = $res->rowCount();
@@ -458,7 +458,7 @@ class News extends IndexerBase
                     $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while (($newsTag = $resTag->fetch())) {
             SearchHelper::makeTags($tags, [$newsTag['title']]);
@@ -502,7 +502,7 @@ class News extends IndexerBase
                     $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $contentElements = [];
         if ($res->rowCount()) {

@@ -55,7 +55,7 @@ class FileMetaDataRepository extends BaseRepository
                     $queryBuilder->createNamedParameter($languageUid, PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
 
         return (empty($record)) ? [] : $record;

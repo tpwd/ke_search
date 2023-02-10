@@ -30,7 +30,8 @@
 		"ext-zip": "*",
 		"ext-libxml": "*",
 		"ext-dom": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"ssch/typo3-rector": "^1.1"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"

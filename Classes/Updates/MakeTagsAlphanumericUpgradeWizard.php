@@ -65,7 +65,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_kesearch_filteroptions');
         $statement = $connection->prepare('SELECT uid,tag FROM tx_kesearch_filteroptions WHERE tag REGEXP "[^a-z0-9]+"');
-        $statement->execute();
+        $statement->executeQuery();
         $filterOptionRows = $statement->fetchAll(FetchMode::ASSOCIATIVE);
         if (!empty($filterOptionRows)) {
             foreach ($filterOptionRows as $filterOptionRow) {
@@ -74,7 +74,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
                     ->update('tx_kesearch_filteroptions')
                     ->where($query->expr()->eq('uid', $query->createNamedParameter($filterOptionRow['uid'], \PDO::PARAM_INT)))
                     ->set('tag', preg_replace('/[^A-Za-z0-9]/', '', $filterOptionRow['tag']))
-                    ->execute();
+                    ->executeStatement();
             }
         }
         return true;
@@ -89,7 +89,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_kesearch_filteroptions');
         $statement = $connection->prepare('SELECT COUNT(*) FROM tx_kesearch_filteroptions WHERE tag REGEXP "[^a-z0-9]+"');
-        $statement->execute();
+        $statement->executeQuery();
         $countResult = $statement->fetch(FetchMode::NUMERIC);
         return !empty($countResult) && $countResult[0];
     }

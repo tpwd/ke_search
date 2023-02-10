@@ -89,7 +89,7 @@ class TtNews extends IndexerBase
             ->select('*')
             ->from($table)
             ->where(...$where)
-            ->execute();
+            ->executeQuery();
 
         $indexedNewsCounter = 0;
         $resCount = $res->rowCount();
@@ -305,7 +305,7 @@ class TtNews extends IndexerBase
             ->from('tt_news')
             ->orderBy('tt_news_cat_mm.sorting')
             ->where(...$where)
-            ->execute();
+            ->executeQuery();
 
         while (($newsCat = $catRes->fetch())) {
             $categoryData['uid_list'][] = $newsCat['uid'];

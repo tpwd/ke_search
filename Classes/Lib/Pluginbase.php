@@ -1161,7 +1161,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $queryBuilder
                 ->insert($table)
                 ->values($fields_values)
-                ->execute();
+                ->executeStatement();
         }
 
         // count single words
@@ -1185,7 +1185,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $queryBuilder
                     ->insert($table)
                     ->values($fields_values)
-                    ->execute();
+                    ->executeStatement();
             }
         }
     }
@@ -1218,7 +1218,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         . $pageRepository->enableFields('tx_kesearch_filters')
                         . $pageRepository->enableFields('tx_kesearch_filteroptions')
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAll();
 
                 foreach ($filterRows as $row) {
@@ -1273,7 +1273,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetch(0);
 
         return [

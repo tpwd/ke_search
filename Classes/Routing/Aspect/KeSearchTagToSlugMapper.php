@@ -54,7 +54,7 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
                 $queryBuilder->expr()->eq('tag', $queryBuilder->createNamedParameter($value)),
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId))
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
         if ($result) {
             return $result['slug'];
@@ -78,7 +78,7 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
                 $queryBuilder->expr()->eq('slug', $queryBuilder->createNamedParameter($value)),
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId))
             )
-            ->execute()
+            ->executeQuery()
             ->fetch();
         if ($result) {
             return $result['tag'];

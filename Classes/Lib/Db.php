@@ -127,7 +127,7 @@ class Db implements SingletonInterface
 
         // execute query
         try {
-            $this->searchResults = $resultQuery->execute()->fetchAll();
+            $this->searchResults = $resultQuery->executeQuery()->fetchAll();
         } catch (DriverException $driverException) {
             $logger->log(LogLevel::ERROR, $driverException->getMessage() . ' ' . $driverException->getTraceAsString());
             $this->addError('Could not fetch search results. Error #1605867846');
@@ -146,7 +146,7 @@ class Db implements SingletonInterface
             $queryBuilder->getRestrictions()->removeAll();
             $numRows = $queryBuilder
                 ->add('select', 'FOUND_ROWS()')
-                ->execute()
+                ->executeQuery()
                 ->fetchColumn(0);
             $this->numberOfResults = $numRows;
         }
@@ -356,7 +356,7 @@ class Db implements SingletonInterface
             ->select('tags')
             ->from($queryParts['FROM'])
             ->add('where', $queryParts['WHERE'])
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         return array_map(

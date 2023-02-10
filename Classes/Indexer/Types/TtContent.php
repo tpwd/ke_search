@@ -88,7 +88,7 @@ class TtContent extends Page
             ->select($fields)
             ->from($table)
             ->where(...$where)
-            ->execute()
+            ->executeQuery()
             ->fetchAll();
 
         if (count($rows)) {
