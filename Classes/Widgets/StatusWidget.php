@@ -31,20 +31,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class StatusWidget implements WidgetInterface
 {
-    /**
-     * @var Registry
-     */
-    public $registry;
-
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
+    public Registry $registry;
+    private WidgetConfigurationInterface $configuration;
+    private StandaloneView $view;
+    private $options;
 
     public function __construct(
         WidgetConfigurationInterface $configuration,
@@ -53,6 +43,7 @@ class StatusWidget implements WidgetInterface
         $this->configuration = $configuration;
         $this->view = $view;
         $this->registry = GeneralUtility::makeInstance(Registry::class);
+        $this->options = [];
     }
 
     public function renderWidgetContent(): string
@@ -94,5 +85,10 @@ class StatusWidget implements WidgetInterface
         }
 
         return $this->view->render();
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }
