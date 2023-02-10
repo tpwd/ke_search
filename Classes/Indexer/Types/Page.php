@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -887,7 +888,8 @@ class Page extends IndexerBase
             $index = false;
         }
 
-        if ((int)$language_uid === 0 && GeneralUtility::hideIfDefaultLanguage($this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'])) {
+        $pageTranslationVisibility = new PageTranslationVisibility((int)$this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'] ?? 0);
+        if ((int)$language_uid === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
             $index = false;
         }
 

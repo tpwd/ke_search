@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use Exception;
 use PDO;
@@ -84,13 +85,18 @@ class IndexerRunner
     public $defaultIndexerTypes = [];
 
     private EventDispatcherInterface $eventDispatcher;
+    private IndexRepository $indexRepository;
 
     /**
      * Constructor of this class
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        IndexRepository $indexRepository
+    )
     {
         $this->eventDispatcher = $eventDispatcher;
+        $this->indexRepository = $indexRepository;
 
         // get extension configuration array
         $this->extConf = SearchHelper::getExtConf();
@@ -230,15 +236,6 @@ class IndexerRunner
         // process index cleanup
         $content .= $this->cleanUpIndex($indexingMode);
 
-        // count index records
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        $queryBuilder->getRestrictions()->removeAll();
-        $count = $queryBuilder
-            ->count('*')
-            ->from('tx_kesearch_index')
-            ->executeQuery()
-            ->fetchColumn(0);
-
         // clean up process after indexing to free memory
         $this->cleanUpProcessAfterIndexing();
 
@@ -254,7 +251,7 @@ class IndexerRunner
         $content .=  '<p>' . $message . '</p>';
         $this->logger->info($message);
 
-        $message = 'Index contains ' . $count . ' entries.';
+        $message = 'Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.';
         $content .=  '<p>' . $message . '</p>';
         $this->logger->info($message);
 
@@ -474,13 +471,7 @@ class IndexerRunner
         // this speeds up the first indexing process
         // don't use this for updating index table
         // if you activate this for updating 40.000 existing records, indexing process needs 1 hour longer
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        $countIndex = $queryBuilder
-            ->count('*')
-            ->from('tx_kesearch_index')
-            ->executeQuery()
-            ->fetchColumn(0);
-        if ($countIndex == 0) {
+        if ($this->indexRepository->getTotalNumberOfRecords() == 0) {
             Db::getDatabaseConnection('tx_kesearch_index')->exec('ALTER TABLE tx_kesearch_index DISABLE KEYS');
         }
     }
@@ -545,7 +536,7 @@ class IndexerRunner
                 ->from($table)
                 ->where($where)
                 ->executeQuery()
-                ->fetchColumn(0);
+                ->fetchNumeric()[0];
 
             $queryBuilder
                 ->delete($table)

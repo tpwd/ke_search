@@ -117,9 +117,9 @@ class IndexRepository
     {
         return $this->connection->createQueryBuilder()
             ->count('*')
-            ->from('tx_kesearch_index')
+            ->from($this->tableName)
             ->executeQuery()
-            ->fetchColumn(0);
+            ->fetchNumeric()[0];
     }
 
     /**

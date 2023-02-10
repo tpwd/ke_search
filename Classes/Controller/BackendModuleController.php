@@ -75,15 +75,21 @@ class BackendModuleController extends AbstractBackendModuleController
      * @var string
      */
     protected $perms_clause;
+    private IndexRepository $indexRepository;
 
     /**
      * @param Registry $registry
      * @param PageRenderer $pageRenderer
      */
-    public function __construct(Registry $registry, PageRenderer $pageRenderer)
+    public function __construct(
+        Registry $registry,
+        PageRenderer $pageRenderer,
+        IndexRepository $indexRepository
+    )
     {
         $this->registry = $registry;
         $this->pageRenderer = $pageRenderer;
+        $this->indexRepository = $indexRepository;
     }
 
     /**
@@ -340,7 +346,7 @@ class BackendModuleController extends AbstractBackendModuleController
 
         $this->view->assign('moduleUrl', $moduleUrl);
         $this->view->assign('isAdmin', $this->getBackendUser()->isAdmin());
-        $this->view->assign('indexCount', $this->getNumberOfRecordsInIndex());
+        $this->view->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
         $this->storeLastModuleInformation();
         return $this->htmlResponse();
     }
@@ -377,22 +383,6 @@ class BackendModuleController extends AbstractBackendModuleController
             ->fetchAll();
 
         return $logResults;
-    }
-
-    /**
-     * returns the number of records the index contains
-     * @author Christian Bülter
-     * @since 26.03.15
-     * @return int
-     */
-    public function getNumberOfRecordsInIndex()
-    {
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        return $queryBuilder
-            ->count('*')
-            ->from('tx_kesearch_index')
-            ->executeQuery()
-            ->fetchColumn(0);
     }
 
     /**
@@ -440,7 +430,7 @@ class BackendModuleController extends AbstractBackendModuleController
     public function printNumberOfRecords()
     {
         $content = '<h2>Index statistics</h2>';
-        $numberOfRecords = $this->getNumberOfRecordsInIndex();
+        $numberOfRecords = $this->indexRepository->getTotalNumberOfRecords();
 
         if ($numberOfRecords) {
             $content .=
