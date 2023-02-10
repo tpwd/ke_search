@@ -37,7 +37,6 @@ class FileMetaDataRepository extends BaseRepository
      * @param int $fileUid
      * @param int $languageUid
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
      * @throws Exception
      */
     public function findByFileUidAndLanguageUid(int $fileUid, $languageUid)

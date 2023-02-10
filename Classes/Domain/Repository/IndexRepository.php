@@ -66,7 +66,6 @@ class IndexRepository
     /**
      * @param string $hash
      * @return mixed
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function findOneByHashAndModificationTime(string $hash, $mtime)
     {
@@ -113,7 +112,6 @@ class IndexRepository
 
     /**
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function getTotalNumberOfRecords(): int
     {
@@ -229,7 +227,6 @@ class IndexRepository
      * @param int $pid
      * @param int $timestamp
      * @return mixed
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function findOutdatedFileRecordsByPidAndTimestamp(int $pid, int $timestamp)
     {

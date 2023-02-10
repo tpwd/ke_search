@@ -23,7 +23,6 @@ namespace Tpwd\KeSearch\Indexer;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\StringUtility;
-use Doctrine\DBAL\DBALException;
 use Exception;
 use PDO;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -416,7 +415,6 @@ class IndexerRunner
 
     /**
      * prepare sql-statements for indexer
-     * @throws DBALException
      */
     public function prepareStatements()
     {
@@ -489,7 +487,6 @@ class IndexerRunner
 
     /**
      * clean up statements
-     * @throws DBALException
      */
     public function cleanUpProcessAfterIndexing()
     {
@@ -976,7 +973,6 @@ class IndexerRunner
      * @param int $pid
      * @param int $sortdate contains the file modification time
      * @return bool true if record was found, false if not
-     * @throws DBALException
      */
     public function checkIfFileWasIndexed(string $type, string $hash, int $pid, int $sortdate): bool
     {

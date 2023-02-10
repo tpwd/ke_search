@@ -341,7 +341,6 @@ class File extends IndexerBase
      * @param string $hash
      * @param int $fileModificationTime
      * @return false|string
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function getFileContentFromIndex(string $hash, int $fileModificationTime)
     {

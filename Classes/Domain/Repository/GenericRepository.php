@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\FetchMode;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -40,7 +39,6 @@ class GenericRepository
      * @param int|string $uid
      * @param string $type
      * @return false|mixed
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function findByUidAndType($uid, string $type)
     {
@@ -105,7 +103,6 @@ class GenericRepository
      * @param int $uid
      * @param int $languageId
      * @return array|null
-     * @throws DBALException
      */
     public function findLangaugeOverlayByUidAndLanguage(string $table, int $uid, int $languageId)
     {
