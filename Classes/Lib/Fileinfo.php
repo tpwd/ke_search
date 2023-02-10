@@ -2,6 +2,9 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -31,7 +34,7 @@ class Fileinfo
 {
     /**
      * File
-     * @var \TYPO3\CMS\Core\Resource\File
+     * @var File
      */
     protected $file;
 
@@ -43,7 +46,7 @@ class Fileinfo
 
     /**
      * set a filename to get informations of
-     * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $file
+     * @param string|File|FileReference $file
      * @return bool is valid file
      */
     public function setFile($file)
@@ -60,9 +63,9 @@ class Fileinfo
     protected function setFileInformations($file)
     {
         $this->fileInfo = []; // reset previously information to have a cleaned object
-        if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+        if ($file instanceof File) {
             $this->file = $file;
-        } elseif ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+        } elseif ($file instanceof FileReference) {
             $this->file = $file = $file->getOriginalFile();
         }
 
@@ -83,8 +86,8 @@ class Fileinfo
             $this->fileInfo['is_writeable'] = is_writable($file);
         }
 
-        if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-            $pathInfo = \TYPO3\CMS\Core\Utility\PathUtility::pathinfo($file->getName());
+        if ($file instanceof File) {
+            $pathInfo = PathUtility::pathinfo($file->getName());
             $this->fileInfo = [
                 'file' => $file->getName(),
                 'filebody' => $file->getNameWithoutExtension(),

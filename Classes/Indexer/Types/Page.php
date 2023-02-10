@@ -28,7 +28,7 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Andreas Kiefer
  * @author Christian Bülter
  */
-
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Exception;
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
@@ -113,7 +113,7 @@ class Page extends IndexerBase
     /**
      * @var ContentObjectRenderer
      */
-    public $cObj;
+    protected $cObj;
 
     /**
      * @var FilesProcessor
@@ -152,7 +152,7 @@ class Page extends IndexerBase
 
     /**
      * tx_kesearch_indexer_types_page constructor.
-     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
+     * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
     {
@@ -1287,5 +1287,10 @@ class Page extends IndexerBase
             ];
         }
         return $filesProcessorConfiguration;
+    }
+
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 }

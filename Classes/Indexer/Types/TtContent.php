@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -71,7 +72,7 @@ class TtContent extends Page
         $where[] = $this->whereClauseForCType;
 
         // add condition for not indexing gridelement columns with colPos = -2 (= invalid)
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('gridelements')) {
+        if (ExtensionManagementUtility::isLoaded('gridelements')) {
             $where[] = $queryBuilder->expr()->neq(
                 'colPos',
                 $queryBuilder->createNamedParameter(

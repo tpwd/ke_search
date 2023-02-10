@@ -24,6 +24,10 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
@@ -43,7 +47,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * @author    Stefan Froemken
  * @author    Christian Bülter
  */
-class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
+class Pluginbase extends AbstractPlugin
 {
     // Same as class name
     public $prefixId = 'tx_kesearch_pi1';
@@ -325,8 +329,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
             }
             if (!empty($cssFile)) {
-                /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-                $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+                /** @var PageRenderer $pageRenderer */
+                $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
                 $pageRenderer->addCssFile($cssFile);
             }
         }
@@ -1028,8 +1032,8 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function renderPagebrowser()
     {
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        /** @var StandaloneView $view */
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $view->setTemplate('Widget/Pagination');
         $pagination = [];
@@ -1387,5 +1391,10 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             return false;
         }
         return true;
+    }
+
+    public function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        return $this->cObj;
     }
 }

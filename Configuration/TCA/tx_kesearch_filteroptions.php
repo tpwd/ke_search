@@ -24,17 +24,7 @@ return [
         'sys_language_uid' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.language',
-            'config' => [
-                'default' => 0,
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    [$langGeneralPath . 'LGL.allLanguages', -1],
-                    [$langGeneralPath . 'LGL.default_value', 0],
-                ],
-            ],
+            'config' => ['type' => 'language'],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -105,7 +95,6 @@ return [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filteroptions.automated_tagging',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 5,
                 'minitems' => 0,
@@ -118,7 +107,6 @@ return [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filteroptions.automated_tagging_exclude',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 5,
                 'minitems' => 0,

@@ -1,8 +1,9 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+ExtensionManagementUtility::addStaticFile(
     'ke_search',
     'Configuration/TypoScript',
     'Faceted Search'
@@ -19,7 +20,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi3'] = 'select_key,recursive';
 
 // add plugins
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItemGroup(
+ExtensionManagementUtility::addTcaSelectItemGroup(
     'tt_content',
     'list_type',
     'ke_search',
@@ -27,7 +28,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
     'after:default'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+ExtensionManagementUtility::addTcaSelectItem(
     'tt_content',
     'list_type',
     [
@@ -38,7 +39,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+ExtensionManagementUtility::addTcaSelectItem(
     'tt_content',
     'list_type',
     [
@@ -49,7 +50,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+ExtensionManagementUtility::addTcaSelectItem(
     'tt_content',
     'list_type',
     [
@@ -61,17 +62,17 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_searc
 );
 
 // Configure FlexForm field
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+ExtensionManagementUtility::addPiFlexFormValue(
     'ke_search_pi1',
     'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml'
 );
 
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+ExtensionManagementUtility::addPiFlexFormValue(
     'ke_search_pi2',
     'FILE:EXT:ke_search/Configuration/FlexForms/flexform_resultlist.xml'
 );
 
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+ExtensionManagementUtility::addPiFlexFormValue(
     'ke_search_pi3',
     'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml'
 );

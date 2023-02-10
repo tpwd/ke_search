@@ -23,7 +23,7 @@ namespace Tpwd\KeSearch\Indexer\Filetypes;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
+use Tpwd\KeSearch\Utility\OoxmlConversion;
 use Tpwd\KeSearch\Indexer\Types\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,8 +40,8 @@ class Docx extends File implements FileIndexerInterface
      */
     public function getContent($file): string
     {
-        /** @var \Tpwd\KeSearch\Utility\OoxmlConversion $reader */
-        $reader = GeneralUtility::makeInstance(\Tpwd\KeSearch\Utility\OoxmlConversion::class, $file);
+        /** @var OoxmlConversion $reader */
+        $reader = GeneralUtility::makeInstance(OoxmlConversion::class, $file);
 
         try {
             return trim($reader->convertToText());

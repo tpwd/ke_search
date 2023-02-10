@@ -5,6 +5,8 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Connection;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
@@ -55,7 +57,6 @@ class Db implements SingletonInterface
     protected $errors = [];
     private EventDispatcherInterface $eventDispatcher;
     public Pluginbase $pObj;
-    public $cObj;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
@@ -65,7 +66,6 @@ class Db implements SingletonInterface
     public function setPluginbase(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
-        $this->cObj = $this->pObj->cObj;
         $this->conf = $this->pObj->conf;
     }
 
@@ -584,7 +584,7 @@ class Db implements SingletonInterface
      * Returns the query builder for the database connection.
      *
      * @param string $table
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @return QueryBuilder
      */
     public static function getQueryBuilder($table)
     {
@@ -596,7 +596,7 @@ class Db implements SingletonInterface
      * Returns the database connection.
      *
      * @param string $table
-     * @return \TYPO3\CMS\Core\Database\Connection
+     * @return Connection
      */
     public static function getDatabaseConnection($table)
     {

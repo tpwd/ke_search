@@ -21,6 +21,7 @@
 
 namespace Tpwd\KeSearch\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
@@ -120,15 +121,16 @@ class BackendModuleController extends AbstractBackendModuleController
     /**
      * alert action
      */
-    public function alertAction()
+    public function alertAction(): ResponseInterface
     {
         // just render the view
+        return $this->htmlResponse();
     }
 
     /**
      * start indexing action
      */
-    public function startIndexingAction()
+    public function startIndexingAction(): ResponseInterface
     {
         // make indexer instance and init
         /* @var $indexer IndexerRunner */
@@ -243,12 +245,13 @@ class BackendModuleController extends AbstractBackendModuleController
 
         $this->view->assign('content', $content);
         $this->storeLastModuleInformation();
+        return $this->htmlResponse();
     }
 
     /**
      * indexed content action
      */
-    public function indexedContentAction()
+    public function indexedContentAction(): ResponseInterface
     {
         if ($this->id) {
             // page is selected: get indexed content
@@ -272,23 +275,25 @@ class BackendModuleController extends AbstractBackendModuleController
 
         $this->view->assign('content', $content);
         $this->storeLastModuleInformation();
+        return $this->htmlResponse();
     }
 
     /**
      * index table information action
      */
-    public function indexTableInformationAction()
+    public function indexTableInformationAction(): ResponseInterface
     {
         $content = $this->renderIndexTableInformation();
 
         $this->view->assign('content', $content);
         $this->storeLastModuleInformation();
+        return $this->htmlResponse();
     }
 
     /**
      * searchword statistics action
      */
-    public function searchwordStatisticsAction()
+    public function searchwordStatisticsAction(): ResponseInterface
     {
         // days to show
         $days = 30;
@@ -305,12 +310,13 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('error', $error);
         $this->view->assign('languages', $this->getLanguages());
         $this->storeLastModuleInformation();
+        return $this->htmlResponse();
     }
 
     /**
      * clear search index action
      */
-    public function clearSearchIndexAction()
+    public function clearSearchIndexAction(): ResponseInterface
     {
         // get uri builder
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -336,14 +342,16 @@ class BackendModuleController extends AbstractBackendModuleController
         $this->view->assign('isAdmin', $this->getBackendUser()->isAdmin());
         $this->view->assign('indexCount', $this->getNumberOfRecordsInIndex());
         $this->storeLastModuleInformation();
+        return $this->htmlResponse();
     }
 
     /**
      * last indexing report action
      */
-    public function lastIndexingReportAction()
+    public function lastIndexingReportAction(): ResponseInterface
     {
         $this->view->assign('logEntry', $this->getLastIndexingReport());
+        return $this->htmlResponse();
     }
 
     /**

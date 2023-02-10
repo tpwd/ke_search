@@ -1,9 +1,10 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') or die();
 
 // add field tx_keasearch_filter
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+ExtensionManagementUtility::addTCAcolumns(
     'sys_category',
     [
         'tx_kesearch_filter' => [
@@ -40,7 +41,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
         ],
     ]
 );
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addToAllTCAtypes(
     'sys_category',
     '--div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:pages.tx_kesearch_label,tx_kesearch_filter,tx_kesearch_filtersubcat'
 );

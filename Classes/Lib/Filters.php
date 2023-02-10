@@ -19,6 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -33,11 +34,6 @@ class Filters
      * @var Pluginbase
      */
     protected $pObj;
-
-    /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     */
-    protected $cObj;
 
     /**
      * @var Db
@@ -66,7 +62,6 @@ class Filters
     public function initialize(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
-        $this->cObj = $pObj->cObj;
         $this->db = $this->pObj->db;
         $this->conf = $this->pObj->conf;
         $this->piVars = $this->pObj->piVars;
@@ -175,7 +170,7 @@ class Filters
             $list1 .= ',';
         }
         $list1 .= $list2;
-        $returnValue = GeneralUtility::uniqueList($list1);
+        $returnValue = StringUtility::uniqueList($list1);
         return $returnValue;
     }
 

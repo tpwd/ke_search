@@ -24,7 +24,7 @@ namespace Tpwd\KeSearch\Indexer\Filetypes;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Indexer\Types\File;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -44,7 +44,7 @@ class Ppt extends File implements FileIndexerInterface
     /**
      * class constructor
      *
-     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
+     * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
     {

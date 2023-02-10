@@ -25,17 +25,7 @@ return [
         'sys_language_uid' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.language',
-            'config' => [
-                'default' => 0,
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    [$langGeneralPath . 'LGL.allLanguages', -1],
-                    [$langGeneralPath . 'LGL.default_value', 0],
-                ],
-            ],
+            'config' => ['type' => 'language'],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -133,7 +123,6 @@ return [
             'config' => [
                 'default' => 0,
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 1,
                 'minitems' => 0,

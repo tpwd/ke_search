@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use PDO;
@@ -710,7 +711,7 @@ class IndexerRunner
             } else {
                 $tags = $tagChar . $indexerTag . $tagChar;
             }
-            $tags = GeneralUtility::uniqueList($tags);
+            $tags = StringUtility::uniqueList($tags);
         }
 
         $table = 'tx_kesearch_index';

@@ -212,10 +212,10 @@ class Filterlist
         $pids = [];
         if (is_string($pages)) {
             // TYPO3 7.6
-            $pagesParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pages, true);
+            $pagesParts = GeneralUtility::trimExplode(',', $pages, true);
             foreach ($pagesParts as $pagePart) {
-                $a = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $pagePart);
-                $b = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $a[0]);
+                $a = GeneralUtility::trimExplode('|', $pagePart);
+                $b = GeneralUtility::trimExplode('_', $a[0]);
                 $uid = end($b);
                 $pids[] = $uid;
             }

@@ -49,7 +49,7 @@ class Pdf extends File implements FileIndexerInterface
     /**
      * class constructor
      *
-     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
+     * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
     {

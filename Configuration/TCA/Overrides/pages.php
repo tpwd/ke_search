@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Resource\File;
 defined('TYPO3') or die();
 
 // add tag field to pages
@@ -30,14 +32,14 @@ $tempColumns = [
     'tx_kesearch_resultimage' => [
         'exclude' => true,
         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:pages.tx_kesearch_resultimage',
-        'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+        'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
             'tx_kesearch_resultimage',
             [
                 'overrideChildTca' => [
                     'types' => [
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
+                        File::FILETYPE_IMAGE => [
                             'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                     --palette--;;filePalette',
                         ],
                     ],
@@ -48,15 +50,15 @@ $tempColumns = [
 ];
 
 // add the new fields to tab "search" and include the core field "no_search"
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
-TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
+ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '--div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:pages.tx_kesearch_label,no_search;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.no_search_formlabel, tx_kesearch_tags,tx_kesearch_abstract,tx_kesearch_resultimage'
 );
 
 // remove field "no_search" from "miscellaneous" palette of the "Behaviour" tab
 // first use API to replace it with a dummy field
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
+ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'miscellaneous',
     'tx_kesearch_thisfielddoesnotexist',
@@ -71,7 +73,7 @@ $GLOBALS['TCA']['pages']['palettes']['miscellaneous']['showitem'] =
         $GLOBALS['TCA']['pages']['palettes']['miscellaneous']['showitem']
     );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerPageTSConfigFile(
+ExtensionManagementUtility::registerPageTSConfigFile(
     'ke_search',
     'Configuration/TSconfig/AllowedNewTables.tsconfig',
     'EXT:ke_search :: Restrict pages to ke_search records'

@@ -25,6 +25,8 @@
 
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -53,7 +55,7 @@ class FilterOptionTagValidator
                 FlashMessage::class,
                 $this->translate('tag_too_short_message', [$value, $minLength]),
                 $this->translate('tag_too_short'),
-                FlashMessage::ERROR,
+                AbstractMessage::ERROR,
                 true
             );
 
@@ -84,7 +86,7 @@ class FilterOptionTagValidator
      */
     protected function translate($key, array $arguments = [])
     {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+        return LocalizationUtility::translate(
             'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:' . $key,
             'KeSearch',
             $arguments

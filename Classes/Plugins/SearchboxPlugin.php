@@ -19,7 +19,8 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use Tpwd\KeSearch\Lib\Pluginbase;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SearchboxPlugin extends Pluginbase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     * @var StandaloneView
      */
     protected $searchFormView;
 
@@ -74,7 +75,7 @@ class SearchboxPlugin extends Pluginbase
 
         if (class_exists('\Tpwd\KeSearchPremium\Headless\HeadlessApi')) {
             /** @var \Tpwd\KeSearchPremium\Headless\HeadlessApi $headlessApi */
-            $headlessApi = GeneralUtility::makeInstance(\Tpwd\KeSearchPremium\Headless\HeadlessApi::class);
+            $headlessApi = GeneralUtility::makeInstance(HeadlessApi::class);
             if ($headlessApi->getHeadlessMode()) {
                 return json_encode($this->fluidTemplateVariables);
             }
@@ -92,7 +93,7 @@ class SearchboxPlugin extends Pluginbase
      */
     public function initFluidTemplate()
     {
-        $this->searchFormView = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $this->searchFormView = GeneralUtility::makeInstance(StandaloneView::class);
         $this->searchFormView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $this->searchFormView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
         $this->searchFormView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);

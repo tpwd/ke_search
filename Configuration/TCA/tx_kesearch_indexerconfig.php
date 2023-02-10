@@ -1,5 +1,6 @@
 <?php
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 
 return [
@@ -85,7 +86,6 @@ return [
             'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.storagepid.description',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 1,
                 'minitems' => 1,
@@ -98,7 +98,6 @@ return [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.targetpid',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 1,
                 'minitems' => 1,
@@ -112,7 +111,6 @@ return [
             'displayCond' => 'FIELD:type:IN:page,tt_content,tt_address,news,tt_news',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 10,
                 'minitems' => 0,
@@ -126,7 +124,6 @@ return [
             'displayCond' => 'FIELD:type:IN:page,tt_content',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 10,
                 'minitems' => 0,
@@ -140,7 +137,6 @@ return [
             'displayCond' => 'FIELD:type:IN:tt_address,news,tt_news',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 10,
                 'minitems' => 0,
@@ -297,7 +293,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => '30',
-                'default' => (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
+                'default' => (string)PageRepository::DOKTYPE_DEFAULT,
             ],
         ],
         'content_fields' => [

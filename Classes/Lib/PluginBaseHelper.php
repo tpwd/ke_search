@@ -27,15 +27,12 @@ namespace Tpwd\KeSearch\Lib;
  */
 class PluginBaseHelper
 {
-    /**
-     * Contains the parent object
-     * @var Pluginbase
-     */
-    public $pObj;
+    public Pluginbase $pObj;
 
-    public function __construct($pObj)
+    public function __construct(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
+        $this->cObj = $pObj->getContentObjectRenderer();
     }
 
     public function getStartingPoint()
@@ -65,8 +62,8 @@ class PluginBaseHelper
         } else {
             // if loadFlexformsFromOtherCE is NOT set
             // get startingPoints of current page
-            $startingpoint['pages'] = $this->pObj->cObj->data['pages'] ?? false;
-            $startingpoint['recursive'] = $this->pObj->cObj->data['recursive'] ?? false;
+            $startingpoint['pages'] = $this->cObj->data['pages'] ?? false;
+            $startingpoint['recursive'] = $this->cObj->data['recursive'] ?? false;
         }
 
         // allow to override startingpoint with typoscript like this

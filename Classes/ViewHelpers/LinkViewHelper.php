@@ -2,13 +2,14 @@
 
 namespace Tpwd\KeSearch\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper to render links to search results including filters
  */
-class LinkViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
+class LinkViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

@@ -7,7 +7,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'version' => '4.6.3',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'ke_search Dev Team',
     'author_email' => 'ke_search@tpwd.de',
     'author_company' => 'TPWD AG',

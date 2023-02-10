@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -108,7 +109,7 @@ class FilterRepository extends BaseRepository
         $filter = $this->findByAssignedFilterOption($filterOptionUid, true);
         if (!empty($filter)) {
             $updateFields = [
-                'options' => GeneralUtility::rmFromList((string)$filterOptionUid, $filter['options']),
+                'options' => SearchHelper::rmFromList((string)$filterOptionUid, $filter['options']),
             ];
             $this->update($filter['uid'], $updateFields);
         }

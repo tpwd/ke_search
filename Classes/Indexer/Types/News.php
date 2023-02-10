@@ -19,7 +19,7 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\NewsRepository;
@@ -40,7 +40,7 @@ class News extends IndexerBase
     /**
      * Initializes indexer for news
      *
-     * @param \Tpwd\KeSearch\Indexer\IndexerRunner $pObj
+     * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
     {

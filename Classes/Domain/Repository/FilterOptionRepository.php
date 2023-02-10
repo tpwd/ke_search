@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
+use TYPO3\CMS\Core\Context\Context;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
@@ -243,8 +244,8 @@ class FilterOptionRepository extends BaseRepository
 
         $newRecord = [
             'pid' => $filter['pid'],
-            'crdate' => $GLOBALS['EXEC_TIME'],
-            'tstamp' => $GLOBALS['EXEC_TIME'],
+            'crdate' => GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
+            'tstamp' => GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
             'l10n_diffsource' => '',
         ];

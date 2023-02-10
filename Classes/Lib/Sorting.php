@@ -44,11 +44,6 @@ class Sorting
     public $db;
 
     /**
-     * @var ContentObjectRenderer
-     */
-    public $cObj;
-
-    /**
      * @var PluginBaseHelper
      */
     public $div;
@@ -71,7 +66,6 @@ class Sorting
     {
         $this->pObj = $pObj;
         $this->db = $this->pObj->db;
-        $this->cObj = $this->pObj->cObj;
         $this->conf = $this->pObj->conf;
 
         // get sorting values (sortdate, title, what ever...)

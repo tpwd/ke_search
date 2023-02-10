@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
+use Doctrine\DBAL\Driver\Exception;
 use PDO;
 
 /***************************************************************
@@ -37,7 +38,7 @@ class FileMetaDataRepository extends BaseRepository
      * @param int $languageUid
      * @return array
      * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      */
     public function findByFileUidAndLanguageUid(int $fileUid, $languageUid)
     {

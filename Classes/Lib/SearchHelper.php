@@ -19,7 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -391,7 +391,7 @@ class SearchHelper
     /**
      * @param $filterOptionRecord
      * @return string
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws SiteNotFoundException
      */
     public static function createFilterOptionSlug($filterOptionRecord): string
     {
@@ -473,5 +473,28 @@ class SearchHelper
     public static function getSearchWordParameter(): string
     {
         return htmlspecialchars($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_kesearch_pi1.']['searchWordParameter'] ?? 'tx_kesearch_pi1[sword]');
+    }
+
+    /**
+     * Taken from TYPO3 v11 core
+     *
+     * Removes an item from a comma-separated list of items.
+     *
+     * If $element contains a comma, the behaviour of this method is undefined.
+     * Empty elements in the list are preserved.
+     *
+     * @param string $element Element to remove
+     * @param string $list Comma-separated list of items (string)
+     * @return string New comma-separated list of items
+     */
+    public static function rmFromList($element, $list)
+    {
+        $items = explode(',', $list);
+        foreach ($items as $k => $v) {
+            if ($v == $element) {
+                unset($items[$k]);
+            }
+        }
+        return implode(',', $items);
     }
 }
