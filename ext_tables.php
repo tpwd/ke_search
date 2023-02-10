@@ -23,16 +23,4 @@ defined('TYPO3') or die();
             'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf',
         ]
     );
-
-    if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() === 10) {
-        // This icon registration can be deleted once compatibility with TYPO3 v10 is removed
-        // see also: Configuration/Icons.php for the new way
-        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-        $iconRegistry->registerIcon(
-            'ext-kesearch-wizard-icon',
-            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-            ['source' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg']
-        );
-    }
 })();
