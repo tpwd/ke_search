@@ -1,6 +1,6 @@
 <?php
 return [
-    'web_KesearchMainModule' => [
+    'web_KeSearchBackendModule' => [
         'parent' => 'web',
         'position' => ['after' => '*'],
         'access' => 'user',
