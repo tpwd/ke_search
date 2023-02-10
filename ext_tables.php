@@ -3,12 +3,7 @@
 defined('TYPO3') or die();
 
 (function () {
-    // add help file
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'tx_kesearch_filters',
-        'EXT:ke_search/locallang_csh.xml'
-    );
-
+    // TODO: Remove this once support for TYPO3 11 is dropped
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'KeSearch',
         'web',
