@@ -14,11 +14,11 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'php' => '7.4.0-8.9.99',
-            'typo3' => '10.4.11-11.5.99',
+            'typo3' => '11.5.11-12.99.99',
         ],
         'conflicts' => [],
         'suggests' => [
-            'dashboard' => '10.4.11-11.5.99',
+            'dashboard' => '11.5.11-12.99.99',
         ],
     ],
     'autoload' => [

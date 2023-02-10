@@ -17,20 +17,20 @@
 	},
 	"require": {
 		"php": "^7.4 || ^8.0",
-		"ext-pdo": "*",
-		"typo3/cms-core": "^10.4.11 || ^11.0",
-		"symfony/polyfill-php80": "^1.23"
+		"typo3/cms-core": "^11.0 || ^12.0",
+		"symfony/polyfill-php80": "^1.23",
+		"ext-pdo": "*"
 	},
 	"require-dev": {
-		"typo3/cms-dashboard": "^10.4.11 || ^11.0",
-		"typo3/cms-install": "^10.4.11 || ^11.0",
+		"typo3/cms-dashboard": "^11.0 || ^12.0",
+		"typo3/cms-install": "^11.0 || ^12.0",
+		"typo3/coding-standards": "^0.5.5",
 		"phpunit/phpunit": "^8.5 || ^9.5",
 		"phpstan/phpstan": "^1.8",
 		"ext-zip": "*",
 		"ext-libxml": "*",
 		"ext-dom": "*",
-		"ext-json": "*",
-		"typo3/coding-standards": "^0.5.5"
+		"ext-json": "*"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"
