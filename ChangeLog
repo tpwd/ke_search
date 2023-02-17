@@ -20,6 +20,7 @@ Upcoming Version
 [TASK]    Add property types
 [TASK]    Migrate outdated fetch() calls in query builder usages
 [TASK]    Cleanup: Remove unused properties
+[TASK]    Update PHPStan configuration
 [BUGFIX]  Apply rawurlencode only to file title. Thanks to Muhammad Zohaib. https://github.com/tpwd/ke_search/issues/146
 
 Version 4.6.3, 3 February 2023
