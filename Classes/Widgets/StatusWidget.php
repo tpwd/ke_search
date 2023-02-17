@@ -34,7 +34,7 @@ class StatusWidget implements WidgetInterface
     public Registry $registry;
     private WidgetConfigurationInterface $configuration;
     private StandaloneView $view;
-    private $options;
+    private array $options;
 
     public function __construct(
         WidgetConfigurationInterface $configuration,
