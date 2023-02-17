@@ -246,9 +246,10 @@ class SearchHelper
                         $linkConf['parameter'] = 't3://file?uid=' . $resultRow['orig_uid'];
                     }
                 } else {
-                    $filePath = $resultRow['directory'] . $resultRow['title'];
-                    if (file_exists($filePath)) {
-                        $linkConf['parameter'] = rawurlencode(PathUtility::stripPathSitePrefix($filePath));
+                    if (file_exists($resultRow['directory'] . $resultRow['title'])) {
+                        $linkConf['parameter'] =
+                            PathUtility::stripPathSitePrefix($resultRow['directory'])
+                            . rawurlencode($resultRow['title']);
                     }
                 }
                 $linkConf['fileTarget'] = $targetFiles;
