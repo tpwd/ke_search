@@ -24,6 +24,8 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Exception;
+use PDO;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -35,8 +37,6 @@ use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
@@ -49,111 +49,63 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  */
 class Pluginbase extends AbstractPlugin
 {
-    // Same as class name
+    public Db $db;
+    public PluginBaseHelper $div;
+    public Filters $filters;
+
     public $prefixId = 'tx_kesearch_pi1';
-
-    // The extension key.
     public $extKey = 'ke_search';
-
-    // cleaned searchword (karl-heinz => karl heinz)
-    public $sword = '';
-
-    // searchwords as array
-    /**
-     * @var array
-     */
-    public $swords;
-
-    // searchphrase for boolean mode (+karl* +heinz*)
-    public $wordsAgainst = '';
-
-    // tagsphrase for boolean mode (+#category_213# +#city_42#)
-    public $tagsAgainst = [];
-
-    // searchphrase for score/non boolean mode (karl heinz)
-    public $scoreAgainst = '';
-
-    // true if no searchparams given; otherwise false
-    public $isEmptySearch = true;
-
-    // comma seperated list of startingPoints
-    public $startingPoints = 0;
-
-    // first entry in list of startingpoints
-    public $firstStartingPoint = 0;
-
-    // FlexForm-Configuration
     public $conf = [];
 
+    // cleaned searchword (karl-heinz => karl heinz)
+    public string $sword = '';
+
+    // searchwords as array
+    public array $swords;
+
+    // searchphrase for boolean mode (+karl* +heinz*)
+    public string $wordsAgainst = '';
+
+    // tagsphrase for boolean mode (+#category_213# +#city_42#)
+    public array$tagsAgainst = [];
+
+    // searchphrase for score/non boolean mode (karl heinz)
+    public string $scoreAgainst = '';
+
+    // true if no searchparams given; otherwise false
+    public bool $isEmptySearch = true;
+
+    // comma seperated list of startingPoints
+    public string $startingPoints = '';
+
+    // first entry in list of startingpoints
+    public int $firstStartingPoint = 0;
+
     // Extension-Configuration
-    public $extConf = [];
+    public array $extConf = [];
 
     // Extension-Configuration of ke_search_premium if installed
-    public $extConfPremium = [];
+    public array $extConfPremium = [];
 
     // count search results
-    public $numberOfResults = 0;
+    public int $numberOfResults = 0;
 
-    // it's for 'USE INDEX ($indexToUse)' to speed up queries
-    public $indexToUse = '';
-
-    /**
-     * contains all tags of current search result, false if not initialized yet
-     * @var bool|array
-     */
-    public $tagsInSearchResult = false;
+    // contains all tags of current search result, false if not initialized yet
+    public array $tagsInSearchResult = [];
 
     // preselected filters by flexform
-    public $preselectedFilter = [];
+    public array $preselectedFilter = [];
 
-    // array with filter-uids as key and whole data as value
-    public $filtersFromFlexform = [];
+    // contains a boolean value which represents if there are too short words in the search string
+    public bool $hasTooShortWords = false;
 
-    // contains a boolean value which represents if there are too short words in the searchstring
-    public $hasTooShortWords = false;
-    public $fileTypesWithPreviewPossible = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff'];
-    public $fluidTemplateVariables = [];
+    // contains all the variables passed to the fluid template
+    public array $fluidTemplateVariables = [];
 
-    /**
-     * @var Db
-     */
-    public $db;
-
-    /**
-     * @var PluginBaseHelper
-     */
-    public $div;
-
-    /**
-     * @var TypoScriptService
-     */
-    public $typoScriptService;
-
-    /**
-     * @var KeSearchPremium keSearchPremium
-     */
-    public $keSearchPremium;
-
-    /**
-     * @var Filters
-     */
-    public $filters;
-
-    /**
-     * @var Typo3Version
-     */
-    public $typo3Version;
-
-    /**
-     * Frontend language ID
-     * @var int
-     */
+    // Frontend language ID
     protected int $languageId;
 
-    /**
-     * Helper variable to pass the value to a hook
-     * @var int
-     */
+    // Helper variable to pass the value to a hook
     private int $currentRowNumber;
 
     /**
@@ -161,8 +113,6 @@ class Pluginbase extends AbstractPlugin
      */
     public function init()
     {
-        $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var LanguageAspect $languageAspect */
@@ -172,7 +122,6 @@ class Pluginbase extends AbstractPlugin
         // get some helper functions
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
 
-        $this->typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         // set start of query timer
         if (!($GLOBALS['TSFE']->register['ke_search_queryStartTime'] ?? false)) {
             $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
@@ -198,7 +147,7 @@ class Pluginbase extends AbstractPlugin
             // but if no record has been found it will return 0
             /** @phpstan-ignore-next-line */
             if (is_int($contentElement) && $contentElement == 0) {
-                throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
+                throw new Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
@@ -318,11 +267,7 @@ class Pluginbase extends AbstractPlugin
         // add cssTag to header if set
         if (!empty($this->conf['cssFile'])) {
             $filePathSanitizer = GeneralUtility::makeInstance(FilePathSanitizer::class);
-            if ($this->typo3Version->getMajorVersion() < 11) {
-                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile']);
-            } else {
-                $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
-            }
+            $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
             if (!empty($cssFile)) {
                 /** @var PageRenderer $pageRenderer */
                 $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -492,21 +437,16 @@ class Pluginbase extends AbstractPlugin
                 $filterData['end'] = $this->piVars['filter'][$filter['uid']]['end'] ?? '';
             }
 
-            // special classes / custom code
-            switch ($filter['rendertype']) {
-                // use custom code for filter rendering
-                // set $filterData['rendertype'] = 'custom'
-                // and $filterData['rawHtmlContent'] to your pre-rendered filter code
-                default:
-                    // hook for custom filter renderer
-                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] ?? null)) {
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as
-                                 $_classRef) {
-                            $_procObj = GeneralUtility::makeInstance($_classRef);
-                            $_procObj->customFilterRenderer($filter['uid'], $options, $this, $filterData);
-                        }
-                    }
-                    break;
+            // use custom code for filter rendering
+            // set $filterData['rendertype'] = 'custom'
+            // and $filterData['rawHtmlContent'] to your pre-rendered filter code
+            // hook for custom filter renderer
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] ?? null)) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as
+                         $_classRef) {
+                    $_procObj = GeneralUtility::makeInstance($_classRef);
+                    $_procObj->customFilterRenderer($filter['uid'], $options, $this, $filterData);
+                }
             }
 
             // add values to fluid template
@@ -520,7 +460,7 @@ class Pluginbase extends AbstractPlugin
      * @param array $options contains all options which are found in the search result
      * @return array list of checkboxes records
      */
-    public function compileCheckboxOptions(array $filter, $options): array
+    public function compileCheckboxOptions(array $filter, array $options): array
     {
         $allOptionsOfCurrentFilter = $filter['options'];
 
@@ -592,7 +532,7 @@ class Pluginbase extends AbstractPlugin
      * @author Christian Bülter
      * @since 09.09.14
      */
-    public function findFilterOptionsToDisplay($filter)
+    public function findFilterOptionsToDisplay(array $filter): array
     {
         $optionsToDisplay = [];
 
@@ -664,7 +604,7 @@ class Pluginbase extends AbstractPlugin
      * @param array $filter
      * @return string
      */
-    public function renderNumberOfResultsString($numberOfResults, $filter)
+    public function renderNumberOfResultsString(int $numberOfResults, array $filter): string
     {
         if ($filter['shownumberofresults'] && !count($filter['selectedOptions']) && $numberOfResults) {
             $returnValue = ' (' . $numberOfResults . ')';
@@ -924,10 +864,10 @@ class Pluginbase extends AbstractPlugin
     /**
      * get path for type icon used for rendering in fluid
      *
-     * @param $type
+     * @param string $typeComplete
      * @return string the path to the type icon file
      */
-    public function getTypeIconPath($typeComplete)
+    public function getTypeIconPath(string $typeComplete):string
     {
         list($type) = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);
@@ -949,13 +889,7 @@ class Pluginbase extends AbstractPlugin
         return 'EXT:ke_search/Resources/Public/Icons/types/default.gif';
     }
 
-    /**
-     * @param $table
-     * @param $field
-     * @param $uid
-     * @return mixed
-     */
-    public function getFirstFalRelationUid($table, $field, $uid)
+    public function getFirstFalRelationUid(string $table, string $field, int $uid): int
     {
         /** @var GenericRepository $genericRepository */
         $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
@@ -983,16 +917,18 @@ class Pluginbase extends AbstractPlugin
             );
         }
 
-        return is_array($fileReferenceRow) ? $fileReferenceRow['uid'] : false;
+        return is_array($fileReferenceRow) ? $fileReferenceRow['uid'] : 0;
     }
 
     /**
      * Fetches configuration value given its name.
      * Merges flexform and TS configuration values.
+     *
      * @param    string $param Configuration value name
+     * @param    string $sheet
      * @return    string    Parameter value
      */
-    public function fetchConfigurationValue($param, $sheet = 'sDEF')
+    public function fetchConfigurationValue(string $param, string $sheet = 'sDEF'): string
     {
         $value = trim(
             $this->pi_getFFvalue(
@@ -1007,12 +943,13 @@ class Pluginbase extends AbstractPlugin
     /**
      * function betterSubstr
      * better substring function
-     * @param $str string
-     * @param $length integer
-     * @param $minword integer
+     *
+     * @param string $str
+     * @param int $length
+     * @param int $minword
      * @return string
      */
-    public function betterSubstr($str, $length = 0, $minword = 3)
+    public function betterSubstr(string $str, int $length = 0, int $minword = 3): string
     {
         $sub = '';
         $len = 0;
@@ -1223,7 +1160,7 @@ class Pluginbase extends AbstractPlugin
                         . $pageRepository->enableFields('tx_kesearch_filteroptions')
                     )
                     ->executeQuery()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
 
                 foreach ($filterRows as $row) {
                     $this->preselectedFilter[$row['filteruid']][$row['optionuid']] = $row['tag'];
@@ -1237,7 +1174,7 @@ class Pluginbase extends AbstractPlugin
      * checks if an empty search was loaded / submitted
      * @return bool true if no searchparams given; otherwise false
      */
-    public function isEmptySearch()
+    public function isEmptySearch(): bool
     {
         // check if searchword is emtpy or equal with default searchbox value
         $emptySearchword = empty($this->sword) || $this->sword == $this->pi_getLL('searchbox_default_value');
@@ -1263,7 +1200,7 @@ class Pluginbase extends AbstractPlugin
      * @param string $eventUid The uid is passed as string, but we know that for Cal this is an integer
      * @return array
      */
-    public function getCalEventEnddate($eventUid)
+    public function getCalEventEnddate(string $eventUid): array
     {
         $table = 'tx_cal_event';
         $queryBuilder = Db::getQueryBuilder($table);
@@ -1273,12 +1210,12 @@ class Pluginbase extends AbstractPlugin
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($eventUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($eventUid, PDO::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
             ->executeQuery()
-            ->fetch(0);
+            ->fetchAssociative();
 
         return [
             'end_timestamp' => strtotime($row['end_date']) + $row['end_time'],
@@ -1294,7 +1231,7 @@ class Pluginbase extends AbstractPlugin
      * @param string $field
      * @return array
      */
-    public function sortArrayRecursive($array, $field)
+    public function sortArrayRecursive(array $array, string $field): array
     {
         $sortArray = [];
         $mynewArray = [];
@@ -1345,7 +1282,7 @@ class Pluginbase extends AbstractPlugin
      * @since 11.07.12
      * @return bool
      */
-    public function in_multiarray($needle, $haystack)
+    public function in_multiarray(mixed $needle, array $haystack): bool
     {
         foreach ($haystack as $value) {
             if (is_array($value)) {
@@ -1366,7 +1303,7 @@ class Pluginbase extends AbstractPlugin
      * @param array $arr the array
      * @param string $col the column
      */
-    public function sortArrayByColumn(&$arr, $col)
+    public function sortArrayByColumn(array &$arr, string $col): void
     {
         $newArray = [];
         $sort_col = [];
@@ -1382,11 +1319,13 @@ class Pluginbase extends AbstractPlugin
         $arr = $newArray;
     }
 
-    private function allowEmptySearch()
+    /**
+     * check for inequality to null to maintain functionality even if unset
+     *
+     * @return bool
+     */
+    private function allowEmptySearch(): bool
     {
-        /*
-         * check for inequality to null to maintain functionality even if unset
-         */
         if ($this->extConf['allowEmptySearch'] != null && $this->extConf['allowEmptySearch'] == false) {
             return false;
         }

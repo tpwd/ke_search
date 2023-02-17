@@ -286,7 +286,7 @@ class Db implements SingletonInterface
      *
      * @return int Amount of SearchResults
      */
-    public function getAmountOfSearchResults()
+    public function getAmountOfSearchResults(): int
     {
         return (int)($this->numberOfResults);
     }
@@ -297,9 +297,9 @@ class Db implements SingletonInterface
      *
      * @return array Array containing the tags as key and the sum as value
      */
-    public function getTagsFromSearchResult()
+    public function getTagsFromSearchResult(): array
     {
-        $tags = $tagsForResult = [];
+        $tags = [];
         $tagChar = $this->pObj->extConf['prePostTagChar'];
         $tagDivider = $tagChar . ',' . $tagChar;
 

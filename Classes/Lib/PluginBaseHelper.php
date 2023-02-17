@@ -38,7 +38,7 @@ class PluginBaseHelper
         $this->cObj = $pObj->getContentObjectRenderer();
     }
 
-    public function getStartingPoint()
+    public function getStartingPoint(): string
     {
         $startingpoint = [];
 
