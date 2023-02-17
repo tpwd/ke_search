@@ -105,7 +105,7 @@ class SearchPhraseStatisticsRepository
                 'where',
                 'tstamp > ' . $queryBuilder->quote($startTime, PDO::PARAM_INT)
             )
-            ->add('groupBy', $col . ' HAVING count(' . $col . ')>0')
+            ->add('groupBy', $col . ',language HAVING count(' . $col . ')>0')
             ->add('orderBy', 'num desc')
             ->executeQuery()
             ->fetchAll();
