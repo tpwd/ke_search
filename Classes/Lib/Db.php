@@ -147,7 +147,7 @@ class Db implements SingletonInterface
             $numRows = $queryBuilder
                 ->add('select', 'FOUND_ROWS()')
                 ->executeQuery()
-                ->fetchColumn(0);
+                ->fetchNumeric()[0];
             $this->numberOfResults = $numRows;
         }
     }
