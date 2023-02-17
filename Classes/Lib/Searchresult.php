@@ -3,6 +3,7 @@
 namespace Tpwd\KeSearch\Lib;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -29,48 +30,42 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class Searchresult
 {
-    protected $conf = [];
-    protected $row = [];
+    private array $row = [];
+    private array $swords = [];
+    private array $conf = [];
+    private array $extConfPremium;
 
-    /**
-     * @var Pluginbase
-     */
-    protected $pObj;
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $cObj;
-
-    /**
-     * @var PluginBaseHelper
-     */
-    protected $div;
-
-    /**
-     * The constructor of this class
-     * @param Pluginbase $pObj
-     */
-    public function __construct(Pluginbase $pObj)
+    public function __construct()
     {
-        // initializes this object
-        $this->init($pObj);
+        $this->extConfPremium = SearchHelper::getExtConfPremium();
     }
 
     /**
-     * Initializes this object
-     * @param Pluginbase $pObj
+     * Sets the plugin configuration (from the FlexForm configuration)
+     *
+     * @param array $pluginConfiguration
+     * @return void
      */
-    public function init(Pluginbase $pObj)
+    public function setPluginConfiguration(array $pluginConfiguration)
     {
-        $this->pObj = $pObj;
-        $this->cObj = $this->pObj->getContentObjectRenderer();
-        $this->conf = $this->pObj->conf;
+        $this->conf = $pluginConfiguration;
+    }
+
+    /**
+     * Sets the search word array
+     *
+     * @param array $swords
+     * @return void
+     */
+    public function setSwords(array $swords)
+    {
+        $this->swords = $swords;
     }
 
     /**
      * set row array with current result element
      * @param array $row
+     * @return void
      */
     public function setRow(array $row)
     {
@@ -81,8 +76,9 @@ class Searchresult
      * get title for result row
      * @return string The linked result title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         // configure the link
         $linkconf = $this->getResultLinkConfiguration();
 
@@ -92,7 +88,7 @@ class Searchresult
                 // if we use FAL, see if we have a title in the metadata
                 if ($this->row['orig_uid'] && ($fileObject = SearchHelper::getFile($this->row['orig_uid']))) {
                     $metadata = $fileObject->getMetaData()->get();
-                    $linktext = ($metadata['title'] ? $metadata['title'] : $this->row['title']);
+                    $linktext = ($metadata['title'] ?: $this->row['title']);
                 } else {
                     $linktext = $this->row['title'];
                 }
@@ -106,22 +102,23 @@ class Searchresult
         $linktext = htmlspecialchars(strip_tags($linktext));
 
         // highlight hits in result title?
-        if ($this->conf['highlightSword'] && count($this->pObj->swords)) {
-            $linktext = $this->highlightArrayOfWordsInContent($this->pObj->swords, $linktext);
+        if ($this->conf['highlightSword'] && count($this->swords)) {
+            $linktext = $this->highlightArrayOfWordsInContent($this->swords, $linktext);
         }
-        return $this->cObj->typoLink($linktext, $linkconf);
+        return $cObj->typoLink($linktext, $linkconf);
     }
 
     /**
      * get result url (not) linked
      * @return string The results URL
      */
-    public function getResultUrl($linked = false)
+    public function getResultUrl($linked = false): string
     {
-        $linkText = $this->cObj->typoLink_URL($this->getResultLinkConfiguration());
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $linkText = $cObj->typoLink_URL($this->getResultLinkConfiguration());
         $linkText = htmlspecialchars($linkText);
         if ($linked) {
-            return $this->cObj->typoLink($linkText, $this->getResultLinkConfiguration());
+            return $cObj->typoLink($linkText, $this->getResultLinkConfiguration());
         }
         return $linkText;
     }
@@ -132,7 +129,7 @@ class Searchresult
      *
      * @return array configuration for typolink
      */
-    public function getResultLinkConfiguration()
+    public function getResultLinkConfiguration(): array
     {
         return SearchHelper::getResultLinkConfiguration(
             $this->row,
@@ -146,7 +143,7 @@ class Searchresult
      *
      * @return string The teaser
      */
-    public function getTeaser()
+    public function getTeaser(): string
     {
         $content = $this->getContentForTeaser();
         return $this->buildTeaserContent($content);
@@ -158,13 +155,13 @@ class Searchresult
      *
      * @return string The content
      */
-    public function getContentForTeaser()
+    public function getContentForTeaser(): string
     {
         $content = $this->row['content'];
         if (!empty($this->row['abstract'])) {
             $content = nl2br($this->row['abstract']);
             if ($this->conf['previewMode'] == 'hit') {
-                if (!$this->isArrayOfWordsInString($this->pObj->swords, $this->row['abstract'])) {
+                if (!$this->isArrayOfWordsInString($this->swords, $this->row['abstract'])) {
                     $content = $this->row['content'];
                 }
             }
@@ -181,7 +178,7 @@ class Searchresult
      * If false: The method returns true directly, if one of the words was found
      * @return bool Returns true if the word(s) are found
      */
-    public function isArrayOfWordsInString(array $wordArray, $content, $checkAll = false)
+    public function isArrayOfWordsInString(array $wordArray, string $content, bool $checkAll = false): bool
     {
         $found = false;
         foreach ($wordArray as $word) {
@@ -207,11 +204,12 @@ class Searchresult
      * @param string $content
      * @return string The content with highlighted searchwords
      */
-    public function highlightArrayOfWordsInContent($wordArray, $content)
+    public function highlightArrayOfWordsInContent(array $wordArray, string $content): string
     {
-        if (is_array($wordArray) && count($wordArray)) {
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        if (count($wordArray)) {
             $highlightedWord = (!empty($this->conf['highlightedWord_stdWrap'])) ?
-                $this->cObj->stdWrap('\0', $this->conf['highlightedWord_stdWrap']) :
+                $cObj->stdWrap('\0', $this->conf['highlightedWord_stdWrap']) :
                 '<span class="hit">\0</span>';
 
             foreach ($wordArray as $word) {
@@ -219,9 +217,9 @@ class Searchresult
                 $word = htmlspecialchars($word);
                 // Highlight hits within words when using ke_seaarch_premium "in word search"
                 if (
-                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->extConfPremium['enableInWordSearch'] ?? false))
                     ||
-                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
+                    (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->extConfPremium['enableNativeInWordSearch'] ?? false))
                 ) {
                     $pattern = '/(' . $word . ')/iu';
                 } else {
@@ -239,10 +237,11 @@ class Searchresult
      * @param string $content The whole resultcontent
      * @return string The cutted recultcontent
      */
-    public function buildTeaserContent($content)
+    public function buildTeaserContent(string $content): string
     {
-        if (is_array($this->pObj->swords) && count($this->pObj->swords)) {
-            $amountOfSearchWords = count($this->pObj->swords);
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        if (count($this->swords)) {
+            $amountOfSearchWords = count($this->swords);
             $content = strip_tags($content);
             // with each new searchword and all the croppings here the teaser for each word will become too small/short
             // I decided to add 20 additional letters for each searchword. It looks much better and is more readable
@@ -251,7 +250,7 @@ class Searchresult
             $aSearchWordWasFound = false;
             $isSearchWordAtTheBeginning = false;
             $teaserArray = [];
-            foreach ($this->pObj->swords as $word) {
+            foreach ($this->swords as $word) {
                 // Always remove whitespace around searchword first
                 $word = trim($word);
 
@@ -289,21 +288,21 @@ class Searchresult
 
                     // crop some words behind searchword
                     $partWithSearchWord = mb_substr($content, $startPos);
-                    $temp = $this->cObj->crop($partWithSearchWord, $charsForEachSearchWord . '|…|1');
+                    $temp = $cObj->crop($partWithSearchWord, $charsForEachSearchWord . '|…|1');
 
                     // crop some words before search word
                     // after last cropping our text is too short now. So we have to find a new cutting position
                     ($startPos > 10) ? $length = strlen($temp) - 10 : $length = strlen($temp);
 
                     // Store content part containing the search word in teaser text array
-                    $teaserArray[] = $this->cObj->crop($temp, '-' . $length . '||1');
+                    $teaserArray[] = $cObj->crop($temp, '-' . $length . '||1');
                 }
             }
 
             // When the searchword was found in title but not in content the teaser is empty
             // in that case we have to get the first x letters without containing any searchword
             if ($aSearchWordWasFound === false) {
-                $teaser = $this->cObj->crop($content, $this->conf['resultChars'] . '||1');
+                $teaser = $cObj->crop($content, $this->conf['resultChars'] . '||1');
             } elseif ($isSearchWordAtTheBeginning === true) {
                 $teaser = implode(' ', $teaserArray);
             } else {
@@ -312,10 +311,10 @@ class Searchresult
 
             // highlight hits?
             if ($this->conf['highlightSword']) {
-                $teaser = $this->highlightArrayOfWordsInContent($this->pObj->swords, $teaser);
+                $teaser = $this->highlightArrayOfWordsInContent($this->swords, $teaser);
             }
             return $teaser;
         }
-        return $this->cObj->crop($content, $this->conf['resultChars'] . '|…|1');
+        return $cObj->crop($content, $this->conf['resultChars'] . '|…|1');
     }
 }

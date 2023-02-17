@@ -135,11 +135,6 @@ class Pluginbase extends AbstractPlugin
     public $keSearchPremium;
 
     /**
-     * @var Searchresult
-     */
-    public $searchResult;
-
-    /**
      * @var Filters
      */
     public $filters;
@@ -751,12 +746,14 @@ class Pluginbase extends AbstractPlugin
 
         // init counter and loop through the search results
         $resultCount = 1;
-        $this->searchResult = GeneralUtility::makeInstance(Searchresult::class, $this);
+        $resultRowRenderer = GeneralUtility::makeInstance(Searchresult::class);
+        $resultRowRenderer->setPluginConfiguration($this->conf);
+        $resultRowRenderer->setSwords($this->swords);
 
         $this->fluidTemplateVariables['resultrows'] = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
-                $this->searchResult->setRow($row);
+                $resultRowRenderer->setRow($row);
 
                 $tempMarkerArray = [
                     'orig_uid' => $row['orig_uid'],
@@ -764,8 +761,8 @@ class Pluginbase extends AbstractPlugin
                     'orig_row' => $genericRepository->findByUidAndType($row['orig_uid'], $row['type']),
                     'title_text' => $row['title'],
                     'content_text' => $row['content'],
-                    'title' => $this->searchResult->getTitle(),
-                    'teaser' => $this->searchResult->getTeaser(),
+                    'title' => $resultRowRenderer->getTitle(),
+                    'teaser' => $resultRowRenderer->getTeaser(),
                 ];
 
                 if (substr($row['type'], 0, 4) == 'file' && !empty($row['orig_uid'])) {
@@ -795,7 +792,7 @@ class Pluginbase extends AbstractPlugin
                 $resultrowTemplateValues = $tempMarkerArray;
 
                 // set result url
-                $resultUrl = $this->searchResult->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
+                $resultUrl = $resultRowRenderer->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
                 $resultrowTemplateValues['url'] = $resultUrl;
 
                 // set result numeration
