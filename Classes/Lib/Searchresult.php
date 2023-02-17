@@ -64,7 +64,7 @@ class Searchresult
     public function init(Pluginbase $pObj)
     {
         $this->pObj = $pObj;
-        $this->cObj = $this->pObj->cObj;
+        $this->cObj = $this->pObj->getContentObjectRenderer();
         $this->conf = $this->pObj->conf;
     }
 
