@@ -8,7 +8,7 @@
 Templates/SearchForm.html
 --></f:comment>
 <f:section name="content">
-	<form method="get" id="form_kesearch_pi1" name="form_kesearch_pi1"  action="{f:uri.page(pageUid: targetpage)}">
+	<form method="get" id="form_kesearch_pi1" name="form_kesearch_pi1"  action="{targetPageUrl}">
 		<f:comment><!-- Replace the URL with the speaking URL --></f:comment>
 		<f:if condition="{isEmptySearch} == FALSE ">
 			<f:if condition="{conf.searchWordParameter} == 'tx_kesearch_pi1[sword]'">

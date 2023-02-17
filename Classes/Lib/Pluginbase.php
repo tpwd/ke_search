@@ -405,6 +405,9 @@ class Pluginbase extends AbstractPlugin
 
         // set form action pid
         $this->fluidTemplateVariables['targetpage'] = $this->conf['resultPage'];
+        $this->fluidTemplateVariables['targetPageUrl']
+            = GeneralUtility::makeInstance(ContentObjectRenderer::class)
+            ->typoLink_URL(['parameter' => $this->conf['resultPage']]);
 
         // set form action
         $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');

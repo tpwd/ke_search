@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming Version
 [!!!]     This version supports TYPO3 12 and 11 and drops support for TYPO3 10.
+[!!!]     If you use a custom template for "SearchForm.html" please replace "{f:uri.page(pageUid: targetpage)}" with "{targetPageUrl}".
 [TASK]    Mark extension as compatible with TYPO3 12 and drop support for TYPO3 10
 [TASK]    Add getOptions function to widget and add type declarations.
 [TASK]    Replace execute with executeQuery and executeStatement
@@ -15,6 +16,7 @@ Upcoming Version
 [TASK]    Add language to groupBy in trending search phrases widget to avoid MySQL error
 [TASK]    Refactor searchresult class to reduce dependencies
 [TASK]    Replace fetch with fetchAssociative and declare property in PluginBaseHelper
+[TASK]    Avoid using f:uri viewhelper in the searchbox template because that now only works in extbase context.
 [BUGFIX]  Apply rawurlencode only to file title. Thanks to Muhammad Zohaib. https://github.com/tpwd/ke_search/issues/146
 
 Version 4.6.3, 3 February 2023
