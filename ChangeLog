@@ -1,63 +1,66 @@
 ChangeLog
 
+Upcoming Version
+[TASK]    Add language to groupBy in trending search phrases widget to avoid MySQL error
+
 Version 4.6.3, 3 February 2023
-[!!!]      If you use the RouteEnhancer you will need to set one character default values for list and select filters. see Documentation/Configuration/RoutingSpeakingUrls.rst or https://github.com/tpwd/ke_search/commit/add3cb93c0c570f65b27bdb6edf28aa3bdbae5f6#diff-4df14275bdd91be559ccf5c988e352bd5f89da95790065d9015f1a32e60ca97f
-[BUGFIX]   Make it possible to reset preselected filters. https://github.com/tpwd/ke_search/issues/134 and https://github.com/tpwd/ke_search/issues/126
+[!!!]     If you use the RouteEnhancer you will need to set one character default values for list and select filters. see Documentation/Configuration/RoutingSpeakingUrls.rst or https://github.com/tpwd/ke_search/commit/add3cb93c0c570f65b27bdb6edf28aa3bdbae5f6#diff-4df14275bdd91be559ccf5c988e352bd5f89da95790065d9015f1a32e60ca97f
+[BUGFIX]  Make it possible to reset preselected filters. https://github.com/tpwd/ke_search/issues/134 and https://github.com/tpwd/ke_search/issues/126
 
 Version 4.6.2, 13 January 2023
-[BUGFIX]   Fix SQL query for assigning tags from page properties to work with sql_mode ONLY_FULL_GROUP_BY. Thanks to p-view. https://github.com/teaminmedias-pluswerk/ke_search/issues/448
-[BUGFIX]   Enable creation of filter options from categories for hidden and time restricted categories. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/144
+[BUGFIX]  Fix SQL query for assigning tags from page properties to work with sql_mode ONLY_FULL_GROUP_BY. Thanks to p-view. https://github.com/teaminmedias-pluswerk/ke_search/issues/448
+[BUGFIX]  Enable creation of filter options from categories for hidden and time restricted categories. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/144
 
 Version 4.6.1, 13 January 2023
-[TASK]     Respect workspace flag for content elements. Thanks to alexmari81. https://github.com/tpwd/ke_search/issues/139
+[TASK]    Respect workspace flag for content elements. Thanks to alexmari81. https://github.com/tpwd/ke_search/issues/139
 
 Version 4.6.0, 6 January 2023
-[!!!]      In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
-[!!!]      To use the feature "Make search word parameter changeable" you will need to adapt the changes in the template "SearchForm.html" (line 13-17, line 31) to your own template.
-[!!!]      This version changes the database structure.
-[!!!]      This version does not respect the field "hidden" for disabling indexing for files anymore (not a default field for files). Use the new field "tx_kesearch_no_search" in file metadata ("Include in search" in the new tab "Search").
-[FEATURE]  Make search word parameter changeable to be able to track search words with GA4. Thanks to Mike Street. https://github.com/tpwd/ke_search/issues/124
-[FEATURE]  Create tags for assigned categories for tt_news indexer. Thanks for sponsoring to Nervenschoner Informatik GmbH.
-[FEATURE]  Exclude files from indexing by deactivating "Include in search" in the new tab "Search" in file metadata. https://github.com/tpwd/ke_search/issues/20
-[BUGFIX]   Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
-[BUGFIX]   Fix undefined array key includeFilters in Pluginbase.php. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/133
-[BUGFIX]   Add tags only to pages which are in the list of to be indexed pages. Thanks to ped. https://github.com/tpwd/ke_search/issues/135
-[TASK]     Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
-[TASK]     Add PHPStan as dev requirement
-[TASK]     Add TYPO3/coding-standards as dev requirement
-[TASK]     Code cleanup according to PHPStan
-[TASK]     Code cleanup according to PHPStorm code inspections
-[TASK]     Code cleanup according to php-cs-fixer
-[TASK]     Add PHPStan check as a GitHub Action
-[TASK]     Add php-cs-fixer check as a GitHub Action
-[TASK]     Remove unused Behat tests for now
-[TASK]     Add startingPoints public method to Filter class. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/132
-[TASK]     Make sure sword parameter is a string. Thanks to Chris Müller. https://github.com/tpwd/ke_search/issues/137
-[TASK]     Log errors during PDF indexing to ke_search error log. Thanks to Markus Tobler. https://github.com/tpwd/ke_search/issues/140.
-[DOCS]     Fix documentation about when the conjunctions in the search phrase won't work.
-[DOCS]     Add information about contributing in README.rst
+[!!!]     In this version the deprecated scheduler task is removed, use the provided schedulable console command instead.
+[!!!]     To use the feature "Make search word parameter changeable" you will need to adapt the changes in the template "SearchForm.html" (line 13-17, line 31) to your own template.
+[!!!]     This version changes the database structure.
+[!!!]     This version does not respect the field "hidden" for disabling indexing for files anymore (not a default field for files). Use the new field "tx_kesearch_no_search" in file metadata ("Include in search" in the new tab "Search").
+[FEATURE] Make search word parameter changeable to be able to track search words with GA4. Thanks to Mike Street. https://github.com/tpwd/ke_search/issues/124
+[FEATURE] Create tags for assigned categories for tt_news indexer. Thanks for sponsoring to Nervenschoner Informatik GmbH.
+[FEATURE] Exclude files from indexing by deactivating "Include in search" in the new tab "Search" in file metadata. https://github.com/tpwd/ke_search/issues/20
+[BUGFIX]  Fix typehint and quoting for targetpid parameter from int to string. Thanks to Naderio. https://github.com/tpwd/ke_search/issues/129
+[BUGFIX]  Fix undefined array key includeFilters in Pluginbase.php. Thanks to Andreas Kessel. https://github.com/tpwd/ke_search/pull/133
+[BUGFIX]  Add tags only to pages which are in the list of to be indexed pages. Thanks to ped. https://github.com/tpwd/ke_search/issues/135
+[TASK]    Remove deprecated scheduler task for indexing, use schedulable console command instead as explained in https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Indexing/Index.html#starting-the-indexing-process-automatically
+[TASK]    Add PHPStan as dev requirement
+[TASK]    Add TYPO3/coding-standards as dev requirement
+[TASK]    Code cleanup according to PHPStan
+[TASK]    Code cleanup according to PHPStorm code inspections
+[TASK]    Code cleanup according to php-cs-fixer
+[TASK]    Add PHPStan check as a GitHub Action
+[TASK]    Add php-cs-fixer check as a GitHub Action
+[TASK]    Remove unused Behat tests for now
+[TASK]    Add startingPoints public method to Filter class. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/132
+[TASK]    Make sure sword parameter is a string. Thanks to Chris Müller. https://github.com/tpwd/ke_search/issues/137
+[TASK]    Log errors during PDF indexing to ke_search error log. Thanks to Markus Tobler. https://github.com/tpwd/ke_search/issues/140.
+[DOCS]    Fix documentation about when the conjunctions in the search phrase won't work.
+[DOCS]    Add information about contributing in README.rst
 
 Version 4.5.1, September 2022
-[BUGFIX]   Fix labels for hidden_content and show hidden_content in index records (applies only when index records are made visible by Page TSconfig).
-[BUGFIX]   Show images with language "All" in result list. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/77
-[BUGFIX]   Ignore empty values for preselected filters in order to make them work with route enhancers and pagination. Thanks to André Steiling. https://github.com/tpwd/ke_search/issues/126
-[TASK]     Do not fetch page records and do not add tags to page records if no startingpoints are given to avoid SQL error. Thanks to Veljko Stefanovic. https://github.com/tpwd/ke_search/issues/117 and https://github.com/tpwd/ke_search/issues/66
-[TASK]     Add static Page TSconfig file which allows to only show ke_search records in the New Record wizard. Thanks to Michael Reuber
-[TASK]     Rename Page TSconfig file suffix from .txt to .tsconfig.
-[DOCS]     Fix link to ke_search_hooks repository and extend documentation about custom indexers. Thanks to Luka C. https://github.com/tpwd/ke_search/issues/122
-[DOCS]     Add sortdate to the routing example
-[DOCS]     Add documentation about custom filter rendering
+[BUGFIX]  Fix labels for hidden_content and show hidden_content in index records (applies only when index records are made visible by Page TSconfig).
+[BUGFIX]  Show images with language "All" in result list. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/77
+[BUGFIX]  Ignore empty values for preselected filters in order to make them work with route enhancers and pagination. Thanks to André Steiling. https://github.com/tpwd/ke_search/issues/126
+[TASK]    Do not fetch page records and do not add tags to page records if no startingpoints are given to avoid SQL error. Thanks to Veljko Stefanovic. https://github.com/tpwd/ke_search/issues/117 and https://github.com/tpwd/ke_search/issues/66
+[TASK]    Add static Page TSconfig file which allows to only show ke_search records in the New Record wizard. Thanks to Michael Reuber
+[TASK]    Rename Page TSconfig file suffix from .txt to .tsconfig.
+[DOCS]    Fix link to ke_search_hooks repository and extend documentation about custom indexers. Thanks to Luka C. https://github.com/tpwd/ke_search/issues/122
+[DOCS]    Add sortdate to the routing example
+[DOCS]    Add documentation about custom filter rendering
 
 Version 4.5.0, September 2022
-[!!!]      This version changes the database structure and ads an additional fulltext index. Please do a full indexing after upgrading.
-[FEATURE]  Index custom file references in page indexer. Thanks to Patrick Crausaz. https://github.com/tpwd/ke_search/pull/119
-[FEATURE]  Index custom fields in tt_content. https://github.com/tpwd/ke_search/issues/102
-[FEATURE]  Add column "hidden_content" in the index table which is used for searching but is not displayed in the result list, add ModifyFieldValuesBeforeStoringEvent for adding content to that column.
-[BUGFIX]   Give dependencies when instantiating Db object and activate autoconfigure and auto-wiring for Db. https://github.com/tpwd/ke_search/issues/78
-[BUGFIX]   Fix link to non-FAL-files in result list. https://github.com/tpwd/ke_search/issues/118
-[TASK]     Remove unnecessary removing of replacement character, see https://github.com/tpwd/ke_search/commit/af9f166f241728916a726ae453a676997a0f3b7d#r76324249
-[TASK]     Add MatchColumnsEvent, remove the dependency in the Db class, inject the EventDispatcher
-[DOCS]     Add information about using conjunctions with partial word search. https://github.com/tpwd/ke_search/issues/121
+[!!!]     This version changes the database structure and ads an additional fulltext index. Please do a full indexing after upgrading.
+[FEATURE] Index custom file references in page indexer. Thanks to Patrick Crausaz. https://github.com/tpwd/ke_search/pull/119
+[FEATURE] Index custom fields in tt_content. https://github.com/tpwd/ke_search/issues/102
+[FEATURE] Add column "hidden_content" in the index table which is used for searching but is not displayed in the result list, add ModifyFieldValuesBeforeStoringEvent for adding content to that column.
+[BUGFIX]  Give dependencies when instantiating Db object and activate autoconfigure and auto-wiring for Db. https://github.com/tpwd/ke_search/issues/78
+[BUGFIX]  Fix link to non-FAL-files in result list. https://github.com/tpwd/ke_search/issues/118
+[TASK]    Remove unnecessary removing of replacement character, see https://github.com/tpwd/ke_search/commit/af9f166f241728916a726ae453a676997a0f3b7d#r76324249
+[TASK]    Add MatchColumnsEvent, remove the dependency in the Db class, inject the EventDispatcher
+[DOCS]    Add information about using conjunctions with partial word search. https://github.com/tpwd/ke_search/issues/121
 
 Version 4.4.5, June 2022
 [BUGFIX]  Remove unicode replacement character in PDF indexing. Thanks to Kamel Ben Yedder. https://github.com/tpwd/ke_search/pull/114
