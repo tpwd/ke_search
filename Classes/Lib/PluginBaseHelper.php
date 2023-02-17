@@ -2,6 +2,8 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /***************************************************************
  *  Copyright notice
  *  (c) 2010 Stefan Froemken
@@ -28,6 +30,7 @@ namespace Tpwd\KeSearch\Lib;
 class PluginBaseHelper
 {
     public Pluginbase $pObj;
+    private ContentObjectRenderer $cObj;
 
     public function __construct(Pluginbase $pObj)
     {
@@ -54,7 +57,7 @@ class PluginBaseHelper
                     )
                 )
                 ->executeQuery()
-                ->fetch(0);
+                ->fetchAssociative();
             if (is_array($pageResult) && count($pageResult)) {
                 $startingpoint['pages'] = $pageResult['pages'];
                 $startingpoint['recursive'] = $pageResult['recursive'];

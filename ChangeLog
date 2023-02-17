@@ -14,6 +14,7 @@ Upcoming Version
 [TASK]    Refactor fetching the number of records in the index
 [TASK]    Add language to groupBy in trending search phrases widget to avoid MySQL error
 [TASK]    Refactor searchresult class to reduce dependencies
+[TASK]    Replace fetch with fetchAssociative and declare property in PluginBaseHelper
 [BUGFIX]  Apply rawurlencode only to file title. Thanks to Muhammad Zohaib. https://github.com/tpwd/ke_search/issues/146
 
 Version 4.6.3, 3 February 2023
