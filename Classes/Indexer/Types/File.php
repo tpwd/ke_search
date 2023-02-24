@@ -500,9 +500,7 @@ class File extends IndexerBase
         foreach ($sites as $site) {
             $siteLanguages = $site->getLanguages();
             foreach ($siteLanguages as $siteLanguageId => $siteLanguage) {
-                if ($siteLanguage->getLocale()) {
-                    $languages[strtolower($siteLanguage->getLocale())] = $siteLanguageId;
-                }
+                $languages[strtolower($siteLanguage->getLocale())] = $siteLanguageId;
                 if ($siteLanguage->getTitle()) {
                     $languages[strtolower($siteLanguage->getTitle())] = $siteLanguageId;
                 }
