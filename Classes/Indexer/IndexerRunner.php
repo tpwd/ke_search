@@ -764,9 +764,7 @@ class IndexerRunner
                             $table,
                             $fieldValues,
                             ['uid' => (int)($this->currentRow['uid'])]
-                        ),
-                    '1',
-                    '1'
+                        )
                 );
             } else { // process storing of index record and return true
                 $this->updateRecordInIndex($fieldValues);
