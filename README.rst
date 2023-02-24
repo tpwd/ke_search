@@ -49,9 +49,11 @@ Then install the dependencies and run the coding-standards command to
 copy the files `.editorconfig` and `.php-cs-fixer.dist.php` to the root
 directoy of the package.
 
-``cd ke_search``
-``composer install``
-``composer exec typo3-coding-standards extension``
+.. code-block::
+
+    cd ke_search
+    composer install
+    composer exec typo3-coding-standards extension
 
 Testing
 ~~~~~~~
