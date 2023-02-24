@@ -41,9 +41,7 @@ first or by adding an explanation to the pull request.
 
 You can checkout the project locally with
 
-``
-git clone git@github.com:tpwd/ke_search.git
-``
+``git clone git@github.com:tpwd/ke_search.git``
 
 (adapt the repository URL to your cloned repository)
 
