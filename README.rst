@@ -41,9 +41,9 @@ first or by adding an explanation to the pull request.
 
 You can checkout the project locally with
 
-```
+``
 git clone git@github.com:tpwd/ke_search.git
-```
+``
 
 (adapt the repository URL to your cloned repository)
 
@@ -51,11 +51,11 @@ Then install the dependencies and run the coding-standards command to
 copy the files `.editorconfig` and `.php-cs-fixer.dist.php` to the root
 directoy of the package.
 
-```
+``
 cd ke_search
 composer install
 composer exec typo3-coding-standards extension
-```
+``
 
 Testing
 ~~~~~~~
@@ -75,18 +75,18 @@ Unit Tests
 
 To run the unit tests:
 
-```
+``
 composer test:unit
-```
+``
 
 PHPStan
 .......
 
 To check the code with PHPStan
 
-```
+``
 composer test:phpstan
-```
+``
 
 This will create a file `phpstan-report.log` which contains the errors.
 
@@ -95,18 +95,18 @@ PHP Code Style Fixer
 
 To check the code with php-cs-fixer
 
-```
+``
 composer test:php-cs-fixer
-```
+``
 
 This will create a file `php-cs-fixer-report.log` which contains the errors.
 
 To fix the code styling according to the TYPO3 coding guidelines automatically
 run
 
-```
+``
 .Build/bin/php-cs-fixer fix
-```
+``
 
 Automated tests in GitHub Actions
 ---------------------------------
