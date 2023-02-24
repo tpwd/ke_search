@@ -37,7 +37,7 @@ class FileReferenceRepository extends BaseRepository
     public function findOneByTableAndFieldnameAndUidForeignAndLanguage(
         string $table,
         string $fieldname,
-        string $uid_foreign,
+        int $uid_foreign,
         array $languageIds = [0, -1]
     ) {
         $queryBuilder = $this->getQueryBuilder();

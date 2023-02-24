@@ -259,7 +259,7 @@ class FilterOptionRepository extends BaseRepository
             ['l10n_diffsource' => Connection::PARAM_LOB]
         );
         $record = $newRecord;
-        $record['uid'] = $connection->lastInsertId($this->tableName);
+        $record['uid'] = (int)$connection->lastInsertId($this->tableName);
 
         // Create slug
         $this->update($record['uid'], ['slug'=> SearchHelper::createFilterOptionSlug($record)]);
