@@ -329,8 +329,8 @@ class Filters
     public function checkIfTagMatchesRecords(string $tag): bool
     {
         // If tag list is not defined yet, fetch it from the result list, otherwise use the cached tag list.
-        if ($this->tagsInSearchResult === false) {
-            if ($this->pObj->tagsInSearchResult === false) {
+        if (!$this->tagsInSearchResult) {
+            if (!$this->pObj->tagsInSearchResult) {
                 $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
             } else {
                 $this->tagsInSearchResult = $this->pObj->tagsInSearchResult;
