@@ -65,8 +65,8 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_kesearch_filteroptions');
         $statement = $connection->prepare('SELECT uid,tag FROM tx_kesearch_filteroptions WHERE tag REGEXP "[^a-z0-9]+"');
-        $statement->executeQuery();
-        $filterOptionRows = $statement->fetchAll(FetchMode::ASSOCIATIVE);
+        $result = $statement->executeQuery();
+        $filterOptionRows = $result->fetchAllAssociative();
         if (!empty($filterOptionRows)) {
             foreach ($filterOptionRows as $filterOptionRow) {
                 $query = $connectionPool->getQueryBuilderForTable('tx_kesearch_filteroptions');
@@ -89,8 +89,8 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_kesearch_filteroptions');
         $statement = $connection->prepare('SELECT COUNT(*) FROM tx_kesearch_filteroptions WHERE tag REGEXP "[^a-z0-9]+"');
-        $statement->executeQuery();
-        $countResult = $statement->fetch(FetchMode::NUMERIC);
+        $result = $statement->executeQuery();
+        $countResult = $result->fetchNumeric();
         return !empty($countResult) && $countResult[0];
     }
 

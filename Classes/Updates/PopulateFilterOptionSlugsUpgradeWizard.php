@@ -100,7 +100,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
         $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
         /** @var SlugHelper $slugHelper */
         $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, $this->table, $this->fieldName, $fieldConfig);
-        while ($record = $statement->fetch()) {
+        while ($record = $statement->fetchAssociative()) {
             $recordId = (int)$record['uid'];
             $pid = (int)$record['pid'];
             $slug = $slugHelper->generate($record, $pid);
@@ -138,7 +138,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
                 )
             )
             ->executeQuery()
-            ->fetchColumn();
+            ->fetchNumeric()[0];
         return $numberOfEntries > 0;
     }
 

@@ -490,7 +490,7 @@ class BackendModuleController extends AbstractBackendModuleController
         // get table status
         $databaseConnection = Db::getDatabaseConnection($table);
         $tableStatusQuery = 'SHOW TABLE STATUS';
-        $tableStatusRows = $databaseConnection->fetchAll($tableStatusQuery);
+        $tableStatusRows = $databaseConnection->fetchAllAssociative($tableStatusQuery);
         $content = '';
 
         foreach ($tableStatusRows as $row) {

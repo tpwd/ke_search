@@ -67,8 +67,8 @@ class GenericRepository
                 $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $connection = $connectionPool->getConnectionForTable($tableNameToCheck);
                 $statement = $connection->prepare('SHOW TABLES LIKE "' . $tableNameToCheck . '"');
-                $statement->executeQuery();
-                if ($statement->fetch(FetchMode::ASSOCIATIVE)) {
+                $result = $statement->executeQuery();
+                if ($result->rowCount()) {
                     $tableName = $tableNameToCheck;
                 }
         }
