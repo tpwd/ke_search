@@ -21,6 +21,7 @@ Upcoming Version
 [TASK]    Migrate outdated fetch() calls in query builder usages
 [TASK]    Cleanup: Remove unused properties
 [TASK]    Update PHPStan configuration
+[TASK]    Migrate language specific function calls
 [TASK]    Always add TypoScript configuration for dashboard widgets. Thanks to Sven Proffe. https://github.com/tpwd/ke_search/issues/147
 [BUGFIX]  Apply rawurlencode only to file title. Thanks to Muhammad Zohaib. https://github.com/tpwd/ke_search/issues/146
 

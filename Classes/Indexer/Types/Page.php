@@ -888,7 +888,7 @@ class Page extends IndexerBase
             $index = false;
         }
 
-        $pageTranslationVisibility = new PageTranslationVisibility((int)$this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'] ?? 0);
+        $pageTranslationVisibility = new PageTranslationVisibility((int)$this->cachedPageRecords[$language_uid][$uid]['l18n_cfg']);
         if ((int)$language_uid === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
             $index = false;
         }
@@ -1089,7 +1089,7 @@ class Page extends IndexerBase
 
         /** @var LinkService $linkService */
         $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow[$field], 1);
+        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow[$field], true);
         foreach ($blockSplit as $k => $v) {
             list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {

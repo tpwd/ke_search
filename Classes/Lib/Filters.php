@@ -19,6 +19,8 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -281,13 +283,14 @@ class Filters
      */
     public function languageOverlay(array $rows, string $table): array
     {
+        /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-
         $LanguageUid = $languageAspect->getContentId();
         $LanguageMode = $languageAspect->getLegacyLanguageMode();
 
         // see https://github.com/teaminmedias-pluswerk/ke_search/issues/128
-        if (GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg'])) {
+        $pageTranslationVisibility = new PageTranslationVisibility((int)$GLOBALS['TSFE']->page['l18n_cfg']);
+        if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
             $LanguageMode = 'hideNonTranslated';
         }
         if (is_array($rows) && count($rows)) {

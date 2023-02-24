@@ -5,6 +5,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Connection;
 use Doctrine\DBAL\Exception\DriverException;
@@ -199,6 +200,7 @@ class Db implements SingletonInterface
         }
 
         // add language
+        /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         $queryForSphinx .= ' @language _language_-1 | _language_' . $languageAspect->getId();
 
@@ -456,6 +458,7 @@ class Db implements SingletonInterface
         $where .= ' AND pid in (' . $startingPoints . ') ';
 
         // add language
+        /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         $where .= ' AND language IN(' . $languageAspect->getId() . ', -1) ';
 
