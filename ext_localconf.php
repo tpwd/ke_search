@@ -27,6 +27,11 @@ defined('TYPO3') or die();
         'plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
     );
 
+    // Add TypoScript configuration for dashboard widgets
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TypoScript/Backend/dashboard.typoscript">'
+    );
+
     // add page TSconfig (Content element wizard icons, hide index table)
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TSconfig/Page/pageTSconfig.tsconfig">'

@@ -1,0 +1,8 @@
+module.tx_dashboard {
+  view {
+    templateRootPaths {
+      1613733292 = EXT:ke_search/Resources/Private/Templates/Dashboard/
+      1613733293 = {$plugin.tx_kesearch.templateRootPath}
+    }
+  }
+}
