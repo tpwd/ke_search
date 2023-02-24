@@ -13,13 +13,11 @@ class Flexform
     public LanguageService $lang;
     private IndexRepository $indexRepository;
 
-    public function __construct(
-        LanguageServiceFactory $languageServiceFactory,
-        IndexRepository $indexRepository
-    )
+    public function __construct()
     {
+        $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
         $this->lang = $languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
-        $this->indexRepository = $indexRepository;
     }
 
     public function listAvailableOrderingsForFrontend(&$config)
