@@ -122,7 +122,7 @@ class IndexerRunner
      */
     public function startIndexing($verbose = true, $extConf = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
     {
-        $content = '<div class="row"><div class="col-md-6">';
+        $content = '<div class="row"><div class="col-md-8">';
         $content .= '<div class="alert alert-info">';
         $message = 'Running indexing process in '
             . LocalizationUtility::translate('backend.indexingMode_' . $indexingMode, 'ke_search')
@@ -178,7 +178,7 @@ class IndexerRunner
         // set some prepare statements
         $this->prepareStatements();
 
-        $content .= '<table class="table table-striped table-hover">';
+        $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
         $content .= '<tr><th>Indexer</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
         foreach ($configurations as $indexerConfig) {
             $this->indexerConfig = $indexerConfig;
@@ -231,7 +231,7 @@ class IndexerRunner
                 }
             }
         }
-        $content .= '</table>';
+        $content .= '</table></div>';
 
         // process index cleanup
         $content .= $this->cleanUpIndex($indexingMode);
@@ -244,8 +244,7 @@ class IndexerRunner
 
         // log finishing
         $indexingTime = $this->endTime - $this->startTime;
-        $content .= '<div class="card">';
-        $content .= '<div class="card-content">';
+        $content .= '<div class="alert alert-info">';
 
         $message = 'Indexing finished at ' . SearchHelper::formatTimestamp($this->endTime) . ' (took ' . $this->formatTime($indexingTime) . ').';
         $content .=  '<p>' . $message . '</p>';
@@ -255,7 +254,6 @@ class IndexerRunner
         $content .=  '<p>' . $message . '</p>';
         $this->logger->info($message);
 
-        $content .= '</div>';
         $content .= '</div>';
         $content .= '</div></div>';
 
@@ -504,9 +502,8 @@ class IndexerRunner
      */
     public function cleanUpIndex(int $indexingMode)
     {
-        $content = '<div class="card">';
-        $content .= '<div class="card-content">';
-        $content .= '<h3 class="card-title">Cleanup</h3>';
+        $content = '<div class="alert alert-info">';
+        $content .= '<h3>Cleanup</h3>';
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
             $this->logger->info('Cleanup started');
             $startMicrotime = microtime(true);
@@ -557,7 +554,6 @@ class IndexerRunner
             $this->logger->info($message);
             $content .= '<p>' . $message . '</p>';
         }
-        $content .= '</div>';
         $content .= '</div>';
         return $content;
     }

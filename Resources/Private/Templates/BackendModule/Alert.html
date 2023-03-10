@@ -1,12 +1,20 @@
-<f:layout name="Backend/Alert" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"><f:layout name="Backend/Default" />
 
-<f:section name="content">
-    <div>
-        <div class="alert alert-info">
-            <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:select_a_page">
-                Please select a page!
-            </f:translate>
+    <f:layout name="Backend/Alert" />
+
+    <f:section name="Content">
+        <div>
+            <div class="alert alert-info">
+                <f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:select_a_page">
+                    Please select a page!
+                </f:translate>
+            </div>
         </div>
-    </div>
 
-</f:section>
+    </f:section>
+
+</html>
