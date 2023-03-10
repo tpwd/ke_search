@@ -35,6 +35,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -47,6 +49,7 @@ class BackendModuleController
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected IndexRepository $indexRepository;
     protected Registry $registry;
+    protected ModuleTemplate $moduleTemplate;
     protected int $id = 0;
     protected ?string $do;
     protected array $pageinfo;
@@ -68,42 +71,47 @@ class BackendModuleController
     {
         $GLOBALS['LANG']->includeLLFile('LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf');
 
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
         $this->id = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;
         $backendUser = $this->getBackendUser();
+        $function = 'function1';
 
-        $allowedOptions = [
-            'function' => [
-                'function1' => $GLOBALS['LANG']->getLL('function1'),
-                'function2' => $GLOBALS['LANG']->getLL('function2'),
-                'function3' => $GLOBALS['LANG']->getLL('function3'),
-                'function4' => $GLOBALS['LANG']->getLL('function4'),
-                'function5' => $GLOBALS['LANG']->getLL('function5'),
-                'function6' => $GLOBALS['LANG']->getLL('function6'),
-            ],
-        ];
-
-        /** @var ModuleData $moduleData */
-        $moduleData = $request->getAttribute('moduleData');
-        if ($this->do) {
-            switch ($this->do) {
-                case 'clear':
-                    $moduleData->set('function', 'function5');
-                    break;
-                case 'startindexer':
-                case 'rmLock':
-                    $moduleData->set('function', 'function1');
-                    break;
-
-                default:
-                    $moduleData->set('function', $this->do);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            /** @var ModuleData $moduleData */
+            $moduleData = $request->getAttribute('moduleData');
+            $function = $moduleData->get('function', 'function1');
+        } else {
+            $moduleData = $backendUser->getModuleData('web_KeSearchBackendModule');
+            if ($moduleData['function'] ?? '') {
+                $function = $moduleData['function'];
             }
-            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $title = $GLOBALS['LANG']->sL('EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
+        if ($this->do) {
+            switch ($this->do) {
+                case 'function2':
+                case 'function3':
+                case 'function4':
+                case 'function5':
+                case 'function6':
+                    $function = $this->do;
+                    break;
+                case 'clear':
+                    $function = 'function5';
+                    break;
+            }
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+                $moduleData->set('function', $function);
+                $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+            } else {
+                $moduleData = [
+                    'function' => $function,
+                ];
+                $backendUser->pushModuleData('web_KeSearchBackendModule', $moduleData);
+            }
+        }
 
         // check access and redirect accordingly
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
@@ -112,37 +120,23 @@ class BackendModuleController
         if (!(
             ($this->id && $access) || ($this->getBackendUser()->isAdmin() && !$this->id)
         )) {
-            $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function2'));
             return $this->alertAction($request, $moduleTemplate);
         }
 
-        switch ($moduleData->get('function')) {
+        switch ($function) {
             case 'function2':
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function2'));
                 return $this->indexedContentAction($request, $moduleTemplate);
             case 'function3':
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function3'));
                 return $this->indexTableInformationAction($request, $moduleTemplate);
             case 'function4':
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function4'));
                 return $this->searchwordStatisticsAction($request, $moduleTemplate);
             case 'function5':
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function5'));
                 return $this->clearSearchIndexAction($request, $moduleTemplate);
             case 'function6':
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function6'));
                 return $this->lastIndexingReportAction($request, $moduleTemplate);
             default:
-                $moduleTemplate->setTitle($title, $GLOBALS['LANG']->getLL('function1'));
                 return $this->startIndexingAction($request, $moduleTemplate);
         }
-    }
-
-    /**
-     * initialize action
-     */
-    public function initializeAction()
-    {
     }
 
     /**
@@ -157,7 +151,7 @@ class BackendModuleController
     /**
      * start indexing action
      */
-    public function startIndexingAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function startIndexingAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         /* @var $indexer IndexerRunner */
         $indexer = GeneralUtility::makeInstance(IndexerRunner::class);
@@ -270,15 +264,24 @@ class BackendModuleController
             }
         }
 
-        $this->addMainMenu($request, $view, 'startIndexing');
-        $view->assign('content', $content);
-        return $view->renderResponse('BackendModule/StartIndexing');
+        $this->addMainMenu($request, $moduleTemplate, 'startIndexing');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('content', $content);
+            return $moduleTemplate->renderResponse('BackendModule/StartIndexing');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/StartIndexing.html');
+            $moduleTemplate->getView()->assign('content', $content);
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**
      * indexed content action
      */
-    public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         if ($this->id) {
             // page is selected: get indexed content
@@ -296,27 +299,45 @@ class BackendModuleController
                 . '</div>';
         }
 
-        $this->addMainMenu($request, $view, 'indexedContent');
-        $view->assign('content', $content);
-        return $view->renderResponse('BackendModule/IndexedContent');
+        $this->addMainMenu($request, $moduleTemplate, 'indexedContent');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('content', $content);
+            return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
+            $moduleTemplate->getView()->assign('content', $content);
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**
      * index table information action
      */
-    public function indexTableInformationAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function indexTableInformationAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         $content = $this->renderIndexTableInformation();
 
-        $this->addMainMenu($request, $view, 'indexTableInformation');
-        $view->assign('content', $content);
-        return $view->renderResponse('BackendModule/IndexTableInformation');
+        $this->addMainMenu($request, $moduleTemplate, 'indexTableInformation');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('content', $content);
+            return $moduleTemplate->renderResponse('BackendModule/IndexTableInformation');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexTableInformation.html');
+            $moduleTemplate->getView()->assign('content', $content);
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**
      * searchword statistics action
      */
-    public function searchwordStatisticsAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function searchwordStatisticsAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         // days to show
         $days = 30;
@@ -328,18 +349,30 @@ class BackendModuleController
             unset($data['error']);
         }
 
-        $this->addMainMenu($request, $view, 'searchwordStatistics');
-        $view->assign('days', $days);
-        $view->assign('data', $data);
-        $view->assign('error', $error);
-        $view->assign('languages', $this->getLanguages());
-        return $view->renderResponse('BackendModule/SearchwordStatistics');
+        $this->addMainMenu($request, $moduleTemplate, 'searchwordStatistics');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('days', $days);
+            $moduleTemplate->assign('data', $data);
+            $moduleTemplate->assign('error', $error);
+            $moduleTemplate->assign('languages', $this->getLanguages());
+            return $moduleTemplate->renderResponse('BackendModule/SearchwordStatistics');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/SearchwordStatistics.html');
+            $moduleTemplate->getView()->assign('days', $days);
+            $moduleTemplate->getView()->assign('data', $data);
+            $moduleTemplate->getView()->assign('error', $error);
+            $moduleTemplate->getView()->assign('languages', $this->getLanguages());
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**
      * clear search index action
      */
-    public function clearSearchIndexAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function clearSearchIndexAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         // get uri builder
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -361,21 +394,41 @@ class BackendModuleController
             ]
         );
 
-        $this->addMainMenu($request, $view, 'clearSearchIndex');
-        $view->assign('moduleUrl', $moduleUrl);
-        $view->assign('isAdmin', $this->getBackendUser()->isAdmin());
-        $view->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
-        return $view->renderResponse('BackendModule/ClearSearchIndex');
+        $this->addMainMenu($request, $moduleTemplate, 'clearSearchIndex');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('moduleUrl', $moduleUrl);
+            $moduleTemplate->assign('isAdmin', $this->getBackendUser()->isAdmin());
+            $moduleTemplate->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
+            return $moduleTemplate->renderResponse('BackendModule/ClearSearchIndex');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/ClearSearchIndex.html');
+            $moduleTemplate->getView()->assign('moduleUrl', $moduleUrl);
+            $moduleTemplate->getView()->assign('isAdmin', $this->getBackendUser()->isAdmin());
+            $moduleTemplate->getView()->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**
      * last indexing report action
      */
-    public function lastIndexingReportAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
+    public function lastIndexingReportAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        $this->addMainMenu($request, $view, 'lastIndexingReport');
-        $view->assign('logEntry', $this->getLastIndexingReport());
-        return $view->renderResponse('BackendModule/LastIndexingReport');
+        $this->addMainMenu($request, $moduleTemplate, 'lastIndexingReport');
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $moduleTemplate->assign('logEntry', $this->getLastIndexingReport());
+            return $moduleTemplate->renderResponse('BackendModule/LastIndexingReport');
+        } else {
+            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
+            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/LastIndexingReport.html');
+            $moduleTemplate->getView()->assign('logEntry', $this->getLastIndexingReport());
+            return new HtmlResponse($moduleTemplate->renderContent());
+        }
     }
 
     /**

@@ -6,13 +6,13 @@ defined('TYPO3') or die();
     // TODO: Remove this once support for TYPO3 11 is dropped
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
-        'kesearch_backendmodule',
+        'KeSearchBackendModule',
         '',
         null,
         [
             'routeTarget' => \Tpwd\KeSearch\Controller\BackendModuleController::class,
             'access' => 'user,group',
-            'name' => 'kesearch_backendmodule',
+            'name' => 'web_KeSearchBackendModule',
             'icon' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg',
             'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf',
         ]
