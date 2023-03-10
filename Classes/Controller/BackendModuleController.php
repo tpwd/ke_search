@@ -91,6 +91,7 @@ class BackendModuleController
 
         if ($this->do) {
             switch ($this->do) {
+                case 'function1':
                 case 'function2':
                 case 'function3':
                 case 'function4':
