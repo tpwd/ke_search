@@ -736,7 +736,7 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $this->numberOfResults = $this->db->getAmountOfSearchResults();
 
         // count search phrase in ke_search statistic tables
-        if ($this->conf['countSearchPhrases']) {
+        if ($this->conf['countSearchPhrases'] ?? '') {
             $this->countSearchPhrase($this->sword, $this->swords, $this->numberOfResults, $this->tagsAgainst);
         }
 

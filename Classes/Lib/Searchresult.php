@@ -106,7 +106,7 @@ class Searchresult
         $linktext = htmlspecialchars(strip_tags($linktext));
 
         // highlight hits in result title?
-        if ($this->conf['highlightSword'] && count($this->pObj->swords)) {
+        if (($this->conf['highlightSword'] ?? '') && count($this->pObj->swords)) {
             $linktext = $this->highlightArrayOfWordsInContent($this->pObj->swords, $linktext);
         }
         return $this->cObj->typoLink($linktext, $linkconf);
@@ -311,7 +311,7 @@ class Searchresult
             }
 
             // highlight hits?
-            if ($this->conf['highlightSword']) {
+            if ($this->conf['highlightSword'] ?? '') {
                 $teaser = $this->highlightArrayOfWordsInContent($this->pObj->swords, $teaser);
             }
             return $teaser;
