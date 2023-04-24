@@ -188,6 +188,12 @@ class Pluginbase extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         // get the configuration of the current plugin
         $flexFormConfiguration = $this->getFlexFormConfiguration();
 
+        // When TypoScript is used to spawn a COA of tx_kesearch_pi1 plugin, the above will be empty (as no plugin container exists)
+        // For this specific case, we use the ->conf[] array and parse its setting.
+        if (empty($flexFormConfiguration['loadFlexformsFromOtherCE']) && !empty($this->conf['loadFlexformsFromOtherCE'])) {
+            $flexFormConfiguration['loadFlexformsFromOtherCE'] = $this->conf['loadFlexformsFromOtherCE'];
+        }
+
         // in the list plugin fetch the FlexForm from the search box plugin, because all the configuration is done there
         if (!empty($flexFormConfiguration['loadFlexformsFromOtherCE'])) {
             $currentFlexFormConfiguration = $flexFormConfiguration;
