@@ -71,16 +71,20 @@ class Db implements SingletonInterface
     }
 
     /**
+     * Returns the search result for the current search parameters, either using the default search
+     * based on MySQL or based on Sphinx (ke_search_premium feature).
+     * If there is a cached result list, it is returned directly without executing the search, otherwise
+     * search is executed.
+     *
      * @return array
      */
     public function getSearchResults()
     {
-        // if there are no searchresults return the empty result array directly
+        // if there are no search results return the empty result array directly
         if (!$this->hasSearchResults) {
             return $this->searchResults;
         }
 
-        // if result array is empty start search on DB, else return cached result list
         if (!count($this->searchResults)) {
             if ($this->sphinxSearchEnabled()) {
                 $this->searchResults = $this->getSearchResultBySphinx();
@@ -168,11 +172,12 @@ class Db implements SingletonInterface
     }
 
     /**
-     * get a limited amount of search results for a requested page
+     * Get the search result from Sphinx. Returns either a limited (one page) result (if $limitToOnePage is
+     * set to true) or a result for all pages (useful to calculate the tags in the complete result set).
      *
-     * @return array Array containing a limited (one page) amount of search results
+     * @return array search results
      */
-    public function getSearchResultBySphinx()
+    public function getSearchResultBySphinx(bool $limitToOnePage = true): array
     {
         if (!class_exists(KeSearchPremium::class)) {
             return [];
@@ -184,8 +189,20 @@ class Db implements SingletonInterface
         $this->keSearchPremium->setSorting($this->getOrdering());
 
         // set limit
-        $limit = $this->getLimit();
-        $this->keSearchPremium->setLimit($limit[0], $limit[1], (int)($this->pObj->extConfPremium['sphinxLimit']));
+        if ($limitToOnePage) {
+            $limit = $this->getLimit();
+            $this->keSearchPremium->setLimit(
+                $limit[0],
+                $limit[1],
+                (int)($this->pObj->extConfPremium['sphinxLimit'])
+            );
+        } else {
+            $this->keSearchPremium->setLimit(
+                0,
+                (int)($this->pObj->extConfPremium['sphinxLimit']),
+                (int)($this->pObj->extConfPremium['sphinxLimit'])
+            );
+        }
 
         // generate query
         $queryForSphinx = '';
@@ -330,12 +347,13 @@ class Db implements SingletonInterface
      */
     protected function getTagsFromSphinx()
     {
-        if (is_array($this->searchResults) && count($this->searchResults)) {
+        $searchResultUnlimited = $this->getSearchResultBySphinx(false);
+        if (count($searchResultUnlimited)) {
             return array_map(
                 function ($row) {
                     return $row['tags'];
                 },
-                $this->searchResults
+                $searchResultUnlimited
             );
         } else {
             return [];

@@ -669,11 +669,6 @@ class Pluginbase extends AbstractPlugin
         $rows = $this->db->getSearchResults();
         $this->fluidTemplateVariables['errors'] = $this->db->getErrors();
 
-        // TODO: Check how Sphinx handles this, seems to return full result set
-        if (count($rows) > $limit[1]) {
-            $rows = array_slice($rows, $limit[0], $limit[1]);
-        }
-
         // set number of results
         $this->numberOfResults = $this->db->getAmountOfSearchResults();
 
