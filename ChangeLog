@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix fetching tags from Sphinx
+
 Version 4.6.4, 17 March 2023
 [TASK]    Add language to groupBy in trending search phrases widget to avoid MySQL error
 [TASK]    Always add TypoScript configuration for dashboard widgets. Thanks to Sven Proffe. https://github.com/tpwd/ke_search/issues/147
