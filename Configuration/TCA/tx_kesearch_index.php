@@ -140,18 +140,7 @@ return [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.language',
             'config' => [
-                'default' => 0,
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
-                ],
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.uid',
-                'size' => 1,
-                'minitems' => 0,
-                'maxitems' => 1,
+                'type' => 'language',
             ],
         ],
         'sortdate' => [
