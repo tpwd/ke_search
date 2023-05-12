@@ -128,6 +128,7 @@ class ResultlistPlugin extends Pluginbase
     public function initFluidTemplate()
     {
         $this->resultListView = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->resultListView->setRequest($GLOBALS['TYPO3_REQUEST']);
         $this->resultListView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $this->resultListView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
         $this->resultListView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);

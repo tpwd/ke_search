@@ -966,6 +966,7 @@ class Pluginbase extends AbstractPlugin
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setRequest($GLOBALS['TYPO3_REQUEST']);
         $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $view->setTemplate('Widget/Pagination');
         $pagination = [];
