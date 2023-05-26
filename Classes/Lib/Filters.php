@@ -131,9 +131,9 @@ class Filters
                     // already selected via piVars?
                     $selected = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
                 }
+            } elseif (
                 // No piVars for this filter are set or the length of the option is one character (dummy placeholder
                 // for the routing configuration).
-            } elseif (
                 !isset($this->pObj->piVars['filter'][$filter['uid']])
                 || (
                     is_string($this->pObj->piVars['filter'][$filter['uid']])

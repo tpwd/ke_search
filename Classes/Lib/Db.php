@@ -540,9 +540,9 @@ class Db implements SingletonInterface
                 // if sortByVisitor is not set OR not in the list of
                 // allowed fields then use fallback ordering in "sortWithoutSearchword"
             }
-            // if sortByVisitor is not set OR not in the list of
-            //allowed fields then use fallback ordering in "sortWithoutSearchword"
         } else {
+            // if sortByVisitor is not set OR not in the list of
+            // allowed fields then use fallback ordering in "sortWithoutSearchword"
             if (!empty($this->pObj->wordsAgainst)) { // if sorting is predefined by admin
                 $orderBy = $this->conf['sortByAdmin'];
             } else {
