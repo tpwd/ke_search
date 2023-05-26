@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming Version
+Version 5.0.0, 26 May 2023
 [!!!]     This version supports TYPO3 12 and 11 and drops support for TYPO3 10.
 [!!!]     If you use a custom template for "SearchForm.html" please replace "{f:uri.page(pageUid: targetpage)}" with "{targetPageUrl}".
 [TASK]    Mark extension as compatible with TYPO3 12 and drop support for TYPO3 10
