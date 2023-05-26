@@ -32,6 +32,7 @@ use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -965,7 +966,12 @@ class Pluginbase extends AbstractPlugin
     {
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+        if (
+            GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11
+            && method_exists($view, 'setRequest')
+        ) {
+            $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
         $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $view->setTemplate('Widget/Pagination');
         $pagination = [];

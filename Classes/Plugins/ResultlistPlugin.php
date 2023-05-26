@@ -21,6 +21,7 @@ namespace Tpwd\KeSearch\Plugins;
  ***************************************************************/
 use Tpwd\KeSearch\Lib\Pluginbase;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -128,7 +129,12 @@ class ResultlistPlugin extends Pluginbase
     public function initFluidTemplate()
     {
         $this->resultListView = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->resultListView->setRequest($GLOBALS['TYPO3_REQUEST']);
+        if (
+            GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11
+            && method_exists($this->resultListView, 'setRequest')
+        ) {
+            $this->resultListView->setRequest($GLOBALS['TYPO3_REQUEST']);
+        }
         $this->resultListView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $this->resultListView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
         $this->resultListView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
