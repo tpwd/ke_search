@@ -6,4 +6,3 @@ parameters:
 		- ../Tests
 	ignoreErrors:
 		- '#has unknown class Tpwd\\KeSearchPremium\\KeSearchPremium as its type\.#'
-		- '#contains unknown class Tpwd\\KeSearchPremium\\Headless\\HeadlessApi\.#'

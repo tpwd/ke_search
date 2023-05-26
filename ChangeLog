@@ -23,6 +23,7 @@ Upcoming Version
 [TASK]    Update PHPStan configuration
 [TASK]    Migrate language specific function calls
 [TASK]    Remove obsolete page access check in backend module
+[TASK]    Remove obsolete ignoreErrors pattern for PHPStan
 
 Version 4.6.5, 26 May 2023
 [BUGFIX]  Fix fetching tags from Sphinx
