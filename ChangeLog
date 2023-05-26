@@ -24,6 +24,7 @@ Upcoming Version
 [TASK]    Migrate language specific function calls
 [TASK]    Remove obsolete page access check in backend module
 [TASK]    Remove obsolete ignoreErrors pattern for PHPStan
+[TASK]    Apply changes from php-cs-fixer
 
 Version 4.6.5, 26 May 2023
 [BUGFIX]  Fix fetching tags from Sphinx

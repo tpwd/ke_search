@@ -1,6 +1,7 @@
 <?php
 
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 
 return [

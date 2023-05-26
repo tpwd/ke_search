@@ -3,7 +3,6 @@
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice

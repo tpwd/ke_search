@@ -200,7 +200,7 @@ class Searchphrase
                         . implode($tagChar . '" "' . $tagChar, $filterTags)
                         . $tagChar
                         . '"';
-                // if we are in select or list mode
+                    // if we are in select or list mode
                 } elseif (count($this->pObj->preselectedFilter[$key]) == 1) {
                     $tagsAgainst[$key] .= ' +"' . $tagChar . array_shift($filterTags) . $tagChar . '"';
                 }

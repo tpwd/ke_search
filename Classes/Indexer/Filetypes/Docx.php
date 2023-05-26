@@ -23,8 +23,8 @@ namespace Tpwd\KeSearch\Indexer\Filetypes;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use Tpwd\KeSearch\Utility\OoxmlConversion;
 use Tpwd\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Utility\OoxmlConversion;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

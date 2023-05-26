@@ -2,11 +2,11 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************

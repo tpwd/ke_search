@@ -28,12 +28,12 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Andreas Kiefer
  * @author Christian Bülter
  */
-use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Exception;
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\FileService;

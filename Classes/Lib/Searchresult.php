@@ -44,7 +44,6 @@ class Searchresult
      * Sets the plugin configuration (from the FlexForm configuration)
      *
      * @param array $pluginConfiguration
-     * @return void
      */
     public function setPluginConfiguration(array $pluginConfiguration)
     {
@@ -55,7 +54,6 @@ class Searchresult
      * Sets the search word array
      *
      * @param array $swords
-     * @return void
      */
     public function setSwords(array $swords)
     {
@@ -65,7 +63,6 @@ class Searchresult
     /**
      * set row array with current result element
      * @param array $row
-     * @return void
      */
     public function setRow(array $row)
     {

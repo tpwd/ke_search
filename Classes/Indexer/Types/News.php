@@ -19,12 +19,12 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\NewsRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

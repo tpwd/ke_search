@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use Doctrine\DBAL\FetchMode;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;

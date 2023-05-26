@@ -5,16 +5,16 @@
 
 namespace Tpwd\KeSearch\Lib;
 
-use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Connection;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Tpwd\KeSearch\Event\MatchColumnsEvent;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -540,8 +540,8 @@ class Db implements SingletonInterface
                 // if sortByVisitor is not set OR not in the list of
                 // allowed fields then use fallback ordering in "sortWithoutSearchword"
             }
-        // if sortByVisitor is not set OR not in the list of
-        //allowed fields then use fallback ordering in "sortWithoutSearchword"
+            // if sortByVisitor is not set OR not in the list of
+            //allowed fields then use fallback ordering in "sortWithoutSearchword"
         } else {
             if (!empty($this->pObj->wordsAgainst)) { // if sorting is predefined by admin
                 $orderBy = $this->conf['sortByAdmin'];

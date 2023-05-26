@@ -26,19 +26,18 @@ namespace Tpwd\KeSearch\Lib;
 
 use Exception;
 use PDO;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
-use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
@@ -862,7 +861,7 @@ class Pluginbase extends AbstractPlugin
      * @param string $typeComplete
      * @return string the path to the type icon file
      */
-    public function getTypeIconPath(string $typeComplete):string
+    public function getTypeIconPath(string $typeComplete): string
     {
         list($type) = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);

@@ -19,11 +19,11 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use Tpwd\KeSearch\Lib\Pluginbase;
+use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Plugin 'Faceted search - resultlist plugin' for the 'ke_search' extension.

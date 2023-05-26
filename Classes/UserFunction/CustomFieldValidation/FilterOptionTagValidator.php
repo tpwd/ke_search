@@ -25,12 +25,12 @@
 
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Validates given filter option tag. Checks length, which may not smaller than

@@ -2,10 +2,10 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use TYPO3\CMS\Core\Context\Context;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

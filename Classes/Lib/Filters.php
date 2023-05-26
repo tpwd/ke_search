@@ -19,11 +19,11 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
-use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
@@ -131,8 +131,8 @@ class Filters
                     // already selected via piVars?
                     $selected = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
                 }
-            // No piVars for this filter are set or the length of the option is one character (dummy placeholder
-            // for the routing configuration).
+                // No piVars for this filter are set or the length of the option is one character (dummy placeholder
+                // for the routing configuration).
             } elseif (
                 !isset($this->pObj->piVars['filter'][$filter['uid']])
                 || (

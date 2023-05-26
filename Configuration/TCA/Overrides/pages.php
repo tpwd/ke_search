@@ -1,7 +1,8 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') or die();
 
 // add tag field to pages

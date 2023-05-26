@@ -1,4 +1,5 @@
 <?php
+
 return [
     'web_KeSearchBackendModule' => [
         'parent' => 'web',

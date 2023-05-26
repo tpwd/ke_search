@@ -2,9 +2,9 @@
 
 namespace Tpwd\KeSearch\ViewHelpers;
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper to render links to search results including filters

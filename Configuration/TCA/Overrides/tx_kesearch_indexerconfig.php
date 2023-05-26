@@ -1,6 +1,7 @@
 <?php
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') or die();
 
 // re-use news category TCA, needs to stay in TCA/Overrides to make sure news TCA is loaded

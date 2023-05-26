@@ -32,7 +32,6 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -60,8 +59,7 @@ class BackendModuleController
         Registry $registry,
         IndexRepository $indexRepository,
         ModuleTemplateFactory $moduleTemplateFactory
-    )
-    {
+    ) {
         $this->registry = $registry;
         $this->indexRepository = $indexRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
@@ -248,16 +246,15 @@ class BackendModuleController
 
         $this->addMainMenu($request, $moduleTemplate, 'startIndexing');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('content', $content);
-            return $moduleTemplate->renderResponse('BackendModule/StartIndexing');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/StartIndexing.html');
             $moduleTemplate->getView()->assign('content', $content);
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('content', $content);
+        return $moduleTemplate->renderResponse('BackendModule/StartIndexing');
     }
 
     /**
@@ -283,16 +280,15 @@ class BackendModuleController
 
         $this->addMainMenu($request, $moduleTemplate, 'indexedContent');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('content', $content);
-            return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
             $moduleTemplate->getView()->assign('content', $content);
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('content', $content);
+        return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
     }
 
     /**
@@ -304,16 +300,15 @@ class BackendModuleController
 
         $this->addMainMenu($request, $moduleTemplate, 'indexTableInformation');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('content', $content);
-            return $moduleTemplate->renderResponse('BackendModule/IndexTableInformation');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexTableInformation.html');
             $moduleTemplate->getView()->assign('content', $content);
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('content', $content);
+        return $moduleTemplate->renderResponse('BackendModule/IndexTableInformation');
     }
 
     /**
@@ -333,13 +328,7 @@ class BackendModuleController
 
         $this->addMainMenu($request, $moduleTemplate, 'searchwordStatistics');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('days', $days);
-            $moduleTemplate->assign('data', $data);
-            $moduleTemplate->assign('error', $error);
-            $moduleTemplate->assign('languages', $this->getLanguages());
-            return $moduleTemplate->renderResponse('BackendModule/SearchwordStatistics');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/SearchwordStatistics.html');
@@ -349,6 +338,11 @@ class BackendModuleController
             $moduleTemplate->getView()->assign('languages', $this->getLanguages());
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('days', $days);
+        $moduleTemplate->assign('data', $data);
+        $moduleTemplate->assign('error', $error);
+        $moduleTemplate->assign('languages', $this->getLanguages());
+        return $moduleTemplate->renderResponse('BackendModule/SearchwordStatistics');
     }
 
     /**
@@ -378,12 +372,7 @@ class BackendModuleController
 
         $this->addMainMenu($request, $moduleTemplate, 'clearSearchIndex');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('moduleUrl', $moduleUrl);
-            $moduleTemplate->assign('isAdmin', $this->getBackendUser()->isAdmin());
-            $moduleTemplate->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
-            return $moduleTemplate->renderResponse('BackendModule/ClearSearchIndex');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/ClearSearchIndex.html');
@@ -392,6 +381,10 @@ class BackendModuleController
             $moduleTemplate->getView()->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('moduleUrl', $moduleUrl);
+        $moduleTemplate->assign('isAdmin', $this->getBackendUser()->isAdmin());
+        $moduleTemplate->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
+        return $moduleTemplate->renderResponse('BackendModule/ClearSearchIndex');
     }
 
     /**
@@ -401,16 +394,15 @@ class BackendModuleController
     {
         $this->addMainMenu($request, $moduleTemplate, 'lastIndexingReport');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $moduleTemplate->assign('logEntry', $this->getLastIndexingReport());
-            return $moduleTemplate->renderResponse('BackendModule/LastIndexingReport');
-        } else {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/LastIndexingReport.html');
             $moduleTemplate->getView()->assign('logEntry', $this->getLastIndexingReport());
             return new HtmlResponse($moduleTemplate->renderContent());
         }
+        $moduleTemplate->assign('logEntry', $this->getLastIndexingReport());
+        return $moduleTemplate->renderResponse('BackendModule/LastIndexingReport');
     }
 
     /**

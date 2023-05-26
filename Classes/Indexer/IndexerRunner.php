@@ -22,11 +22,10 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use Exception;
 use PDO;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
@@ -36,6 +35,7 @@ use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -93,8 +93,7 @@ class IndexerRunner
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         IndexRepository $indexRepository
-    )
-    {
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->indexRepository = $indexRepository;
 

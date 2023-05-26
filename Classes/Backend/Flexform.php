@@ -3,7 +3,6 @@
 namespace Tpwd\KeSearch\Backend;
 
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
-use Tpwd\KeSearch\Lib\Db;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
