@@ -17,6 +17,7 @@ Upcoming Version
 [TASK]    Replace fetch with fetchAssociative and declare property in PluginBaseHelper
 [TASK]    Avoid using f:uri viewhelper in the searchbox template because that now only works in extbase context.
 [TASK]    Add property types
+[TASK]    Rework backend module to work with TYPO3 12
 [TASK]    Migrate outdated fetch() calls in query builder usages
 [TASK]    Cleanup: Remove unused properties
 [TASK]    Update PHPStan configuration
