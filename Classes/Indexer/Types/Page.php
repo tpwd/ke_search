@@ -888,7 +888,7 @@ class Page extends IndexerBase
             $index = false;
         }
 
-        $pageTranslationVisibility = new PageTranslationVisibility((int)$this->cachedPageRecords[$language_uid][$uid]['l18n_cfg']);
+        $pageTranslationVisibility = new PageTranslationVisibility((int)($this->cachedPageRecords[$language_uid][$uid]['l18n_cfg'] ?? 0));
         if ((int)$language_uid === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
             $index = false;
         }
