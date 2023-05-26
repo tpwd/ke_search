@@ -104,7 +104,7 @@ class IndexerRunner
 
         // fetch the list of the default indexers which come with ke_search
         foreach ($GLOBALS['TCA']['tx_kesearch_indexerconfig']['columns']['type']['config']['items'] as $indexerType) {
-            $this->defaultIndexerTypes[] = $indexerType[1];
+            $this->defaultIndexerTypes[] = $indexerType['value'] ?? $indexerType[1];
         }
 
         // init logger

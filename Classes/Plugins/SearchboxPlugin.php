@@ -94,6 +94,7 @@ class SearchboxPlugin extends Pluginbase
     public function initFluidTemplate()
     {
         $this->searchFormView = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->searchFormView->setRequest($GLOBALS['TYPO3_REQUEST']);
         $this->searchFormView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
         $this->searchFormView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
         $this->searchFormView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
