@@ -54,7 +54,7 @@ class SearchPhraseStatisticsRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -108,7 +108,7 @@ class SearchPhraseStatisticsRepository
             ->add('groupBy', $col . ',language HAVING count(' . $col . ')>0')
             ->add('orderBy', 'num desc')
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $statisticData;
     }

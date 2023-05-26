@@ -56,7 +56,7 @@ class Filterlist
             ->executeQuery();
 
         if ($res->rowCount()) {
-            while ($row = $res->fetch()) {
+            while ($row = $res->fetchAssociative()) {
                 $config['items'][] = [$row['title'], $row['uid']];
             }
         }
@@ -105,7 +105,7 @@ class Filterlist
             ->executeQuery();
 
         if ($res->rowCount()) {
-            while ($row = $res->fetch()) {
+            while ($row = $res->fetchAssociative()) {
                 if (!empty($row['options'])) {
                     $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
                     $options = $queryBuilder
@@ -117,7 +117,7 @@ class Filterlist
                         )
                         ->executeQuery();
 
-                    while ($optionRow = $options->fetch()) {
+                    while ($optionRow = $options->fetchAssociative()) {
                         $config['items'][] = [$row['title'] . ': ' . $optionRow['title'], $optionRow['uid']];
                     }
                 }
@@ -151,7 +151,7 @@ class Filterlist
             ->executeQuery();
 
         if ($res->rowCount()) {
-            while ($rowFilter = $res->fetch()) {
+            while ($rowFilter = $res->fetchAssociative()) {
                 if (!empty($rowFilter['options'])) {
                     // get filteroptions
                     $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
@@ -164,7 +164,7 @@ class Filterlist
                         ->from($tableOpts)
                         ->where($whereOpts)
                         ->executeQuery();
-                    while ($rowOpts = $resOpts->fetch()) {
+                    while ($rowOpts = $resOpts->fetchAssociative()) {
                         $config['items'][] = [$rowFilter['title'] . ': ' . $rowOpts['title'], $rowOpts['uid']];
                     }
                 }

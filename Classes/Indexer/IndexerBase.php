@@ -171,7 +171,7 @@ class IndexerBase
         }
         $query->where(...$where);
 
-        $pageRows = $query->executeQuery()->fetchAll();
+        $pageRows = $query->executeQuery()->fetchAllAssociative();
 
         $pages = [];
         foreach ($pageRows as $row) {
@@ -249,7 +249,7 @@ class IndexerBase
             ->groupBy('pages.uid')
             ->executeQuery();
 
-        while ($row = $tagQuery->fetch()) {
+        while ($row = $tagQuery->fetchAssociative()) {
             if (isset($this->pageRecords[$row['uid']])) {
                 $this->pageRecords[$row['uid']]['tags'] = $row['tags'];
             }
@@ -275,7 +275,7 @@ class IndexerBase
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $where = $pageWhere . ' AND no_search <> 1 ';
 
@@ -405,7 +405,7 @@ class IndexerBase
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tx_kesearch_indexerconfig'))
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if ($selectedCategories) {
             // flatten the multidimensional array to only contain the category UIDs
@@ -470,7 +470,7 @@ class IndexerBase
             ->executeQuery();
 
         if ($relatedFilesQuery->rowCount()) {
-            $relatedFiles = $relatedFilesQuery->fetchAll();
+            $relatedFiles = $relatedFilesQuery->fetchAllAssociative();
             foreach ($relatedFiles as $key => $relatedFile) {
                 $fileReference = $fileRepository->findFileReferenceByUid($relatedFile['uid']);
                 $file = $fileReference->getOriginalFile();
@@ -713,7 +713,7 @@ class IndexerBase
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
             $statement = $queryBuilder->executeQuery();
-            while ($row = $statement->fetch()) {
+            while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
                 }

@@ -350,7 +350,7 @@ class Page extends IndexerBase
             ->executeQuery();
 
         $pageRows = [];
-        while ($row = $pageQuery->fetch()) {
+        while ($row = $pageQuery->fetchAssociative()) {
             $pageRows[$row['uid']] = $row;
         }
 
@@ -391,7 +391,7 @@ class Page extends IndexerBase
                         )
                     )
                     ->executeQuery()
-                    ->fetchAll();
+                    ->fetchAllAssociative();
 
                 $pageOverlay = $results[0] ?? false;
                 if ($pageOverlay) {
@@ -554,7 +554,7 @@ class Page extends IndexerBase
                     ->from($tableName)
                     ->where(...$where)
                     ->executeQuery()
-                    ->fetch();
+                    ->fetchAssociative();
 
                 if ($referencedRow) {
                     array_push($processedRows, ...$this->processShortcuts([$referencedRow], $fields, $depth));
@@ -630,7 +630,7 @@ class Page extends IndexerBase
             ->from($table)
             ->where(...$where)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         $pageContent = [];
         if (count($ttContentRows)) {
@@ -809,7 +809,7 @@ class Page extends IndexerBase
                     )
                 )
                 ->executeQuery()
-                ->fetch();
+                ->fetchAssociative();
 
             // If there's no gridelement container found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
@@ -836,7 +836,7 @@ class Page extends IndexerBase
                     )
                 )
                 ->executeQuery()
-                ->fetch();
+                ->fetchAssociative();
 
             // If there's no container found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.

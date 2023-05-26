@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -51,9 +52,7 @@ class BackendModuleController
     protected ModuleTemplate $moduleTemplate;
     protected int $id = 0;
     protected ?string $do;
-    protected array $pageinfo;
     protected array $extConf;
-    protected string $perms_clause;
 
     public function __construct(
         Registry $registry,
@@ -263,10 +262,12 @@ class BackendModuleController
     public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         if ($this->id) {
+            $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
+            $pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
             // page is selected: get indexed content
             $content = '<h3>Index content for PID ' . $this->id;
             $content .= '<span class="small">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path')
-                . ': ' . GeneralUtility::fixed_lgd_cs($this->pageinfo['_thePath'], -50) . '</span></h3>';
+                . ': ' . GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -50) . '</span></h3>';
             $content .= $this->getIndexedContent($this->id);
         } else {
             // no page selected: show message

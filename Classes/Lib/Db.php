@@ -132,7 +132,7 @@ class Db implements SingletonInterface
 
         // execute query
         try {
-            $this->searchResults = $resultQuery->executeQuery()->fetchAll();
+            $this->searchResults = $resultQuery->executeQuery()->fetchAllAssociative();
         } catch (DriverException $driverException) {
             $logger->log(LogLevel::ERROR, $driverException->getMessage() . ' ' . $driverException->getTraceAsString());
             $this->addError('Could not fetch search results. Error #1605867846');
@@ -377,7 +377,7 @@ class Db implements SingletonInterface
             ->from($queryParts['FROM'])
             ->add('where', $queryParts['WHERE'])
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return array_map(
             function ($row) {

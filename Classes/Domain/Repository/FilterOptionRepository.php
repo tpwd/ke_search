@@ -68,7 +68,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -97,7 +97,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -131,7 +131,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -152,7 +152,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -173,7 +173,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -202,7 +202,7 @@ class FilterOptionRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**

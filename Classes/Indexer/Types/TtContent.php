@@ -90,7 +90,7 @@ class TtContent extends Page
             ->from($table)
             ->where(...$where)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (count($rows)) {
             foreach ($rows as $row) {

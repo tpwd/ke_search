@@ -78,7 +78,7 @@ class TtAddress extends IndexerBase
             ->from($table)
             ->where(...$where)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         // no address records found
         if (!count($addressRows)) {

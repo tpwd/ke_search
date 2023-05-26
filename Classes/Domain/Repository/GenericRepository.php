@@ -92,7 +92,7 @@ class GenericRepository
                     )
                 )
                 ->executeQuery()
-                ->fetch();
+                ->fetchAssociative();
         }
         return $row;
     }
@@ -127,7 +127,7 @@ class GenericRepository
                     )
                 )
                 ->executeQuery()
-                ->fetch();
+                ->fetchAssociative();
         }
         return $overlayRecord;
     }

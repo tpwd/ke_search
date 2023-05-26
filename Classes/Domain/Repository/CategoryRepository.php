@@ -51,7 +51,7 @@ class CategoryRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -100,6 +100,6 @@ class CategoryRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 }

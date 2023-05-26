@@ -47,7 +47,7 @@ class ContentRepository
             ->select('*')
             ->from($this->tableName)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -69,7 +69,7 @@ class ContentRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -98,6 +98,6 @@ class ContentRepository
             )
             ->orderBy('tstamp', 'DESC')
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 }

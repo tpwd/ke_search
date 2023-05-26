@@ -66,7 +66,7 @@ class BaseRepository
             ->select('*')
             ->from($this->tableName)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -87,7 +87,7 @@ class BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -113,6 +113,6 @@ class BaseRepository
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 }

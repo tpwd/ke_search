@@ -95,7 +95,7 @@ class TtNews extends IndexerBase
         $resCount = $res->rowCount();
 
         if ($resCount) {
-            while (($newsRecord = $res->fetch())) {
+            while (($newsRecord = $res->fetchAssociative())) {
                 $shouldBeIndexed = true;
 
                 if (!$this->recordIsLive($newsRecord)) {
@@ -307,7 +307,7 @@ class TtNews extends IndexerBase
             ->where(...$where)
             ->executeQuery();
 
-        while (($newsCat = $catRes->fetch())) {
+        while (($newsCat = $catRes->fetchAssociative())) {
             $categoryData['uid_list'][] = $newsCat['uid'];
             $categoryData['title_list'][] = $newsCat['title'];
             // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)

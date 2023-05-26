@@ -56,7 +56,7 @@ class FileMetaDataRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
 
         return (empty($record)) ? [] : $record;
     }

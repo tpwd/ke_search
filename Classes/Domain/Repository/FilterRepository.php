@@ -50,7 +50,7 @@ class FilterRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -95,7 +95,7 @@ class FilterRepository extends BaseRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**

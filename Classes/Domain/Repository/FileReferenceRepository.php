@@ -73,6 +73,6 @@ class FileReferenceRepository extends BaseRepository
             ->orderBy('sorting_foreign', 'asc')
             ->setMaxResults(1)
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 }

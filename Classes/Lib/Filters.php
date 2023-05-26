@@ -212,7 +212,7 @@ class Filters
             ->executeQuery();
 
         $filterRows = [];
-        while ($row = $filterQuery->fetch()) {
+        while ($row = $filterQuery->fetchAssociative()) {
             $filterRows[$row['uid']] = $row;
         }
 
@@ -245,7 +245,7 @@ class Filters
             ->executeQuery();
 
         $optionsRows = [];
-        while ($row = $optionsQuery->fetch()) {
+        while ($row = $optionsQuery->fetchAssociative()) {
             $optionsRows[$row['uid']] = $row;
         }
 

@@ -60,7 +60,7 @@ class IndexRepository
                 )
             )
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -85,7 +85,7 @@ class IndexRepository
             )
             ->setMaxResults(1)
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
     }
 
     /**
@@ -140,7 +140,7 @@ class IndexRepository
             ->executeQuery();
 
         $resultsPerType = [];
-        while ($row = $typeCount->fetch()) {
+        while ($row = $typeCount->fetchAssociative()) {
             $resultsPerType[$row['type']] = $row['count'];
         }
 
@@ -249,7 +249,7 @@ class IndexRepository
                 )
             )
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**

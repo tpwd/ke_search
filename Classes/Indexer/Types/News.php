@@ -122,7 +122,7 @@ class News extends IndexerBase
         $resCount = $res->rowCount();
 
         if ($resCount) {
-            while (($newsRecord = $res->fetch())) {
+            while (($newsRecord = $res->fetchAssociative())) {
                 $shouldBeIndexed = true;
 
                 // get category data for this news record (list of
@@ -460,7 +460,7 @@ class News extends IndexerBase
             )
             ->executeQuery();
 
-        while (($newsTag = $resTag->fetch())) {
+        while (($newsTag = $resTag->fetchAssociative())) {
             SearchHelper::makeTags($tags, [$newsTag['title']]);
         }
 
@@ -506,7 +506,7 @@ class News extends IndexerBase
 
         $contentElements = [];
         if ($res->rowCount()) {
-            while (($contentElement = $res->fetch())) {
+            while (($contentElement = $res->fetchAssociative())) {
                 $contentElements[] = $contentElement;
             }
         }

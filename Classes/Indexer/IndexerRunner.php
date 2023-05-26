@@ -934,7 +934,7 @@ class IndexerRunner
             )
             ->setMaxResults(1)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         if (count($res)) {
             if ($this->currentRow = reset($res)) {
@@ -986,7 +986,7 @@ class IndexerRunner
             ->executeQuery();
 
         if ($res->rowCount()) {
-            if ($this->currentRow = $res->fetch()) {
+            if ($this->currentRow = $res->fetchAssociative()) {
                 return true;
             }
             $this->currentRow = [];
@@ -1132,7 +1132,7 @@ class IndexerRunner
             ->from($table)
             ->where($where)
             ->executeQuery()
-            ->fetch();
+            ->fetchAssociative();
 
         if ($clearText) {
             return $row['title'];
@@ -1166,7 +1166,7 @@ class IndexerRunner
             ->select($fields)
             ->from($table)
             ->executeQuery()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
