@@ -47,3 +47,6 @@ services:
     public: true
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
+
+  Tpwd\KeSearch\Controller\BackendModuleController:
+    public: true

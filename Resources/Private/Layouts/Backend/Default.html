@@ -1,34 +1,23 @@
-<f:be.pageRenderer
-    includeCssFiles="{0: '{f:uri.resource(path:\'Css/backendModule.css\')}'}"
-/>
-<div class="typo3-fullDoc">
-    <div id="typo3-docheader" class="module-docheader">
-        <div class="typo3-docheader-functions">
-            <f:be.menus.actionMenu>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function1')}"
-                    controller="BackendModule" action="startIndexing"/>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function2')}"
-                    controller="BackendModule" action="indexedContent"/>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function3')}"
-                    controller="BackendModule" action="indexTableInformation"/>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function4')}"
-                    controller="BackendModule" action="searchwordStatistics"/>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function5')}"
-                    controller="BackendModule" action="clearSearchIndex"/>
-                <f:be.menus.actionMenuItem
-                    label="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:function6')}"
-                    controller="BackendModule" action="lastIndexingReport"/>
-            </f:be.menus.actionMenu>
-        </div>
-    </div>
-
-    <div class="module-body">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<div class="module {moduleClass}" data-module-id="{moduleId}" data-module-name="{moduleName}">
+    <f:if condition="{docHeader.enabled}">
+        <f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+    </f:if>
+    <div class="module-body t3js-module-body">
+        <f:if condition="{uiBlock}">
+            <div id="t3js-ui-block" class="ui-block">
+                <core:icon identifier="spinner-circle-light" size="large" />
+            </div>
+        </f:if>
+        <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
+        <f:format.raw>{headerContent}</f:format.raw>
         <h1><f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:title"/></h1>
-        <f:render section="content"/>
+        <f:render section="Content" arguments="{_all}" optional="true" />
+        <f:format.raw>{footerContent}</f:format.raw>
     </div>
 </div>
+
+</html>

@@ -4,18 +4,18 @@ defined('TYPO3') or die();
 
 (function () {
     // TODO: Remove this once support for TYPO3 11 is dropped
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'KeSearch',
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
-        'backend_module',
+        'KeSearchBackendModule',
         '',
+        null,
         [
-            \Tpwd\KeSearch\Controller\BackendModuleController::class => 'startIndexing, indexedContent, indexTableInformation, searchwordStatistics, clearSearchIndex, lastIndexingReport, alert',
-        ],
-        [
+            'routeTarget' => \Tpwd\KeSearch\Controller\BackendModuleController::class,
             'access' => 'user,group',
+            'name' => 'web_KeSearchBackendModule',
             'icon' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg',
             'labels' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf',
         ]
     );
 })();
+
