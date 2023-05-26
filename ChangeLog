@@ -22,6 +22,7 @@ Upcoming Version
 [TASK]    Cleanup: Remove unused properties
 [TASK]    Update PHPStan configuration
 [TASK]    Migrate language specific function calls
+[TASK]    Remove obsolete page access check in backend module
 
 Version 4.6.5, 26 May 2023
 [BUGFIX]  Fix fetching tags from Sphinx

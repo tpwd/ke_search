@@ -114,16 +114,6 @@ class BackendModuleController
             }
         }
 
-        // check access and redirect accordingly
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $access = is_array($this->pageinfo) ? 1 : 0;
-        if (!(
-            ($this->id && $access) || ($this->getBackendUser()->isAdmin() && !$this->id)
-        )) {
-            return $this->alertAction($request, $moduleTemplate);
-        }
-
         switch ($function) {
             case 'function2':
                 return $this->indexedContentAction($request, $moduleTemplate);
@@ -138,15 +128,6 @@ class BackendModuleController
             default:
                 return $this->startIndexingAction($request, $moduleTemplate);
         }
-    }
-
-    /**
-     * alert action
-     */
-    public function alertAction(ServerRequestInterface $request, ModuleTemplate $view): ResponseInterface
-    {
-        // just render the view
-        return $this->htmlResponse();
     }
 
     /**
