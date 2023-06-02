@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:ke_search/Resources/Private/Language/locallang.xlf" product-name="ke_search" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="backend.date.format.day" resname="backend.date.format.day" approved="yes">
+        <source>m/d/y</source>
+        <target state="final">d m.Y</target>
+      </trans-unit>
+      <trans-unit id="backend.date.format.time" resname="backend.date.format.time" approved="yes">
+        <source>H:i:s</source>
+        <target state="final">H:i:s</target>
+      </trans-unit>
+      <!-- Backend module -->
+      <trans-unit id="backend.start_indexer_full" resname="backend.start_indexer_full" approved="yes">
+        <source>Start full indexing</source>
+        <target state="final">Vollständige Indexierung starten</target>
+      </trans-unit>
+      <trans-unit id="backend.start_indexer_incremental" resname="backend.start_indexer_incremental" approved="yes">
+        <source>Start incremental indexing</source>
+        <target state="final">Inkrementelle Indizierung starten</target>
+      </trans-unit>
+      <trans-unit id="backend.indexingMode_0" resname="backend.indexingMode_0" approved="yes">
+        <source>full</source>
+        <target state="final">vollständig</target>
+      </trans-unit>
+      <trans-unit id="backend.indexingMode_1" resname="backend.indexingMode_1" approved="yes">
+        <source>incremental</source>
+        <target state="final">inkrementell</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
