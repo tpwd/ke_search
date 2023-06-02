@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:28Z" product-name="ke_search" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="pi_title" resname="pi_title">
+        <source>Searchbox</source>
+        <target state="translated">Блок поиска</target>
+      </trans-unit>
+      <trans-unit id="pi_cachable_title" resname="pi_cachable_title">
+        <source>Cachable Searchbox</source>
+        <target state="translated">Кешируемый блок поиска</target>
+      </trans-unit>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+        <source>Faceted Search: Show searchbox and filters.</source>
+        <target state="translated">Фасетный поиск: показать блок поиска с фильтрами.</target>
+      </trans-unit>
+      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description">
+        <source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+        <target state="translated">Фасетный поиск: показать кешируемый блок поиска с фильтрами. Результаты не обновляются в зависимости от установленных фильтров, зато дополнение кешируемое.</target>
+      </trans-unit>
+      <trans-unit id="ff.page.main" resname="ff.page.main">
+        <source>General</source>
+        <target state="translated">Общее</target>
+      </trans-unit>
+      <trans-unit id="ff.resultPage" resname="ff.resultPage">
+        <source>Page with result list</source>
+        <target state="translated">Страница со списком результатов</target>
+      </trans-unit>
+      <trans-unit id="ff.showTextInsteadOfResults" resname="ff.showTextInsteadOfResults">
+        <source>Show text instead of searchresults if no filter or searchword has been given?</source>
+        <target state="translated">Показывать текст вместо результатов поиска, если фильтр или поисковый запрос не заданы?</target>
+      </trans-unit>
+      <trans-unit id="ff.textForResults" resname="ff.textForResults">
+        <source>Insert this text if no filter or searchword has been given.</source>
+        <target state="translated">Вставить этот текст, если фильтр или поисковое слово не указано.</target>
+      </trans-unit>
+      <trans-unit id="ff.showNoResultsText" resname="ff.showNoResultsText">
+        <source>Show individual text if no results were found?</source>
+        <target state="translated">Вывести индивидуальный текст при отсутствии результатов поиска?</target>
+      </trans-unit>
+      <trans-unit id="ff.noResultsText" resname="ff.noResultsText">
+        <source>Individual text for &quot;no results found&quot;</source>
+        <target state="translated">Индивидуальный текст для "Не найдено результатов"</target>
+      </trans-unit>
+      <trans-unit id="ff.countSearchPhrases" resname="ff.countSearchPhrases">
+        <source>Count search phrases in statistic tables?</source>
+        <target state="translated">Подсчитать поисковые фразы в статистических таблицах?</target>
+      </trans-unit>
+      <trans-unit id="ff.cssFile" resname="ff.cssFile">
+        <source>CSS File</source>
+        <target state="translated">Файл CSS</target>
+      </trans-unit>
+      <trans-unit id="ff.page.sorting" resname="ff.page.sorting">
+        <source>Sorting</source>
+        <target state="translated">Сортировка</target>
+      </trans-unit>
+      <trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin">
+        <source>Sorting for searchresults</source>
+        <target state="translated">Сортировка результатов поиска</target>
+      </trans-unit>
+      <trans-unit id="ff.sortWithoutSearchword" resname="ff.sortWithoutSearchword">
+        <source>Sorting for searchresults if no searchword/filter is given</source>
+        <target state="translated">Сортировка результатов поиска, если поисковое слово/фильтр не заданы</target>
+      </trans-unit>
+      <trans-unit id="ff.showSortInFrontend" resname="ff.showSortInFrontend">
+        <source>The website visitor should be able to order the searchresults</source>
+        <target state="translated">Посетитель сайта должен иметь возможность упорядочивать результаты поиска</target>
+      </trans-unit>
+      <trans-unit id="ff.sortByVisitor" resname="ff.sortByVisitor">
+        <source>Fields the website user should be able to order by</source>
+        <target state="translated">Поля, по которым посетитель сайта сможет сортировать</target>
+      </trans-unit>
+      <trans-unit id="ff.page.view" resname="ff.page.view">
+        <source>General Layout</source>
+        <target state="translated">Общий макет</target>
+      </trans-unit>
+      <trans-unit id="ff.showQueryTime" resname="ff.showQueryTime">
+        <source>Show time (query process duration)?</source>
+        <target state="translated">Показать время (продолжительность процесса запроса)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showResultUrl" resname="ff.showResultUrl">
+        <source>Show result URL?</source>
+        <target state="translated">Показать URL результата?</target>
+      </trans-unit>
+      <trans-unit id="ff.renderResultUrlAsLink" resname="ff.renderResultUrlAsLink">
+        <source>Render result URL as link (a-Tag)?</source>
+        <target state="translated">Отобразить URL результата как ссылку (a-Tag)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showDate" resname="ff.showDate">
+        <source>Show date?</source>
+        <target state="translated">Показать дату?</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget" resname="ff.resultLinkTarget">
+        <source>Target for result link</source>
+        <target state="translated">Цель для ссылок на результат</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTargetFiles" resname="ff.resultLinkTargetFiles">
+        <source>Target for result link for files</source>
+        <target state="translated">Цель для ссылок на результат для файлов</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget.I.0" resname="ff.resultLinkTarget.I.0">
+        <source>Open in new window</source>
+        <target state="translated">Открыть в новом окне</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget.I.1" resname="ff.resultLinkTarget.I.1">
+        <source>Open in same window</source>
+        <target state="translated">Открыть в том же окне</target>
+      </trans-unit>
+      <trans-unit id="ff.resultsNumeration" resname="ff.resultsNumeration">
+        <source>Number results consecutively?</source>
+        <target state="translated">Нумеровать результаты последовательно?</target>
+      </trans-unit>
+      <trans-unit id="ff.templateLayout" resname="ff.templateLayout">
+        <source>Template Layout</source>
+        <target state="translated">Макет шаблона</target>
+      </trans-unit>
+      <trans-unit id="ff.templateLayout.I.0" resname="ff.templateLayout.I.0">
+        <source>Default</source>
+        <target state="translated">По умолчанию</target>
+      </trans-unit>
+      <trans-unit id="ff.highlightSword" resname="ff.highlightSword">
+        <source>Highlight search word in result preview</source>
+        <target state="translated">Выделить поисковое слово в предпросмотре результатов</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode" resname="ff.previewMode">
+        <source>Text for used for search result (preview text)</source>
+        <target state="translated">Текст, используемый для результата поиска (текст предварительного просмотра)</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode.I.0" resname="ff.previewMode.I.0">
+        <source>Always show the abstract if set.</source>
+        <target state="translated">Всегда выводить аннотацию, если она имеется.</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode.I.1" resname="ff.previewMode.I.1">
+        <source>Show abstract if it contains searchword, otherwise show an excerpt from the content.</source>
+        <target state="translated">Показать аннотацию, если она содержит поисковое слово, в противном случае показать отрывок из содержания.</target>
+      </trans-unit>
+      <trans-unit id="ff.resultChars" resname="ff.resultChars">
+        <source>Number of characters used for the result preview text.</source>
+        <target state="translated">Количество символов для текста предварительного просмотра результата.</target>
+      </trans-unit>
+      <trans-unit id="ff.page.images" resname="ff.page.images">
+        <source>Images</source>
+        <target state="translated">Изображения</target>
+      </trans-unit>
+      <trans-unit id="ff.showTypeIcon" resname="ff.showTypeIcon">
+        <source>Show result type icon?</source>
+        <target state="translated">Показать значок типа результата?</target>
+      </trans-unit>
+      <trans-unit id="ff.showFilePreview" resname="ff.showFilePreview">
+        <source>Show file preview instead of result icon if possible?</source>
+        <target state="translated">Показывать предварительный просмотр файла вместо значка в результатах, если это возможно?</target>
+      </trans-unit>
+      <trans-unit id="ff.showPageImages" resname="ff.showPageImages">
+        <source>Show page image preview instead of result icon? (Images are taken from the page properties, field &quot;search result image&quot;.)</source>
+        <target state="translated">Показывать предварительный просмотр изображения страницы вместо значка результата? (Изображения берутся из свойств страницы, поле "изображение результата поиска").</target>
+      </trans-unit>
+      <trans-unit id="ff.showNewsImages" resname="ff.showNewsImages">
+        <source>Show news (ext:news / ext:tt_news) image preview instead of result icon?</source>
+        <target state="translated">Показывать предварительный просмотр изображения новостей (ext:news / ext:tt_news) вместо значка результата?</target>
+      </trans-unit>
+      <trans-unit id="ff.page.pagebrowser" resname="ff.page.pagebrowser">
+        <source>Pagebrowser</source>
+        <target state="translated">Проводник по страницам</target>
+      </trans-unit>
+      <trans-unit id="ff.pagebrowserOnTop" resname="ff.pagebrowserOnTop">
+        <source>Show pagebrowser on top of result list</source>
+        <target state="translated">Показать проводник по страницам над списком результатов</target>
+      </trans-unit>
+      <trans-unit id="ff.pagebrowserAtBottom" resname="ff.pagebrowserAtBottom">
+        <source>Show pagebrowser at the bottom of the result list</source>
+        <target state="translated">Показать проводник по страницам под списком результатов</target>
+      </trans-unit>
+      <trans-unit id="ff.maxPagesInPagebrowser" resname="ff.maxPagesInPagebrowser">
+        <source>Number of pages shown in pagebrowser</source>
+        <target state="translated">Количество страниц, выводимых в проводнике</target>
+      </trans-unit>
+      <trans-unit id="ff.resultsPerPage" resname="ff.resultsPerPage">
+        <source>Results per page</source>
+        <target state="translated">Результатов на странице</target>
+      </trans-unit>
+      <trans-unit id="ff.page.debug" resname="ff.page.debug">
+        <source>Debug (Admin)</source>
+        <target state="translated">Отладка (Админ)</target>
+      </trans-unit>
+      <trans-unit id="ff.showTags" resname="ff.showTags">
+        <source>Show tags?</source>
+        <target state="translated">Показать теги?</target>
+      </trans-unit>
+      <trans-unit id="ff.logQuery" resname="ff.logQuery">
+        <source>Log query to log file (in var/log/)?</source>
+        <target state="translated">Записывать запрос в лог файл (в var/log/)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showTaggedContentOnly" resname="ff.showTaggedContentOnly">
+        <source>Show tagged content only?</source>
+        <target state="translated">Показать только содержимое с тегами?</target>
+      </trans-unit>
+      <trans-unit id="ff.page.filter" resname="ff.page.filter">
+        <source>Filter</source>
+        <target state="translated">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="ff.filters" resname="ff.filters">
+        <source>Shown Filters</source>
+        <target state="translated">Показанные фильтры</target>
+      </trans-unit>
+      <trans-unit id="ff.hiddenfilters" resname="ff.hiddenfilters">
+        <source>Hidden Filters (for use with &quot;preselected filter options&quot;)</source>
+        <target state="translated">Скрытые фильтры (для использования с "предварительно выбранными параметрами фильтров")</target>
+      </trans-unit>
+      <trans-unit id="ff.preselected_filters" resname="ff.preselected_filters">
+        <source>Preselected filter options</source>
+        <target state="translated">Предварительно выбранные параметры фильтра</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition" resname="ff.checkFilterCondition">
+        <source>Availability check for filter options</source>
+        <target state="translated">Проверка доступности для опций фильтра</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition.I.0" resname="ff.checkFilterCondition.I.0">
+        <source>Check in condition to other filters</source>
+        <target state="translated">Проверка в условиях остальных фильтров</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition.I.1" resname="ff.checkFilterCondition.I.1">
+        <source>no check</source>
+        <target state="translated">без проверки</target>
+      </trans-unit>
+      <trans-unit id="results" resname="results">
+        <source>Search results</source>
+        <target state="translated">Результаты поиска</target>
+      </trans-unit>
+      <trans-unit id="num_results" resname="num_results">
+        <source>%s results:</source>
+        <target state="translated">%s результатов:</target>
+      </trans-unit>
+      <trans-unit id="num_results_plain" resname="num_results_plain">
+        <source>results</source>
+        <target state="translated">результаты</target>
+      </trans-unit>
+      <trans-unit id="until" resname="until">
+        <source>until</source>
+        <target state="translated">до</target>
+      </trans-unit>
+      <trans-unit id="of" resname="of">
+        <source>of</source>
+        <target state="translated">из</target>
+      </trans-unit>
+      <trans-unit id="no_results_found" resname="no_results_found">
+        <source>No results found</source>
+        <target state="translated">Нет результатов</target>
+      </trans-unit>
+      <trans-unit id="no_results_refine" resname="no_results_refine">
+        <source>This search term is not specific enough. Please choose another.</source>
+        <target state="translated">Неопределенный поисковый запрос. Конкретизируйте запрос.</target>
+      </trans-unit>
+      <trans-unit id="searchword_length_error" resname="searchword_length_error">
+        <source>Search words under length of %d characters are not processed.</source>
+        <target state="translated">Поиск слов длиной %d символов не обрабатывается.</target>
+      </trans-unit>
+      <trans-unit id="error_resultPage" resname="error_resultPage">
+        <source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
+        <target state="translated">Вы определили страницу результатов в конфигурации вашего плагина. Поэтому не имеет смысла вставлять дополнение с результатами на эту страницу.</target>
+      </trans-unit>
+      <trans-unit id="error_templatePaths" resname="error_templatePaths">
+        <source>No template paths set. Did you include the static template?</source>
+        <target state="translated">Пути к шаблонам не установлены. Включен статический шаблон?</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev">
+        <source>previous</source>
+        <target state="translated">назад</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_next" resname="pagebrowser_next">
+        <source>next</source>
+        <target state="translated">далее</target>
+      </trans-unit>
+      <trans-unit id="label_resulturl" resname="label_resulturl">
+        <source>URL</source>
+        <target state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="label_sort" resname="label_sort">
+        <source>Sorting:</source>
+        <target state="translated">Сортировка:</target>
+      </trans-unit>
+      <trans-unit id="label_score" resname="label_score">
+        <source>Score</source>
+        <target state="translated">Оценка</target>
+      </trans-unit>
+      <trans-unit id="label_date" resname="label_date">
+        <source>Date</source>
+        <target state="translated">Дата</target>
+      </trans-unit>
+      <trans-unit id="label_tags" resname="label_tags">
+        <source>Tags</source>
+        <target state="translated">Теги</target>
+      </trans-unit>
+      <trans-unit id="label_all" resname="label_all">
+        <source>select all / deselect all</source>
+        <target state="translated">выбрать все / снять выбор</target>
+      </trans-unit>
+      <trans-unit id="loading" resname="loading">
+        <source>Loading</source>
+        <target state="translated">Загрузка</target>
+      </trans-unit>
+      <trans-unit id="all_options" resname="all_options">
+        <source>ALL</source>
+        <target state="translated">ВСЕ</target>
+      </trans-unit>
+      <trans-unit id="no_options" resname="no_options">
+        <source>---</source>
+        <target state="translated">---</target>
+      </trans-unit>
+      <trans-unit id="message_before_search" resname="message_before_search">
+        <source>Please choose your search parameters.</source>
+        <target state="translated">Определите параметры поиска.</target>
+      </trans-unit>
+      <trans-unit id="query_time" resname="query_time">
+        <source>The search query was processed in %s ms.</source>
+        <target state="translated">Поисковый запрос обработан за %s мс.</target>
+      </trans-unit>
+      <trans-unit id="reset_button" resname="reset_button">
+        <source>Reset</source>
+        <target state="translated">Сброс</target>
+      </trans-unit>
+      <trans-unit id="reset_filter" resname="reset_filter">
+        <source>Reset filter</source>
+        <target state="translated">Сбросить фильтр</target>
+      </trans-unit>
+      <trans-unit id="submit" resname="submit">
+        <source>Find</source>
+        <target state="translated">Найти</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back">
+        <source>Back</source>
+        <target state="translated">Назад</target>
+      </trans-unit>
+      <trans-unit id="checkbox_submit" resname="checkbox_submit">
+        <source>Apply filter</source>
+        <target state="translated">Применить фильтр</target>
+      </trans-unit>
+      <trans-unit id="orderlink_title" resname="orderlink_title">
+        <source>Title</source>
+        <target state="translated">Заголовок</target>
+      </trans-unit>
+      <trans-unit id="orderlink_score" resname="orderlink_score">
+        <source>Relevance</source>
+        <target state="translated">Релевантность</target>
+      </trans-unit>
+      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate">
+        <source>Date</source>
+        <target state="translated">Дата</target>
+      </trans-unit>
+      <trans-unit id="searchbox_default_value" resname="searchbox_default_value">
+        <source>Your search phrase</source>
+        <target state="translated">Ваш поисковый запрос</target>
+      </trans-unit>
+      <trans-unit id="linktext_more" resname="linktext_more">
+        <source>More %s and Multiselection</source>
+        <target state="translated">Еще %s и множественный выбор</target>
+      </trans-unit>
+      <trans-unit id="show_results" resname="show_results">
+        <source>Show results</source>
+        <target state="translated">Показать результаты</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime">
+        <source>%B %e, %Y, %I:%M %p</source>
+        <target state="translated">%B %e, %Y, %I:%M %p</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateAndTimeWithoutYear" resname="dateformat.dateAndTimeWithoutYear">
+        <source>%B %e, %I:%M %p</source>
+        <target state="translated">%B %e, %I:%M %p</target>
+      </trans-unit>
+      <trans-unit id="dateformat.time" resname="dateformat.time">
+        <source>%I:%M %p</source>
+        <target state="translated">%I:%M %p</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateWithYear" resname="dateformat.dateWithYear">
+        <source>%B %e, %Y</source>
+        <target state="translated">%B %e, %Y</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear">
+        <source>%B %e</source>
+        <target state="translated">%B %e</target>
+      </trans-unit>
+      <trans-unit id="dateRange.start" resname="dateRange.start">
+        <source>Start</source>
+        <target state="translated">Начало</target>
+      </trans-unit>
+      <trans-unit id="dateRange.end" resname="dateRange.end">
+        <source>End</source>
+        <target state="translated">Конец</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
