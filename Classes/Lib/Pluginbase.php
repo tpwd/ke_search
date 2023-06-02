@@ -1283,7 +1283,7 @@ class Pluginbase extends AbstractPlugin
      * @since 11.07.12
      * @return bool
      */
-    public function in_multiarray(mixed $needle, array $haystack): bool
+    public function in_multiarray($needle, array $haystack): bool
     {
         foreach ($haystack as $value) {
             if (is_array($value)) {
