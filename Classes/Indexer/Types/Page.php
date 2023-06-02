@@ -689,6 +689,9 @@ class Page extends IndexerBase
                     if ($ttContentRow['sys_language_uid'] == -1) {
                         foreach ($this->sysLanguages as $sysLang) {
                             if ($sysLang['uid'] != -1) {
+                                if (!isset($pageContent[$sysLang['uid']])) {
+                                    $pageContent[$sysLang['uid']] = '';
+                                }
                                 $pageContent[$sysLang['uid']] .= $content;
                             }
                         }

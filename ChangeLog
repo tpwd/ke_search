@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix undefined array key issues, cherry-pick fix from https://github.com/tpwd/ke_search/commit/5a9ce7063ce89c4de249e720a91490930a885edf
+
 Version 5.0.0, 26 May 2023
 [!!!]     This version supports TYPO3 12 and 11 and drops support for TYPO3 10.
 [!!!]     If you use a custom template for "SearchForm.html" please replace "{f:uri.page(pageUid: targetpage)}" with "{targetPageUrl}".
