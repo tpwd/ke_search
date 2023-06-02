@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2022-01-20T10:11:58Z" product-name="ke_search" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="dashboard_preset.description" resname="dashboard_preset.description" approved="yes">
+        <source>A dashboard with all available widgets for search.</source>
+        <target state="final">Ein Dashboard mit allen verfügbaren Widgets für die Suche.</target>
+      </trans-unit>
+      <trans-unit id="dashboard_preset.title" resname="dashboard_preset.title" approved="yes">
+        <source>ke_search</source>
+        <target state="final">ke_search</target>
+      </trans-unit>
+      <trans-unit id="widget_group.ke_search" resname="widget_group.ke_search" approved="yes">
+        <source>ke_search</source>
+        <target state="final">ke_search</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.title" resname="widgets.keSearchStatus.title" approved="yes">
+        <source>Indexer Status</source>
+        <target state="final">Indexer Status</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.description" resname="widgets.keSearchStatus.description" approved="yes">
+        <source>Shows the current status of the ke_search indexer.</source>
+        <target state="final">Zeigt den aktuellen Status des ke_search-Indexers an.</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.running_since" resname="widgets.keSearchStatus.running_since" approved="yes">
+        <source>Indexer is running since</source>
+        <target state="final">Indexer läuft seit</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.not_running" resname="widgets.keSearchStatus.not_running" approved="yes">
+        <source>Currently no indexing process is running</source>
+        <target state="final">Aktuell läuft kein Indexierungsvorgang</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.h" resname="widgets.keSearchStatus.h" approved="yes">
+        <source>h</source>
+        <target state="final">Std</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.m" resname="widgets.keSearchStatus.m" approved="yes">
+        <source>m</source>
+        <target state="final">Min</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.s" resname="widgets.keSearchStatus.s" approved="yes">
+        <source>s</source>
+        <target state="final">Sek</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.last_run_finished" resname="widgets.keSearchStatus.last_run_finished" approved="yes">
+        <source>Last run finished</source>
+        <target state="final">Der letzte Durchlauf wurde beendet am</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.last_run_finished_at" resname="widgets.keSearchStatus.last_run_finished_at" approved="yes">
+        <source>at</source>
+        <target state="final">um</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchStatus.last_run_took" resname="widgets.keSearchStatus.last_run_took" approved="yes">
+        <source>and took</source>
+        <target state="final">und benötigte</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title" approved="yes">
+        <source>Index Overview</source>
+        <target state="final">Index Übersicht</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description" approved="yes">
+        <source>Shows how many records of each type are currently in the index.</source>
+        <target state="final">Zeigt wie viele Einträge von welchem Typ derzeit im Index vorhanden sind.</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.title" resname="widgets.keSearchTrendingSearchphrases.title" approved="yes">
+        <source>Trending search phrases</source>
+        <target state="final">Am häufigsten verwendete Suchphrasen</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.description" resname="widgets.keSearchTrendingSearchphrases.description" approved="yes">
+        <source>Shows search phrases from the last 7 days.</source>
+        <target state="final">Zeigt die am häufigsten verwendeten Suchphrasen der letzten 7 Tage.</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.phrase" resname="widgets.keSearchTrendingSearchphrases.phrase" approved="yes">
+        <source>Search phrase</source>
+        <target state="final">Suchphrase</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.number_of_usages" resname="widgets.keSearchTrendingSearchphrases.number_of_usages" approved="yes">
+        <source>Number of usages</source>
+        <target state="final">Anzahl der Verwendungen</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language" approved="yes">
+        <source>Language</source>
+        <target state="final">Sprache</target>
+      </trans-unit>
+      <trans-unit id="error_templatePaths" resname="error_templatePaths" approved="yes">
+        <source>No template paths set. Did you include the static template?</source>
+        <target state="final">Die Template-Pfade sind nicht definiert. Haben Sie das statische Template inkludiert?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
