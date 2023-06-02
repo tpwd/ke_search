@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:28Z" product-name="ke_search" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="pi_title" resname="pi_title" approved="yes">
+        <source>Searchbox</source>
+        <target state="final">Facettierte Suche</target>
+      </trans-unit>
+      <trans-unit id="pi_cachable_title" resname="pi_cachable_title" approved="yes">
+        <source>Cachable Searchbox</source>
+        <target state="final">Suchbox mit Caching</target>
+      </trans-unit>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
+        <source>Faceted Search: Show searchbox and filters.</source>
+        <target state="final">Facettierte Suche: Suchbox und Filter anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description" approved="yes">
+        <source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+        <target state="final">Facettierte Suche: Suchbox und Filter mit Caching anzeigen. Filter werden nicht durch die Ergebnisliste aktualisiert, aber dafür ist Caching möglich.</target>
+      </trans-unit>
+      <trans-unit id="ff.page.main" resname="ff.page.main" approved="yes">
+        <source>General</source>
+        <target state="final">Allgemein</target>
+      </trans-unit>
+      <trans-unit id="ff.resultPage" resname="ff.resultPage" approved="yes">
+        <source>Page with result list</source>
+        <target state="final">Suchergebnis-Seite (Zielseite)</target>
+      </trans-unit>
+      <trans-unit id="ff.showTextInsteadOfResults" resname="ff.showTextInsteadOfResults" approved="yes">
+        <source>Show text instead of searchresults if no filter or searchword has been given?</source>
+        <target state="final">Zeige einen Text anstatt der Suchergebnisse, wenn kein Filter und noch kein Suchwort angegeben wurde.</target>
+      </trans-unit>
+      <trans-unit id="ff.textForResults" resname="ff.textForResults" approved="yes">
+        <source>Insert this text if no filter or searchword has been given.</source>
+        <target state="final">Zeige diesen Text an, wenn kein Filter und noch kein Suchwort angegeben wurde.</target>
+      </trans-unit>
+      <trans-unit id="ff.showNoResultsText" resname="ff.showNoResultsText" approved="yes">
+        <source>Show individual text if no results were found?</source>
+        <target state="final">Individuellen Text verwenden, wenn keine Ergebnisse gefunden wurden?</target>
+      </trans-unit>
+      <trans-unit id="ff.noResultsText" resname="ff.noResultsText" approved="yes">
+        <source>Individual text for &quot;no results found&quot;</source>
+        <target state="final">Individueller Text für "keine Ergebnisse gefunden"</target>
+      </trans-unit>
+      <trans-unit id="ff.countSearchPhrases" resname="ff.countSearchPhrases" approved="yes">
+        <source>Count search phrases in statistic tables?</source>
+        <target state="final">Statistik über Suchbegriffe führen?</target>
+      </trans-unit>
+      <trans-unit id="ff.cssFile" resname="ff.cssFile" approved="yes">
+        <source>CSS File</source>
+        <target state="final">CSS-Datei</target>
+      </trans-unit>
+      <trans-unit id="ff.page.sorting" resname="ff.page.sorting" approved="yes">
+        <source>Sorting</source>
+        <target state="final">Sortierung</target>
+      </trans-unit>
+      <trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin" approved="yes">
+        <source>Sorting for searchresults</source>
+        <target state="final">Suchergebnisse werden nach dieser Vorgabe sortiert.</target>
+      </trans-unit>
+      <trans-unit id="ff.sortWithoutSearchword" resname="ff.sortWithoutSearchword" approved="yes">
+        <source>Sorting for searchresults if no searchword/filter is given</source>
+        <target state="final">Wie sollen die Ergebnisse sortiert werden, wenn kein Suchwort angegeben wurde?</target>
+      </trans-unit>
+      <trans-unit id="ff.showSortInFrontend" resname="ff.showSortInFrontend" approved="yes">
+        <source>The website visitor should be able to order the searchresults</source>
+        <target state="final">Soll dem Webseitenbesucher die Möglichkeit gegeben werden, die Suchergebnisse selbst zu sortieren?</target>
+      </trans-unit>
+      <trans-unit id="ff.sortByVisitor" resname="ff.sortByVisitor" approved="yes">
+        <source>Fields the website user should be able to order by</source>
+        <target state="final">Welche Sortiermöglichkeiten sollen dem Besucher zur Verfügung gestellt werden?</target>
+      </trans-unit>
+      <trans-unit id="ff.page.view" resname="ff.page.view" approved="yes">
+        <source>General Layout</source>
+        <target state="final">Darstellung</target>
+      </trans-unit>
+      <trans-unit id="ff.showQueryTime" resname="ff.showQueryTime" approved="yes">
+        <source>Show time (query process duration)?</source>
+        <target state="final">Benötigte Zeit für Suchabfrage anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="ff.showResultUrl" resname="ff.showResultUrl" approved="yes">
+        <source>Show result URL?</source>
+        <target state="final">Ergebnis-URL anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="ff.renderResultUrlAsLink" resname="ff.renderResultUrlAsLink" approved="yes">
+        <source>Render result URL as link (a-Tag)?</source>
+        <target state="final">Generiere aus der Ergebnis-URL einen Link (a-Tag)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showDate" resname="ff.showDate" approved="yes">
+        <source>Show date?</source>
+        <target state="final">Zeige Datum?</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget" resname="ff.resultLinkTarget" approved="yes">
+        <source>Target for result link</source>
+        <target state="final">Ziel für Ergebnislink</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTargetFiles" resname="ff.resultLinkTargetFiles" approved="yes">
+        <source>Target for result link for files</source>
+        <target state="final">Ziel für Ergebnislink für Dateien</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget.I.0" resname="ff.resultLinkTarget.I.0" approved="yes">
+        <source>Open in new window</source>
+        <target state="final">In neuem Fenster öffnen</target>
+      </trans-unit>
+      <trans-unit id="ff.resultLinkTarget.I.1" resname="ff.resultLinkTarget.I.1" approved="yes">
+        <source>Open in same window</source>
+        <target state="final">Im gleichen Fenster öffnen</target>
+      </trans-unit>
+      <trans-unit id="ff.resultsNumeration" resname="ff.resultsNumeration" approved="yes">
+        <source>Number results consecutively?</source>
+        <target state="final">Ergebnisse fortlaufend nummerieren?</target>
+      </trans-unit>
+      <trans-unit id="ff.templateLayout" resname="ff.templateLayout" approved="yes">
+        <source>Template Layout</source>
+        <target state="final">Template-Layout</target>
+      </trans-unit>
+      <trans-unit id="ff.templateLayout.I.0" resname="ff.templateLayout.I.0" approved="yes">
+        <source>Default</source>
+        <target state="final">Standard</target>
+      </trans-unit>
+      <trans-unit id="ff.highlightSword" resname="ff.highlightSword" approved="yes">
+        <source>Highlight search word in result preview</source>
+        <target state="final">Highlighten des Suchwort in Ergebnisvorschau?</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode" resname="ff.previewMode" approved="yes">
+        <source>Text for used for search result (preview text)</source>
+        <target state="final">Vorschau-Modus</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode.I.0" resname="ff.previewMode.I.0" approved="yes">
+        <source>Always show the abstract if set.</source>
+        <target state="final">Immer Abstract anzeigen (wenn gesetzt)</target>
+      </trans-unit>
+      <trans-unit id="ff.previewMode.I.1" resname="ff.previewMode.I.1" approved="yes">
+        <source>Show abstract if it contains searchword, otherwise show an excerpt from the content.</source>
+        <target state="final">Abstract anzeigen wenn Suchwort enthalten, ansonsten Inhaltstext</target>
+      </trans-unit>
+      <trans-unit id="ff.resultChars" resname="ff.resultChars" approved="yes">
+        <source>Number of characters used for the result preview text.</source>
+        <target state="final">Anzahl Zeichen für Ergebnisvorschau</target>
+      </trans-unit>
+      <trans-unit id="ff.page.images" resname="ff.page.images" approved="yes">
+        <source>Images</source>
+        <target state="final">Bilder</target>
+      </trans-unit>
+      <trans-unit id="ff.showTypeIcon" resname="ff.showTypeIcon" approved="yes">
+        <source>Show result type icon?</source>
+        <target state="final">Zeige Ergebnistyp-Icon?</target>
+      </trans-unit>
+      <trans-unit id="ff.showFilePreview" resname="ff.showFilePreview" approved="yes">
+        <source>Show file preview instead of result icon if possible?</source>
+        <target state="final">Zeige Dateivorschau statt Ergebnistyp-Icon wenn möglich?</target>
+      </trans-unit>
+      <trans-unit id="ff.showPageImages" resname="ff.showPageImages" approved="yes">
+        <source>Show page image preview instead of result icon? (Images are taken from the page properties, field &quot;search result image&quot;.)</source>
+        <target state="final">Zeige Bilder von Seiten wenn vorhanden (Bilder aus dem Feld "Media" in den Seiteneigenschaften)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showNewsImages" resname="ff.showNewsImages" approved="yes">
+        <source>Show news (ext:news / ext:tt_news) image preview instead of result icon?</source>
+        <target state="final">Zeige Nachrichtenbilder (ext:news) als Vorschau?</target>
+      </trans-unit>
+      <trans-unit id="ff.page.pagebrowser" resname="ff.page.pagebrowser" approved="yes">
+        <source>Pagebrowser</source>
+        <target state="final">Seitennavigation</target>
+      </trans-unit>
+      <trans-unit id="ff.pagebrowserOnTop" resname="ff.pagebrowserOnTop" approved="yes">
+        <source>Show pagebrowser on top of result list</source>
+        <target state="final">Pagebrowser am Anfang der Ergebnisliste anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="ff.pagebrowserAtBottom" resname="ff.pagebrowserAtBottom" approved="yes">
+        <source>Show pagebrowser at the bottom of the result list</source>
+        <target state="final">Pagebrowser am Ende der Ergebnisliste anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="ff.maxPagesInPagebrowser" resname="ff.maxPagesInPagebrowser" approved="yes">
+        <source>Number of pages shown in pagebrowser</source>
+        <target state="final">max. Anzahl Seiten in Pagebrowser</target>
+      </trans-unit>
+      <trans-unit id="ff.resultsPerPage" resname="ff.resultsPerPage" approved="yes">
+        <source>Results per page</source>
+        <target state="final">Ergebnisse pro Seite</target>
+      </trans-unit>
+      <trans-unit id="ff.page.debug" resname="ff.page.debug" approved="yes">
+        <source>Debug (Admin)</source>
+        <target state="final">Debug (Admin)</target>
+      </trans-unit>
+      <trans-unit id="ff.showTags" resname="ff.showTags" approved="yes">
+        <source>Show tags?</source>
+        <target state="final">Zeige Schlagworte?</target>
+      </trans-unit>
+      <trans-unit id="ff.logQuery" resname="ff.logQuery" approved="yes">
+        <source>Log query to log file (in var/log/)?</source>
+        <target state="final">Logge Such-Query in Logfile (in var/log/)?</target>
+      </trans-unit>
+      <trans-unit id="ff.showTaggedContentOnly" resname="ff.showTaggedContentOnly" approved="yes">
+        <source>Show tagged content only?</source>
+        <target state="final">Nur Inhalte mit Schlagworten zeigen?</target>
+      </trans-unit>
+      <trans-unit id="ff.page.filter" resname="ff.page.filter" approved="yes">
+        <source>Filter</source>
+        <target state="final">Filtereinstellungen</target>
+      </trans-unit>
+      <trans-unit id="ff.filters" resname="ff.filters" approved="yes">
+        <source>Shown Filters</source>
+        <target state="final">Angezeigte Filter</target>
+      </trans-unit>
+      <trans-unit id="ff.hiddenfilters" resname="ff.hiddenfilters" approved="yes">
+        <source>Hidden Filters (for use with &quot;preselected filter options&quot;)</source>
+        <target state="final">Versteckte Filter (zur Benutzung mit "Vorausgewählte Filteroptionen")</target>
+      </trans-unit>
+      <trans-unit id="ff.preselected_filters" resname="ff.preselected_filters" approved="yes">
+        <source>Preselected filter options</source>
+        <target state="final">Vorausgewählte Filteroptionen</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition" resname="ff.checkFilterCondition" approved="yes">
+        <source>Availability check for filter options</source>
+        <target state="final">Verfügbarkeitsprüfung für Filter</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition.I.0" resname="ff.checkFilterCondition.I.0" approved="yes">
+        <source>Check in condition to other filters</source>
+        <target state="final">Prüfung mit Abhängigkeit zu anderen Filtern</target>
+      </trans-unit>
+      <trans-unit id="ff.checkFilterCondition.I.1" resname="ff.checkFilterCondition.I.1" approved="yes">
+        <source>no check</source>
+        <target state="final">keine Verfügbarkeitsprüfung</target>
+      </trans-unit>
+      <trans-unit id="results" resname="results" approved="yes">
+        <source>Search results</source>
+        <target state="final">Suchergebnisse</target>
+      </trans-unit>
+      <trans-unit id="num_results" resname="num_results" approved="yes">
+        <source>%s results:</source>
+        <target state="final">%s Treffer: </target>
+      </trans-unit>
+      <trans-unit id="num_results_plain" resname="num_results_plain" approved="yes">
+        <source>results</source>
+        <target state="final">Treffer</target>
+      </trans-unit>
+      <trans-unit id="until" resname="until" approved="yes">
+        <source>until</source>
+        <target state="final">bis</target>
+      </trans-unit>
+      <trans-unit id="of" resname="of" approved="yes">
+        <source>of</source>
+        <target state="final">von</target>
+      </trans-unit>
+      <trans-unit id="no_results_found" resname="no_results_found" approved="yes">
+        <source>No results found</source>
+        <target state="final">Keine Ergebnisse gefunden</target>
+      </trans-unit>
+      <trans-unit id="no_results_refine" resname="no_results_refine" approved="yes">
+        <source>This search term is not specific enough. Please choose another.</source>
+        <target state="final">Ihr Suchbegriff ist zu allgemein gehalten und kommt auf mehr als 50 Prozent aller Seiten vor. Bitte waehlen Sie einen anderen Suchbegriff.</target>
+      </trans-unit>
+      <trans-unit id="searchword_length_error" resname="searchword_length_error" approved="yes">
+        <source>Search words under length of %d characters are not processed.</source>
+        <target state="final">Bitte beachten Sie: Suchbegriffe unter einer Länge von %d Buchstaben werden ignoriert.</target>
+      </trans-unit>
+      <trans-unit id="error_resultPage" resname="error_resultPage" approved="yes">
+        <source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
+        <target state="final">Sie haben in der Pluginkonfiguration eine Ergebnisseite angegeben. Es macht also keinen Sinn das Ergebnislistenplugin mit hier auf dieser Liste anzeigen zu lassen.</target>
+      </trans-unit>
+      <trans-unit id="error_templatePaths" resname="error_templatePaths" approved="yes">
+        <source>No template paths set. Did you include the static template?</source>
+        <target state="final">Die Template-Pfade sind nicht definiert. Haben Sie das statische Template inkludiert?</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev" approved="yes">
+        <source>previous</source>
+        <target state="final">vorherige</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_next" resname="pagebrowser_next" approved="yes">
+        <source>next</source>
+        <target state="final">nächste</target>
+      </trans-unit>
+      <trans-unit id="label_resulturl" resname="label_resulturl" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+      </trans-unit>
+      <trans-unit id="label_sort" resname="label_sort" approved="yes">
+        <source>Sorting:</source>
+        <target state="final">Sortierung:</target>
+      </trans-unit>
+      <trans-unit id="label_score" resname="label_score" approved="yes">
+        <source>Score</source>
+        <target state="final">Relevanz</target>
+      </trans-unit>
+      <trans-unit id="label_date" resname="label_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="label_tags" resname="label_tags" approved="yes">
+        <source>Tags</source>
+        <target state="final">Schlagworte</target>
+      </trans-unit>
+      <trans-unit id="label_all" resname="label_all" approved="yes">
+        <source>select all / deselect all</source>
+        <target state="final">alle auswählen / alle abwählen</target>
+      </trans-unit>
+      <trans-unit id="loading" resname="loading" approved="yes">
+        <source>Loading</source>
+        <target state="final">laedt</target>
+      </trans-unit>
+      <trans-unit id="all_options" resname="all_options" approved="yes">
+        <source>ALL</source>
+        <target state="final">Alle</target>
+      </trans-unit>
+      <trans-unit id="no_options" resname="no_options" approved="yes">
+        <source>---</source>
+        <target state="final">-----</target>
+      </trans-unit>
+      <trans-unit id="message_before_search" resname="message_before_search" approved="yes">
+        <source>Please choose your search parameters.</source>
+        <target state="final">Bitte geben Sie Ihre Suchkriterien an.</target>
+      </trans-unit>
+      <trans-unit id="query_time" resname="query_time" approved="yes">
+        <source>The search query was processed in %s ms.</source>
+        <target state="final">Die Suchabfrage hat %s ms in Anspruch genommen.</target>
+      </trans-unit>
+      <trans-unit id="reset_button" resname="reset_button" approved="yes">
+        <source>Reset</source>
+        <target state="final">Eingaben löschen</target>
+      </trans-unit>
+      <trans-unit id="reset_filter" resname="reset_filter" approved="yes">
+        <source>Reset filter</source>
+        <target state="final">Filter zurücksetzen</target>
+      </trans-unit>
+      <trans-unit id="submit" resname="submit" approved="yes">
+        <source>Find</source>
+        <target state="final">Finden</target>
+      </trans-unit>
+      <trans-unit id="back" resname="back" approved="yes">
+        <source>Back</source>
+        <target state="final">Zurück</target>
+      </trans-unit>
+      <trans-unit id="checkbox_submit" resname="checkbox_submit" approved="yes">
+        <source>Apply filter</source>
+        <target state="final">Filter anwenden</target>
+      </trans-unit>
+      <trans-unit id="orderlink_title" resname="orderlink_title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titel</target>
+      </trans-unit>
+      <trans-unit id="orderlink_score" resname="orderlink_score" approved="yes">
+        <source>Relevance</source>
+        <target state="final">Relevanz</target>
+      </trans-unit>
+      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate" approved="yes">
+        <source>Date</source>
+        <target state="final">Datum</target>
+      </trans-unit>
+      <trans-unit id="searchbox_default_value" resname="searchbox_default_value" approved="yes">
+        <source>Your search phrase</source>
+        <target state="final">Suchbegriff</target>
+      </trans-unit>
+      <trans-unit id="linktext_more" resname="linktext_more" approved="yes">
+        <source>More %s and Multiselection</source>
+        <target state="final">Weitere %s und Mehrfachauswahl</target>
+      </trans-unit>
+      <trans-unit id="show_results" resname="show_results" approved="yes">
+        <source>Show results</source>
+        <target state="final">Ergebnisse anzeigen</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime" approved="yes">
+        <source>%B %e, %Y, %I:%M %p</source>
+        <target state="final">%e. %B %Y, %H:%M Uhr</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateAndTimeWithoutYear" resname="dateformat.dateAndTimeWithoutYear" approved="yes">
+        <source>%B %e, %I:%M %p</source>
+        <target state="final">%e. %B, %H:%M Uhr</target>
+      </trans-unit>
+      <trans-unit id="dateformat.time" resname="dateformat.time" approved="yes">
+        <source>%I:%M %p</source>
+        <target state="final">%H:%M Uhr</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateWithYear" resname="dateformat.dateWithYear" approved="yes">
+        <source>%B %e, %Y</source>
+        <target state="final">%e. %B %Y</target>
+      </trans-unit>
+      <trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear" approved="yes">
+        <source>%B %e</source>
+        <target state="final">%e. %B</target>
+      </trans-unit>
+      <trans-unit id="dateRange.start" resname="dateRange.start" approved="yes">
+        <source>Start</source>
+        <target state="final">Beginn</target>
+      </trans-unit>
+      <trans-unit id="dateRange.end" resname="dateRange.end" approved="yes">
+        <source>End</source>
+        <target state="final">Ende</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
