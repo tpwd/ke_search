@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.0.1, 2 June 2023
 [BUGFIX]  Fix undefined array key issues, cherry-pick fix from https://github.com/tpwd/ke_search/commit/5a9ce7063ce89c4de249e720a91490930a885edf
 [BUGFIX]  Fix regression caused by "mixed" type hint which is not available for PHP 7.4, see https://github.com/tpwd/ke_search/issues/166
 
