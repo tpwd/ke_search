@@ -111,10 +111,11 @@ class TtAddress extends IndexerBase
                     ? $addressRow['company'] :
                     (!empty($addressRow['name']) ? $addressRow['name']
                         : ($addressRow['first_name'] . ' ' . $addressRow['last_name']));
+                $title = strip_tags($title);
 
                 // use description as abstract if set
                 if (!empty($addressRow['description'])) {
-                    $abstract = $addressRow['description'];
+                    $abstract = strip_tags($addressRow['description']);
                 }
 
                 // build content
@@ -172,6 +173,7 @@ class TtAddress extends IndexerBase
                 if (!empty($addressRow['www'])) {
                     $content .= $addressRow['www'];
                 }
+                $content = strip_tags($content);
 
                 // put content together
                 $fullContent = $abstract . "\n" . $content;

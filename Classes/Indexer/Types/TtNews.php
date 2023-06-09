@@ -138,7 +138,7 @@ class TtNews extends IndexerBase
                     $content .= "\n" . strip_tags($newsRecord['author_email']);
                 }
                 if (!empty($newsRecord['keywords'])) {
-                    $content .= "\n" . $newsRecord['keywords'];
+                    $content .= "\n" . strip_tags($newsRecord['keywords']);
                 }
 
                 // get related files if fileext is configured
