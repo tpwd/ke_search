@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 4.6.6, 13 June 2023
+[BUGFIX]  Security Bugfix. Please update!
+
 Version 4.6.5, 26 May 2023
 [BUGFIX]  Fix fetching tags from Sphinx
 
