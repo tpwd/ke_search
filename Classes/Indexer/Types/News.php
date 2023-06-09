@@ -188,7 +188,7 @@ class News extends IndexerBase
                     $content .= "\n" . strip_tags($newsRecord['author_email']);
                 }
                 if (!empty($newsRecord['keywords'])) {
-                    $content .= "\n" . $newsRecord['keywords'];
+                    $content .= "\n" . strip_tags($newsRecord['keywords']);
                 }
 
                 // index attached content elements

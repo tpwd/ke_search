@@ -308,6 +308,7 @@ class File extends IndexerBase
 
                 if ($fileObj instanceof FileIndexerInterface) {
                     $fileContent = $fileObj->getContent($filePath);
+                    $fileContent = strip_tags($fileContent);
                     $this->addError($fileObj->getErrors());
 
                     // remove metadata separator if it appears in the content
