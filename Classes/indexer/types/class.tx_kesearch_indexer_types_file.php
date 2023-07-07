@@ -233,6 +233,7 @@ class tx_kesearch_indexer_types_file extends tx_kesearch_indexer_types
                     // if there's no matching index entry, we execute the  "get file content" method of our new object
                     if (!$fileContent) {
                         $fileContent = $fileObj->getContent($file);
+                        $fileContent = strip_tags($fileContent);
                         $this->addError($fileObj->getErrors());
                     }
 
