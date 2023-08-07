@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
@@ -54,6 +55,9 @@ class News extends IndexerBase
      */
     public function startIndexing()
     {
+        // get news Modul settings
+        $newsSettings = $this->getNewsExtensionSettings();
+
         $content = '';
         $table = 'tx_news_domain_model_news';
 
@@ -82,6 +86,24 @@ class News extends IndexerBase
         // in incremental mode get only news which have been modified since last indexing time
         if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
             $where[] = $queryBuilder->expr()->gte('tstamp', $this->lastRunStartTime);
+        }
+
+        // index only news records older than parameter timeRestriction parameter
+        if (array_key_exists('timeRestriction', $newsSettings) && !empty($newsSettings['timeRestriction'])) {
+            $timeRestriction = $newsSettings['timeRestriction'];
+            $where[] = $queryBuilder->expr()->gt(
+                'datetime',
+                $queryBuilder->quote(strtotime($timeRestriction), \PDO::PARAM_INT)
+            );
+        }
+
+        // index only news records that are younger than timeRestrictionHigh parameter
+        if (array_key_exists('timeRestrictionHigh', $newsSettings) && !empty($newsSettings['timeRestrictionHigh'])) {
+            $timeRestrictionHigh = $newsSettings['timeRestrictionHigh'];
+            $where[] = $queryBuilder->expr()->lte(
+                'datetime',
+                $queryBuilder->quote(strtotime($timeRestrictionHigh), \PDO::PARAM_INT)
+            );
         }
 
         // index archived news
@@ -587,5 +609,21 @@ class News extends IndexerBase
     protected function getContentFromRelatedFiles($relatedFiles, $newsUid): string
     {
         return $this->getContentFromFiles($relatedFiles);
+    }
+
+    /**
+     * get news Extension typoscript Settings
+     *
+     * @return mixed
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     */
+    protected function getNewsExtensionSettings()
+    {
+        $configurationManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+        $typoscript = $configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+            'news'
+        );
+        return $typoscript['plugin.']['tx_news.']['settings.'];
     }
 }
