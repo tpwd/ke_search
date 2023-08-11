@@ -27,6 +27,8 @@ defined('TYPO3') or die();
         'plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
     );
 
+    // TODO: Remove this once support TYPO3 v11 is dropped, it is moved to Configuration/page.tsconfig which is automatically loaded
+    // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions.html
     // Add TypoScript configuration for dashboard widgets
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
         '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TypoScript/Backend/dashboard.typoscript">'
