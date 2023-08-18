@@ -1,3 +1,1 @@
-# Pattern: templates.typo3/cms-dashboard."something-unique" = "overriding-extension-composer-name":"entry-path"
-#templates.typo3/cms-dashboard.1644485473 = myvendor/myext:Resources/Private
 templates.typo3/cms-dashboard.1613733292 = tpwd/ke_search:Resources/Private/Dashboard

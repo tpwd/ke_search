@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Widgets;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
@@ -50,7 +51,12 @@ class StatusWidget implements WidgetInterface
 
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/StatusWidget');
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
+            $this->view->setTemplate('Widget/StatusWidget');
+        } else {
+            $this->view->setTemplate('Default/Widget/StatusWidget');
+        }
+
         $indexerStartTime = SearchHelper::getIndexerStartTime();
         $indexerRunningTime = $indexerStartTime ? (time() - $indexerStartTime) : 0;
         $indexerRunningTimeHMS =

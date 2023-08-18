@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Show dashboard widgets in TYPO3 12, thanks to Torben Hansen, https://github.com/tpwd/ke_search/issues/170
+
 Version 5.0.2, 13 June 2023
 [BUGFIX]  Security Bugfix. Please update!
 
