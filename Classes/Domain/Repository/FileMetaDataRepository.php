@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Exception;

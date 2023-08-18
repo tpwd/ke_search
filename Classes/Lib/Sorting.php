@@ -193,7 +193,7 @@ class Sorting
      * @param bool $urlOnly
      * @return string
      */
-    public function generateSortingLink(string $field, string $sortByDir, bool $urlOnly=false): string
+    public function generateSortingLink(string $field, string $sortByDir, bool $urlOnly = false): string
     {
         $localPiVars = $this->pObj->piVars;
         $localPiVars['sortByField'] = $field;

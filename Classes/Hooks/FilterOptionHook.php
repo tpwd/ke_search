@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Tpwd\KeSearch\Hooks;
 
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;

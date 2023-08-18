@@ -307,7 +307,7 @@ class IndexerRunner
      * @param string $message
      * @return string
      */
-    public function renderIndexingReport($searchObj, $message='')
+    public function renderIndexingReport($searchObj, $message = '')
     {
         $content = '<tr>';
 

@@ -370,19 +370,19 @@ class News extends IndexerBase
         return $message;
     }
 
-/**
- * checks if there is a category assigned to the $newsRecord which has
-     * its own single view page and if yes, returns the uid of the page
-     * in $catagoryData['single_pid'].
-     * It also compiles a list of all assigned categories and returns
-     * it as an array in $categoryData['uid_list']. The titles of the
-     * categories are returned in $categoryData['title_list'] (array)
-     *
-     * @author Christian Bülter
-     * @since 26.06.13 14:34
-     * @param array $newsRecord
-     * @return array
-     */
+    /**
+     * checks if there is a category assigned to the $newsRecord which has
+         * its own single view page and if yes, returns the uid of the page
+         * in $catagoryData['single_pid'].
+         * It also compiles a list of all assigned categories and returns
+         * it as an array in $categoryData['uid_list']. The titles of the
+         * categories are returned in $categoryData['title_list'] (array)
+         *
+         * @author Christian Bülter
+         * @since 26.06.13 14:34
+         * @param array $newsRecord
+         * @return array
+         */
     private function getCategoryData($newsRecord)
     {
         /** @var PageRepository $pageRepository */
