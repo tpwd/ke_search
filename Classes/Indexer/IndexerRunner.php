@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
@@ -124,8 +123,7 @@ class IndexerRunner
         $content = '<div class="row"><div class="col-md-8">';
         $content .= '<div class="alert alert-info">';
         $message = 'Running indexing process in '
-            . LocalizationUtility::translate('backend.indexingMode_' . $indexingMode, 'ke_search')
-            . ' mode';
+            . ($indexingMode == IndexerBase::INDEXING_MODE_FULL ? 'full' : 'incremental') . ' mode';
         if ($indexingMode == IndexerBase::INDEXING_MODE_INCREMENTAL) {
             if (SearchHelper::getIndexerLastRunTime() == 0) {
                 $message .= ', but last run time is not available. Switching to full mode.';

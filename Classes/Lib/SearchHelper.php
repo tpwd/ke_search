@@ -19,6 +19,8 @@ namespace Tpwd\KeSearch\Lib;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -26,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -452,11 +455,15 @@ class SearchHelper
      */
     public static function formatTimestamp(int $timestamp): string
     {
-        return date(
-            LocalizationUtility::translate('backend.date.format.day', 'ke_search')
-            . ', ' . LocalizationUtility::translate('backend.date.format.time', 'ke_search'),
-            $timestamp
-        );
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
+            $dateFormat = LocalizationUtility::translate('backend.date.format.day', 'ke_search')
+                . ', ' . LocalizationUtility::translate('backend.date.format.time', 'ke_search');
+        } else {
+            $dateFormat = 'm/d/y, H:i:s';
+        }
+        return date($dateFormat, $timestamp);
     }
 
     /**
