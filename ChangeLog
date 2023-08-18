@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.0.3, 18 August 2023
 [BUGFIX]  Show dashboard widgets in TYPO3 12, thanks to Torben Hansen, https://github.com/tpwd/ke_search/issues/170
 [BUGFIX]  Avoid undefined array key warning in doc, pdf and xls file indexers, thanks to Andreas Kessel, https://github.com/tpwd/ke_search/issues/171
 [BUGFIX]  Don't use LocalizationUtility in scheduled command, thanks to kd-bin, https://github.com/tpwd/ke_search/issues/169
