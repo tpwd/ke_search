@@ -59,7 +59,7 @@ class Pdf extends File implements FileIndexerInterface
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
 
         // check if needed system tools pdftotext and pdfinfo exist
-        if ($this->extConf['pathPdftotext']) {
+        if ($this->extConf['pathPdftotext'] ?? '') {
             $pathPdftotext = rtrim($this->extConf['pathPdftotext'], '/') . '/';
             $pathPdfinfo = rtrim($this->extConf['pathPdfinfo'], '/') . '/';
 

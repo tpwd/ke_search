@@ -53,7 +53,7 @@ class Doc extends File implements FileIndexerInterface
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
 
         // check if path to catdoc is correct
-        if ($this->extConf['pathCatdoc']) {
+        if ($this->extConf['pathCatdoc'] ?? '') {
             $pathCatdoc = rtrim($this->extConf['pathCatdoc'], '/') . '/';
 
             $exe = Environment::isWindows() ? '.exe' : '';
@@ -82,6 +82,10 @@ class Doc extends File implements FileIndexerInterface
      */
     public function getContent($file)
     {
+        if (!$this->isAppArraySet) {
+            return '';
+        }
+
         // create the tempfile which will contain the content
         $tempFileName = GeneralUtility::tempnam('doc_files-Indexer');
 
