@@ -370,8 +370,8 @@ class News extends IndexerBase
         return $message;
     }
 
-/**
- * checks if there is a category assigned to the $newsRecord which has
+    /**
+     * checks if there is a category assigned to the $newsRecord which has
      * its own single view page and if yes, returns the uid of the page
      * in $catagoryData['single_pid'].
      * It also compiles a list of all assigned categories and returns
