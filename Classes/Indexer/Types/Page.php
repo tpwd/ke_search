@@ -1150,7 +1150,7 @@ class Page extends IndexerBase
                 );
             }
 
-            $this->pObj->logger->warning($errorMessage);
+            $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
 
             return;
