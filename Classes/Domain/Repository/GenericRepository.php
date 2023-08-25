@@ -42,7 +42,7 @@ class GenericRepository
     public function findByUidAndType($uid, string $type)
     {
         $uid = (int)$uid;
-        if ($uid<=0) {
+        if ($uid <= 0) {
             return false;
         }
 

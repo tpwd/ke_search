@@ -157,7 +157,7 @@ class SearchHelper
      * @param string $tags
      * @return string
      */
-    public static function addTag(string $tagToAdd, $tags='')
+    public static function addTag(string $tagToAdd, $tags = '')
     {
         if ($tagToAdd) {
             $extConf = SearchHelper::getExtConf();
@@ -337,7 +337,7 @@ class SearchHelper
      * @param string $linkText
      * @return string
      */
-    public static function searchLink(int $parameter, array $piVars=[], $resetFilters=[], $linkText = ''): string
+    public static function searchLink(int $parameter, array $piVars = [], $resetFilters = [], $linkText = ''): string
     {
         // If no cObj is available we cannot render the link.
         // This might be the case if the current request is headless (ke_search_premium feature).

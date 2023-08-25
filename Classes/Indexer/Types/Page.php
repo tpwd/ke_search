@@ -1134,6 +1134,28 @@ class Page extends IndexerBase
             $metadata = $fileObject->getMetaData()->get();
         }
 
+        if (empty($metadata)) {
+            if ($fileObject instanceof FileReference) {
+                $errorMessage = sprintf(
+                    'Could not get meta data from file reference [uid:%d], file [uid:%d] (%s).',
+                    $fileObject->getUid(),
+                    $fileObject->getOriginalFile()->getUid(),
+                    $fileObject->getOriginalFile()->getIdentifier()
+                );
+            } else {
+                $errorMessage = sprintf(
+                    'Could not get meta data from file [uid:%d] (%s).',
+                    $fileObject->getUid(),
+                    $fileObject->getIdentifier()
+                );
+            }
+
+            $this->pObj->logger->warning($errorMessage);
+            $this->addError($errorMessage);
+
+            return;
+        }
+
         if (isset($metadata['fe_groups']) && !empty($metadata['fe_groups'])) {
             if ($feGroups) {
                 $feGroupsContentArray = GeneralUtility::intExplode(',', $feGroups);

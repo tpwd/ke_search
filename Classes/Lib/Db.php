@@ -46,7 +46,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class Db implements SingletonInterface
 {
-    const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
+    public const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
     public $conf = [];
     public $countResultsOfTags = 0;
     public $countResultsOfContent = 0;

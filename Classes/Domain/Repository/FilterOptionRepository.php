@@ -262,7 +262,7 @@ class FilterOptionRepository extends BaseRepository
         $record['uid'] = (int)$connection->lastInsertId($this->tableName);
 
         // Create slug
-        $this->update($record['uid'], ['slug'=> SearchHelper::createFilterOptionSlug($record)]);
+        $this->update($record['uid'], ['slug' => SearchHelper::createFilterOptionSlug($record)]);
 
         // add the new filter option to the filter
         $updateFields = [

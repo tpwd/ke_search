@@ -42,7 +42,7 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
     {
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
-        $languageId =$context->getPropertyFromAspect('language', 'id');
+        $languageId = $context->getPropertyFromAspect('language', 'id');
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -66,7 +66,7 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
     {
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
-        $languageId =$context->getPropertyFromAspect('language', 'id');
+        $languageId = $context->getPropertyFromAspect('language', 'id');
 
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);

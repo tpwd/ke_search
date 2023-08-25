@@ -422,7 +422,7 @@ class Pluginbase extends AbstractPlugin
             }
 
             // build link to reset this filter while keeping the others
-            $resetLink= SearchHelper::searchLink($this->conf['resultPage'], $this->piVars, [$filter['uid']]);
+            $resetLink = SearchHelper::searchLink($this->conf['resultPage'], $this->piVars, [$filter['uid']]);
 
             // set values for fluid template
             $filterData = $filter;

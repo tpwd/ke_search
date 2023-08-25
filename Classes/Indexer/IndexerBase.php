@@ -50,7 +50,7 @@ class IndexerBase
     public $indexerConfig = []; // current indexer configuration
 
     // string which separates metadata from file content in the index record
-    const METADATASEPARATOR = "\n";
+    public const METADATASEPARATOR = "\n";
 
     /** @var int $fileCounter */
     protected $fileCounter = 0;
