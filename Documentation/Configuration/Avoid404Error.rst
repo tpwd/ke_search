@@ -40,3 +40,9 @@ Example
            'tx_kesearch_pi1[filter_1]', // Filter with UID 1
        ]
    );
+
+.. hint::
+   If you don't add this setting you will get the following error:
+   **404 Page Not Found**
+   **The page did not exist or was inaccessible.**
+   **Reason: Request parameters could not be validated (&cHash empty)**
