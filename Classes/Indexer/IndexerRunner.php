@@ -1132,6 +1132,9 @@ class IndexerRunner
             ->executeQuery()
             ->fetchAssociative();
 
+        if (!$row) {
+            return '';
+        }
         if ($clearText) {
             return $row['title'];
         }
