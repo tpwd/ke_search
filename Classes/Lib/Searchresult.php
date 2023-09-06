@@ -312,6 +312,6 @@ class Searchresult
             }
             return $teaser;
         }
-        return $cObj->crop($content, $this->conf['resultChars'] . '|…|1');
+        return $cObj->crop($content, $this->conf['resultChars'] ?? 0 . '|…|1');
     }
 }
