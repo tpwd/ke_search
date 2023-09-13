@@ -1,8 +1,41 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
+$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3BranchVersion = (float) $typo3Version->getBranch();
 
 return [
+if ($typo3BranchVersion >= 12.3) {
+    $feGroupItemsArray = [
+        [
+            'label' => '',
+            'value' => 0
+        ],
+        [
+            'label' => $langGeneralPath . 'LGL.hide_at_login',
+            'value' => -1
+        ],
+        [
+            'label' => $langGeneralPath . 'LGL.any_login',
+            'value' => -2
+        ],
+        [
+            'label' => $langGeneralPath . 'LGL.usergroups',
+            'value' => '--div--'
+        ],
+    ];
+} else {
+    $feGroupItemsArray = [
+        ['', 0],
+        [$langGeneralPath . 'LGL.hide_at_login', -1],
+        [$langGeneralPath . 'LGL.any_login', -2],
+        [$langGeneralPath . 'LGL.usergroups', '--div--'],
+    ];
+}
+
     'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index',
         'label' => 'title',
@@ -48,12 +81,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
-                'items' => [
-                    ['', 0],
-                    [$langGeneralPath . 'LGL.hide_at_login', -1],
-                    [$langGeneralPath . 'LGL.any_login', -2],
-                    [$langGeneralPath . 'LGL.usergroups', '--div--'],
-                ],
+                'items' => $feGroupItemsArray,
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'ORDER BY fe_groups.title',
                 'size' => 6,

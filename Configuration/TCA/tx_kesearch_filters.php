@@ -1,8 +1,49 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
+$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3BranchVersion = (float) $typo3Version->getBranch();
 
 return [
+if ($typo3BranchVersion >= 12.3) {
+    $l10nParentItemsArray = [
+        [
+            'label' => '',
+            'value' => 0
+        ],
+    ];
+    $rendertypeItemsArray = [
+        [
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0',
+            'value' => 'select'
+        ],
+        [
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1',
+            'value' => 'list'
+        ],
+        [
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2',
+            'value' => 'checkbox'
+        ],
+        [
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3',
+            'value' => 'dateRange'
+        ],
+    ];
+} else {
+    $l10nParentItemsArray = [
+        ['', 0],
+    ];
+    $rendertypeItemsArray = [
+        ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0', 'select'],
+        ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1', 'list'],
+        ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2', 'checkbox'],
+        ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3', 'dateRange'],
+    ];
+}
     'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters',
         'label' => 'title',
@@ -33,9 +74,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['', 0],
-                ],
+                'items' => $l10nParentItemsArray,
                 'foreign_table' => 'tx_kesearch_filters',
                 'foreign_table_where' => 'AND tx_kesearch_filters.pid=###CURRENT_PID###'
                     . ' AND tx_kesearch_filters.sys_language_uid IN (-1,0)',
@@ -70,12 +109,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0', 'select'],
-                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1', 'list'],
-                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2', 'checkbox'],
-                    ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3', 'dateRange'],
-                ],
+                'items' => $rendertypeItemsArray,
                 'size' => 1,
                 'maxitems' => 1,
                 'default' => 'select',
