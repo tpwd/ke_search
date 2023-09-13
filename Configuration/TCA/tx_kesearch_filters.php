@@ -8,6 +8,20 @@ $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
 $typo3BranchVersion = (float) $typo3Version->getBranch();
 
+if ($typo3MajorVersion > 11) {
+    $amountConfigArray = [
+        'type' => 'number',
+        'default' => '10',
+        'size' => '30',
+    ];
+} else {
+    $amountConfigArray = [
+        'type' => 'input',
+        'default' => '10',
+        'size' => '30',
+        'eval' => 'trim,int',
+    ];
+}
 if ($typo3BranchVersion >= 12.3) {
     $l10nParentItemsArray = [
         [
@@ -168,12 +182,7 @@ $txKesearchFiltersTCA = [
             'exclude' => 0,
             'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.amount',
-            'config' => [
-                'type' => 'input',
-                'default' => '10',
-                'size' => '30',
-                'eval' => 'trim,int',
-            ],
+            'config' => $amountConfigArray,
         ],
         'shownumberofresults' => [
             'exclude' => 0,
