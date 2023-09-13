@@ -5,9 +5,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3MajorVersion = $typo3Version->getMajorVersion();
 $typo3BranchVersion = (float) $typo3Version->getBranch();
 
-return [
 if ($typo3BranchVersion >= 12.3) {
     $l10nParentItemsArray = [
         [
@@ -44,12 +44,13 @@ if ($typo3BranchVersion >= 12.3) {
         ['LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3', 'dateRange'],
     ];
 }
+
+$txKesearchFiltersTCA = [
     'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -205,3 +206,9 @@ if ($typo3BranchVersion >= 12.3) {
             . ' title,rendertype', ],
     ],
 ];
+
+if ($typo3MajorVersion < 12) {
+    $txKesearchFiltersTCA['ctrl']['cruser_id'] = 'cruser_id';
+}
+
+return $txKesearchFiltersTCA;

@@ -5,9 +5,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3MajorVersion = $typo3Version->getMajorVersion();
 $typo3BranchVersion = (float) $typo3Version->getBranch();
 
-return [
 if ($typo3BranchVersion >= 12.3) {
     $feGroupItemsArray = [
         [
@@ -36,12 +36,12 @@ if ($typo3BranchVersion >= 12.3) {
     ];
 }
 
+$txKesearchIndex = [
     'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY crdate',
         'enablecolumns' => [
             'starttime' => 'starttime',
@@ -215,3 +215,10 @@ if ($typo3BranchVersion >= 12.3) {
         '1' => ['showitem' => ''],
     ],
 ];
+
+
+if ($typo3MajorVersion < 12) {
+    $txKesearchIndex['ctrl']['cruser_id'] = 'cruser_id';
+}
+
+return $txKesearchIndex;
