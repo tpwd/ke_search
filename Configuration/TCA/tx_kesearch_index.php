@@ -8,6 +8,54 @@ $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
 $typo3BranchVersion = (float) $typo3Version->getBranch();
 
+if ($typo3MajorVersion < 12) {
+    $starttimeConfigArray = [
+        'type' => 'input',
+        'size' => '8',
+        'eval' => 'date',
+        'renderType' => 'inputDateTime',
+        'default' => '0',
+        'checkbox' => '0',
+    ];
+    $endtimeConfigArray = [
+        'type' => 'input',
+        'size' => '8',
+        'eval' => 'date',
+        'renderType' => 'inputDateTime',
+        'default' => '0',
+        'checkbox' => '0',
+    ];
+    $sortdateConfigArray = [
+        'type' => 'input',
+        'renderType' => 'inputDateTime',
+        'size' => '10',
+        'eval' => 'datetime',
+        'checkbox' => '0',
+        'default' => '0',
+    ];
+} else {
+    $starttimeConfigArray = [
+        'type' => 'datetime',
+        'size' => '8',
+        'format' => 'date',
+        'default' => '0',
+        'checkbox' => '0',
+    ];
+    $endtimeConfigArray = [
+        'type' => 'datetime',
+        'size' => '8',
+        'format' => 'date',
+        'default' => '0',
+        'checkbox' => '0',
+    ];
+    $sortdateConfigArray = [
+        'type' => 'datetime',
+        'size' => '10',
+        'checkbox' => '0',
+        'default' => '0',
+    ];
+}
+
 if ($typo3BranchVersion >= 12.3) {
     $feGroupItemsArray = [
         [
@@ -54,26 +102,12 @@ $txKesearchIndex = [
         'starttime' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.starttime',
-            'config' => [
-                'type' => 'input',
-                'size' => '8',
-                'eval' => 'date',
-                'renderType' => 'inputDateTime',
-                'default' => '0',
-                'checkbox' => '0',
-            ],
+            'config' => $starttimeConfigArray,
         ],
         'endtime' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.endtime',
-            'config' => [
-                'type' => 'input',
-                'size' => '8',
-                'eval' => 'date',
-                'renderType' => 'inputDateTime',
-                'checkbox' => '0',
-                'default' => '0',
-            ],
+            'config' => $endtimeConfigArray,
         ],
         'fe_group' => [
             'exclude' => 1,
@@ -174,14 +208,7 @@ $txKesearchIndex = [
         'sortdate' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.sortdate',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => '10',
-                'eval' => 'datetime',
-                'checkbox' => '0',
-                'default' => '0',
-            ],
+            'config' => $sortdateConfigArray,
         ],
         'orig_uid' => [
             'config' => [
