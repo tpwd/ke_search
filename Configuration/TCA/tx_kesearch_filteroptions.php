@@ -87,7 +87,8 @@ $txKesearchFilteroptionsTCA = [
             'config' => [
                 'type' => 'input',
                 'size' => '30',
-                'eval' => 'trim,required,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator',
+                'eval' => 'trim,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator',
+                'required' => true
             ],
         ],
         'slug' => [
