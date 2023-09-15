@@ -4,10 +4,7 @@ compat8 branch
 
 Version 2.8.4, 13 June 2023
 [BUGFIX]  Security Bugfix. Please update!
-
-Upcoming version 
-(not sure if there will be another version for TYPO3 8, please use latest version from branch compat8 if you neet the latest patches)
-[BUGFIX]   fixed mysql error for newer mariadb versions. Thanks to Manuel Wohlers. https://github.com/tpwd/ke_search/pull/116	
+[BUGFIX]   fixed mysql error for newer mariadb versions. Thanks to Manuel Wohlers. https://github.com/tpwd/ke_search/pull/116
 
 Version 2.8.3, July 2020
 [!!!][BUGFIX]  Security Bugfix. Please update!
@@ -156,7 +153,7 @@ Version 2.2.0, April 2016
 [BUGFIX]  Fix fetching the right page uid in class user_filterlist, follow up to https://github.com/teaminmedias-pluswerk/ke_search/pull/9.
 [TASK]    cleanup user_filterlist
 [FEATURE] Add system categories as tags to indexed pages. That makes it possible to create filters for pages based on system categories.
-[BUGFIX]  Fix obsolete calls and missing variable declarations/initializations. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/33. 
+[BUGFIX]  Fix obsolete calls and missing variable declarations/initializations. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/33.
 [FEATURE] Add Suggest Wizard to Flexforms and TCA. Thanks to Bernhard Berger. https://github.com/teaminmedias-pluswerk/ke_search/pull/31.
 [TASK]    Render pagebrowser as a html list. Thanks to Fernando Arconada. https://github.com/teaminmedias-pluswerk/ke_search/pull/32.
 [TASK]    Remove marker based template.
@@ -311,7 +308,7 @@ Version 1.8.4
 * bugfix: fix compatibility with version 4.5: remove relation to sys_file_storage in TCA for TYPO3 versions below 6.
 * bugfix: CLI not possible with TYPO3 6.2.x. Thanks to Ricky Bohse. https://forge.typo3.org/issues/64947
 
-Version 1.8.3 
+Version 1.8.3
 * feature: Show images from pages (field "media" in page properties) in search result list. Activate this function in plugin configuration. Relies on FAL and therefore needs 6.X to work.
 * bugfix: Don't combine groups of subpages with groups of parent pages. https://forge.typo3.org/issues/61966
 * bugfix: escpape search strings for sphinx search (ke_search_premium).
