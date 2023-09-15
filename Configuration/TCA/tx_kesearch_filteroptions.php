@@ -1,14 +1,32 @@
 <?php
 
-$langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-return [
+$langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
+$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3MajorVersion = $typo3Version->getMajorVersion();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
+
+if ($typo3BranchVersion >= 12.3) {
+    $l10nParentItemsArray = [
+        [
+            'label' => '',
+            'value' => 0,
+        ],
+    ];
+} else {
+    $l10nParentItemsArray = [
+        ['', 0],
+    ];
+}
+
+$txKesearchFilteroptionsTCA = [
     'ctrl' => [
         'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filteroptions',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -32,9 +50,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [
-                    ['', 0],
-                ],
+                'items' => $l10nParentItemsArray,
                 'foreign_table' => 'tx_kesearch_filteroptions',
                 'foreign_table_where' => 'AND tx_kesearch_filteroptions.pid=###CURRENT_PID###'
                     . ' AND tx_kesearch_filteroptions.sys_language_uid IN (-1,0)',
@@ -70,7 +86,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => '30',
-                'eval' => 'trim,required,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator',
+                'eval' => 'trim,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator',
+                'required' => true,
             ],
         ],
         'slug' => [
@@ -119,3 +136,9 @@ return [
             . ' title, tag, slug, automated_tagging, automated_tagging_exclude', ],
     ],
 ];
+
+if ($typo3MajorVersion < 12) {
+    $txKesearchFilteroptionsTCA['ctrl']['cruser_id'] = 'cruser_id';
+}
+
+return $txKesearchFilteroptionsTCA;

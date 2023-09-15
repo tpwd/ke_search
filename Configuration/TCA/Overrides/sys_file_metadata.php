@@ -1,8 +1,28 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') or die();
+
+if ((float)GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 12.3) {
+    $txKesearchNoSearchItemsArray = [
+        [
+            'label' => '',
+            'labelChecked' => '',
+            'labelUnchecked' => '',
+            'invertStateDisplay' => true,
+        ],
+    ];
+} else {
+    $txKesearchNoSearchItemsArray = [
+        [
+            0 => '',
+            'invertStateDisplay' => true,
+        ],
+    ];
+}
 
 ExtensionManagementUtility::addTCAcolumns(
     'sys_file_metadata',
@@ -15,12 +35,7 @@ ExtensionManagementUtility::addTCAcolumns(
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        0 => '',
-                        'invertStateDisplay' => true,
-                    ],
-                ],
+                'items' => $txKesearchNoSearchItemsArray,
             ],
         ],
     ]

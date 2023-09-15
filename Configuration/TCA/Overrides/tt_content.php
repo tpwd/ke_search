@@ -1,8 +1,13 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') or die();
+
+$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 ExtensionManagementUtility::addStaticFile(
     'ke_search',
@@ -29,37 +34,62 @@ ExtensionManagementUtility::addTcaSelectItemGroup(
     'after:default'
 );
 
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
-    [
+if ($typo3BranchVersion >= 12.3) {
+    $listTypeKeSearchPi1ItemArray = [
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
+        'value' => 'ke_search_pi1',
+        'icon'  => 'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'group' => 'ke_search',
+    ];
+    $listTypeKeSearchPi2ItemArray = [
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
+        'value' => 'ke_search_pi2',
+        'icon'  => 'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'group' => 'ke_search',
+    ];
+    $listTypeKeSearchPi3ItemArray = [
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi3',
+        'value' => 'ke_search_pi3',
+        'icon'  => 'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'group' => 'ke_search',
+    ];
+} else {
+    $listTypeKeSearchPi1ItemArray = [
         'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
         'ke_search_pi1',
         'EXT:ke_search/Resources/Public/Icons/Extension.svg',
         'ke_search',
-    ]
-);
-
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
-    [
-        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
-        'ke_search_pi2',
-        'EXT:ke_search/Resources/Public/Icons/Extension.svg',
-        'ke_search',
-    ]
-);
-
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
-    [
+    ];
+    $listTypeKeSearchPi2ItemArray = [
+            'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
+            'ke_search_pi2',
+            'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+            'ke_search',
+        ];
+    $listTypeKeSearchPi3ItemArray = [
         'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi3',
         'ke_search_pi3',
         'EXT:ke_search/Resources/Public/Icons/Extension.svg',
         'ke_search',
-    ]
+    ];
+}
+
+ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'list_type',
+    $listTypeKeSearchPi1ItemArray
+);
+
+ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'list_type',
+    $listTypeKeSearchPi2ItemArray
+);
+
+ExtensionManagementUtility::addTcaSelectItem(
+    'tt_content',
+    'list_type',
+    $listTypeKeSearchPi3ItemArray
 );
 
 // Configure FlexForm field
