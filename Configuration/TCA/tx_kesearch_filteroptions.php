@@ -6,13 +6,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float) $typo3Version->getBranch();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 if ($typo3BranchVersion >= 12.3) {
     $l10nParentItemsArray = [
         [
             'label' => '',
-            'value' => 0
+            'value' => 0,
         ],
     ];
 } else {
@@ -20,7 +20,6 @@ if ($typo3BranchVersion >= 12.3) {
         ['', 0],
     ];
 }
-
 
 $txKesearchFilteroptionsTCA = [
     'ctrl' => [
@@ -88,7 +87,7 @@ $txKesearchFilteroptionsTCA = [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'trim,alphanum,Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator',
-                'required' => true
+                'required' => true,
             ],
         ],
         'slug' => [

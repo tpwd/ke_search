@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') or die();
 
-if ((float) GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 12.3) {
+if ((float)GeneralUtility::makeInstance(Typo3Version::class)->getBranch() >= 12.3) {
     $txKesearchNoSearchItemsArray = [
         [
             'label' => '',
@@ -35,7 +35,7 @@ ExtensionManagementUtility::addTCAcolumns(
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
-                'items' => $txKesearchNoSearchItemsArray
+                'items' => $txKesearchNoSearchItemsArray,
             ],
         ],
     ]

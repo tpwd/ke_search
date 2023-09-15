@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float) $typo3Version->getBranch();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 if ($typo3BranchVersion >= 12.3) {
     $typeItemsArray = [
@@ -81,13 +81,13 @@ if ($typo3BranchVersion >= 12.3) {
     $filteroptionItemsArray = [
         [
             'label' => '',
-            'value' => 0
+            'value' => 0,
         ],
     ];
     $falStorageItemsArray = [
         [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.fal_storage.dont_use_fal',
-            'value' => 0
+            'value' => 0,
         ],
     ];
     $indexNewsFilesModeItemsArray = [

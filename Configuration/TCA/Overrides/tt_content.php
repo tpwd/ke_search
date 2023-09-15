@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 defined('TYPO3') or die();
 
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-$typo3BranchVersion = (float) $typo3Version->getBranch();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 ExtensionManagementUtility::addStaticFile(
     'ke_search',

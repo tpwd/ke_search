@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float) $typo3Version->getBranch();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 if ($typo3MajorVersion < 12) {
     $starttimeConfigArray = [
@@ -60,19 +60,19 @@ if ($typo3BranchVersion >= 12.3) {
     $feGroupItemsArray = [
         [
             'label' => '',
-            'value' => 0
+            'value' => 0,
         ],
         [
             'label' => $langGeneralPath . 'LGL.hide_at_login',
-            'value' => -1
+            'value' => -1,
         ],
         [
             'label' => $langGeneralPath . 'LGL.any_login',
-            'value' => -2
+            'value' => -2,
         ],
         [
             'label' => $langGeneralPath . 'LGL.usergroups',
-            'value' => '--div--'
+            'value' => '--div--',
         ],
     ];
 } else {
@@ -242,7 +242,6 @@ $txKesearchIndex = [
         '1' => ['showitem' => ''],
     ],
 ];
-
 
 if ($typo3MajorVersion < 12) {
     $txKesearchIndex['ctrl']['cruser_id'] = 'cruser_id';

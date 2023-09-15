@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float) $typo3Version->getBranch();
+$typo3BranchVersion = (float)$typo3Version->getBranch();
 
 if ($typo3MajorVersion > 11) {
     $amountConfigArray = [
@@ -26,25 +26,25 @@ if ($typo3BranchVersion >= 12.3) {
     $l10nParentItemsArray = [
         [
             'label' => '',
-            'value' => 0
+            'value' => 0,
         ],
     ];
     $rendertypeItemsArray = [
         [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.0',
-            'value' => 'select'
+            'value' => 'select',
         ],
         [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.1',
-            'value' => 'list'
+            'value' => 'list',
         ],
         [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.2',
-            'value' => 'checkbox'
+            'value' => 'checkbox',
         ],
         [
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_filters.rendertype.I.3',
-            'value' => 'dateRange'
+            'value' => 'dateRange',
         ],
     ];
 } else {

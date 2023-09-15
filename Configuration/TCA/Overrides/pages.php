@@ -39,7 +39,6 @@ if ($typo3MajorVersion < 12) {
     ];
 }
 
-
 // add tag field to pages
 $tempColumns = [
     'tx_kesearch_tags' => [
