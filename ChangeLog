@@ -1,10 +1,11 @@
 ChangeLog
 
-## Upcoming version
+Version 5.0.4, 15 September 2023
 [TASK]    Exclude ke_search parameters from cacheHash validation, thanks to Andreas Mühe and schlotzz, https://github.com/tpwd/ke_search/issues/149
 [BUGFIX]  Avoid undefined array key in indexer runner, thanks to ecosmox36. https://github.com/tpwd/ke_search/issues/160
 [TASK]    Prevent indexing when file metadata is missing, thanks to Moritz Ngo, https://github.com/tpwd/ke_search/pull/182
-[TASK]    Handle deprecation warnings with TYPO3 v12, Thanks to Markus Volkmer, https://github.com/tpwd/ke_search/pull/186
+[TASK]    Handle deprecation warnings with TYPO3 v12, thanks to Markus Volkmer, https://github.com/tpwd/ke_search/pull/186
+[BUGFIX]  Avoid undefined array key "resultChars", thanks to Stephan Bauer, https://github.com/tpwd/ke_search/pull/185
 
 Version 5.0.3, 18 August 2023
 [BUGFIX]  Show dashboard widgets in TYPO3 12, thanks to Torben Hansen, https://github.com/tpwd/ke_search/issues/170
