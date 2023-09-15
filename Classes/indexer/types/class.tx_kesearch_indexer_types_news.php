@@ -133,7 +133,7 @@ class tx_kesearch_indexer_types_news extends tx_kesearch_indexer_types
                     $content .= "\n" . strip_tags($newsRecord['author_email']);
                 }
                 if (!empty($newsRecord['keywords'])) {
-                    $content .= "\n" . $newsRecord['keywords'];
+                    $content .= "\n" . strip_tags($newsRecord['keywords']);
                 }
 
                 // index attached content elements

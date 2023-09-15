@@ -84,7 +84,7 @@ class tx_kesearch_indexer_types_tt_address extends tx_kesearch_indexer_types
 
             // use description as abstract if set
             if (!empty($addressRow['description'])) {
-                $abstract = $addressRow['description'];
+                $abstract = strip_tags($addressRow['description']);
             }
 
             // build content
@@ -142,6 +142,7 @@ class tx_kesearch_indexer_types_tt_address extends tx_kesearch_indexer_types
             if (!empty($addressRow['www'])) {
                 $content .= $addressRow['www'];
             }
+            $content = strip_tags($content);
 
             // put content together
             $fullContent = $abstract . "\n" . $content;

@@ -152,7 +152,7 @@ class tx_kesearch_indexer_types_ttnews extends tx_kesearch_indexer_types
 
                 // add keywords to content if not empty
                 if (!empty($newsRecord['keywords'])) {
-                    $content .= "\n" . $newsRecord['keywords'];
+                    $content .= "\n" . strip_tags($newsRecord['keywords']);
                 }
 
                 // create content
