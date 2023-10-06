@@ -525,7 +525,7 @@ class Db implements SingletonInterface
     public function getOrdering()
     {
         // if the following code fails, fall back to this default ordering
-        $orderBy = $this->conf['sortWithoutSearchword'];
+        $orderBy = $this->conf['sortWithoutSearchword'] ?? 'sortdate desc';
 
         // if sorting in FE is allowed
         if ($this->conf['showSortInFrontend'] ?? false) {
@@ -545,8 +545,6 @@ class Db implements SingletonInterface
             // allowed fields then use fallback ordering in "sortWithoutSearchword"
             if (!empty($this->pObj->wordsAgainst)) { // if sorting is predefined by admin
                 $orderBy = $this->conf['sortByAdmin'];
-            } else {
-                $orderBy = $this->conf['sortWithoutSearchword'];
             }
         }
 
@@ -569,7 +567,7 @@ class Db implements SingletonInterface
     public function getLimit()
     {
         $start = 0;
-        $limit = $this->conf['resultsPerPage'] ?: 10;
+        $limit = ($this->conf['resultsPerPage'] ?? 10) ?: 10;
 
         if ($this->pObj->piVars['page'] ?? false) {
             $start = ($this->pObj->piVars['page'] * $limit) - $limit;
