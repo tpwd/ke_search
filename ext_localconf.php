@@ -86,10 +86,8 @@ defined('TYPO3') or die();
         \Tpwd\KeSearch\Routing\Aspect\KeSearchTagToSlugMapper::class;
 
     // Exclude ke_search parameters from cacheHash calculation
-    foreach (\Tpwd\KeSearch\Lib\SearchHelper::PI_VARS as $piVar) {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = array_merge(
-            $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'],
-            ['tx_kesearch_pi1[' . $piVar . ']']
-        );
-    }
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] = array_merge(
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'],
+        ['^tx_kesearch_pi1']
+    );
 })();

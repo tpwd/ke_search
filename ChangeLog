@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Exclude all parameters (including filters) from cHash calculation, thanks to Uwe Hawkeye1909, https://github.com/tpwd/ke_search/issues/187
+
 Version 5.0.4, 15 September 2023
 [TASK]    Exclude ke_search parameters from cacheHash validation, thanks to Andreas Mühe and schlotzz, https://github.com/tpwd/ke_search/issues/149
 [BUGFIX]  Avoid undefined array key in indexer runner, thanks to ecosmox36. https://github.com/tpwd/ke_search/issues/160

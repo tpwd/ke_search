@@ -17,15 +17,11 @@ form using the GET method to send data and the options are modified by the user.
 Therefore the default ke_search parameters are excluded in the
 `ext_localconf.php` using the `['FE']['cacheHash']['excludedParameters']` option.
 
-In some cases you will need to add a similar configuration to your sitepackage
-as well:
+If you have configured ke_search to use a different parameter for submitting
+the search word you will have to exclude the search word parameters manually:
 
-* You have enabled the `enforcevalidation` option **and**
-* use filters **or**
+* If you have enabled the `enforcevalidation` option **and**
 * have changed the parameter for the search word using `plugin.tx_kesearch_pi1.searchWordParameter`
-
-In these cases you will have to exclude the filter parameters and/or the
-search word parameter in the same way.
 
 Example
 =======
@@ -37,7 +33,6 @@ Example
        $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'],
        [
            'q', // e.g. if "plugin.tx_kesearch_pi1.searchWordParameter = q"
-           'tx_kesearch_pi1[filter_1]', // Filter with UID 1
        ]
    );
 
