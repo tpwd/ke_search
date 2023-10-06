@@ -632,7 +632,7 @@ class Pluginbase extends AbstractPlugin
         // no results found
         if ($this->conf['showNoResultsText'] ?? false) {
             // use individual text set in flexform
-            $noResultsText = $this->pi_RTEcssText($this->conf['noResultsText']);
+            $noResultsText = $this->pi_RTEcssText($this->conf['noResultsText'] ?? '');
         } else {
             // use general text
             $noResultsText = $this->pi_getLL('no_results_found');
