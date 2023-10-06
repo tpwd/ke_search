@@ -136,13 +136,23 @@ class Pluginbase extends AbstractPlugin
         // get the configuration of the current plugin
         $flexFormConfiguration = $this->getFlexFormConfiguration();
 
-        // in the list plugin fetch the FlexForm from the search box plugin, because all the configuration is done there
+        // In the list plugin we need to fetch the FlexForm from the search box plugin, because all the configuration
+        // is done there. The search box plugin to fetch the configuration from is defined in the the FlexForm setting
+        // "loadFlexformsFromOtherCE".
+        $loadFlexformsFromOtherCE = false;
         if (!empty($flexFormConfiguration['loadFlexformsFromOtherCE'])) {
+            $loadFlexformsFromOtherCE = $flexFormConfiguration['loadFlexformsFromOtherCE'];
+        }
+
+        // When TypoScript is used to spawn a COA of tx_kesearch_pi1 plugin, the above will be empty (as no plugin
+        // container exists). For this specific case, we use the ->conf[] array and parse its setting.
+        if (empty($loadFlexformsFromOtherCE) && !empty($this->conf['loadFlexformsFromOtherCE'])) {
+            $loadFlexformsFromOtherCE = $this->conf['loadFlexformsFromOtherCE'];
+        }
+
+        if (!empty($loadFlexformsFromOtherCE)) {
             $currentFlexFormConfiguration = $flexFormConfiguration;
-            $contentElement = $this->pi_getRecord(
-                'tt_content',
-                (int)($flexFormConfiguration['loadFlexformsFromOtherCE'])
-            );
+            $contentElement = $this->pi_getRecord('tt_content', (int)($loadFlexformsFromOtherCE));
             // PHPDoc of pi_getRecord says it will return an array or false,
             // but if no record has been found it will return 0
             /** @phpstan-ignore-next-line */
