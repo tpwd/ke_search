@@ -251,7 +251,7 @@ class SearchHelper
                 } else {
                     if (file_exists($resultRow['directory'] . $resultRow['title'])) {
                         $linkConf['parameter'] =
-                            PathUtility::stripPathSitePrefix($resultRow['directory'])
+                            PathUtility::stripPathSitePrefix(implode('/', array_map('rawurlencode', explode('/', $resultRow['directory']))))
                             . rawurlencode($resultRow['title']);
                     }
                 }
