@@ -1281,7 +1281,8 @@ class Page extends IndexerBase
                 $_procObj->modifyContentFromContentElement(
                     $content,
                     $ttContentRow,
-                    $this
+                    $this,
+                    $field
                 );
             }
         }
