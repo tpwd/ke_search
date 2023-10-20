@@ -15,7 +15,6 @@ CREATE TABLE sys_category (
 	tx_kesearch_filtersubcat text
 );
 
-
 #
 # Table structure for table 'tx_kesearch_filters'
 #
@@ -43,8 +42,6 @@ CREATE TABLE tx_kesearch_filters (
 	KEY parent (pid)
 );
 
-
-
 #
 # Table structure for table 'tx_kesearch_filteroptions'
 #
@@ -65,11 +62,10 @@ CREATE TABLE tx_kesearch_filteroptions (
 	automated_tagging text,
 	automated_tagging_exclude text,
 	sorting int(11) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
-
-
 
 #
 # Table structure for table 'tx_kesearch_index'
@@ -85,7 +81,7 @@ CREATE TABLE tx_kesearch_index (
 	fe_group varchar(100) DEFAULT '0' NOT NULL,
 	targetpid text,
 	content mediumtext,
-    hidden_content mediumtext,
+  hidden_content mediumtext,
 	params tinytext,
 	type tinytext,
 	tags text,
@@ -101,13 +97,11 @@ CREATE TABLE tx_kesearch_index (
 	FULLTEXT INDEX tags (tags),
 	FULLTEXT INDEX title (title),
 	FULLTEXT INDEX titlecontent (title,content),
-    FULLTEXT INDEX titlecontenthiddencontent (title,content,hidden_content),
+  FULLTEXT INDEX titlecontenthiddencontent (title,content,hidden_content),
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 ) ENGINE = MyISAM;
-
-
 
 #
 # Table structure for table 'tx_kesearch_indexerconfig'
@@ -161,7 +155,9 @@ CREATE TABLE tx_kesearch_stat_search (
   hits int(11) DEFAULT '0' NOT NULL,
   tagsagainst text,
   language int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid)
+
+  PRIMARY KEY (uid),
+	KEY parent (pid)
 );
 
 #
@@ -175,8 +171,9 @@ CREATE TABLE tx_kesearch_stat_word (
   pageid int(11) DEFAULT '0' NOT NULL,
   resultsfound int(1) DEFAULT '0' NOT NULL,
   language int(11) DEFAULT '0' NOT NULL,
+
   PRIMARY KEY (uid),
-  KEY index_pid (pid)
+  KEY parent (pid)
 );
 
 #
