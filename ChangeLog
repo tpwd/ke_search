@@ -6,6 +6,7 @@ Upcoming version
 [BUGFIX]  Allow to use 'loadFlexformsFromOtherCE' parameter for TypoScript-instantiated plugins, thanks to Garvin Hicking, https://github.com/tpwd/ke_search/pull/152
 [BUGFIX]  Avoid undefined array key "sortWithoutSearchword", "resultsPerPage" and "noResultsText", https://github.com/tpwd/ke_search/issues/151
 [BUGFIX]  Avoid slow TYPO3 backend list view due to missing sql index, thanks to Daniel Siepmann, https://github.com/tpwd/ke_search/issues/190
+[TASK]    Pass $field to modifyContentFromContentElement hook, thanks to Marc Harding, https://github.com/tpwd/ke_search/pull/192/
 
 Version 5.0.4, 15 September 2023
 [TASK]    Exclude ke_search parameters from cacheHash validation, thanks to Andreas Mühe and schlotzz, https://github.com/tpwd/ke_search/issues/149
