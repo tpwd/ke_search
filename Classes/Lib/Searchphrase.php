@@ -20,6 +20,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -67,6 +68,7 @@ class Searchphrase
                 $cleanSearchStringParts[$key] = $part;
             }
         }
+        $searchStringParts = $this->explodeSearchPhrase($searchString, true);
 
         $searchArray = [
             'sword' => implode(' ', $cleanSearchStringParts), // f.e. hello karl-heinz +mueller
@@ -96,11 +98,14 @@ class Searchphrase
     }
 
     /**
-     * explode search string and remove too short words
+     * Explode search string and remove too short words. Additionaly add modifiers for in-word search and optionally
+     * replace additional word characters.
+     *
      * @param string $searchString
+     * @param bool $replaceAdditionalWordCharacters
      * @return array
      */
-    public function explodeSearchPhrase($searchString)
+    public function explodeSearchPhrase(string $searchString, bool $replaceAdditionalWordCharacters = false)
     {
         preg_match_all('/([+\-~<>])?\".*?"|[^ ]+/', $searchString, $matches);
         list($searchParts) = $matches;
@@ -129,6 +134,14 @@ class Searchphrase
                     unset($searchParts[$key]);
                 }
             }
+
+            // Replace additional word characters
+            if ($replaceAdditionalWordCharacters) {
+                foreach ($searchParts as $key => $word) {
+                    $searchParts[$key] = AdditionalWordCharactersUtility::replaceAdditionalWordCharacters($word);
+                }
+            }
+
             foreach ($searchParts as $key => $word) {
                 if ($word != '|') {
                     // Enable partial word search (default: on) and in-word-search (Sphinx-based or native).

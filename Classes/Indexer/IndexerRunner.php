@@ -29,6 +29,7 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -693,6 +694,18 @@ class IndexerRunner
                 $tags = $tagChar . $indexerTag . $tagChar;
             }
             $tags = StringUtility::uniqueList($tags);
+        }
+
+        // Get additional content for additional word characters
+        $additionalContent = AdditionalWordCharactersUtility::getAdditionalContent($content);
+        if (!empty($additionalContent)) {
+            if (!isset($additionalFields['hidden_content'])) {
+                $additionalFields['hidden_content'] = '';
+            }
+            if (!empty($additionalFields['hidden_content'])) {
+                $additionalFields['hidden_content'] .= ' ';
+            }
+            $additionalFields['hidden_content'] .= $additionalContent;
         }
 
         $table = 'tx_kesearch_index';
