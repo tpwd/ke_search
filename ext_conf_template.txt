@@ -13,6 +13,9 @@ enableExplicitAnd = 0
 # cat=basic//50; type=boolean; label=Allow empty search:If enabled, a search will be executed even if no searchword or filter is given. This will render a list of all records available in the index. Please note: There's also the setting "Show text instead of searchresults if no filter or searchword has been given" in the plugin settings which has to be disabled to see the full list of all index records. If set to false no query is executed when loading a page with a result list and an empty search, this will give a better performance.
 allowEmptySearch = 1
 
+# cat=basic//60; type=string; label=Additional word characters:Characters which should be treated as word characters instead of word delimiters, e.g. if you want to search for serial numbers which have dots in it. Does not support unicode (e.g. UTF-8). Does not support space character. Example: ".-," (without the quotes).
+additionalWordCharacters =
+
 # cat=notification//10; type=boolean; label= Send notification when finished: If activated, a notification email will be sent when indexing process is finished in CLI / scheduler mode.
 finishNotification = 0
 

@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Additional word characters: Allows searching for words containing e.g. dots or hyphens, https://github.com/tpwd/ke_search/issues/19
 [TASK]    Exclude all parameters (including filters) from cHash calculation, thanks to Uwe Hawkeye1909, https://github.com/tpwd/ke_search/issues/187
 [BUGFIX]  Allow to use 'loadFlexformsFromOtherCE' parameter for TypoScript-instantiated plugins, thanks to Garvin Hicking, https://github.com/tpwd/ke_search/pull/152
 [BUGFIX]  Avoid undefined array key "sortWithoutSearchword", "resultsPerPage" and "noResultsText", https://github.com/tpwd/ke_search/issues/151
