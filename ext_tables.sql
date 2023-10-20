@@ -175,7 +175,8 @@ CREATE TABLE tx_kesearch_stat_word (
   pageid int(11) DEFAULT '0' NOT NULL,
   resultsfound int(1) DEFAULT '0' NOT NULL,
   language int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid)
+  PRIMARY KEY (uid),
+  KEY index_pid (pid)
 );
 
 #
