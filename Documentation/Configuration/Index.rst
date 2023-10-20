@@ -13,14 +13,15 @@ The extension can be configured via the plugin settings (FlexForm), TypoScript a
 	:titlesonly:
 	:glob:
 
-	SearchWordLength
-	Sorting
-	RoutingSpeakingUrls
-	HighlightedWord
-	SearchWordParameter
-	Avoid404Error
+	AdditionalWordCharacters
 	AllowOnlyKeSearchRecords
-	ReducingFiltersBackend
-	OverrideRecordStoragePage
+	Avoid404Error
+	HighlightedWord
 	Notes
+	OverrideRecordStoragePage
+	ReducingFiltersBackend
+	RoutingSpeakingUrls
+	SearchWordLength
+	SearchWordParameter
+	Sorting
 	StorageEngine
