@@ -161,6 +161,13 @@ class Pluginbase extends AbstractPlugin
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
+
+            // After merging the FlexForm configurations of the two content elements we need to make sure the
+            // value for "loadFlexformsFromOtherCE" is set back to the original value because it may happen that
+            // in the search box plugin that FlexForm value is an empty value which would override the original value.
+            // That can happen if the content element was first set to "result list" and then changed to "search box".
+            // Then we would have an empty value for "loadFlexformsFromOtherCE".
+            $this->conf['loadFlexformsFromOtherCE'] = $loadFlexformsFromOtherCE;
         }
 
         // make settings from FlexForm available in general configuration ($this->conf)
