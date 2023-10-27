@@ -49,7 +49,7 @@ class AdditionalWordCharactersUtility
     {
         $additionalWordCharacters = self::getAdditionalWordCharacters();
         if (empty($additionalWordCharacters)) {
-            return '';
+            return $content;
         }
         foreach ($additionalWordCharacters as $additionalWordCharacter) {
             $content = str_replace(
