@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 5.1.1, 27 October 2023
+[BUGFIX]  Fix regression introduced in 5.1.0 (search was always empty), https://github.com/tpwd/ke_search/issues/195
+
 Version 5.1.0, 20 October 2023
 [FEATURE] Additional word characters: Allows searching for words containing e.g. dots or hyphens, https://github.com/tpwd/ke_search/issues/19
 [TASK]    Exclude all parameters (including filters) from cHash calculation, thanks to Uwe Hawkeye1909, https://github.com/tpwd/ke_search/issues/187
