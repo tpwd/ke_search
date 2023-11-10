@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Replace all occurences of additional word characters, not only the first one. Thanks to K. Quiatkowski. https://github.com/tpwd/ke_search/issues/19
+
 Version 5.1.2, 27 October 2023
 [BUGFIX]  Keep the original value for "loadFlexformsFromOtherCE" even if the search box plugin has an empty value in the FlexForm which lead to empty search results, thanks to Uwe Hawkeye1909, https://github.com/tpwd/ke_search/issues/142
 

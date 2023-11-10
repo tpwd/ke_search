@@ -30,16 +30,18 @@ class AdditionalWordCharactersUtility
         foreach ($additionalWordCharacters as $additionalWordCharacter) {
             $matches = [];
             $pattern = '/(?=(?:[^\s]*[' . $additionalWordCharacter . ']){1,})\S+/';
-            preg_match($pattern, $content, $matches);
+            preg_match_all($pattern, $content, $matches);
             if ($matches) {
-                if (!empty($additionalContent)) {
-                    $additionalContent .= ' ';
+                foreach ($matches as $match) {
+                    if (!empty($additionalContent)) {
+                        $additionalContent .= ' ';
+                    }
+                    $additionalContent .= str_replace(
+                        $additionalWordCharacter,
+                        self::getReplacementForAdditionalWordCharacter($additionalWordCharacter),
+                        implode(' ', $match)
+                    );
                 }
-                $additionalContent .= str_replace(
-                    $additionalWordCharacter,
-                    self::getReplacementForAdditionalWordCharacter($additionalWordCharacter),
-                    implode(' ', $matches)
-                );
             }
         }
         return $additionalContent;
