@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.1.3, 10 November 2023
 [BUGFIX]  Replace all occurences of additional word characters, not only the first one. Thanks to K. Quiatkowski. https://github.com/tpwd/ke_search/issues/19
 [TASK]    Show hidden content in backend module "Indexed content" function
 [DOCS]    Add hint about using the additional word characters feature for searching for @ when using InnoDB
