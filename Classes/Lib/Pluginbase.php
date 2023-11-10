@@ -90,8 +90,11 @@ class Pluginbase extends AbstractPlugin
     // count search results
     public int $numberOfResults = 0;
 
-    // contains all tags of current search result, false if not initialized yet
-    public array $tagsInSearchResult = [];
+    /**
+     * contains all tags of current search result, false if not initialized yet
+     * @var bool|array
+     */
+    public $tagsInSearchResult = false;
 
     // preselected filters by flexform
     public array $preselectedFilter = [];
