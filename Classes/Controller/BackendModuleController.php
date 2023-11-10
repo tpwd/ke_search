@@ -689,6 +689,10 @@ class BackendModuleController
                                         '<p><strong>Content</strong></p>'
                                         . '<p>' . nl2br($this->encode($row['content'])) . '</p>'
                                     ) : '')
+                                    . ((trim($row['hidden_content'])) ? (
+                                        '<p><strong>Hidden content</strong></p>'
+                                        . '<p>' . nl2br($this->encode($row['hidden_content'])) . '</p>'
+                                    ) : '')
                                 . '</td>'
                             . '</tr>'
                         . '</table>'
