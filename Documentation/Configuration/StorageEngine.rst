@@ -29,6 +29,9 @@ You cannot search for the "at"-Character in InnoDB tables:
 * https://dev.mysql.com/doc/refman/5.6/en/fulltext-boolean.html
 * https://github.com/teaminmedias-pluswerk/ke_search/issues/226
 
+As a workaround you could add the @ character to the list of additional word
+characters as explained in :ref:`configuration-additional-word-characters`.
+
 Phrase search is not supported
 ==============================
 
