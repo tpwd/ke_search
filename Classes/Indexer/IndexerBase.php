@@ -25,6 +25,7 @@ use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\FileService;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -82,9 +83,9 @@ class IndexerBase
 
     /**
      * Constructor of this object
-     * @param $pObj
+     * @param IndexerRunner $pObj
      */
-    public function __construct($pObj)
+    public function __construct(IndexerRunner $pObj)
     {
         $this->startMicrotime = microtime(true);
         $this->pObj = $pObj;
