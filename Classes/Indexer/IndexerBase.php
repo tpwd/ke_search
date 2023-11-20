@@ -25,7 +25,6 @@ use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\FileService;
-use Tpwd\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
