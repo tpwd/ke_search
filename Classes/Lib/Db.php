@@ -194,13 +194,13 @@ class Db implements SingletonInterface
             $this->keSearchPremium->setLimit(
                 $limit[0],
                 $limit[1],
-                (int)($this->pObj->extConfPremium['sphinxLimit'])
+                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0)
             );
         } else {
             $this->keSearchPremium->setLimit(
                 0,
-                (int)($this->pObj->extConfPremium['sphinxLimit']),
-                (int)($this->pObj->extConfPremium['sphinxLimit'])
+                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0),
+                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0)
             );
         }
 
