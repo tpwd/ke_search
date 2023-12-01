@@ -228,43 +228,6 @@ Resources/Private/Templates/SearchForm.html
             <input id="sortByDir" type="hidden" name="tx_kesearch_pi1[sortByDir]" value="{sortByDir}" />
          </f:if>
 
-Resources/Private/Templates/Widget/Pagination.html
---------------------------------------------------
-
-.. rst-class:: bignums
-
-   #. Add the kesearch namespace to the beginning of the file
-
-      .. code-block:: html
-
-         <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-               xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
-               data-namespace-typo3-fluid="true">
-
-   #. Change the links using the kesearch:link view helper
-
-      .. code-block:: html
-
-         <f:spaceless>
-            <ul>
-               <f:if condition="{pagination.previous}">
-                  <li>
-                     <kesearch:link piVars="{page: pagination.previous}" keepPiVars="1" class="prev">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_prev')}</kesearch:link>
-                  </li>
-               </f:if>
-               <f:for each="{pagination.pages}" as="page">
-                  <li>
-                     <kesearch:link piVars="{page: page}" keepPiVars="1" class="{f:if(condition: '{page} == {pagination.currentPage}', then: 'current')}">{page}</kesearch:link>
-                  </li>
-               </f:for>
-               <f:if condition="{pagination.next}">
-                  <li>
-                     <kesearch:link piVars="{page: pagination.next}" keepPiVars="1" class="next">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_next')}</kesearch:link>
-                  </li>
-               </f:if>
-            </ul>
-         </f:spaceless>
-
 Resources/Private/Partials/Filters/Checkbox.html
 ------------------------------------------------
 

@@ -71,12 +71,6 @@ cleanup
 registerAdditionalFields
 	This hook is important if you have extended the indexer table with your own columns.
 
-renderPagebrowserInit
-	Hook for third party pagebrowsers or for modification of build in browser, if the hook return content then return that content.
-
-pagebrowseAdditionalMarker
-	Hook for additional markers in pagebrowse.
-
 getOrdering
 	Hook for third party extensions to modify the sorting.
 
