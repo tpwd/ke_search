@@ -19,7 +19,6 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Tpwd\KeSearch\Lib\Pluginbase;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -31,7 +30,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * @author    Andreas Kiefer
  * @author    Christian Bülter
  */
-class SearchboxPlugin extends Pluginbase
+class SearchboxPlugin extends PluginBase
 {
     /**
      * @var StandaloneView
@@ -48,7 +47,6 @@ class SearchboxPlugin extends Pluginbase
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 

@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -33,7 +34,7 @@ class Sorting
     public $sortBy = '';
 
     /**
-     * @var Pluginbase
+     * @var PluginBase
      */
     public $pObj;
 
@@ -49,9 +50,9 @@ class Sorting
 
     /**
      * The constructor of this class
-     * @param Pluginbase $pObj
+     * @param PluginBase $pObj
      */
-    public function __construct(Pluginbase $pObj)
+    public function __construct(PluginBase $pObj)
     {
         // initializes this object
         $this->init($pObj);
@@ -59,9 +60,9 @@ class Sorting
 
     /**
      * Initializes this object
-     * @param Pluginbase $pObj
+     * @param PluginBase $pObj
      */
-    public function init(Pluginbase $pObj)
+    public function init(PluginBase $pObj)
     {
         $this->pObj = $pObj;
         $this->db = $this->pObj->db;

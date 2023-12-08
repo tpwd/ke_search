@@ -4,7 +4,7 @@
 /** @noinspection PhpUndefinedNamespaceInspection */
 /** @noinspection PhpPropertyOnlyWrittenInspection */
 
-namespace Tpwd\KeSearch\Lib;
+namespace Tpwd\KeSearch\Plugins;
 
 /***************************************************************
  *  Copyright notice
@@ -29,6 +29,13 @@ use PDO;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
+use Tpwd\KeSearch\Lib\Db;
+use Tpwd\KeSearch\Lib\Filters;
+use Tpwd\KeSearch\Lib\PluginBaseHelper;
+use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Lib\Searchphrase;
+use Tpwd\KeSearch\Lib\Searchresult;
+use Tpwd\KeSearch\Lib\Sorting;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -36,23 +43,23 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
- * Parent class for plugins pi1 and pi2
+ * Parent class for plugins ResultlistPlugin and SearchboxPlugin
+ *
  * @author    Andreas Kiefer
  * @author    Stefan Froemken
  * @author    Christian Bülter
  */
-class Pluginbase extends AbstractPlugin
+class PluginBase extends AbstractPlugin
 {
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
 
-    public $prefixId = 'tx_kesearch_pi1';
-    public $extKey = 'ke_search';
+    public string $prefixId = 'tx_kesearch_pi1';
+    public string $extKey = 'ke_search';
     public $conf = [];
 
     // cleaned searchword (karl-heinz => karl heinz)
@@ -154,9 +161,6 @@ class Pluginbase extends AbstractPlugin
         if (!empty($loadFlexformsFromOtherCE)) {
             $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord('tt_content', (int)($loadFlexformsFromOtherCE));
-            // PHPDoc of pi_getRecord says it will return an array or false,
-            // but if no record has been found it will return 0
-            /** @phpstan-ignore-next-line */
             if (is_int($contentElement) && $contentElement == 0) {
                 throw new Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
@@ -1251,10 +1255,5 @@ class Pluginbase extends AbstractPlugin
             return false;
         }
         return true;
-    }
-
-    public function getContentObjectRenderer(): ContentObjectRenderer
-    {
-        return $this->cObj;
     }
 }

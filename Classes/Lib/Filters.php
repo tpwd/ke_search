@@ -19,6 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class Filters
 {
     /**
-     * @var Pluginbase
+     * @var PluginBase
      */
     protected $pObj;
 
@@ -59,9 +60,9 @@ class Filters
 
     /**
      * Initializes this object
-     * @param Pluginbase $pObj
+     * @param PluginBase $pObj
      */
-    public function initialize(Pluginbase $pObj)
+    public function initialize(PluginBase $pObj)
     {
         $this->pObj = $pObj;
         $this->db = $this->pObj->db;

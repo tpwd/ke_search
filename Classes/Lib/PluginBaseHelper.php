@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -29,10 +30,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class PluginBaseHelper
 {
-    public Pluginbase $pObj;
+    public PluginBase $pObj;
     private ContentObjectRenderer $cObj;
 
-    public function __construct(Pluginbase $pObj)
+    public function __construct(PluginBase $pObj)
     {
         $this->pObj = $pObj;
         $this->cObj = $pObj->getContentObjectRenderer();

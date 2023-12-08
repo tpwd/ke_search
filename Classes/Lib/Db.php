@@ -9,6 +9,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Tpwd\KeSearch\Event\MatchColumnsEvent;
+use Tpwd\KeSearch\Plugins\PluginBase;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -57,14 +58,14 @@ class Db implements SingletonInterface
     protected KeSearchPremium $keSearchPremium;
     protected $errors = [];
     private EventDispatcherInterface $eventDispatcher;
-    public Pluginbase $pObj;
+    public PluginBase $pObj;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function setPluginbase(Pluginbase $pObj)
+    public function setPluginbase(PluginBase $pObj)
     {
         $this->pObj = $pObj;
         $this->conf = $this->pObj->conf;

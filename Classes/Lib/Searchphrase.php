@@ -20,6 +20,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Plugins\PluginBase;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,15 +39,15 @@ class Searchphrase
     public const IGNORE_FOR_TAG_BUILDING = ['start', 'end'];
 
     /**
-     * @var Pluginbase
+     * @var PluginBase
      */
     public $pObj;
 
     /**
      * initializes this object
-     * @param Pluginbase $pObj
+     * @param PluginBase $pObj
      */
-    public function initialize(Pluginbase $pObj)
+    public function initialize(PluginBase $pObj)
     {
         $this->pObj = $pObj;
     }
