@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 /*
  * Taken from TYPO3 12 core to make the sliding window pagination available for TYPO3 11
+ *
+ * Todo: Remove this file once support for TYPO3 11 is dropped
  */
 
 namespace Tpwd\KeSearch\Pagination;

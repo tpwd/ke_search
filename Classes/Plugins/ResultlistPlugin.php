@@ -20,11 +20,11 @@ namespace Tpwd\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use Tpwd\KeSearch\Lib\Pluginbase;
+use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
-use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -106,6 +106,10 @@ class ResultlistPlugin extends Pluginbase
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $this->fluidTemplateVariables['pagination'] = new BackportedSlidingWindowPagination($paginator, $maxPages);
         } else {
+            // PHPStan is complaining that the SlidingWindowPagination class does not exist in TYPO3 11,
+            // so we ignore this error for now
+            // Todo: Remove the PHPStan annotation below once support for TYPO3 11 is dropped
+            // @phpstan-ignore-next-line
             $this->fluidTemplateVariables['pagination'] = new SlidingWindowPagination($paginator, $maxPages);
         }
 

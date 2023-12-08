@@ -1,10 +1,10 @@
 ChangeLog
 
 Upcoming version
-[!!!]     The pagebrowser is now rendered in a different way. If you used a custom template for the pagebrowser you will have to adopt it. Have a look at Resources/Private/Partials/PageBrowser.html
+[!!!]     The pagebrowser is now rendered in a different way (using the pagination API). If you used a custom template for the pagebrowser you will have to adopt it. Have a look at Resources/Private/Partials/PageBrowser.html
+[TASK]    Use pagination API to render pagination, https://github.com/tpwd/ke_search/issues/174 and https://github.com/tpwd/ke_search/issues/154
 [TASK]    Properly type-hint IndexerBase constructor, thanks to hotbytes-dev, https://github.com/tpwd/ke_search/pull/202
 [BUGFIX]  Avoid undefined array key warning for "sphinxLimit"
-[TASK]    Use pagination API to render pagination, https://github.com/tpwd/ke_search/issues/174 and https://github.com/tpwd/ke_search/issues/154
 
 Version 5.1.3, 10 November 2023
 [BUGFIX]  Replace all occurences of additional word characters, not only the first one. Thanks to K. Quiatkowski. https://github.com/tpwd/ke_search/issues/19
