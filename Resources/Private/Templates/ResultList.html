@@ -1,3 +1,6 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <f:layout name="General" />
 
 <f:comment><!--
@@ -26,7 +29,15 @@ Settings are available via
 					<f:format.raw>{conf.textForResults}</f:format.raw>
 				</f:then>
 				<f:else>
-					<f:render partial="ResultRows" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, sortingLinks: sortingLinks, pagebrowser:pagebrowser, queryTime:queryTime, queryTimeText:queryTimeText}" />
+					<f:render partial="ResultRows" arguments="{
+					conf: conf,
+					numberofresults: numberofresults,
+					resultrows: resultrows,
+					sortingLinks: sortingLinks,
+					pagination:pagination,
+					queryTime:queryTime,
+					queryTimeText:queryTimeText
+					}" />
 				</f:else>
 			</f:if>
 		</f:then>
@@ -36,7 +47,15 @@ Settings are available via
 					<f:render partial="NoResults" arguments="{conf: conf, noResultsText: noResultsText}" />
 				</f:then>
 				<f:else>
-					<f:render partial="ResultRows" arguments="{conf: conf, numberofresults: numberofresults, resultrows: resultrows, sortingLinks: sortingLinks, pagebrowser:pagebrowser, queryTime:queryTime, queryTimeText:queryTimeText}" />
+                    <f:render partial="ResultRows" arguments="{
+					conf: conf,
+					numberofresults: numberofresults,
+					resultrows: resultrows,
+					sortingLinks: sortingLinks,
+					pagination:pagination,
+					queryTime:queryTime,
+					queryTimeText:queryTimeText
+					}" />
 				</f:else>
 			</f:if>
 		</f:else>

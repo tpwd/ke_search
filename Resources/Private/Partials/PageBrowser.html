@@ -1,11 +1,45 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <f:comment><!--
 	=====================
 	Partials/PageBrowser.html
 --></f:comment>
 
 <f:if condition="{numberofresults} > {conf.resultsPerPage}">
-	<div class="pages_total">
-		<div class="result_txt">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:results')} {pagebrowser.start} {f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:until')} {pagebrowser.end} {f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:of')} {pagebrowser.total}</div>
-		<div class="kesearch_pagebrowser"><f:format.raw>{pagebrowser.pages_list}</f:format.raw></div>
-	</div>
+    <div class="pages_total">
+        <div class="result_txt">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:results')} {pagination.startRecordNumber}
+            {f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:until')} {pagination.endRecordNumber}
+            {f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:of')} {numberofresults}</div>
+        <div class="kesearch_pagebrowser">
+            <f:spaceless>
+                <ul>
+                    <f:if condition="{pagination.previousPageNumber}">
+                        <li>
+                            <kesearch:link
+                                piVars="{page: pagination.previousPageNumber}"
+                                keepPiVars="1"
+                                class="prev">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_prev')}</kesearch:link>
+                        </li>
+                    </f:if>
+                    <f:for each="{pagination.allPageNumbers}" as="page">
+                        <li>
+                            <kesearch:link
+                                piVars="{page: page}"
+                                keepPiVars="1"
+                                class="{f:if(condition: '{page} == {pagination.paginator.currentPageNumber}', then: 'current')}">{page}</kesearch:link>
+                        </li>
+                    </f:for>
+                    <f:if condition="{pagination.nextPageNumber}">
+                        <li>
+                            <kesearch:link
+                                piVars="{page: pagination.nextPageNumber}"
+                                keepPiVars="1"
+                                class="next">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_next')}</kesearch:link>
+                        </li>
+                    </f:if>
+                </ul>
+            </f:spaceless>
+        </div>
+    </div>
 </f:if>
