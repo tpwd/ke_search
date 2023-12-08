@@ -211,8 +211,10 @@ class AbstractPlugin
     public function pi_RTEcssText(string $str): string
     {
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+            // @phpstan-ignore-next-line
             $str = $this->cObj->parseFunc($str, [], '< lib.parseFunc_RTE');
         } else {
+            // @phpstan-ignore-next-line
             $str = $this->cObj->parseFunc($str, null, '< lib.parseFunc_RTE');
         }
         return $str;
