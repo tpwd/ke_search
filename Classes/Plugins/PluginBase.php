@@ -60,7 +60,7 @@ class PluginBase extends AbstractPlugin
 
     public string $prefixId = 'tx_kesearch_pi1';
     public string $extKey = 'ke_search';
-    public $conf = [];
+    public array $conf = [];
 
     // cleaned searchword (karl-heinz => karl heinz)
     public string $sword = '';
@@ -72,7 +72,7 @@ class PluginBase extends AbstractPlugin
     public string $wordsAgainst = '';
 
     // tagsphrase for boolean mode (+#category_213# +#city_42#)
-    public array$tagsAgainst = [];
+    public array $tagsAgainst = [];
 
     // searchphrase for score/non boolean mode (karl heinz)
     public string $scoreAgainst = '';
@@ -1255,5 +1255,10 @@ class PluginBase extends AbstractPlugin
             return false;
         }
         return true;
+    }
+
+    public function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        return $this->cObj;
     }
 }

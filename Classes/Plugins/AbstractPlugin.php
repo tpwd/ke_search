@@ -2,6 +2,19 @@
 
 namespace Tpwd\KeSearch\Plugins;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -26,13 +39,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class AbstractPlugin
 {
     protected ?ContentObjectRenderer $cObj = null;
-
-    /**
-     * Property for accessing TypoScriptFrontendController centrally
-     *
-     * @var TypoScriptFrontendController|null
-     */
-    protected ?TypoScriptFrontendController $frontendController;
 
     /**
      * Should be same as classname of the plugin, used for CSS classes, variables
@@ -65,13 +71,6 @@ class AbstractPlugin
     public array $piVars = [];
 
     /**
-     * Pointer to alternative fall-back language to use.
-     *
-     * @var string
-     */
-    public string $altLLkey = '';
-
-    /**
      * Local Language content
      *
      * @var array
@@ -102,6 +101,30 @@ class AbstractPlugin
      * @var string
      */
     public string $LLkey = 'default';
+
+    /**
+     * Pointer to alternative fall-back language to use.
+     *
+     * @var string
+     */
+    public string $altLLkey = '';
+
+    /**
+     * Should normally be set in the main function with the TypoScript content passed to the method.
+     *
+     * $conf[LOCAL_LANG][_key_] is reserved for Local Language overrides.
+     * $conf[userFunc] reserved for setting up the USER / USER_INT object. See TSref
+     *
+     * @var array
+     */
+    public array $conf = [];
+
+    /**
+     * Property for accessing TypoScriptFrontendController centrally
+     *
+     * @var TypoScriptFrontendController|null
+     */
+    protected ?TypoScriptFrontendController $frontendController;
 
     /**
      * Class Constructor (true constructor)
@@ -138,6 +161,15 @@ class AbstractPlugin
                 $this->altLLkey = implode(',', $alternativeLanguageKeys);
             }
         }
+    }
+
+    /**
+     * This setter is called when the plugin is called from UserContentObject (USER)
+     * via ContentObjectRenderer->callUserFunction().
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 
     /**
@@ -185,118 +217,8 @@ class AbstractPlugin
         return implode(',', $pid_list);
     }
 
-    /**
-     * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
-     *
-     * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array Returns the GET vars merged recursively onto the POST vars.
-     */
-    private static function getRequestPostOverGetParameterWithPrefix(string $parameter): array
-    {
-        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
-        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
-        $mergedParameters = $getParameter;
-        ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
-        return $mergedParameters;
-    }
 
-    /**
-     * Will process the input string with the parseFunc function from ContentObjectRenderer based on configuration
-     * set in "lib.parseFunc_RTE" in the current TypoScript template.
-     *
-     * @param string $str The input text string to process
-     * @return string The processed string
-     * @see ContentObjectRenderer::parseFunc()
-     */
-    public function pi_RTEcssText(string $str): string
-    {
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            // @phpstan-ignore-next-line
-            $str = $this->cObj->parseFunc($str, [], '< lib.parseFunc_RTE');
-        } else {
-            // @phpstan-ignore-next-line
-            $str = $this->cObj->parseFunc($str, null, '< lib.parseFunc_RTE');
-        }
-        return $str;
-    }
 
-    /*******************************
-     *
-     * FlexForms related functions
-     *
-     *******************************/
-    /**
-     * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
-     *
-     * @param string $field Field name to convert
-     */
-    public function pi_initPIflexForm(string $field = 'pi_flexform')
-    {
-        // Converting flexform data into array
-        $fieldData = $this->cObj->data[$field] ?? null;
-        if (!is_array($fieldData) && $fieldData) {
-            $this->cObj->data[$field] = GeneralUtility::xml2array((string)$fieldData);
-            if (!is_array($this->cObj->data[$field])) {
-                $this->cObj->data[$field] = [];
-            }
-        }
-    }
-
-    /**
-     * Return value from somewhere inside a FlexForm structure
-     *
-     * @param array $T3FlexForm_array FlexForm data
-     * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
-     * @param string $sheet Sheet pointer, eg. "sDEF
-     * @param string $lang Language pointer, eg. "lDEF
-     * @param string $value Value pointer, eg. "vDEF
-     * @return string|null The content.
-     */
-    public function pi_getFFvalue(
-        array $T3FlexForm_array,
-        string $fieldName,
-        string $sheet = 'sDEF',
-        string $lang = 'lDEF',
-        string $value = 'vDEF'
-    ): ?string {
-        $sheetArray = $T3FlexForm_array['data'][$sheet][$lang] ?? '';
-        if (is_array($sheetArray)) {
-            return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
-        }
-        return null;
-    }
-
-    /**
-     * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
-     *
-     * @param array $sheetArray Multidimensional array, typically FlexForm contents
-     * @param array $fieldNameArr Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array and return element number X (whether this is right behavior is not settled yet...)
-     * @param string $value Value for outermost key, typ. "vDEF" depending on language.
-     * @return mixed The value, typ. string.
-     * @internal
-     * @see pi_getFFvalue()
-     */
-    public function pi_getFFvalueFromSheetArray(array $sheetArray, array $fieldNameArr, string $value)
-    {
-        $tempArr = $sheetArray;
-        foreach ($fieldNameArr as $k => $v) {
-            if (MathUtility::canBeInterpretedAsInteger($v)) {
-                if (is_array($tempArr)) {
-                    $c = 0;
-                    foreach ($tempArr as $values) {
-                        if ($c == $v) {
-                            $tempArr = $values;
-                            break;
-                        }
-                        $c++;
-                    }
-                }
-            } elseif (isset($tempArr[$v])) {
-                $tempArr = $tempArr[$v];
-            }
-        }
-        return $tempArr[$value] ?? '';
-    }
 
     /**
      * Wraps the input string in a <div> tag with the class attribute set to the prefixId.
@@ -428,16 +350,114 @@ class AbstractPlugin
     }
 
     /**
-     * This setter is called when the plugin is called from UserContentObject (USER)
-     * via ContentObjectRenderer->callUserFunction().
+     * Will process the input string with the parseFunc function from ContentObjectRenderer based on configuration
+     * set in "lib.parseFunc_RTE" in the current TypoScript template.
+     *
+     * @param string $str The input text string to process
+     * @return string The processed string
+     * @see ContentObjectRenderer::parseFunc()
      */
-    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    public function pi_RTEcssText(string $str): string
     {
-        $this->cObj = $cObj;
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+            // @phpstan-ignore-next-line
+            $str = $this->cObj->parseFunc($str, [], '< lib.parseFunc_RTE');
+        } else {
+            // @phpstan-ignore-next-line
+            $str = $this->cObj->parseFunc($str, null, '< lib.parseFunc_RTE');
+        }
+        return $str;
+    }
+    /*******************************
+     *
+     * FlexForms related functions
+     *
+     *******************************/
+    /**
+     * Converts $this->cObj->data['pi_flexform'] from XML string to flexForm array.
+     *
+     * @param string $field Field name to convert
+     */
+    public function pi_initPIflexForm(string $field = 'pi_flexform')
+    {
+        // Converting flexform data into array
+        $fieldData = $this->cObj->data[$field] ?? null;
+        if (!is_array($fieldData) && $fieldData) {
+            $this->cObj->data[$field] = GeneralUtility::xml2array((string)$fieldData);
+            if (!is_array($this->cObj->data[$field])) {
+                $this->cObj->data[$field] = [];
+            }
+        }
     }
 
-    public function getContentObjectRenderer(): ContentObjectRenderer
+    /**
+     * Return value from somewhere inside a FlexForm structure
+     *
+     * @param array $T3FlexForm_array FlexForm data
+     * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+     * @param string $sheet Sheet pointer, eg. "sDEF
+     * @param string $lang Language pointer, eg. "lDEF
+     * @param string $value Value pointer, eg. "vDEF
+     * @return string|null The content.
+     */
+    public function pi_getFFvalue(
+        array $T3FlexForm_array,
+        string $fieldName,
+        string $sheet = 'sDEF',
+        string $lang = 'lDEF',
+        string $value = 'vDEF'
+    ): ?string {
+        $sheetArray = $T3FlexForm_array['data'][$sheet][$lang] ?? '';
+        if (is_array($sheetArray)) {
+            return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
+        }
+        return null;
+    }
+
+    /**
+     * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
+     *
+     * @param array $sheetArray Multidimensional array, typically FlexForm contents
+     * @param array $fieldNameArr Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array and return element number X (whether this is right behavior is not settled yet...)
+     * @param string $value Value for outermost key, typ. "vDEF" depending on language.
+     * @return mixed The value, typ. string.
+     * @internal
+     * @see pi_getFFvalue()
+     */
+    public function pi_getFFvalueFromSheetArray(array $sheetArray, array $fieldNameArr, string $value)
     {
-        return $this->cObj;
+        $tempArr = $sheetArray;
+        foreach ($fieldNameArr as $k => $v) {
+            if (MathUtility::canBeInterpretedAsInteger($v)) {
+                if (is_array($tempArr)) {
+                    $c = 0;
+                    foreach ($tempArr as $values) {
+                        if ($c == $v) {
+                            $tempArr = $values;
+                            break;
+                        }
+                        $c++;
+                    }
+                }
+            } elseif (isset($tempArr[$v])) {
+                $tempArr = $tempArr[$v];
+            }
+        }
+        return $tempArr[$value] ?? '';
+    }
+
+    /**
+     * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
+     *
+     * @param string $parameter Key (variable name) from GET or POST vars
+     * @return array Returns the GET vars merged recursively onto the POST vars.
+     */
+    private static function getRequestPostOverGetParameterWithPrefix(string $parameter): array
+    {
+        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
+        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
+        $mergedParameters = $getParameter;
+        ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
+        return $mergedParameters;
     }
 }
