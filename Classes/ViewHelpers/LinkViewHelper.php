@@ -2,8 +2,9 @@
 
 namespace Tpwd\KeSearch\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -30,7 +31,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Render link to news item or internal/external pages
+     * Render link to a search result page
      *
      * @return string link
      */
@@ -43,12 +44,16 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $piVars = $this->arguments['piVars'] ?? [];
         $uriOnly = $this->arguments['uriOnly'] ?? false;
 
+        /** @var ServerRequestInterface $request */
+        // @phpstan-ignore-next-line
+        $request = $this->renderingContext->getRequest();
+
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
         $searchWordParameter = SearchHelper::getSearchWordParameter();
         if ($searchWordParameter != 'tx_kesearch_pi1[sword]'
             && !isset($piVars['sword'])
-            && GeneralUtility::_GP($searchWordParameter)) {
-            $piVars['sword'] = GeneralUtility::_GP($searchWordParameter);
+            && RequestUtility::getQueryParam($request, $searchWordParameter)) {
+            $piVars['sword'] = RequestUtility::getQueryParam($request, $searchWordParameter);
         }
 
         if (!empty($piVars)) {
@@ -57,7 +62,9 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
 
         if ($keepPiVars) {
             $piVars = array_merge(
-                SearchHelper::explodePiVars(GeneralUtility::_GPmerged('tx_kesearch_pi1')),
+                SearchHelper::explodePiVars(
+                    RequestUtility::getQueryParam($request, 'tx_kesearch_pi1') ?? []
+                ),
                 $piVars
             );
         }

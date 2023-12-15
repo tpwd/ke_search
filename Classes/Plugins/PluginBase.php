@@ -26,6 +26,7 @@ namespace Tpwd\KeSearch\Plugins;
 
 use Exception;
 use PDO;
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
@@ -36,6 +37,7 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Lib\Searchphrase;
 use Tpwd\KeSearch\Lib\Searchresult;
 use Tpwd\KeSearch\Lib\Sorting;
+use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -54,13 +56,14 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  */
 class PluginBase extends AbstractPlugin
 {
+    protected ?ServerRequestInterface $request = null;
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
 
     public string $prefixId = 'tx_kesearch_pi1';
     public string $extKey = 'ke_search';
-    public array $conf = [];
+    public array $piVars = [];
 
     // cleaned searchword (karl-heinz => karl heinz)
     public string $sword = '';
@@ -118,14 +121,21 @@ class PluginBase extends AbstractPlugin
 
     /**
      * Initializes flexform, conf vars and some more
+     * Initializes $this->piVars if $this->prefixId is set to any value
      */
-    public function init()
+    public function init(ServerRequestInterface $request)
     {
+        $this->setRequest($request);
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var LanguageAspect $languageAspect */
         $languageAspect = $context->getAspect('language');
         $this->languageId = $languageAspect->getId();
+
+        // Set piVars
+        if ($this->prefixId) {
+            $this->piVars = RequestUtility::getQueryParam($this->request, $this->prefixId) ?? [];
+        }
 
         // get some helper functions
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
@@ -137,8 +147,8 @@ class PluginBase extends AbstractPlugin
 
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
         $searchWordParameter = SearchHelper::getSearchWordParameter();
-        if (!isset($this->piVars['sword']) && GeneralUtility::_GP($searchWordParameter)) {
-            $this->piVars['sword'] = GeneralUtility::_GP($searchWordParameter);
+        if (!isset($this->piVars['sword']) && RequestUtility::getQueryParam($this->request, $searchWordParameter)) {
+            $this->piVars['sword'] = RequestUtility::getQueryParam($this->request, $searchWordParameter);
         }
 
         // get the configuration of the current plugin
@@ -378,9 +388,9 @@ class PluginBase extends AbstractPlugin
 
         // set form action
         $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        $lParam = GeneralUtility::_GET('L');
-        $mpParam = GeneralUtility::_GET('MP');
-        $typeParam = GeneralUtility::_GP('type');
+        $lParam = RequestUtility::getQueryParam($this->request, 'L');
+        $mpParam = RequestUtility::getQueryParam($this->request, 'MP');
+        $typeParam = RequestUtility::getQueryParam($this->request, 'type');
         $actionUrl = $siteUrl . 'index.php';
         $this->fluidTemplateVariables['actionUrl'] = $actionUrl;
 
@@ -1260,5 +1270,12 @@ class PluginBase extends AbstractPlugin
     public function getContentObjectRenderer(): ContentObjectRenderer
     {
         return $this->cObj;
+    }
+
+    public function setRequest(ServerRequestInterface $request)
+    {
+        if ($this->request === null) {
+            $this->request = $request;
+        }
     }
 }

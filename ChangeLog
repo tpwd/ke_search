@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [TASK]    Remove dependency to AbstractPlugin, https://github.com/tpwd/ke_search/issues/204
+[TASK]    Remove usages of GeneralUtility::_GET, GeneralUtility::_GP, $_GET and $_POST, https://github.com/tpwd/ke_search/issues/205
 
 Version 5.2.0, 8 December 2023
 [!!!]     The pagebrowser is now rendered in a different way (using the pagination API). If you used a custom template for the pagebrowser you will have to adopt it. Have a look at Resources/Private/Partials/PageBrowser.html

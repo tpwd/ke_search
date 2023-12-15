@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -33,7 +32,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Since ke_search still relies on some of the functions provided by the AbstractPlugin class
  * these are made available here.
  *
- * The class only contains the necessary functions and properties (mainly related to language, FlexForms and piVars),
+ * The class only contains the necessary functions and properties (mainly related to language and FlexForms),
  * not including functions for database access, template based markers, links, listing, browsing or menu generation.
  */
 class AbstractPlugin
@@ -60,15 +59,6 @@ class AbstractPlugin
      * @var string
      */
     public string $extKey;
-
-    /**
-     * This is the incoming array by name $this->prefixId merged between POST and GET, POST taking precedence.
-     * E.g. if the class name is 'tx_myext'
-     * then the content of this array will be whatever comes into &tx_myext[...]=...
-     *
-     * @var array
-     */
-    public array $piVars = [];
 
     /**
      * Local Language content
@@ -128,7 +118,6 @@ class AbstractPlugin
 
     /**
      * Class Constructor (true constructor)
-     * Initializes $this->piVars if $this->prefixId is set to any value
      * Will also set $this->LLkey based on the "config.language" setting.
      *
      * @param null $_ unused
@@ -140,10 +129,6 @@ class AbstractPlugin
     public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
     {
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
-        // Setting piVars:
-        if ($this->prefixId) {
-            $this->piVars = self::getRequestPostOverGetParameterWithPrefix($this->prefixId);
-        }
         $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
         $locales = GeneralUtility::makeInstance(Locales::class);
@@ -441,20 +426,5 @@ class AbstractPlugin
             }
         }
         return $tempArr[$value] ?? '';
-    }
-
-    /**
-     * Returns the global arrays $_GET and $_POST merged with $_POST taking precedence.
-     *
-     * @param string $parameter Key (variable name) from GET or POST vars
-     * @return array Returns the GET vars merged recursively onto the POST vars.
-     */
-    private static function getRequestPostOverGetParameterWithPrefix(string $parameter): array
-    {
-        $postParameter = isset($_POST[$parameter]) && is_array($_POST[$parameter]) ? $_POST[$parameter] : [];
-        $getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : [];
-        $mergedParameters = $getParameter;
-        ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
-        return $mergedParameters;
     }
 }

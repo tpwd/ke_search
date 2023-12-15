@@ -19,6 +19,8 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -42,11 +44,13 @@ class ResultlistPlugin extends PluginBase
 
     /**
      * The main method of the PlugIn
-     * @param    string $content : The PlugIn content
-     * @param    array $conf : The PlugIn configuration
-     * @return    string The content that is displayed on the website
+     *
+     * @param string $content The PlugIn content
+     * @param array $conf The PlugIn configuration
+     * @param ServerRequestInterface $request
+     * @return string The content that is displayed on the website
      */
-    public function main($content, $conf)
+    public function main(string $content, array $conf, ServerRequestInterface $request): string
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
@@ -54,7 +58,7 @@ class ResultlistPlugin extends PluginBase
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
-        $this->init();
+        $this->init($request);
 
         if ($this->conf['resultPage'] != $GLOBALS['TSFE']->id) {
             $content = '<div id="textmessage">' . $this->pi_getLL('error_resultPage') . '</div>';

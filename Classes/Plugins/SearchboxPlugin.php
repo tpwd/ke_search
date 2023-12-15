@@ -19,6 +19,7 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -39,11 +40,13 @@ class SearchboxPlugin extends PluginBase
 
     /**
      * The main method of the PlugIn
-     * @param    string $content : The PlugIn content
-     * @param    array $conf : The PlugIn configuration
-     * @return    string The content that is displayed on the website
+     *
+     * @param string $content The PlugIn content
+     * @param array $conf The PlugIn configuration
+     * @param ServerRequestInterface $request
+     * @return string The content that is displayed on the website
      */
-    public function main($content, $conf)
+    public function main(string $content, array $conf, ServerRequestInterface $request): string
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
@@ -51,7 +54,7 @@ class SearchboxPlugin extends PluginBase
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
-        $this->init();
+        $this->init($request);
 
         if (empty($this->conf['view'])) {
             $content = '<div id="textmessage">' . $this->pi_getLL('error_templatePaths') . '</div>';
