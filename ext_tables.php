@@ -4,6 +4,7 @@ defined('TYPO3') or die();
 
 (function () {
     // TODO: Remove this once support for TYPO3 11 is dropped
+    // @extensionScannerIgnoreLine
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
         'web',
         'KeSearchBackendModule',

@@ -325,6 +325,7 @@ class File extends IndexerBase
                 return '';
             }
             $errorMessage = 'No indexer for this type of file. (class ' . $className . ' does not exist).';
+            // @extensionScannerIgnoreLine
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
             return false;

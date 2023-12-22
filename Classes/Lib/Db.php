@@ -68,6 +68,7 @@ class Db implements SingletonInterface
     public function setPluginbase(PluginBase $pObj)
     {
         $this->pObj = $pObj;
+        // @extensionScannerIgnoreLine
         $this->conf = $this->pObj->conf;
     }
 

@@ -66,6 +66,7 @@ class Filters
     {
         $this->pObj = $pObj;
         $this->db = $this->pObj->db;
+        // @extensionScannerIgnoreLine
         $this->conf = $this->pObj->conf;
         $this->piVars = $this->pObj->piVars;
         $this->startingPoints = $this->pObj->startingPoints;

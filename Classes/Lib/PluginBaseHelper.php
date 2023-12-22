@@ -45,6 +45,7 @@ class PluginBaseHelper
 
         // if loadFlexformsFromOtherCE is set
         // try to get startingPoint of given page
+        // @extensionScannerIgnoreLine
         if ($uid = (int)($this->pObj->conf['loadFlexformsFromOtherCE'] ?? 0)) {
             $queryBuilder = Db::getQueryBuilder('tt_content');
             $queryBuilder->getRestrictions()->removeAll();

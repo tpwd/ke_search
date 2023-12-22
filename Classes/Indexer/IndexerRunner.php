@@ -205,6 +205,7 @@ class IndexerRunner
                     $content .= $this->renderIndexingReport($searchObj, $message);
                 } else {
                     $errorMessage = 'Could not find class ' . $className;
+                    // @extensionScannerIgnoreLine
                     $this->logger->error($errorMessage);
                     $content .= '<div class="alert alert-error">' . $errorMessage . '</div>' . "\n";
                 }

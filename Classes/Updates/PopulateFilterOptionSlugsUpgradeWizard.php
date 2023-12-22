@@ -89,7 +89,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
             ->select('*')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq($this->fieldName, $queryBuilder->createNamedParameter('')),
                     $queryBuilder->expr()->isNull($this->fieldName)
                 )
@@ -132,7 +132,7 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
             ->count('uid')
             ->from($this->table)
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq($this->fieldName, $queryBuilder->createNamedParameter('')),
                     $queryBuilder->expr()->isNull($this->fieldName)
                 )

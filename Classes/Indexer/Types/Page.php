@@ -1102,6 +1102,7 @@ class Page extends IndexerBase
                         $fileObjects[] = $hrefInformation['file'];
                     }
                 } catch (Exception $exception) {
+                    // @extensionScannerIgnoreLine
                     $this->pObj->logger->error($exception->getMessage());
                 }
             }

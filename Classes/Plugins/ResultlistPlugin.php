@@ -58,6 +58,7 @@ class ResultlistPlugin extends PluginBase
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
+        // @extensionScannerIgnoreLine
         $this->init($request);
 
         if ($this->conf['resultPage'] != $GLOBALS['TSFE']->id) {

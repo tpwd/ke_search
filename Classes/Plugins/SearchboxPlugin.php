@@ -54,6 +54,7 @@ class SearchboxPlugin extends PluginBase
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
+        // @extensionScannerIgnoreLine
         $this->init($request);
 
         if (empty($this->conf['view'])) {

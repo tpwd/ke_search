@@ -61,6 +61,7 @@ class FilterOptionTagValidator
 
             /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            // @extensionScannerIgnoreLine
             $flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
             return false;
         }

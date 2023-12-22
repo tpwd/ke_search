@@ -109,6 +109,7 @@ class IndexerBase
         // add recursive pids
         $pageList = '';
         foreach ($pidsRecursive as $pid) {
+            // @extensionScannerIgnoreLine
             $pageList .= $this->getTreeList((int)$pid, 99, 0, '1=1', $includeDeletedPages) . ',';
         }
 
@@ -291,6 +292,7 @@ class IndexerBase
             foreach ($automated_tagging_arr as $key => $value) {
                 $tmpPageList = GeneralUtility::trimExplode(
                     ',',
+                    // @extensionScannerIgnoreLine
                     $this->getTreeList((int)$value, 99, 0, $whereRow)
                 );
                 $pageList = array_merge($tmpPageList, $pageList);
@@ -718,6 +720,7 @@ class IndexerBase
                     $theList .= ',' . $row['uid'];
                 }
                 if ($depth > 1) {
+                    // @extensionScannerIgnoreLine
                     $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
                     if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';

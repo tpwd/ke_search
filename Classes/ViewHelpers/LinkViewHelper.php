@@ -37,6 +37,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
+        // @extensionScannerIgnoreLine
         $page = $this->arguments['page'] ?? $GLOBALS['TSFE']->id;
         $resetFilters = $this->arguments['resetFilters'] ?? [];
         $content = $this->arguments['content'] ?? '';

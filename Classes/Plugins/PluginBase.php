@@ -213,6 +213,7 @@ class PluginBase extends AbstractPlugin
 
         // set some default values (this part has to be after stdWrap!!!)
         if (!($this->conf['resultPage'] ?? false)) {
+            // @extensionScannerIgnoreLine
             $this->conf['resultPage'] = $GLOBALS['TSFE']->id;
         }
         if (!isset($this->piVars['page'])) {
@@ -1054,6 +1055,7 @@ class PluginBase extends AbstractPlugin
                     'pid' => $this->firstStartingPoint,
                     'word' => $searchWord,
                     'tstamp' => time(),
+                    // @extensionScannerIgnoreLine
                     'pageid' => $GLOBALS['TSFE']->id,
                     'resultsfound' => $hits ? 1 : 0,
                     'language' => $this->languageId,
@@ -1079,6 +1081,7 @@ class PluginBase extends AbstractPlugin
             $preselectedArray = GeneralUtility::intExplode(',', $this->conf['preselected_filters'], true);
             foreach ($preselectedArray as $option) {
                 $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
+                /** @var PageRepository $pageRepository */
                 $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $filterRows = $queryBuilder
                     ->add(
@@ -1090,9 +1093,11 @@ class PluginBase extends AbstractPlugin
                     ->add(
                         'where',
                         'FIND_IN_SET("' . $option . '",tx_kesearch_filters.options)'
-                        . ' AND `tx_kesearch_filteroptions`.`uid` = ' . $option
-                        . $pageRepository->enableFields('tx_kesearch_filters')
-                        . $pageRepository->enableFields('tx_kesearch_filteroptions')
+                        . ' AND `tx_kesearch_filteroptions`.`uid` = ' . $option .
+                        // @extensionScannerIgnoreLine
+                        $pageRepository->enableFields('tx_kesearch_filters') .
+                        // @extensionScannerIgnoreLine
+                        $pageRepository->enableFields('tx_kesearch_filteroptions')
                     )
                     ->executeQuery()
                     ->fetchAllAssociative();

@@ -55,6 +55,7 @@ class Sorting
     public function __construct(PluginBase $pObj)
     {
         // initializes this object
+        // @extensionScannerIgnoreLine
         $this->init($pObj);
     }
 
@@ -66,6 +67,7 @@ class Sorting
     {
         $this->pObj = $pObj;
         $this->db = $this->pObj->db;
+        // @extensionScannerIgnoreLine
         $this->conf = $this->pObj->conf;
 
         // get sorting values (sortdate, title, what ever...)

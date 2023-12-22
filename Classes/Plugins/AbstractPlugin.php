@@ -168,6 +168,7 @@ class AbstractPlugin
      */
     public function pi_getRecord(string $table, int $uid, bool $checkPage = false)
     {
+        // @extensionScannerIgnoreLine
         return $this->frontendController->sys_page->checkRecord($table, $uid, $checkPage);
     }
 
@@ -190,6 +191,7 @@ class AbstractPlugin
             foreach ($pid_list_arr as $val) {
                 $val = MathUtility::forceIntegerInRange($val, 0);
                 if ($val) {
+                    // @extensionScannerIgnoreLine
                     $_list = $this->cObj->getTreeList(-1 * $val, $recursive);
                     if ($_list) {
                         $pid_list[] = $_list;
