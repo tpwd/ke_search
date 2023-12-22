@@ -89,7 +89,7 @@ class News extends IndexerBase
         // 1: index only active (not archived) news
         // 2: index only archived news
         if ($this->indexerConfig['index_news_archived'] == 1) {
-            $where[] = $queryBuilder->expr()->orX(
+            $where[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq(
                     'archive',
                     $queryBuilder->quote(0, \PDO::PARAM_INT)
@@ -100,7 +100,7 @@ class News extends IndexerBase
                 )
             );
         } elseif ($this->indexerConfig['index_news_archived'] == 2) {
-            $where[] = $queryBuilder->expr()->andX(
+            $where[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->gt(
                     'archive',
                     $queryBuilder->quote(0, \PDO::PARAM_INT)
