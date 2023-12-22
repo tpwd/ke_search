@@ -83,7 +83,9 @@ class ClearIndexCommand extends Command implements LoggerAwareInterface
                 $logMessage .= ' (' . $countIndex . ' records deleted)';
                 $this->logger->notice($logMessage);
             } catch (\Exception $e) {
+                // @extensionScannerIgnoreLine
                 $io->error($e->getMessage());
+                // @extensionScannerIgnoreLine
                 $this->logger->error($e->getMessage());
 
                 return 1;

@@ -250,6 +250,7 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/StartIndexing.html');
             $moduleTemplate->getView()->assign('content', $content);
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('content', $content);
@@ -286,6 +287,7 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
             $moduleTemplate->getView()->assign('content', $content);
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('content', $content);
@@ -306,6 +308,7 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexTableInformation.html');
             $moduleTemplate->getView()->assign('content', $content);
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('content', $content);
@@ -337,6 +340,7 @@ class BackendModuleController
             $moduleTemplate->getView()->assign('data', $data);
             $moduleTemplate->getView()->assign('error', $error);
             $moduleTemplate->getView()->assign('languages', $this->getLanguages());
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('days', $days);
@@ -380,6 +384,7 @@ class BackendModuleController
             $moduleTemplate->getView()->assign('moduleUrl', $moduleUrl);
             $moduleTemplate->getView()->assign('isAdmin', $this->getBackendUser()->isAdmin());
             $moduleTemplate->getView()->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('moduleUrl', $moduleUrl);
@@ -400,6 +405,7 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/LastIndexingReport.html');
             $moduleTemplate->getView()->assign('logEntry', $this->getLastIndexingReport());
+            // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('logEntry', $this->getLastIndexingReport());

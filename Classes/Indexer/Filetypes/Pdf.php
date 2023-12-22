@@ -80,6 +80,7 @@ class Pdf extends File implements FileIndexerInterface
         if (!$this->isAppArraySet) {
             $errorMessage = 'The path to pdftools is not correctly set in the '
                 . 'extension configuration. You can get the path with "which pdfinfo" or "which pdftotext".';
+            // @extensionScannerIgnoreLine
             $pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
         }
@@ -119,6 +120,7 @@ class Pdf extends File implements FileIndexerInterface
                 $errorMessage =
                     'There have been problems while extracting the content for PDF file '
                     . $file . '. Output from pdftotext: ' . json_encode($output);
+                // @extensionScannerIgnoreLine
                 $this->pObj->logger->error($errorMessage);
                 $this->addError($errorMessage);
             }
@@ -143,6 +145,7 @@ class Pdf extends File implements FileIndexerInterface
         $errorMessage =
             'Could not find pages for file ' . $file
             . '. Maybe it is not a PDF file? Messages from pdftotext: ' . json_encode($pdfInfo);
+        // @extensionScannerIgnoreLine
         $this->pObj->logger->error($errorMessage);
         $this->addError($errorMessage);
 

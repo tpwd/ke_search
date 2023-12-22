@@ -70,6 +70,7 @@ class Xls extends File implements FileIndexerInterface
         if (!$this->isAppArraySet) {
             $errorMessage = 'The path for xls2csv is not correctly set in '
                 . 'extConf. You can get the path with "which xls2csv".';
+            // @extensionScannerIgnoreLine
             $pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
         }

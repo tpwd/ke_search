@@ -897,6 +897,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
         } catch (Exception $e) {
+            // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
         }
     }

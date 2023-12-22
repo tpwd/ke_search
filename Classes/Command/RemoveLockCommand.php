@@ -81,7 +81,9 @@ class RemoveLockCommand extends Command implements LoggerAwareInterface
                 $this->logger->notice('Indexer lock successfully removed');
             }
         } catch (\Exception $e) {
+            // @extensionScannerIgnoreLine
             $io->error('There was an error accessing the TYPO3 registry.');
+            // @extensionScannerIgnoreLine
             $this->logger->error('There was an error accessing the TYPO3 registry');
 
             return 1;

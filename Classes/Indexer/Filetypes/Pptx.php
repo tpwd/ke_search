@@ -56,6 +56,7 @@ class Pptx extends File implements FileIndexerInterface
         try {
             return trim($reader->convertToText());
         } catch (\Exception $e) {
+            // @extensionScannerIgnoreLine
             $this->pObj->logger->error($e->getMessage());
         }
 
