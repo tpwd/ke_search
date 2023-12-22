@@ -50,7 +50,7 @@ class BackendModuleController
     protected IndexRepository $indexRepository;
     protected Registry $registry;
     protected ModuleTemplate $moduleTemplate;
-    protected int $id = 0;
+    protected int $pageId = 0;
     protected ?string $do;
     protected array $extConf;
 
@@ -70,7 +70,7 @@ class BackendModuleController
 
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
-        $this->id = (int)($request->getQueryParams()['id'] ?? 0);
+        $this->pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;
         $backendUser = $this->getBackendUser();
         $function = 'function1';
@@ -201,7 +201,7 @@ class BackendModuleController
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
                     [
-                        'id' => $this->id,
+                        'id' => $this->pageId,
                         'do' => 'rmLock',
                     ]
                 );
@@ -213,7 +213,7 @@ class BackendModuleController
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
                     [
-                        'id' => $this->id,
+                        'id' => $this->pageId,
                         'do' => 'startindexer',
                     ]
                 );
@@ -223,7 +223,7 @@ class BackendModuleController
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
                     [
-                        'id' => $this->id,
+                        'id' => $this->pageId,
                         'do' => 'startindexer',
                         'indexingMode' => IndexerBase::INDEXING_MODE_INCREMENTAL,
                     ]
@@ -261,14 +261,14 @@ class BackendModuleController
      */
     public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        if ($this->id) {
+        if ($this->pageId) {
             $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
-            $pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
+            $pageInfo = BackendUtility::readPageAccess($this->pageId, $perms_clause);
             // page is selected: get indexed content
-            $content = '<h3>Index content for PID ' . $this->id;
+            $content = '<h3>Index content for PID ' . $this->pageId;
             $content .= '<span class="small">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path')
                 . ': ' . GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -50) . '</span></h3>';
-            $content .= $this->getIndexedContent($this->id);
+            $content .= $this->getIndexedContent($this->pageId);
         } else {
             // no page selected: show message
             $content = '<div class="alert alert-info">'
@@ -319,7 +319,7 @@ class BackendModuleController
     {
         // days to show
         $days = 30;
-        $data = $this->getSearchwordStatistics($this->id, $days);
+        $data = $this->getSearchwordStatistics($this->pageId, $days);
 
         $error = null;
         if ($data['error'] ?? false) {
@@ -366,7 +366,7 @@ class BackendModuleController
         $moduleUrl = $uriBuilder->buildUriFromRoute(
             'web_KeSearchBackendModule',
             [
-                'id' => $this->id,
+                'id' => $this->pageId,
                 'do' => 'clear',
             ]
         );
@@ -836,7 +836,7 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->quote($this->id, \PDO::PARAM_INT)
+                    $queryBuilder->quote($this->pageId, \PDO::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -890,7 +890,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function1',
                         ]
                     )
@@ -904,7 +904,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function2',
                         ]
                     )
@@ -918,7 +918,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function3',
                         ]
                     )
@@ -932,7 +932,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function4',
                         ]
                     )
@@ -946,7 +946,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function5',
                         ]
                     )
@@ -960,7 +960,7 @@ class BackendModuleController
                     $uriBuilder->buildUriFromRoute(
                         'web_KeSearchBackendModule',
                         [
-                            'id' => $this->id,
+                            'id' => $this->pageId,
                             'do' => 'function6',
                         ]
                     )
