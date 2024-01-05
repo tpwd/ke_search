@@ -33,6 +33,8 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
  */
+// Todo: Remove next line once support for TYPO3 11 is dropped
+// @phpstan-ignore-next-line
 #[UpgradeWizard('keSearchPopulateFilterOptionsSlugsUpgradeWizard')]
 class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
 {
