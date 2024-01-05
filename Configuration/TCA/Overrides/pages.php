@@ -10,6 +10,7 @@ $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
 $typo3MajorVersion = $typo3Version->getMajorVersion();
 
 if ($typo3MajorVersion < 12) {
+    // @extensionScannerIgnoreLine
     $txKesearchResultimageConfigArray = ExtensionManagementUtility::getFileFieldTCAConfig(
         'tx_kesearch_resultimage',
         [
