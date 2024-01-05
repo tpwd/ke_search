@@ -26,9 +26,11 @@
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -50,12 +52,18 @@ class FilterOptionTagValidator
         $minLength = isset($extConf['searchWordLength']) ? (int)$extConf['searchWordLength'] : 4;
 
         if (strlen($value) < $minLength) {
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+                // @extensionScannerIgnoreLine
+                $severity = AbstractMessage::ERROR;
+            } else {
+                $severity = ContextualFeedbackSeverity::ERROR;
+            }
             /** @var FlashMessage $message */
             $message = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $this->translate('tag_too_short_message', [$value, $minLength]),
                 $this->translate('tag_too_short'),
-                AbstractMessage::ERROR,
+                $severity,
                 true
             );
 
