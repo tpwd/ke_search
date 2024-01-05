@@ -27,11 +27,13 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
  */
+#[UpgradeWizard('keSearchPopulateFilterOptionsSlugsUpgradeWizard')]
 class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
 {
     /**
@@ -45,6 +47,9 @@ class PopulateFilterOptionSlugsUpgradeWizard implements UpgradeWizardInterface
     protected $fieldName = 'slug';
 
     /**
+     * Todo: Remove this function once support for TYPO3 11 is dropped
+     * see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.2/Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.html
+     *
      * @return string
      */
     public function getIdentifier(): string

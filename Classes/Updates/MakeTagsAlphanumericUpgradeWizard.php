@@ -24,14 +24,19 @@ namespace Tpwd\KeSearch\Updates;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
  */
+#[UpgradeWizard('keSearchMakeTagsAlphanumericUpgradeWizard')]
 class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
 {
     /**
+     * Todo: Remove this function once support for TYPO3 11 is dropped
+     * see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.2/Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.html
+     *
      * @return string
      */
     public function getIdentifier(): string
