@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Widgets\Provider;
 
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
@@ -32,7 +33,7 @@ class IndexOverviewDataProvider implements ChartDataProviderInterface
     /**
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * @inheritDoc
@@ -56,11 +57,17 @@ class IndexOverviewDataProvider implements ChartDataProviderInterface
             'labels' => $labels,
             'datasets' => [
                 [
-                    'backgroundColor' => WidgetApi::getDefaultChartColors(),
+                    'label' => $this->getLanguageService()->sL('LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.chart.dataSet.0'),
+                    'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
                     'border' => 0,
                     'data' => $data,
                 ],
             ],
         ];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

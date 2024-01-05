@@ -45,6 +45,9 @@
 			<trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title" >
 				<source>Index Overview</source>
 			</trans-unit>
+			<trans-unit id="widgets.keSearchIndexOverview.chart.dataSet.0" resname="widgets.keSearchIndexOverview.chart.dataSet.0" >
+				<source>Number of records</source>
+			</trans-unit>
 			<trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description" >
 				<source>Shows how many records of each type are currently in the index.</source>
 			</trans-unit>

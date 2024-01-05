@@ -6,6 +6,7 @@ Upcoming version
 [TASK]    Refactor id variable in BackendModuleController to make extension scanner happy
 [TASK]    Add ignore annotations for extension scanner false positives
 [TASK]    Replace usage of deprecated functions orX() and andX()
+[TASK]    Add label to "Index Overview" widget (shown since TYPO3 12), and use only one color in the bar chart
 
 Version 5.2.0, 8 December 2023
 [!!!]     The pagebrowser is now rendered in a different way (using the pagination API). If you used a custom template for the pagebrowser you will have to adopt it. Have a look at Resources/Private/Partials/PageBrowser.html
