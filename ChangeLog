@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Raise requirement of TYPO3 to 11.5.11, https://github.com/tpwd/ke_search/issues/208
+
 Version 5.2.1, 12 January 2024
 [TASK]    Remove dependency to AbstractPlugin, https://github.com/tpwd/ke_search/issues/204
 [TASK]    Remove usages of GeneralUtility::_GET, GeneralUtility::_GP, $_GET and $_POST, https://github.com/tpwd/ke_search/issues/205
