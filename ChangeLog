@@ -9,6 +9,7 @@ Upcoming version
 [TASK]    Add label to "Index Overview" widget (shown since TYPO3 12), and use only one color in the bar chart
 [TASK]    Use ContextualFeedbackSeverity instead of AbstractMessage to set severity
 [TASK]    Register upgrade wizards using attributes
+[BUGFIX]  Don't index files from hidden file references. Thanks to Kamel Ben Yedder, https://github.com/tpwd/ke_search/issues/206
 
 Version 5.2.0, 8 December 2023
 [!!!]     The pagebrowser is now rendered in a different way (using the pagination API). If you used a custom template for the pagebrowser you will have to adopt it. Have a look at Resources/Private/Partials/PageBrowser.html

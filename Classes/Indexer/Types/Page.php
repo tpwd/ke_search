@@ -983,8 +983,10 @@ class Page extends IndexerBase
                 $isIndexable = false;
                 if ($fileObject instanceof FileInterface) {
                     $file = ($fileObject instanceof FileReference) ? $fileObject->getOriginalFile() : $fileObject;
+                    $isHiddenFileReference = ($fileObject instanceof FileReference) && $fileObject->getProperty('hidden');
                     $isIndexable = $file instanceof \TYPO3\CMS\Core\Resource\File
-                        && FileService::isFileIndexable($file, $this->indexerConfig);
+                        && FileService::isFileIndexable($file, $this->indexerConfig)
+                        && !$isHiddenFileReference;
                 } else {
                     $errorMessage = 'Could not index file in content element #' . $ttContentRow['uid'] . ' (no file object).';
                     $this->pObj->logger->warning($errorMessage);
