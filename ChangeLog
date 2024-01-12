@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.2.1, 12 January 2024
 [TASK]    Remove dependency to AbstractPlugin, https://github.com/tpwd/ke_search/issues/204
 [TASK]    Remove usages of GeneralUtility::_GET, GeneralUtility::_GP, $_GET and $_POST, https://github.com/tpwd/ke_search/issues/205
 [TASK]    Refactor id variable in BackendModuleController to make extension scanner happy
