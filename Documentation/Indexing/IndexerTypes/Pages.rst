@@ -50,7 +50,7 @@ Advanced options
 * in :guilabel:`tt_content fields which should be indexed` you can define custom fields which should be indexed. Default
   is here "bodytext" which is used for the default content elements. This is useful if you added your custom
   content elements for example using EXT:mask.
-* Using the field :guilabel:``Comma separated list of allowed file extensions` you can set the allowed file extension of files
+* Using the field :guilabel:`Comma separated list of allowed file extensions` you can set the allowed file extension of files
   to index. By default this is set to `pdf,ppt,doc,xls,docx,xlsx,pptx`. For pdf, ppt, doc and xls files you need to
   install external tools on the server.
 * Using the field :guilabel:`tt_content fields which should be indexed for file references` you can add fields from
