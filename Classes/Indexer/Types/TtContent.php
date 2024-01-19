@@ -2,6 +2,8 @@
 
 namespace Tpwd\KeSearch\Indexer\Types;
 
+use Tpwd\KeSearch\Domain\Repository\IndexRepository;
+use Tpwd\KeSearch\Domain\Repository\TtContentRepository;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -47,10 +49,6 @@ class TtContent extends Page
         // get content elements for this page
         $fields = '*';
         $table = 'tt_content';
-        $where = 'pid = ' . (int)$uid;
-        $where .= ' AND (' . $this->whereClauseForCType . ')';
-
-        $table = 'tt_content';
         $queryBuilder = Db::getQueryBuilder($table);
 
         // don't index elements which are hidden or deleted, but do index
@@ -70,6 +68,11 @@ class TtContent extends Page
             )
         );
         $where[] = $this->whereClauseForCType;
+
+        // in incremental mode get only content elements which have been modified since last indexing time
+        if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+            $where[] = $queryBuilder->expr()->gte('tstamp', $this->lastRunStartTime);
+        }
 
         // add condition for not indexing gridelement columns with colPos = -2 (= invalid)
         if (ExtensionManagementUtility::isLoaded('gridelements')) {
@@ -244,5 +247,45 @@ class TtContent extends Page
         }
 
         return;
+    }
+
+    /**
+     * @return string
+     */
+    public function startIncrementalIndexing(): string
+    {
+        $this->indexingMode = self::INDEXING_MODE_INCREMENTAL;
+        $content = $this->startIndexing();
+        $content .= $this->removeDeleted();
+        return $content;
+    }
+
+    /**
+     * Removes index records for the records which have been deleted since the last indexing.
+     * Only needed in incremental indexing mode since there is a dedicated "cleanup" step in full indexing mode.
+     *
+     * @return string
+     */
+    public function removeDeleted(): string
+    {
+        /** @var IndexRepository $indexRepository */
+        $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
+
+        /** @var TtContentRepository $ttContentRepository */
+        $ttContentRepository = GeneralUtility::makeInstance(TtContentRepository::class);
+
+        // get the pages from where to index the news
+        $folders = $this->getPagelist(
+            $this->indexerConfig['startingpoints_recursive'],
+            $this->indexerConfig['sysfolder']
+        );
+
+        // Fetch all records which have been deleted or hidden since the last indexing
+        $records = $ttContentRepository->findAllDeletedAndHiddenByPidListAndTimestampInAllLanguages($folders, $this->lastRunStartTime);
+
+        // and remove the corresponding index entries
+        $count = $indexRepository->deleteCorrespondingIndexRecords('content', $records, $this->indexerConfig);
+        $message = chr(10) . 'Found ' . $count . ' deleted or hidden record(s).';
+        return $message;
     }
 }

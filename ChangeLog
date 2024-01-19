@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [TASK]    Raise requirement of TYPO3 to 11.5.11, https://github.com/tpwd/ke_search/issues/208
 [DOCS]    Add documentation about using custom labels
+[TASK]    Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
 
 Version 5.2.1, 12 January 2024
 [TASK]    Remove dependency to AbstractPlugin, https://github.com/tpwd/ke_search/issues/204
