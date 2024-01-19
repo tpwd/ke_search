@@ -59,7 +59,8 @@ Incremental indexing has a few drawbacks:
   won't be deleted in incremental mode if the indexer does not support incremental indexing*. The indexing report
   will mention if no incremental indexing is available ("Incremental indexing is not available for this indexer,
   starting full indexing.")
-* Changes to files won't be recognized.
+* Changes to files won't be recognized if you use the page or content element indexer, only if you use the
+  dedicated file indexer.
 
 Therefore it is recommended to run the full indexing process once in a while (like once a day or once a week) and run
 the incremental indexer more often (like once an hour). You can do so by creating two scheduler tasks, one for the full
