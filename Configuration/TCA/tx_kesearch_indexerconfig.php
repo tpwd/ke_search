@@ -466,7 +466,57 @@ $txKesearchIndexerconfig = [
                 'cols' => 48,
                 'rows' => 4,
                 'eval' => 'trim',
-                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut',
+                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,icon_group,card_group,timeline',
+            ],
+        ],
+        'additional_tables' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.additional_tables',
+            'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.additional_tables.description',
+            'displayCond' => 'FIELD:type:IN:page,tt_content',
+            'config' => [
+                'type' => 'text',
+                'cols' => 48,
+                'rows' => 4,
+                'eval' => 'trim',
+                'default' =>
+'[accordion]
+table = tx_bootstrappackage_accordion_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+
+[tab]
+table = tx_bootstrappackage_accordion_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+
+[carousel]
+table = tx_bootstrappackage_carousel_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = subheader
+fields[] = bodytext
+
+[icon_group]
+table = tx_bootstrappackage_icon_group_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = subheader
+
+[card_group]
+table = tx_bootstrappackage_card_group_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+
+[timeline]
+table = tx_bootstrappackage_timeline_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+',
             ],
         ],
         'index_news_files_mode' => [
@@ -489,7 +539,7 @@ $txKesearchIndexerconfig = [
                 --div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.tabs.advanced,
             index_content_with_restrictions,
             index_news_archived,index_news_category_mode,index_extnews_category_selection,
-            index_use_page_tags,fal_storage,directories,index_page_doctypes,contenttypes,content_fields,fileext,file_reference_fields,
+            index_use_page_tags,fal_storage,directories,index_page_doctypes,contenttypes,additional_tables,content_fields,fileext,file_reference_fields,
             index_news_files_mode,
             filteroption,index_use_page_tags_for_files',
         ],

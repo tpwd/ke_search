@@ -37,6 +37,8 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\FileService;
+use Tpwd\KeSearch\Utility\AdditionalTableConfigUtility;
+use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
@@ -151,6 +153,11 @@ class Page extends IndexerBase
      */
     public $whereClauseForCType = '';
 
+    /*
+     * Holds the configuration for additional tables which should be indexed
+     */
+    public array $additionalTableConfig = [];
+
     /**
      * tx_kesearch_indexer_types_page constructor.
      * @param IndexerRunner $pObj
@@ -159,7 +166,7 @@ class Page extends IndexerBase
     {
         parent::__construct($pObj);
 
-        // set content types which should be index, fall back to default if not defined
+        // set content types which should be indexed, fall back to default if not defined
         if (empty($this->indexerConfig['contenttypes'])) {
             $content_types_temp = $this->defaultIndexCTypes;
         } else {
@@ -169,6 +176,14 @@ class Page extends IndexerBase
             );
         }
 
+        // create a mysql WHERE clause for the content element types
+        $cTypes = [];
+        foreach ($content_types_temp as $value) {
+            $cTypes[] = 'CType="' . $value . '"';
+        }
+        $this->whereClauseForCType = implode(' OR ', $cTypes);
+
+        // Move DokTypes to class property
         if (!empty($this->indexerConfig['index_page_doctypes'])) {
             $this->indexDokTypes = GeneralUtility::trimExplode(
                 ',',
@@ -176,12 +191,11 @@ class Page extends IndexerBase
             );
         }
 
-        // create a mysql WHERE clause for the content element types
-        $cTypes = [];
-        foreach ($content_types_temp as $value) {
-            $cTypes[] = 'CType="' . $value . '"';
-        }
-        $this->whereClauseForCType = implode(' OR ', $cTypes);
+        // Parse configuration for additional table and move it to class property
+        $this->additionalTableConfig = AdditionalTableConfigUtility::parseAndProcessAdditionalTablesConfiguration(
+            $this->indexerConfig['additional_tables'],
+            $this->indexerConfig
+        );
 
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
@@ -663,6 +677,10 @@ class Page extends IndexerBase
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
+                $content .= ContentUtility::getContentFromAdditionalTables(
+                    $ttContentRow,
+                    $this->additionalTableConfig
+                ) . "\n";
 
                 // index the files found
                 if (!$pageAccessRestrictions['hidden']
@@ -1245,7 +1263,8 @@ class Page extends IndexerBase
     }
 
     /**
-     * Extracts one field of content from the given content element (tt_content row) and returns it as plain text
+     * Extracts one field of content from the given content element (either from table tt_content or from
+     * additional table) and returns it as plain text
      *
      * @param array $ttContentRow content element
      * @param string $field field from which the plain text content should be fetched
@@ -1253,28 +1272,9 @@ class Page extends IndexerBase
      * @since 24.09.13
      * @author Christian Bülter
      */
-    public function getContentFromContentElement($ttContentRow, $field = 'bodytext'): string
+    public function getContentFromContentElement(array $ttContentRow, string $field = 'bodytext'): string
     {
-        $content = (string)$ttContentRow[$field];
-
-        // following lines prevents having words one after the other like: HelloAllTogether
-        $content = str_replace('<td', ' <td', $content);
-        $content = str_replace('<br', ' <br', $content);
-        $content = str_replace('<p', ' <p', $content);
-        $content = str_replace('<li', ' <li', $content);
-
-        if ($ttContentRow['CType'] == 'table') {
-            // replace table dividers with whitespace
-            $content = str_replace('|', ' ', $content);
-        }
-
-        // remove script and style tags
-        // thanks to the wordpress project
-        // https://core.trac.wordpress.org/browser/tags/5.3/src/wp-includes/formatting.php#L5178
-        $content = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $content);
-
-        // remove other tags
-        $content = strip_tags($content);
+        $content = ContentUtility::getContentFromContentRow($ttContentRow, $field);
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
