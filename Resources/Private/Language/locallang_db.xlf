@@ -271,7 +271,7 @@
 				<source>Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,icon_group,card_group,timeline</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.additional_tables" resname="tx_kesearch_indexerconfig.additional_tables" >
-				<source>Additional tables for contenet elements</source>
+				<source>Additional tables for content elements</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.additional_tables.description" resname="tx_kesearch_indexerconfig.additional_tables.description" >
 				<source><![CDATA[If a content element uses additional tables to store content, these tables can be configured here. This applies e.g. to EXT:bootstrap_package.
