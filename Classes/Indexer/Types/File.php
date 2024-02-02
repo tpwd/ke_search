@@ -31,7 +31,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\FileUtility;
+use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;

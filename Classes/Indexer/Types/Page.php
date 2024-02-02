@@ -37,7 +37,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AdditionalContentService;
-use Tpwd\KeSearch\Service\FileUtility;
+use Tpwd\KeSearch\Utility\FileUtility;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tpwd\KeSearch\Service;
+namespace Tpwd\KeSearch\Utility;
 
 /***************************************************************
  *  Copyright notice
