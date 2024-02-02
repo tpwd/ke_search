@@ -28,7 +28,6 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Andreas Kiefer
  * @author Christian Bülter
  */
-use Exception;
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
@@ -37,8 +36,8 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AdditionalContentService;
-use Tpwd\KeSearch\Utility\FileUtility;
 use Tpwd\KeSearch\Utility\ContentUtility;
+use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;

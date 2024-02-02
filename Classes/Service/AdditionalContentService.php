@@ -39,7 +39,8 @@ class AdditionalContentService
      * @param array $ttContentRow
      * @return array
      */
-    public function getContentAndFilesFromAdditionalTables(array $ttContentRow): array {
+    public function getContentAndFilesFromAdditionalTables(array $ttContentRow): array
+    {
         $content = ' ';
         $files = [];
         $config = false;

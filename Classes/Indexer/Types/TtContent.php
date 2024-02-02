@@ -6,7 +6,6 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\TtContentRepository;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
