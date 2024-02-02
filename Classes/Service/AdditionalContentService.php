@@ -5,13 +5,16 @@ namespace Tpwd\KeSearch\Service;
 use Psr\Log\LoggerInterface;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearch\Utility\ContentUtility;
+use TYPO3\CMS\Core\Html\RteHtmlParser;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AdditionalContentService
 {
     private LoggerInterface $logger;
     protected array $processedAdditionalTableConfig = [];
-    private array $indexerConfig;
+    protected array $indexerConfig = [];
 
     public function __construct(LoggerInterface $logger)
     {
@@ -28,12 +31,15 @@ class AdditionalContentService
      * Expects a row from tt_content and the processed additional table configuration (set in the indexer
      * configuration). Finds the related row from the additional table and returns the content for the
      * fields set in the additional table configuration.
+     * Returns an array with the keys "content" and "files". "content" has the indexable content of the content row,
+     * "files" has an array of file objects.
      *
      * @param array $ttContentRow
-     * @return string
+     * @return array
      */
-    public function getContentFromAdditionalTables(array $ttContentRow): string {
+    public function getContentAndFilesFromAdditionalTables(array $ttContentRow): array {
         $content = ' ';
+        $files = [];
         $config = false;
         if (isset($this->processedAdditionalTableConfig[$ttContentRow['CType']])) {
             $config = $this->processedAdditionalTableConfig[$ttContentRow['CType']];
@@ -48,10 +54,11 @@ class AdditionalContentService
             foreach ($additionalTableContentRows as $additionalTableContentRow) {
                 foreach ($config['fields'] as $field) {
                     $content .= ' ' . ContentUtility::getPlainContentFromContentRow($additionalTableContentRow, $field);
+                    $files = array_merge($files, $this->findLinkedFilesInRte($additionalTableContentRow, $field));
                 }
             }
         }
-        return trim($content);
+        return ['content' => trim($content), 'files' => $files];
     }
 
     protected function parseAndProcessAdditionalTablesConfiguration(): array
@@ -75,4 +82,36 @@ class AdditionalContentService
         return $additionalTableConfig;
     }
 
+    /**
+     * Finds files linked in RTE text. Returns them as array of file objects.
+     *
+     * @param array $contentRow content element (row from tt_content or additional content table)
+     * @param string $field
+     * @return array
+     */
+    public function findLinkedFilesInRte($contentRow, $field = 'bodytext'): array
+    {
+        $fileObjects = [];
+        /* @var $rteHtmlParser RteHtmlParser */
+        $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);
+        /** @var LinkService $linkService */
+        $linkService = GeneralUtility::makeInstance(LinkService::class);
+
+        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
+        foreach ($blockSplit as $k => $v) {
+            list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
+            if (!empty($attributes['href'])) {
+                try {
+                    $hrefInformation = $linkService->resolve($attributes['href']);
+                    if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
+                        $fileObjects[] = $hrefInformation['file'];
+                    }
+                } catch (Exception $exception) {
+                    // @extensionScannerIgnoreLine
+                    $this->pObj->logger->error($exception->getMessage());
+                }
+            }
+        }
+        return $fileObjects;
+    }
 }

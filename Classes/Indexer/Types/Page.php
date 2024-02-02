@@ -42,8 +42,6 @@ use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
-use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -192,7 +190,7 @@ class Page extends IndexerBase
         }
 
         // Create helper service for additional content
-        $this->additionalContentService = GeneralUtility::makeInstance(AdditionalContentService::class);
+        $this->additionalContentService = $this->getAdditionalContentService();
         $this->additionalContentService->init($this->indexerConfig);
 
         // get all available sys_language_uid records
@@ -654,6 +652,7 @@ class Page extends IndexerBase
                 }
 
                 $content = '';
+                $fileObjects = [];
 
                 // index header
                 // add header only if not set to "hidden", do not add header of html element
@@ -671,11 +670,13 @@ class Page extends IndexerBase
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
                         $this->findAttachedFiles($ttContentRow),
-                        $this->findLinkedFilesInRte($ttContentRow, $field)
+                        $this->additionalContentService->findLinkedFilesInRte($ttContentRow, $field)
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
-                $content .= $this->additionalContentService->getContentFromAdditionalTables($ttContentRow) . "\n";
+                $additionalContentAndFiles = $this->additionalContentService->getContentAndFilesFromAdditionalTables($ttContentRow);
+                $content .= $additionalContentAndFiles['content'] . "\n";
+                $fileObjects = array_merge($fileObjects, $additionalContentAndFiles['files']);
 
                 // index the files found
                 if (!$pageAccessRestrictions['hidden']
@@ -1090,43 +1091,6 @@ class Page extends IndexerBase
     }
 
     /**
-     * Finds files linked in rte text
-     * returns them as array of file objects
-     * @param array $ttContentRow content element
-     * @param string $field
-     * @return array
-     * @author Christian Bülter
-     * @since 24.09.13
-     */
-    public function findLinkedFilesInRte($ttContentRow, $field = 'bodytext')
-    {
-        $fileObjects = [];
-        // check if there are links to files in the rte text
-        /* @var $rteHtmlParser RteHtmlParser */
-        $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);
-
-        /** @var LinkService $linkService */
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow[$field], true);
-        foreach ($blockSplit as $k => $v) {
-            list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
-            if (!empty($attributes['href'])) {
-                try {
-                    $hrefInformation = $linkService->resolve($attributes['href']);
-                    if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
-                        $fileObjects[] = $hrefInformation['file'];
-                    }
-                } catch (Exception $exception) {
-                    // @extensionScannerIgnoreLine
-                    $this->pObj->logger->error($exception->getMessage());
-                }
-            }
-        }
-
-        return $fileObjects;
-    }
-
-    /**
      * Store the file content and additional information to the index
      * $fileObject is either a file reference object or file object
      *
@@ -1318,5 +1282,10 @@ class Page extends IndexerBase
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
+    }
+
+    protected function getAdditionalContentService(): AdditionalContentService
+    {
+        return GeneralUtility::makeInstance(AdditionalContentService::class);
     }
 }
