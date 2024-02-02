@@ -28,7 +28,7 @@ namespace Tpwd\KeSearch\Service;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class FileService
+class FileUtility
 {
     /**
      * @param File $file
