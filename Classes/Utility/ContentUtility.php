@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Utility;
 
-use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentUtility
@@ -43,39 +42,5 @@ class ContentUtility
         }
 
         return $content;
-    }
-
-    /**
-     * Expects a row from tt_content and the processed additional table configuration (set in the indexer
-     * configuration). Finds the related row from the additional table and returns the content for the
-     * fields set in the additional table configuration.
-     *
-     * @param array $ttContentRow
-     * @param array $processedAdditionalTableConfig
-     * @return string
-     */
-    public static function getContentFromAdditionalTables(
-        array $ttContentRow,
-        array $processedAdditionalTableConfig
-    ): string {
-        $content = ' ';
-        $config = false;
-        if (isset($processedAdditionalTableConfig[$ttContentRow['CType']])) {
-            $config = $processedAdditionalTableConfig[$ttContentRow['CType']];
-        }
-        if (is_array($config) & !empty($config['fields'])) {
-            $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
-            $additionalTableContentRows = $genericRepository->findByReferenceField(
-                $config['table'],
-                $config['referenceFieldName'],
-                $ttContentRow['uid']
-            );
-            foreach ($additionalTableContentRows as $additionalTableContentRow) {
-                foreach ($config['fields'] as $field) {
-                    $content .= ' ' . self::getPlainContentFromContentRow($additionalTableContentRow, $field);
-                }
-            }
-        }
-        return trim($content);
     }
 }

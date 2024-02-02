@@ -159,10 +159,7 @@ class TtContent extends Page
                     );
                     $content .= $this->getContentFromContentElement($row, $field) . "\n";
                 }
-                $content .= ContentUtility::getContentFromAdditionalTables(
-                    $row,
-                    $this->additionalTableConfig
-                ) . "\n";
+                $content .= $this->additionalContentService->getContentFromAdditionalTables($row) . "\n";
 
                 // index the files found
                 if (!empty($fileObjects)) {

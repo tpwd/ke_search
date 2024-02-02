@@ -36,8 +36,8 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\AdditionalContentService;
 use Tpwd\KeSearch\Service\FileService;
-use Tpwd\KeSearch\Utility\AdditionalTableConfigUtility;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -154,9 +154,9 @@ class Page extends IndexerBase
     public $whereClauseForCType = '';
 
     /*
-     * Holds the configuration for additional tables which should be indexed
+     * Service to process content from additional (related) tables
      */
-    public array $additionalTableConfig = [];
+    protected AdditionalContentService $additionalContentService;
 
     /**
      * tx_kesearch_indexer_types_page constructor.
@@ -191,11 +191,9 @@ class Page extends IndexerBase
             );
         }
 
-        // Parse configuration for additional table and move it to class property
-        $this->additionalTableConfig = AdditionalTableConfigUtility::parseAndProcessAdditionalTablesConfiguration(
-            $this->indexerConfig['additional_tables'],
-            $this->indexerConfig
-        );
+        // Create helper service for additional content
+        $this->additionalContentService = GeneralUtility::makeInstance(AdditionalContentService::class);
+        $this->additionalContentService->init($this->indexerConfig);
 
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
@@ -677,10 +675,7 @@ class Page extends IndexerBase
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
-                $content .= ContentUtility::getContentFromAdditionalTables(
-                    $ttContentRow,
-                    $this->additionalTableConfig
-                ) . "\n";
+                $content .= $this->additionalContentService->getContentFromAdditionalTables($ttContentRow) . "\n";
 
                 // index the files found
                 if (!$pageAccessRestrictions['hidden']

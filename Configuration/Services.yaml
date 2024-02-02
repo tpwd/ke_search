@@ -7,6 +7,10 @@ services:
   Tpwd\KeSearch\:
     resource: '../Classes/*'
 
+  Tpwd\KeSearch\Service\:
+    resource: '../Classes/Service/*'
+    public: true
+
   connection.tx_kesearch_index:
     class: 'TYPO3\CMS\Core\Database\Connection'
     factory: ['@TYPO3\CMS\Core\Database\ConnectionPool', 'getConnectionForTable']
