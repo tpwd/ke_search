@@ -15,10 +15,12 @@ class AdditionalContentService
     private LoggerInterface $logger;
     protected array $processedAdditionalTableConfig = [];
     protected array $indexerConfig = [];
+    private GenericRepository $genericRepository;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, GenericRepository $genericRepository)
     {
         $this->logger = $logger;
+        $this->genericRepository = $genericRepository;
     }
 
     public function init(array $indexerConfig)
@@ -79,6 +81,11 @@ class AdditionalContentService
             $this->logger->error($errorMessage);
             $additionalTableConfig = [];
         }
+        foreach ($additionalTableConfig as $configKey => $config) {
+            if (!$this->genericRepository->tableExists($config['table'])) {
+                unset($additionalTableConfig[$configKey]);
+            }
+        }
         return $additionalTableConfig;
     }
 
@@ -91,6 +98,9 @@ class AdditionalContentService
      */
     public function findLinkedFilesInRte(array $contentRow, string $field = 'bodytext'): array
     {
+        if (!isset($contentRow[$field])) {
+            return [];
+        }
         $fileObjects = [];
         /* @var $rteHtmlParser RteHtmlParser */
         $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);

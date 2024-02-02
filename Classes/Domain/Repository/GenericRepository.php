@@ -65,12 +65,7 @@ class GenericRepository
             default:
                 // check if a table exists that matches the type name
                 $tableNameToCheck = strip_tags(htmlentities($type));
-                /** @var ConnectionPool $connectionPool */
-                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-                $connection = $connectionPool->getConnectionForTable($tableNameToCheck);
-                $statement = $connection->prepare('SHOW TABLES LIKE "' . $tableNameToCheck . '"');
-                $result = $statement->executeQuery();
-                if ($result->rowCount()) {
+                if ($this->tableExists($tableNameToCheck)) {
                     $table = $tableNameToCheck;
                 }
         }
@@ -164,5 +159,19 @@ class GenericRepository
             )
             ->executeQuery()
             ->fetchAllAssociative();
+    }
+
+    public function tableExists(string $table): bool
+    {
+        $table = strip_tags(htmlentities($table));
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable($table);
+        $statement = $connection->prepare('SHOW TABLES LIKE "' . $table . '"');
+        $result = $statement->executeQuery();
+        if ($result->rowCount()) {
+            return true;
+        }
+        return false;
     }
 }

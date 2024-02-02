@@ -8,6 +8,9 @@ class ContentUtility
 {
     public static function getPlainContentFromContentRow(array $contentRow, string $fieldName): string
     {
+        if (!isset($contentRow[$fieldName])) {
+            return '';
+        }
         $content = (string)$contentRow[$fieldName];
 
         // following lines prevents having words one after the other like: HelloAllTogether
