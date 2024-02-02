@@ -2,11 +2,11 @@
 
 namespace Tpwd\KeSearch\Service;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -89,7 +89,7 @@ class AdditionalContentService
      * @param string $field
      * @return array
      */
-    public function findLinkedFilesInRte($contentRow, $field = 'bodytext'): array
+    public function findLinkedFilesInRte(array $contentRow, string $field = 'bodytext'): array
     {
         $fileObjects = [];
         /* @var $rteHtmlParser RteHtmlParser */
@@ -107,8 +107,7 @@ class AdditionalContentService
                         $fileObjects[] = $hrefInformation['file'];
                     }
                 } catch (Exception $exception) {
-                    // @extensionScannerIgnoreLine
-                    $this->pObj->logger->error($exception->getMessage());
+                    $this->logger->error($exception->getMessage());
                 }
             }
         }
