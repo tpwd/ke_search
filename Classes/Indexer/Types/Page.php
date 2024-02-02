@@ -1274,7 +1274,7 @@ class Page extends IndexerBase
      */
     public function getContentFromContentElement(array $ttContentRow, string $field = 'bodytext'): string
     {
-        $content = ContentUtility::getContentFromContentRow($ttContentRow, $field);
+        $content = ContentUtility::getPlainContentFromContentRow($ttContentRow, $field);
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {

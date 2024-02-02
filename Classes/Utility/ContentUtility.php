@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentUtility
 {
-    public static function getContentFromContentRow(array $contentRow, string $fieldName): string
+    public static function getPlainContentFromContentRow(array $contentRow, string $fieldName): string
     {
         $content = (string)$contentRow[$fieldName];
 
@@ -72,7 +72,7 @@ class ContentUtility
             );
             foreach ($additionalTableContentRows as $additionalTableContentRow) {
                 foreach ($config['fields'] as $field) {
-                    $content .= ' ' . self::getContentFromContentRow($additionalTableContentRow, $field);
+                    $content .= ' ' . self::getPlainContentFromContentRow($additionalTableContentRow, $field);
                 }
             }
         }
