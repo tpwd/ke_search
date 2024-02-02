@@ -487,7 +487,7 @@ fields[] = header
 fields[] = bodytext
 
 [tab]
-table = tx_bootstrappackage_accordion_item
+table = tx_bootstrappackage_tab_item
 referenceFieldName = tt_content
 fields[] = header
 fields[] = bodytext
