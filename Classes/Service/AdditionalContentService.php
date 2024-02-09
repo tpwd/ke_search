@@ -24,8 +24,7 @@ class AdditionalContentService
         GenericRepository $genericRepository,
         RteHtmlParser $rteHtmlParser,
         LinkService $linkService
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->genericRepository = $genericRepository;
         $this->rteHtmlParser = $rteHtmlParser;
@@ -65,8 +64,12 @@ class AdditionalContentService
             );
             foreach ($additionalTableContentRows as $additionalTableContentRow) {
                 foreach ($config['fields'] as $field) {
-                    $content .= ' ' . ContentUtility::getPlainContentFromContentRow($additionalTableContentRow, $field);
-                    $files = array_merge($files, $this->findLinkedFilesInRte($additionalTableContentRow, $field));
+                    $content .= ' ' . ContentUtility::getPlainContentFromContentRow(
+                        $additionalTableContentRow,
+                        $field,
+                        $GLOBALS['TCA'][$config['table']]['columns'][$field]['config']['type'] ?? ''
+                    );
+                    $files = array_merge($files, $this->findLinkedFiles($additionalTableContentRow, $field));
                 }
             }
         }
@@ -100,18 +103,20 @@ class AdditionalContentService
     }
 
     /**
-     * Finds files linked in RTE text. Returns them as array of file objects.
+     * Finds files linked in rich text and link fields (TCA type "link"). Returns them as array of file objects.
      *
      * @param array $contentRow content element (row from tt_content or additional content table)
      * @param string $field
      * @return array
      */
-    public function findLinkedFilesInRte(array $contentRow, string $field = 'bodytext'): array
+    public function findLinkedFiles(array $contentRow, string $field = 'bodytext'): array
     {
         if (!isset($contentRow[$field])) {
             return [];
         }
         $fileObjects = [];
+
+        // Find files linked in RTE
         $blockSplit = $this->rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
         foreach ($blockSplit as $k => $v) {
             list($attributes) = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
@@ -124,6 +129,14 @@ class AdditionalContentService
                 } catch (Exception $exception) {
                     $this->logger->error($exception->getMessage());
                 }
+            }
+        }
+
+        // Find files linked in link field
+        if (str_starts_with($contentRow[$field], 't3://')) {
+            $hrefInformation = $this->linkService->resolve($contentRow[$field]);
+            if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
+                $fileObjects[] = $hrefInformation['file'];
             }
         }
         return $fileObjects;

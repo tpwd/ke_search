@@ -6,12 +6,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentUtility
 {
-    public static function getPlainContentFromContentRow(array $contentRow, string $fieldName): string
-    {
+    /**
+     * Returns an indexable string without tags. Expects the content row (which can be either from tt_content or
+     * from an additional table) and the field name which should be processed. Optionally the type can be set to "link"
+     * (refers to the TCA type "link"), in this case it will just return an empty string because link fields do not
+     * go into the index directly.
+     *
+     * @param array $contentRow
+     * @param string $fieldName
+     * @param string $type
+     * @return string
+     */
+    public static function getPlainContentFromContentRow(
+        array $contentRow,
+        string $fieldName,
+        string $type = 'text'
+    ): string {
         if (!isset($contentRow[$fieldName])) {
             return '';
         }
-        $content = (string)$contentRow[$fieldName];
+
+        if ($type == 'link') {
+            $content = '';
+        } else {
+            $content = (string)$contentRow[$fieldName];
+        }
 
         // following lines prevents having words one after the other like: HelloAllTogether
         $content = str_replace('<td', ' <td', $content);
@@ -36,11 +55,7 @@ class ContentUtility
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentRow'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentRow'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
-                $_procObj->modifyContentFromContentRow(
-                    $content,
-                    $contentRow,
-                    $fieldName
-                );
+                $_procObj->modifyContentFromContentRow($content, $contentRow, $fieldName, $type);
             }
         }
 

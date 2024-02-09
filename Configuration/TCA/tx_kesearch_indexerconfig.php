@@ -425,7 +425,7 @@ $txKesearchIndexerconfig = [
                 'cols' => 48,
                 'rows' => 4,
                 'eval' => 'trim',
-                'default' => 'bodytext',
+                'default' => 'bodytext,subheader,header_link',
             ],
         ],
         'filteroption' => [
@@ -504,6 +504,7 @@ table = tx_bootstrappackage_icon_group_item
 referenceFieldName = tt_content
 fields[] = header
 fields[] = subheader
+fields[] = link
 
 [card_group]
 table = tx_bootstrappackage_card_group_item

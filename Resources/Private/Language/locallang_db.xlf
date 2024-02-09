@@ -294,7 +294,7 @@ fields[] = bodytext
 				<source>tt_content fields which should be indexed</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description" >
-				<source>default: bodytext</source>
+				<source>You can add "text" and "link" fields here. Files linked in link fields and in text fields will be indexed. The field "header" will be added automatically and indexed if not set to "hidden". default: bodytext,subheader,header_link</source>
 			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" >
 				<source>Add tag to all indexed elements</source>

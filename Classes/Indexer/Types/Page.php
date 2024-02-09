@@ -669,7 +669,7 @@ class Page extends IndexerBase
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
                         $this->findAttachedFiles($ttContentRow),
-                        $this->additionalContentService->findLinkedFilesInRte($ttContentRow, $field)
+                        $this->additionalContentService->findLinkedFiles($ttContentRow, $field)
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
@@ -1232,7 +1232,11 @@ class Page extends IndexerBase
      */
     public function getContentFromContentElement(array $ttContentRow, string $field = 'bodytext'): string
     {
-        $content = ContentUtility::getPlainContentFromContentRow($ttContentRow, $field);
+        $content = ContentUtility::getPlainContentFromContentRow(
+            $ttContentRow,
+            $field,
+            $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['type'] ?? ''
+        );
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
