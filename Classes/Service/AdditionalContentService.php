@@ -16,11 +16,20 @@ class AdditionalContentService
     protected array $processedAdditionalTableConfig = [];
     protected array $indexerConfig = [];
     private GenericRepository $genericRepository;
+    private RteHtmlParser $rteHtmlParser;
+    private LinkService $linkService;
 
-    public function __construct(LoggerInterface $logger, GenericRepository $genericRepository)
+    public function __construct(
+        LoggerInterface $logger,
+        GenericRepository $genericRepository,
+        RteHtmlParser $rteHtmlParser,
+        LinkService $linkService
+    )
     {
         $this->logger = $logger;
         $this->genericRepository = $genericRepository;
+        $this->rteHtmlParser = $rteHtmlParser;
+        $this->linkService = $linkService;
     }
 
     public function init(array $indexerConfig)
@@ -103,17 +112,12 @@ class AdditionalContentService
             return [];
         }
         $fileObjects = [];
-        /* @var $rteHtmlParser RteHtmlParser */
-        $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);
-        /** @var LinkService $linkService */
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
-
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
+        $blockSplit = $this->rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
         foreach ($blockSplit as $k => $v) {
-            list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
+            list($attributes) = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {
                 try {
-                    $hrefInformation = $linkService->resolve($attributes['href']);
+                    $hrefInformation = $this->linkService->resolve($attributes['href']);
                     if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
                         $fileObjects[] = $hrefInformation['file'];
                     }
