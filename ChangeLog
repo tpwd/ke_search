@@ -6,6 +6,7 @@ Upcoming version
 [TASK]    Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
 
 Version 5.2.1, 12 January 2024
+[!!!]     The plugin base class has changed from Tpwd\KeSearch\Lib\Pluginbase to Tpwd\KeSearch\Plugins\PluginBase. This is a breaking change if you use the hook modifySearchWords and use typed variables. You will then have to adapt the type of that object in your hook.
 [TASK]    Remove dependency to AbstractPlugin, https://github.com/tpwd/ke_search/issues/204
 [TASK]    Remove usages of GeneralUtility::_GET, GeneralUtility::_GP, $_GET and $_POST, https://github.com/tpwd/ke_search/issues/205
 [TASK]    Refactor id variable in BackendModuleController to make extension scanner happy
