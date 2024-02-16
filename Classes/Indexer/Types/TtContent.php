@@ -154,6 +154,7 @@ class TtContent extends Page
                 // a file, thus we get file objects.
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
+                        $fileObjects,
                         $this->findAttachedFiles($row),
                         $this->additionalContentService->findLinkedFiles($row, $field)
                     );

@@ -668,6 +668,7 @@ class Page extends IndexerBase
                 // restrictions, that's no problem from an access permission perspective (in fact, it's a feature).
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
+                        $fileObjects,
                         $this->findAttachedFiles($ttContentRow),
                         $this->additionalContentService->findLinkedFiles($ttContentRow, $field)
                     );
