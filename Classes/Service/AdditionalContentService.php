@@ -134,7 +134,14 @@ class AdditionalContentService
 
         // Find files linked in link field
         if (str_starts_with($contentRow[$field], 't3://')) {
-            $hrefInformation = $this->linkService->resolve($contentRow[$field]);
+            $link = $contentRow[$field];
+            // The link may contain additional information separated by space, like
+            // t3://file?uid=620 _blank - "Link to PDF file"
+            // We remove that here to keep only the plain link
+            if (strpos($link, ' ')) {
+                $link = substr($link,0, strpos($link, ' '));
+            }
+            $hrefInformation = $this->linkService->resolve($link);
             if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
                 $fileObjects[] = $hrefInformation['file'];
             }
