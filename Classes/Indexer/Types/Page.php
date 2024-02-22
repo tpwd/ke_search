@@ -1181,7 +1181,7 @@ class Page extends IndexerBase
         }
 
         $abstract = '';
-        if ($metadata['description']) {
+        if ($metadata['description'] ?? null) {
             $abstract = $metadata['description'];
             $content = $metadata['description'] . "\n" . $content;
         }
