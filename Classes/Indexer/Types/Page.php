@@ -1186,7 +1186,7 @@ class Page extends IndexerBase
             $content = $metadata['description'] . "\n" . $content;
         }
 
-        if ($metadata['alternative']) {
+        if ($metadata['alternative'] ?? null) {
             $content .= "\n" . $metadata['alternative'];
         }
 
