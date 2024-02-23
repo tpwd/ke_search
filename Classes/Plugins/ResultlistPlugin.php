@@ -116,6 +116,8 @@ class ResultlistPlugin extends PluginBase
             $this->fluidTemplateVariables['pagination'] = new SlidingWindowPagination($paginator, $maxPages);
         }
 
+        $this->fluidTemplateVariables['pagebrowser'] = $this->getPageBrowserValues();
+
         // hook: modifyResultList
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'] as $_classRef) {
@@ -161,4 +163,37 @@ class ResultlistPlugin extends PluginBase
         $this->resultListView->assign('extConf', $this->extConf);
         $this->resultListView->assign('extConfPremium', $this->extConfPremium);
     }
+
+    /**
+     * Get page browser variables
+     * Useful if the built-in pagination API of TYPO3 should not be used, e.g. in headless context
+     *
+     * @return array
+     */
+    public function getPageBrowserValues(): array
+    {
+        $numberOfResults = $this->numberOfResults;
+        $resultsPerPage = $this->conf['resultsPerPage'] ?? 10;
+
+        // Show page browser only if there are more entries that are shown on one page
+        if ($numberOfResults <= $resultsPerPage) {
+            return [];
+        }
+
+        $start = ($this->piVars['page'] * $resultsPerPage) - $resultsPerPage;
+        $end = ($start + $resultsPerPage > $numberOfResults) ? $numberOfResults : ($start + $resultsPerPage);
+        $pagesTotal = ceil($numberOfResults / $resultsPerPage);
+
+        return [
+            'current' => $this->piVars['page'],
+            'pages_total' => $pagesTotal,
+            'start' => $start + 1,
+            'end' => $end,
+            'total' => $numberOfResults,
+            'results' => $this->pi_getLL('results'),
+            'until' => $this->pi_getLL('until'),
+            'of' => $this->pi_getLL('of'),
+        ];
+    }
+
 }
