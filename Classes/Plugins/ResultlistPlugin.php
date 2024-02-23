@@ -195,5 +195,4 @@ class ResultlistPlugin extends PluginBase
             'of' => $this->pi_getLL('of'),
         ];
     }
-
 }
