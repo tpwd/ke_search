@@ -1,10 +1,11 @@
 ChangeLog
 
 Upcoming version
-[FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package (pre-configured), thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
+[FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package. Bootstrap package elements are pre-configured. Thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
 [FEATURE] Index files linked in "link" fields
 [FEATURE] Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
 [BUGFIX]  Don't overwrite collected files, https://github.com/tpwd/ke_search/issues/150
+[BUGFIX]  Avoid PHP warning "Undefined array key" for "alternative" and "description". Thanks to medarob, https://github.com/tpwd/ke_search/pull/215
 [TASK]    Raise requirement of TYPO3 to 11.5.11, https://github.com/tpwd/ke_search/issues/208
 [TASK]    Avoid instantiating of page indexer object in news indexer
 [DOCS]    Add documentation about using custom labels
