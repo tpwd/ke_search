@@ -466,7 +466,7 @@ $txKesearchIndexerconfig = [
                 'cols' => 48,
                 'rows' => 4,
                 'eval' => 'trim',
-                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,icon_group,card_group,timeline',
+                'default' => 'text,textmedia,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,carousel_fullscreen,carousel_small,icon_group,card_group,timeline',
             ],
         ],
         'additional_tables' => [
@@ -498,19 +498,43 @@ referenceFieldName = tt_content
 fields[] = header
 fields[] = subheader
 fields[] = bodytext
+fields[] = nav_title
+fields[] = link
+
+[carousel_fullscreen]
+table = tx_bootstrappackage_carousel_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = subheader
+fields[] = bodytext
+fields[] = nav_title
+fields[] = link
+
+[carousel_small]
+table = tx_bootstrappackage_carousel_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = subheader
+fields[] = bodytext
+fields[] = nav_title
+fields[] = link
 
 [icon_group]
 table = tx_bootstrappackage_icon_group_item
 referenceFieldName = tt_content
 fields[] = header
 fields[] = subheader
+fields[] = bodytext
 fields[] = link
 
 [card_group]
 table = tx_bootstrappackage_card_group_item
 referenceFieldName = tt_content
 fields[] = header
+fields[] = subheader
 fields[] = bodytext
+fields[] = link
+fields[] = link_title
 
 [timeline]
 table = tx_bootstrappackage_timeline_item
