@@ -15,7 +15,7 @@ will have multiple index entries for one page.
 In most cases, the pages indexer is more suitable than the content element indexer because in most cases you only
 want to have one index record per page.
 
-It indexes the same content element types as the page indexer.
+The content element indexer can be configured in the same way as the pages indexer.
 
 The access restrictions for content elements are fully taken into account (see pages indexer).
 

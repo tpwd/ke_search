@@ -131,6 +131,7 @@ class TtContent extends Page
 
                 // get content for this content element
                 $content = '';
+                $fileObjects = [];
 
                 // get tags from page
                 $tags = $this->pageRecords[$uid]['tags'];
@@ -153,11 +154,15 @@ class TtContent extends Page
                 // a file, thus we get file objects.
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
+                        $fileObjects,
                         $this->findAttachedFiles($row),
-                        $this->findLinkedFilesInRte($row, $field)
+                        $this->additionalContentService->findLinkedFiles($row, $field)
                     );
                     $content .= $this->getContentFromContentElement($row, $field) . "\n";
                 }
+                $additionalContentAndFiles = $this->additionalContentService->getContentAndFilesFromAdditionalTables($row);
+                $content .= $additionalContentAndFiles['content'] . "\n";
+                $fileObjects = array_merge($fileObjects, $additionalContentAndFiles['files']);
 
                 // index the files found
                 if (!empty($fileObjects)) {

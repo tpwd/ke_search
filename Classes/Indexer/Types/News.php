@@ -27,6 +27,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -532,10 +533,8 @@ class News extends IndexerBase
         // NOTE: There's no restriction to certain content element types .
         // All attached content elements will be indexed. Only fields "header" and "bodytext" will be indexed.
         // todo: As in the page indexer it should be possible to define which fields should be indexed from the tt_content row.
+        // todo: index files linked in content elements
         if (count($contentElements)) {
-            /* @var $pageIndexerObject Page */
-            $pageIndexerObject = GeneralUtility::makeInstance(Page::class, $this->pObj);
-
             foreach ($contentElements as $contentElement) {
                 // index header, add header only if not set to "hidden"
                 if ($contentElement['header_layout'] != 100) {
@@ -543,7 +542,7 @@ class News extends IndexerBase
                 }
 
                 // index bodytext (main content)
-                $content .= "\n" . $pageIndexerObject->getContentFromContentElement($contentElement);
+                $content .= "\n" . ContentUtility::getPlainContentFromContentRow($contentElement, 'bodytext');
             }
         }
 

@@ -5,6 +5,9 @@ namespace Tpwd\KeSearch\Domain\Repository;
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -47,44 +50,37 @@ class GenericRepository
         }
 
         $row = false;
-        $tableName = '';
+        $table = '';
         $type = (substr($type, 0, 4) == 'file') ? 'file' : $type;
         switch ($type) {
             case 'page':
-                $tableName = 'pages';
+                $table = 'pages';
                 break;
             case 'news':
-                $tableName = 'tx_news_domain_model_news';
+                $table = 'tx_news_domain_model_news';
                 break;
             case 'file':
-                $tableName = 'sys_file';
+                $table = 'sys_file';
                 break;
             default:
                 // check if a table exists that matches the type name
                 $tableNameToCheck = strip_tags(htmlentities($type));
-                /** @var ConnectionPool $connectionPool */
-                $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-                $connection = $connectionPool->getConnectionForTable($tableNameToCheck);
-                $statement = $connection->prepare('SHOW TABLES LIKE "' . $tableNameToCheck . '"');
-                $result = $statement->executeQuery();
-                if ($result->rowCount()) {
-                    $tableName = $tableNameToCheck;
+                if ($this->tableExists($tableNameToCheck)) {
+                    $table = $tableNameToCheck;
                 }
         }
         // hook to add a custom types
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['GenericRepositoryTablename'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['GenericRepositoryTablename'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
-                $tableName = $_procObj->getTableName($type);
+                $table = $_procObj->getTableName($type);
             }
         }
-        if (!empty($tableName)) {
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tableName);
-            $row =  $queryBuilder
+        if (!empty($table)) {
+            $queryBuilder = $this->getQueryBuilder($table);
+            $row = $queryBuilder
                 ->select('*')
-                ->from($tableName)
+                ->from($table)
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
@@ -110,9 +106,7 @@ class GenericRepository
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
 
         if (!empty($transOrigPointerField) && !empty($languageField)) {
-            /** @var ConnectionPool $connectionPool */
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+            $queryBuilder = $this->getQueryBuilder($table);
             $overlayRecord = $queryBuilder
                 ->select('*')
                 ->from($table)
@@ -130,5 +124,54 @@ class GenericRepository
                 ->fetchAssociative();
         }
         return $overlayRecord;
+    }
+
+    public function getQueryBuilder(string $table, bool $includeHiddenAndTimeRestricted = false): QueryBuilder
+    {
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+        if ($includeHiddenAndTimeRestricted) {
+            $queryBuilder
+                ->getRestrictions()
+                ->removeByType(HiddenRestriction::class)
+                ->removeByType(StartTimeRestriction::class)
+                ->removeByType(EndTimeRestriction::class);
+        }
+        return $queryBuilder;
+    }
+
+    public function findByReferenceField(
+        string $table,
+        string $fieldName,
+        int $value,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($table, $includeHiddenAndTimeRestricted);
+        return $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $fieldName,
+                    $queryBuilder->createNamedParameter($value, PDO::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    public function tableExists(string $table): bool
+    {
+        $table = strip_tags(htmlentities($table));
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable($table);
+        $statement = $connection->prepare('SHOW TABLES LIKE "' . $table . '"');
+        $result = $statement->executeQuery();
+        if ($result->rowCount()) {
+            return true;
+        }
+        return false;
     }
 }

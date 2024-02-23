@@ -31,7 +31,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\FileService;
+use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
@@ -179,7 +179,7 @@ class File extends IndexerBase
                 if (count($filesInFolder)) {
                     foreach ($filesInFolder as $file) {
                         if ($file instanceof \TYPO3\CMS\Core\Resource\File
-                            && FileService::isFileIndexable($file, $this->indexerConfig)) {
+                            && FileUtility::isFileIndexable($file, $this->indexerConfig)) {
                             $files[] = $file;
                         }
                     }

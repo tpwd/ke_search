@@ -28,7 +28,6 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Andreas Kiefer
  * @author Christian Bülter
  */
-use Exception;
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
@@ -36,12 +35,12 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\FileService;
+use Tpwd\KeSearch\Service\AdditionalContentService;
+use Tpwd\KeSearch\Utility\ContentUtility;
+use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
-use TYPO3\CMS\Core\Html\RteHtmlParser;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
@@ -151,6 +150,11 @@ class Page extends IndexerBase
      */
     public $whereClauseForCType = '';
 
+    /*
+     * Service to process content from additional (related) tables
+     */
+    protected AdditionalContentService $additionalContentService;
+
     /**
      * tx_kesearch_indexer_types_page constructor.
      * @param IndexerRunner $pObj
@@ -159,7 +163,7 @@ class Page extends IndexerBase
     {
         parent::__construct($pObj);
 
-        // set content types which should be index, fall back to default if not defined
+        // set content types which should be indexed, fall back to default if not defined
         if (empty($this->indexerConfig['contenttypes'])) {
             $content_types_temp = $this->defaultIndexCTypes;
         } else {
@@ -169,6 +173,14 @@ class Page extends IndexerBase
             );
         }
 
+        // create a mysql WHERE clause for the content element types
+        $cTypes = [];
+        foreach ($content_types_temp as $value) {
+            $cTypes[] = 'CType="' . $value . '"';
+        }
+        $this->whereClauseForCType = implode(' OR ', $cTypes);
+
+        // Move DokTypes to class property
         if (!empty($this->indexerConfig['index_page_doctypes'])) {
             $this->indexDokTypes = GeneralUtility::trimExplode(
                 ',',
@@ -176,12 +188,9 @@ class Page extends IndexerBase
             );
         }
 
-        // create a mysql WHERE clause for the content element types
-        $cTypes = [];
-        foreach ($content_types_temp as $value) {
-            $cTypes[] = 'CType="' . $value . '"';
-        }
-        $this->whereClauseForCType = implode(' OR ', $cTypes);
+        // Create helper service for additional content
+        $this->additionalContentService = $this->getAdditionalContentService();
+        $this->additionalContentService->init($this->indexerConfig);
 
         // get all available sys_language_uid records
         /** @var TranslationConfigurationProvider $translationProvider */
@@ -642,6 +651,7 @@ class Page extends IndexerBase
                 }
 
                 $content = '';
+                $fileObjects = [];
 
                 // index header
                 // add header only if not set to "hidden", do not add header of html element
@@ -658,11 +668,15 @@ class Page extends IndexerBase
                 // restrictions, that's no problem from an access permission perspective (in fact, it's a feature).
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
+                        $fileObjects,
                         $this->findAttachedFiles($ttContentRow),
-                        $this->findLinkedFilesInRte($ttContentRow, $field)
+                        $this->additionalContentService->findLinkedFiles($ttContentRow, $field)
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
                 }
+                $additionalContentAndFiles = $this->additionalContentService->getContentAndFilesFromAdditionalTables($ttContentRow);
+                $content .= $additionalContentAndFiles['content'] . "\n";
+                $fileObjects = array_merge($fileObjects, $additionalContentAndFiles['files']);
 
                 // index the files found
                 if (!$pageAccessRestrictions['hidden']
@@ -985,7 +999,7 @@ class Page extends IndexerBase
                     $file = ($fileObject instanceof FileReference) ? $fileObject->getOriginalFile() : $fileObject;
                     $isHiddenFileReference = ($fileObject instanceof FileReference) && $fileObject->getProperty('hidden');
                     $isIndexable = $file instanceof \TYPO3\CMS\Core\Resource\File
-                        && FileService::isFileIndexable($file, $this->indexerConfig)
+                        && FileUtility::isFileIndexable($file, $this->indexerConfig)
                         && !$isHiddenFileReference;
                 } else {
                     $errorMessage = 'Could not index file in content element #' . $ttContentRow['uid'] . ' (no file object).';
@@ -1074,43 +1088,6 @@ class Page extends IndexerBase
         }
 
         return $fileReferenceObjects;
-    }
-
-    /**
-     * Finds files linked in rte text
-     * returns them as array of file objects
-     * @param array $ttContentRow content element
-     * @param string $field
-     * @return array
-     * @author Christian Bülter
-     * @since 24.09.13
-     */
-    public function findLinkedFilesInRte($ttContentRow, $field = 'bodytext')
-    {
-        $fileObjects = [];
-        // check if there are links to files in the rte text
-        /* @var $rteHtmlParser RteHtmlParser */
-        $rteHtmlParser = GeneralUtility::makeInstance(RteHtmlParser::class);
-
-        /** @var LinkService $linkService */
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
-        $blockSplit = $rteHtmlParser->splitIntoBlock('A', (string)$ttContentRow[$field], true);
-        foreach ($blockSplit as $k => $v) {
-            list($attributes) = $rteHtmlParser->get_tag_attributes($rteHtmlParser->getFirstTag($v), true);
-            if (!empty($attributes['href'])) {
-                try {
-                    $hrefInformation = $linkService->resolve($attributes['href']);
-                    if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
-                        $fileObjects[] = $hrefInformation['file'];
-                    }
-                } catch (Exception $exception) {
-                    // @extensionScannerIgnoreLine
-                    $this->pObj->logger->error($exception->getMessage());
-                }
-            }
-        }
-
-        return $fileObjects;
     }
 
     /**
@@ -1245,7 +1222,8 @@ class Page extends IndexerBase
     }
 
     /**
-     * Extracts one field of content from the given content element (tt_content row) and returns it as plain text
+     * Extracts one field of content from the given content element (either from table tt_content or from
+     * additional table) and returns it as plain text
      *
      * @param array $ttContentRow content element
      * @param string $field field from which the plain text content should be fetched
@@ -1253,28 +1231,13 @@ class Page extends IndexerBase
      * @since 24.09.13
      * @author Christian Bülter
      */
-    public function getContentFromContentElement($ttContentRow, $field = 'bodytext'): string
+    public function getContentFromContentElement(array $ttContentRow, string $field = 'bodytext'): string
     {
-        $content = (string)$ttContentRow[$field];
-
-        // following lines prevents having words one after the other like: HelloAllTogether
-        $content = str_replace('<td', ' <td', $content);
-        $content = str_replace('<br', ' <br', $content);
-        $content = str_replace('<p', ' <p', $content);
-        $content = str_replace('<li', ' <li', $content);
-
-        if ($ttContentRow['CType'] == 'table') {
-            // replace table dividers with whitespace
-            $content = str_replace('|', ' ', $content);
-        }
-
-        // remove script and style tags
-        // thanks to the wordpress project
-        // https://core.trac.wordpress.org/browser/tags/5.3/src/wp-includes/formatting.php#L5178
-        $content = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $content);
-
-        // remove other tags
-        $content = strip_tags($content);
+        $content = ContentUtility::getPlainContentFromContentRow(
+            $ttContentRow,
+            $field,
+            $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['type'] ?? ''
+        );
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
@@ -1323,5 +1286,10 @@ class Page extends IndexerBase
     public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
     {
         $this->cObj = $cObj;
+    }
+
+    protected function getAdditionalContentService(): AdditionalContentService
+    {
+        return GeneralUtility::makeInstance(AdditionalContentService::class);
     }
 }
