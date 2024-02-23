@@ -1,9 +1,13 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package (pre-configured), thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
+[FEATURE] Index files linked in "link" fields
+[FEATURE] Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
+[BUGFIX]  Don't overwrite collected files, https://github.com/tpwd/ke_search/issues/150
 [TASK]    Raise requirement of TYPO3 to 11.5.11, https://github.com/tpwd/ke_search/issues/208
+[TASK]    Avoid instantiating of page indexer object in news indexer
 [DOCS]    Add documentation about using custom labels
-[TASK]    Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
 
 Version 5.2.1, 12 January 2024
 [!!!]     The plugin base class has changed from Tpwd\KeSearch\Lib\Pluginbase to Tpwd\KeSearch\Plugins\PluginBase. This is a breaking change if you use the hook modifySearchWords and use typed variables. You will then have to adapt the type of that object in your hook.
