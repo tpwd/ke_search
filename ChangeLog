@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.3.0, 23 February 2024
 [FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package. Bootstrap package elements are pre-configured. Thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
 [FEATURE] Index files linked in "link" fields
 [FEATURE] Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
