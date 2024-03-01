@@ -204,6 +204,12 @@
 			<trans-unit id="pagebrowser_next" resname="pagebrowser_next" >
 				<source>next</source>
 			</trans-unit>
+			<trans-unit id="pagebrowser_first" resname="pagebrowser_first" >
+				<source>first</source>
+			</trans-unit>
+			<trans-unit id="pagebrowser_last" resname="pagebrowser_last" >
+				<source>last</source>
+			</trans-unit>
 			<trans-unit id="label_resulturl" resname="label_resulturl" >
 				<source>URL</source>
 			</trans-unit>
