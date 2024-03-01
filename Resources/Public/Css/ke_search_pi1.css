@@ -356,7 +356,7 @@ div.kesearchbox{
 }
 .kesearch_pagebrowser ul li {
     list-style-type: none;
-    display: inline;
+    display: inline-block;
     margin: 0;
 }
 #kesearch_pagebrowser_top,

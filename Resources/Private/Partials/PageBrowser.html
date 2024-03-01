@@ -13,29 +13,50 @@
             {f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:of')} {numberofresults}</div>
         <div class="kesearch_pagebrowser">
             <f:spaceless>
-                <ul>
-                    <f:if condition="{pagination.previousPageNumber}">
-                        <li>
+                <ul class="pagination">
+                    <f:if condition="{pagination.paginator.numberOfPages} > {pagination.maximumNumberOfLinks}">
+                        <li class="page-item{f:if(condition: '{pagination.previousPageNumber}', else: ' disabled')}">
                             <kesearch:link
-                                piVars="{page: pagination.previousPageNumber}"
+                                piVars="{page: 1}"
                                 keepPiVars="1"
-                                class="prev">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_prev')}</kesearch:link>
+                                class="page-link prev" title="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_first')}">&laquo;</kesearch:link>
                         </li>
                     </f:if>
+                    <li class="page-item{f:if(condition: '{pagination.previousPageNumber}', else: ' disabled')}">
+                        <kesearch:link
+                            piVars="{page: pagination.previousPageNumber}"
+                            keepPiVars="1"
+                            class="page-link prev" title="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_prev')}"><</kesearch:link>
+                    </li>
                     <f:for each="{pagination.allPageNumbers}" as="page">
-                        <li>
-                            <kesearch:link
-                                piVars="{page: page}"
-                                keepPiVars="1"
-                                class="{f:if(condition: '{page} == {pagination.paginator.currentPageNumber}', then: 'current')}">{page}</kesearch:link>
-                        </li>
+                        <f:if condition="{page} == {pagination.paginator.currentPageNumber}">
+                            <f:then>
+                                <li class="page-item active">
+                                    <span class="page-link">{page}</span>
+                                </li>
+                            </f:then>
+                            <f:else>
+                                <li class="page-item">
+                                    <kesearch:link
+                                        piVars="{page: page}"
+                                        keepPiVars="1"
+                                        class="page-link">{page}</kesearch:link>
+                                </li>
+                            </f:else>
+                        </f:if>
                     </f:for>
-                    <f:if condition="{pagination.nextPageNumber}">
-                        <li>
+                    <li class="page-item{f:if(condition: '{pagination.nextPageNumber}', else: ' disabled')}">
+                        <kesearch:link
+                            piVars="{page: pagination.nextPageNumber}"
+                            keepPiVars="1"
+                            class="page-link next" title="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_next')}">></kesearch:link>
+                    </li>
+                    <f:if condition="{pagination.paginator.numberOfPages} > {pagination.maximumNumberOfLinks}">
+                        <li class="page-item{f:if(condition: '{pagination.nextPageNumber}', else: ' disabled')}">
                             <kesearch:link
-                                piVars="{page: pagination.nextPageNumber}"
+                                piVars="{page: pagination.lastPageNumber}"
                                 keepPiVars="1"
-                                class="next">{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_next')}</kesearch:link>
+                                class="page-link next" title="{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pagebrowser_last')}">&raquo;</kesearch:link>
                         </li>
                     </f:if>
                 </ul>
@@ -43,3 +64,5 @@
         </div>
     </div>
 </f:if>
+
+</html>

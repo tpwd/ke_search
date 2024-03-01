@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Update default pagination template, add first and last page, thanks to Stephan Bauer, https://github.com/tpwd/ke_search/issues/219 and https://github.com/tpwd/ke_search/pull/218
+
 Version 5.3.0, 23 February 2024
 [FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package. Bootstrap package elements are pre-configured. Thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
 [FEATURE] Index files linked in "link" fields
