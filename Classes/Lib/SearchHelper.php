@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Lib;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
+use Tpwd\KeSearch\Utility\StopWordUtility;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -175,25 +176,53 @@ class SearchHelper
 
     /**
      * creates tags from an array of strings
-     * removes non-alphanumeric characters
      *
      * @param string|null $tags comma-list of tags, new tags will be added to this
-     * @param array $tagTitles Array of Titles (eg. categories)
+     * @param array $tagTitles Array of Titles (e.g. categories)
      */
     public static function makeTags(&$tags, array $tagTitles)
     {
         if (is_array($tagTitles) && count($tagTitles)) {
             $tags = $tags ?? '';
-            $extConf = SearchHelper::getExtConf();
-
             foreach ($tagTitles as $title) {
-                $tag = preg_replace('/[^A-Za-z0-9]/', '', $title);
                 if (!empty($tags)) {
                     $tags .= ',';
                 }
-                $tags .= $extConf['prePostTagChar'] . $tag . $extConf['prePostTagChar'];
+                $tags .= self::makeTag($title);
             }
         }
+    }
+
+    /**
+     * Creates a tag like #colorblue# from a string.
+     * Removes not allowed characters, extends it if the tag is too short and changes it if
+     * it is in the list of stop words.
+     *
+     * @param string $tag
+     * @param bool $addPrePostTagChar If true, the tag will be surrounded with "#" (or the configured 'prePostTagChar' character)
+     * @return string
+     */
+    public static function makeTag(string $tag, bool $addPrePostTagChar = true): string
+    {
+        $extConf = SearchHelper::getExtConf();
+
+        // Remove not allowed characters
+        $tag = preg_replace('/[^A-Za-z0-9]/', '', $tag);
+
+        // Fill up the tag if it is too short
+        $minLength = isset($extConf['searchWordLength']) ? (int)$extConf['searchWordLength'] : 4;
+        $tag = str_pad($tag, $minLength, 'A');
+
+        // Check if tag is in the list of stop words and append a character if so
+        if (in_array($tag, StopWordUtility::getStopWords())) {
+            $tag .= 'A';
+        }
+
+        if ($addPrePostTagChar) {
+            $tag = $extConf['prePostTagChar'] . $tag . $extConf['prePostTagChar'];
+        }
+
+        return $tag;
     }
 
     /**

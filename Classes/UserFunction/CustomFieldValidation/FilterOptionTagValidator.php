@@ -25,7 +25,7 @@
 
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -35,34 +35,33 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Validates given filter option tag. Checks length, which may not smaller than
- * basic.searchWordLength extension (and MySQL) setting.
+ * Validates given filter option tag by applying SearchHelper::makeTag().
+ * Checks length, which may not smaller than basic.searchWordLength extension (and MySQL) setting.
+ * Checks if it contains not allowed characters.
+ * Checks if it is in the list of stop words.
  */
 class FilterOptionTagValidator
 {
     /**
-     * PHP Validation to disallow leading numbers
-     *
      * @param string $value
-     * @return mixed|string Updated string, which fits the requirements
+     * @return string Updated string, which fits the requirements
      */
-    public function evaluateFieldValue($value)
+    public function evaluateFieldValue(string $value): string
     {
-        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
-        $minLength = isset($extConf['searchWordLength']) ? (int)$extConf['searchWordLength'] : 4;
+        $tag = SearchHelper::makeTag($value, false);
 
-        if (strlen($value) < $minLength) {
+        if ($value != $tag) {
             if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
                 // @extensionScannerIgnoreLine
-                $severity = AbstractMessage::ERROR;
+                $severity = AbstractMessage::INFO;
             } else {
-                $severity = ContextualFeedbackSeverity::ERROR;
+                $severity = ContextualFeedbackSeverity::INFO;
             }
             /** @var FlashMessage $message */
             $message = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $this->translate('tag_too_short_message', [$value, $minLength]),
-                $this->translate('tag_too_short'),
+                $this->translate('tag_has_been_updated_message', [$value, $tag]),
+                $this->translate('tag_has_been_updated'),
                 $severity,
                 true
             );
@@ -71,9 +70,9 @@ class FilterOptionTagValidator
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             // @extensionScannerIgnoreLine
             $flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
-            return false;
         }
-        return $value;
+
+        return $tag;
     }
 
     /**

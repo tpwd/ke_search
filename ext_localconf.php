@@ -1,5 +1,7 @@
 <?php
 
+use Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator;
+
 defined('TYPO3') or die();
 
 (function () {
@@ -50,9 +52,7 @@ defined('TYPO3') or die();
         \Tpwd\KeSearch\Hooks\AdditionalFields::class;
 
     // Custom validators for TCA (eval)
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']
-    ['Tpwd\\KeSearch\\UserFunction\\CustomFieldValidation\\FilterOptionTagValidator'] =
-        'EXT:ke_search/Classes/UserFunction/CustomFieldValidation/FilterOptionTagValidator.php';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][FilterOptionTagValidator::class] = '';
 
     // logging
     $extConf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
