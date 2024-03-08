@@ -55,6 +55,7 @@ class FilterOptionTagValidator
                 // @extensionScannerIgnoreLine
                 $severity = AbstractMessage::INFO;
             } else {
+                // @phpstan-ignore-next-line
                 $severity = ContextualFeedbackSeverity::INFO;
             }
             /** @var FlashMessage $message */
