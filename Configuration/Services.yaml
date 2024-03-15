@@ -11,6 +11,10 @@ services:
     resource: '../Classes/Service/*'
     public: true
 
+  Tpwd\KeSearch\Controller\:
+    resource: '../Classes/Controller/*'
+    public: true
+
   connection.tx_kesearch_index:
     class: 'TYPO3\CMS\Core\Database\Connection'
     factory: ['@TYPO3\CMS\Core\Database\ConnectionPool', 'getConnectionForTable']
@@ -51,6 +55,3 @@ services:
     public: true
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
-
-  Tpwd\KeSearch\Controller\BackendModuleController:
-    public: true

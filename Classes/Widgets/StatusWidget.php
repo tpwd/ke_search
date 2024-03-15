@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Widgets;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,15 +59,8 @@ class StatusWidget implements WidgetInterface
         }
 
         $indexerStartTime = SearchHelper::getIndexerStartTime();
-        $indexerRunningTime = $indexerStartTime ? (time() - $indexerStartTime) : 0;
-        $indexerRunningTimeHMS =
-            $indexerRunningTime ?
-                [
-                    'h' => floor($indexerRunningTime / 3600),
-                    'm' => (int)($indexerRunningTime / 60) % 60,
-                    's' => $indexerRunningTime % 60,
-                ]
-                : [];
+        $indexerRunningTime = TimeUtility::getRunningTime($indexerStartTime);
+        $indexerRunningTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($indexerRunningTime);
         $this->view->assignMultiple([
             'configuration' => $this->configuration,
             'indexerStartTime' => $indexerStartTime,
@@ -76,14 +70,7 @@ class StatusWidget implements WidgetInterface
 
         $lastRun = $this->registry->get('tx_kesearch', 'lastRun');
         if (!empty($lastRun)) {
-            $lastRunIndexingTimeHMS =
-                $lastRun['indexingTime'] ?
-                [
-                    'h' => floor($lastRun['indexingTime'] / 3600),
-                    'm' => (int)($lastRun['indexingTime'] / 60) % 60,
-                    's' => $lastRun['indexingTime'] % 60,
-                ]
-                : [];
+            $lastRunIndexingTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($lastRun['indexingTime'] ?? 0);
             $this->view->assignMultiple([
                 'lastRunStartTime' => $lastRun['startTime'],
                 'lastRunEndTime' => $lastRun['endTime'],

@@ -179,25 +179,31 @@ class BackendModuleController
         // show information about indexer configurations and number of records
         // if action "start indexing" is not selected
         if ($this->do != 'startindexer') {
+            $content .= '<div id="kesearch-indexer-overview">';
             $content .= $this->printNumberOfRecords();
             $content .= $this->printIndexerConfigurations($indexerConfigurations);
+            $content .= '</div>';
         }
 
         // show "start indexing" or "remove lock" button
         if ($lockTime !== 0) {
             if (!$this->getBackendUser()->isAdmin()) {
                 // print warning message for non-admins
+                $content .= '<div class="row"><div class="col-md-8">';
                 $content .= '<div class="alert alert-danger">';
                 $content .= '<p>WARNING!</p>';
                 $content .= '<p>The indexer is already running and can not be started twice.</p>';
                 $content .= '</div>';
+                $content .= '</div></div>';
             } else {
                 // show 'remove lock' button for admins
+                $content .= '<div class="row"><div class="col-md-8">';
                 $content .= '<div class="alert alert-info">';
                 $content .= '<p>The indexer is already running and can not be started twice.</p>';
                 $content .= '</div>';
                 $content .= '<p>The indexing process was started at <strong>' . SearchHelper::formatTimestamp($lockTime) . '.</p></strong>';
                 $content .= '<p>You can remove the lock by clicking the following button.</p>';
+                $content .= '</div></div>';
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
                     [
@@ -205,7 +211,14 @@ class BackendModuleController
                         'do' => 'rmLock',
                     ]
                 );
-                $content .= '<p><a class="btn btn-danger" href="' . $moduleUrl . '">Remove Lock</a></p>';
+                $content .= '<a class="btn btn-danger" id="kesearch-button-removelock" href="' . $moduleUrl . '">Remove Lock</a> ';
+                $moduleUrl = $uriBuilder->buildUriFromRoute(
+                    'web_KeSearchBackendModule',
+                    [
+                        'id' => $this->pageId
+                    ]
+                );
+                $content .= ' <a class="btn btn-default" id="kesearch-button-reload" href="' . $moduleUrl . '">Reload</a>';
             }
         } else {
             // no lock set - show "start indexer" link if indexer configurations have been found
@@ -217,9 +230,9 @@ class BackendModuleController
                         'do' => 'startindexer',
                     ]
                 );
-                $content .= '<a class="btn btn-primary" href="' . $moduleUrl . '">'
+                $content .= '<a class="btn btn-primary" id="kesearch-button-start-full" href="' . $moduleUrl . '">'
                     . LocalizationUtility::translate('backend.start_indexer_full', 'ke_search')
-                    . '</a> ';
+                    . '</a>';
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
                     'web_KeSearchBackendModule',
                     [
@@ -228,7 +241,7 @@ class BackendModuleController
                         'indexingMode' => IndexerBase::INDEXING_MODE_INCREMENTAL,
                     ]
                 );
-                $content .= '<a class="btn btn-default" href="' . $moduleUrl . '">'
+                $content .= ' <a class="btn btn-info" id="kesearch-button-start-incremental" href="' . $moduleUrl . '">'
                     . LocalizationUtility::translate('backend.start_indexer_incremental', 'ke_search')
                     . '</a>';
             } else {
@@ -446,7 +459,7 @@ class BackendModuleController
      */
     public function printIndexerConfigurations($indexerConfigurations)
     {
-        $content = '<h2>Indexers</h2>';
+        $content = '<div id="kesearch-startindexing-indexers"><h2>Indexers</h2>';
         // show indexer names
         if ($indexerConfigurations) {
             $content .= '<div class="row"><div class="col-md-8">';
@@ -468,7 +481,7 @@ class BackendModuleController
                     . '</tr>';
             }
             $content .= '</table></div>';
-            $content .= '</div></div>';
+            $content .= '</div></div></div>';
         }
 
         return $content;
@@ -481,7 +494,7 @@ class BackendModuleController
      */
     public function printNumberOfRecords()
     {
-        $content = '<h2>Index statistics</h2>';
+        $content = '<div id="kesearch-startindexing-statistics"><h2>Index statistics</h2>';
         $numberOfRecords = $this->indexRepository->getTotalNumberOfRecords();
 
         if ($numberOfRecords) {
@@ -526,7 +539,7 @@ class BackendModuleController
             }
 
             $content .= '</table></div>';
-            $content .= '</div></div>';
+            $content .= '</div></div></div>';
         }
 
         return $content;

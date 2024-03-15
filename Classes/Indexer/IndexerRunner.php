@@ -29,11 +29,11 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -70,11 +70,6 @@ class IndexerRunner
     public $currentRow = [];
 
     /**
-     * @var Registry
-     */
-    public $registry;
-
-    /**
      * @var Logger
      */
     public $logger;
@@ -86,21 +81,23 @@ class IndexerRunner
 
     private EventDispatcherInterface $eventDispatcher;
     private IndexRepository $indexRepository;
+    private IndexerStatusService $indexerStatusService;
 
     /**
      * Constructor of this class
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        IndexRepository $indexRepository
+        IndexRepository $indexRepository,
+        IndexerStatusService $indexerStatusService
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->indexRepository = $indexRepository;
+        $this->indexerStatusService = $indexerStatusService;
 
         // get extension configuration array
         $this->extConf = SearchHelper::getExtConf();
         $this->extConfPremium = SearchHelper::getExtConfPremium();
-        $this->registry = GeneralUtility::makeInstance(Registry::class);
 
         // fetch the list of the default indexers which come with ke_search
         foreach ($GLOBALS['TCA']['tx_kesearch_indexerconfig']['columns']['type']['config']['items'] as $indexerType) {
@@ -121,7 +118,7 @@ class IndexerRunner
      */
     public function startIndexing($verbose = true, $extConf = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
     {
-        $content = '<div class="row"><div class="col-md-8">';
+        $content = '<div class="row" id="kesearch-indexer-report"><div class="col-md-8">';
         $content .= '<div class="alert alert-info">';
         $message = 'Running indexing process in '
             . ($indexingMode == IndexerBase::INDEXING_MODE_FULL ? 'full' : 'incremental') . ' mode';
@@ -141,16 +138,16 @@ class IndexerRunner
         // write starting timestamp into registry
         // this is a helper to delete all records which are older than starting timestamp in registry
         // this also prevents starting the indexer twice
-        if ($this->registry->get('tx_kesearch', 'startTimeOfIndexer') === null) {
-            $this->registry->set('tx_kesearch', 'startTimeOfIndexer', time());
+        if (!$this->indexerStatusService->isRunning()) {
+            $this->indexerStatusService->startIndexerTime();
         } else {
             // check lock time
-            $lockTime = $this->registry->get('tx_kesearch', 'startTimeOfIndexer');
+            $lockTime = $this->indexerStatusService->getIndexerStartTime();
             $compareTime = time() - (60 * 60 * 12);
             if ($lockTime < $compareTime) {
                 // lock is older than 12 hours - remove
-                $this->registry->remove('tx_kesearch', 'startTimeOfIndexer');
-                $this->registry->set('tx_kesearch', 'startTimeOfIndexer', time());
+                $this->indexerStatusService->clearIndexerStartTime();
+                $this->indexerStatusService->startIndexerTime();
                 $this->logger->notice('lock has been removed because it is older than 12 hours' . time());
             } else {
                 $this->logger->warning('lock is set, you can\'t start indexer twice.');
@@ -179,6 +176,10 @@ class IndexerRunner
         $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
         $content .= '<tr><th>Indexer</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
         foreach ($configurations as $indexerConfig) {
+            $this->indexerStatusService->setScheduledStatus($indexerConfig);
+        }
+        foreach ($configurations as $indexerConfig) {
+            $this->indexerStatusService->setRunningStatus($indexerConfig);
             $this->indexerConfig = $indexerConfig;
 
             // run default indexers shipped with ke_search
@@ -229,6 +230,7 @@ class IndexerRunner
                     }
                 }
             }
+            $this->indexerStatusService->setFinishedStatus($indexerConfig);
         }
         $content .= '</table></div>';
 
@@ -256,11 +258,7 @@ class IndexerRunner
         $content .= '</div>';
         $content .= '</div></div>';
 
-        $this->registry->set(
-            'tx_kesearch',
-            'lastRun',
-            ['startTime' => $this->startTime, 'endTime' => $this->endTime, 'indexingTime' => $indexingTime]
-        );
+        $this->indexerStatusService->setLastRunTime($this->startTime, $this->endTime, $indexingTime);
 
         // create plaintext report
         $plaintextReport = $this->createPlaintextReport($content);
@@ -491,8 +489,7 @@ class IndexerRunner
         Db::getDatabaseConnection('tx_kesearch_index')
             ->exec('DEALLOCATE PREPARE insertStmt');
 
-        // remove all entries from ke_search registry
-        $this->registry->removeAllByNamespace('tx_kesearch');
+        $this->indexerStatusService->clearAll();
     }
 
     /**
@@ -512,10 +509,7 @@ class IndexerRunner
             $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
             $where = $queryBuilder->expr()->lt(
                 'tstamp',
-                $queryBuilder->quote(
-                    $this->registry->get('tx_kesearch', 'startTimeOfIndexer'),
-                    PDO::PARAM_INT
-                )
+                $queryBuilder->quote($this->indexerStatusService->getIndexerStartTime(), PDO::PARAM_INT)
             );
 
             // hook for cleanup

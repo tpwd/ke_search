@@ -7,7 +7,17 @@
     <f:layout name="Backend/Default" />
 
     <f:section name="Content">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="kesearch-indexer-status" class="alert alert-notice">Waiting for indexer status.</div>
+            </div>
+        </div>
         <f:format.raw>{content}</f:format.raw>
+        <f:be.pageRenderer
+            includeJavaScriptModules="{
+         0: '@tpwd/ke-search/getIndexerStatusRequest.js'
+      }"
+        />
     </f:section>
 
 </html>

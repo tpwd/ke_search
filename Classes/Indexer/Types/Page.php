@@ -36,6 +36,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AdditionalContentService;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -155,6 +156,8 @@ class Page extends IndexerBase
      */
     protected AdditionalContentService $additionalContentService;
 
+    private IndexerStatusService $indexerStatusService;
+
     /**
      * tx_kesearch_indexer_types_page constructor.
      * @param IndexerRunner $pObj
@@ -213,6 +216,8 @@ class Page extends IndexerBase
 
         // make filesProcessor
         $this->filesProcessor = GeneralUtility::makeInstance(FilesProcessor::class);
+
+        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -261,7 +266,9 @@ class Page extends IndexerBase
         $this->addTagsToRecords($indexPids, $where);
 
         // loop through pids and collect page content and tags
+        $counter = 0;
         foreach ($indexPids as $uid) {
+            $this->indexerStatusService->setRunningStatus($this->indexerConfig, $counter, count($indexPids));
             $this->getPageContent($uid);
         }
 

@@ -27,6 +27,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,6 +40,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class News extends IndexerBase
 {
     /**
+     * @var IndexerStatusService
+     */
+    private $indexerStatusService;
+
+    /**
      * Initializes indexer for news
      *
      * @param IndexerRunner $pObj
@@ -47,6 +53,7 @@ class News extends IndexerBase
     {
         parent::__construct($pObj);
         $this->pObj = $pObj;
+        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -125,6 +132,7 @@ class News extends IndexerBase
         if ($resCount) {
             while (($newsRecord = $res->fetchAssociative())) {
                 $shouldBeIndexed = true;
+                $this->indexerStatusService->setRunningStatus($this->indexerConfig, $indexedNewsCounter, $resCount);
 
                 // get category data for this news record (list of
                 // assigned categories and single view from category, if it exists)
