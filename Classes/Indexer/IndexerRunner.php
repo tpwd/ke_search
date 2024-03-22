@@ -31,6 +31,7 @@ use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
+use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -233,7 +234,7 @@ class IndexerRunner
             }
             $this->indexerStatusService->setFinishedStatus($indexerConfig);
         }
-        $content .= '</table></div>';
+        $content .= '</table></div>' . chr(10);
 
         // process index cleanup
         $content .= $this->cleanUpIndex($indexingMode);
@@ -247,13 +248,13 @@ class IndexerRunner
         // log finishing
         $indexingTime = $this->endTime - $this->startTime;
         $content .= '<div class="alert alert-success">';
-        $content .= '<h3>Finished</h3>';
+        $content .= '<h3>Finished</h3>' . chr(10);
 
         $message = 'Indexing finished at ' . SearchHelper::formatTimestamp($this->endTime) . ' (took ' . $this->formatTime($indexingTime) . ').';
         $content .= $message;
         $this->logger->info($message);
 
-        $message = '<br /><i>Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.</i>';
+        $message = '<br />Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.';
         $content .= $message;
         $this->logger->info($message);
 
@@ -344,7 +345,7 @@ class IndexerRunner
             }
         }
 
-        $content .= '</td>';
+        $content .= '</td>' . chr(10);
 
         // duration, show sec or ms
         $content .= '<td>';
@@ -355,9 +356,9 @@ class IndexerRunner
                 if ($duration > 1000) {
                     $duration /= 1000;
                     $duration = (int)$duration;
-                    $content .= $duration . ' s.';
+                    $content .= TimeUtility::getSecondsHumanReadable($duration);
                 } else {
-                    $content .= $duration . ' ms.';
+                    $content .= $duration . ' ms';
                 }
                 $content .= '</i>';
             }
@@ -376,8 +377,9 @@ class IndexerRunner
     public function createPlaintextReport($content)
     {
         $content = str_ireplace(['<span class="title">', '<br />', '<br>', '<br/>', '</span>', '</p>'], chr(10), $content);
-        $report = preg_replace('~[ ]{2,}~', '', strip_tags($content));
-        return $report;
+        $content = preg_replace('~[ ]{2,}~', '', strip_tags($content));
+        $content = str_ireplace('Indexer configurationModeInfoTime', '', $content);
+        return $content;
     }
 
     /**
@@ -501,7 +503,7 @@ class IndexerRunner
     public function cleanUpIndex(int $indexingMode)
     {
         $content = '<div class="alert alert-notice">';
-        $content .= '<h3>Cleanup</h3>';
+        $content .= '<h3>Cleanup</h3>' . chr(10);
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
             $this->logger->info('Cleanup started');
             $startMicrotime = microtime(true);
@@ -543,7 +545,7 @@ class IndexerRunner
 
             // calculate duration of indexing process
             $duration = ceil((microtime(true) - $startMicrotime) * 1000);
-            $content .= '<i>Cleanup process took ' . $duration . ' ms.</i>' . "\n";
+            $content .= 'Cleanup process took ' . $duration . ' ms.' . "\n";
         } else {
             $message = 'Skipping cleanup in incremental mode.';
             $this->logger->info($message);

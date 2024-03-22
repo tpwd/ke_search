@@ -455,13 +455,12 @@ class BackendModuleController
      */
     public function printIndexerConfigurations($indexerConfigurations)
     {
-        $content = '<div id="kesearch-startindexing-indexers"><h2>Indexer configurations</h2>';
-        // show indexer names
+        $content = '<div id="kesearch-startindexing-indexers">';
         if ($indexerConfigurations) {
             $content .= '<div class="row"><div class="col-md-8">';
             $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
             $content .= '<colgroup><col><col width="100"><col width="100"><col width="100"></colgroup>';
-            $content .= '<tr><th></th><th>Type</th><th>UID</th><th>PID</th></tr>';
+            $content .= '<tr><th>Indexer configuration</th><th>Type</th><th>UID</th><th>PID</th></tr>';
             foreach ($indexerConfigurations as $indexerConfiguration) {
                 $content .= '<tr>'
                     . '<td>' . $this->encode($indexerConfiguration['title']) . '</td>'
@@ -490,46 +489,41 @@ class BackendModuleController
      */
     public function printNumberOfRecords()
     {
-        $content = '<div id="kesearch-startindexing-statistics"><h2>Index statistics</h2>';
+        $content = '<div id="kesearch-startindexing-statistics">';
         $numberOfRecords = $this->indexRepository->getTotalNumberOfRecords();
 
         if ($numberOfRecords) {
-            $content .=
-                '<p>'
-                . LocalizationUtility::translate(
-                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:index_contains',
-                    'KeSearch'
-                )
-                . ' <strong>'
-                . $numberOfRecords
-                . '</strong> '
+            $content .= '<div class="row"><div class="col-md-8">';
+            $content .= '<div class="alert alert-info">';
+            $content .= LocalizationUtility::translate(
+                'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:index_contains',
+                'KeSearch'
+            )
+                . ' <strong>' . $numberOfRecords . '</strong> '
                 . LocalizationUtility::translate(
                     'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:records',
                     'KeSearch'
-                )
-                . '</p>';
+                ) . '.<br />' . chr(10);
 
             $lastRun = $this->registry->get('tx_kesearch', 'lastRun');
             if ($lastRun) {
-                $content .= '<p>'
-                    . LocalizationUtility::translate(
-                        'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:last_indexing',
-                        'KeSearch'
-                    )
-                    . ' '
-                    . SearchHelper::formatTimestamp($lastRun['endTime'])
-                    . '.</p>';
+                $content .= LocalizationUtility::translate(
+                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:last_indexing',
+                    'KeSearch'
+                )
+                    . ' ' . SearchHelper::formatTimestamp($lastRun['endTime']);
             }
+            $content .= '</div>';
+            $content .= '</div></div>';
 
             $content .= '<div class="row"><div class="col-md-8">';
             $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
             $content .= '<colgroup><col><col width="100"></colgroup>';
-            $content .= '<tr><th>Type</th><th>Count</th></tr>';
+            $content .= '<tr><th>Type of indexed content</th><th>Count</th></tr>';
 
             /** @var IndexRepository $indexRepository */
             $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
             $results_per_type = $indexRepository->getNumberOfRecordsInIndexPerType();
-            $first = true;
             foreach ($results_per_type as $type => $count) {
                 $content .= '<tr><td><span class="label label-primary">' . $type . '</span></td><td>' . $count . '</td></tr>';
             }

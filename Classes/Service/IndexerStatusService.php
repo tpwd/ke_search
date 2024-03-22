@@ -3,6 +3,7 @@
 namespace Tpwd\KeSearch\Service;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Registry;
 
 class IndexerStatusService
@@ -14,6 +15,8 @@ class IndexerStatusService
     public const INDEXER_STATUS_SCHEDULED = 0;
     public const INDEXER_STATUS_RUNNING = 1;
     public const INDEXER_STATUS_FINISHED = 2;
+    public const INDEXER_STATUS_REPORT_FORMAT_HTML = 'html';
+    public const INDEXER_STATUS_REPORT_FORMAT_PLAIN = 'plain';
 
     private Registry $registry;
 
@@ -58,7 +61,7 @@ class IndexerStatusService
             'totalRecords' => 0,
             'statusText' =>
                 '"' . $indexerConfig['title'] . '"'
-                . ' is scheduled for execution'
+                . ' is scheduled for execution',
         ];
         $this->setIndexerStatus($indexerStatus);
     }
@@ -87,7 +90,7 @@ class IndexerStatusService
             'totalRecords' => $totalRecordCount,
             'statusText' =>
                 '"' . $indexerConfig['title'] . '"'
-                . ' is running'
+                . ' is running',
         ];
         if ($currentRecordCount >= 0 && $totalRecordCount >= 0) {
             $indexerStatus['indexers'][$indexerConfig['uid']]['statusText'] .=
@@ -121,18 +124,54 @@ class IndexerStatusService
             [
                 'startTime' => $startTime,
                 'endTime' => $endTime,
-                'indexingTime' => $indexingTime
+                'indexingTime' => $indexingTime,
             ]
         );
     }
 
     /**
      * removes all entries from ke_search registry
-     *
-     * @return void
      */
     public function clearAll(): void
     {
         $this->registry->removeAllByNamespace(self::INDEXER_STATUS_REGISTRY_NAMESPACE);
+    }
+
+    public function getStatusReport(string $format = self::INDEXER_STATUS_REPORT_FORMAT_HTML): string
+    {
+        $plain = [];
+        if ($this->isRunning()) {
+            $indexerStartTime = $this->getIndexerStartTime();
+            $indexerStatus = $this->getIndexerStatus();
+            $message = 'Indexer is running.';
+            $html = '<div class="alert alert-success">' . $message . '</div>';
+            $plain[] = $message;
+            if ($indexerStatus['indexers'] ?? false) {
+                $html .= '<div class="table-fit"><table class="table table-striped table-hover">';
+                foreach ($indexerStatus['indexers'] as $singleIndexerStatus) {
+                    $statusLine = htmlspecialchars($singleIndexerStatus['statusText'], ENT_QUOTES, 'UTF-8');
+                    if ($singleIndexerStatus['status'] == self::INDEXER_STATUS_RUNNING) {
+                        $statusLine = '<tr class="table-success"><td><strong>' . $statusLine . '</strong></td></tr>';
+                    } else {
+                        $statusLine = '<tr><td>' . $statusLine . '</td></tr>';
+                    }
+                    $html .= $statusLine;
+                    $plain[] = $singleIndexerStatus['statusText'];
+                }
+                $html .= '</table></div>';
+                $message = 'Indexer is running since ' . TimeUtility::getRunningTimeHumanReadable($indexerStartTime) . '.';
+                $html .= '<div class="alert alert-notice">' . $message . '</div>';
+                $plain[] = $message;
+            }
+        } else {
+            $message = 'Indexer is idle.';
+            $html = '<div class="alert alert-notice">' . $message . '</div>';
+            $plain[] = $message;
+        }
+
+        if ($format == self::INDEXER_STATUS_REPORT_FORMAT_PLAIN) {
+            return implode(chr(10), $plain);
+        }
+        return $html;
     }
 }

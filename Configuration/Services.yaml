@@ -38,6 +38,12 @@ services:
         command: 'ke_search:removelock'
         description: 'Removes the ke_search lock'
 
+  Tpwd\KeSearch\Command\IndexerStatusCommand:
+    tags:
+      - name: 'console.command'
+        command: 'ke_search:indexerstatus'
+        description: 'Shows the status of the indexer'
+
   Tpwd\KeSearch\Backend\Flexform:
     public: true
 

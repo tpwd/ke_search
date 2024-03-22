@@ -26,21 +26,28 @@ class TimeUtility
         if ($indexerRunningTime < 0) {
             return '';
         }
-        $indexerRunningTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($indexerRunningTime);
-
-        $result = '';
-        if ($indexerRunningTimeHMS['h']) {
-            $result .= ' ' . $indexerRunningTimeHMS['h'] . ' h';
-        }
-        if ($indexerRunningTimeHMS['m']) {
-            $result .= ' ' . $indexerRunningTimeHMS['m'] . ' m';
-        }
-        if ($indexerRunningTimeHMS['s']) {
-            $result .= ' ' . $indexerRunningTimeHMS['s'] . ' s';
-        }
-
-        return $result;
+        return self::getSecondsHumanReadable($indexerRunningTime);
     }
 
-
+    public static function getSecondsHumanReadable(int $seconds): string
+    {
+        $timeHMS = TimeUtility::getTimeHoursMinutesSeconds($seconds);
+        $result = '';
+        if ($timeHMS['h']) {
+            $result .= $timeHMS['h'] . ' h';
+        }
+        if (!empty($result)) {
+            $result .= ' ';
+        }
+        if ($timeHMS['m']) {
+            $result .= $timeHMS['m'] . ' m';
+        }
+        if (!empty($result)) {
+            $result .= ' ';
+        }
+        if ($timeHMS['s']) {
+            $result .= $timeHMS['s'] . ' s';
+        }
+        return $result;
+    }
 }
