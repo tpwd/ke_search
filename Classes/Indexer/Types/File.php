@@ -31,6 +31,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -82,6 +83,8 @@ class File extends IndexerBase
      */
     private $indexRepository;
 
+    protected IndexerStatusService $indexerStatusService;
+
     /**
      * Initializes indexer for files
      *
@@ -94,6 +97,7 @@ class File extends IndexerBase
         $this->extConf = SearchHelper::getExtConf();
         $this->fileInfo = GeneralUtility::makeInstance(Fileinfo::class);
         $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
+        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -255,8 +259,10 @@ class File extends IndexerBase
     public function extractContentAndSaveToIndex(array $files): int
     {
         $counter = 0;
-        if (count($files)) {
+        $totalCount = count($files);
+        if ($totalCount > 0) {
             foreach ($files as $file) {
+                $this->indexerStatusService->setRunningStatus($this->indexerConfig, $counter, $totalCount);
                 if ($this->fileInfo->setFile($file)) {
                     if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
                         $filePath = $file->getForLocalProcessing(false);

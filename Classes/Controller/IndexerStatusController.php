@@ -24,21 +24,25 @@ class IndexerStatusController
     {
         $isRunning = $this->indexerStatusService->isRunning();
         $indexerStatus = [];
-        $html = 'Indexer is idle.';
+        $html = '<div class="alert alert-notice">Indexer is idle.</div>';
 
         if ($isRunning) {
             $indexerStartTime = $this->indexerStatusService->getIndexerStartTime();
             $indexerStatus = $this->indexerStatusService->getIndexerStatus();
-            $html = 'Indexer is running since ' . TimeUtility::getRunningTimeHumanReadable($indexerStartTime) . '.';
+            $html = '<div class="alert alert-success">Indexer is running.</div>';
             if ($indexerStatus['indexers'] ?? false) {
-                $html .= '<br /><br /><strong>Indexers:</strong><br />';
+                $html .= '<div class="table-fit"><table class="table table-striped table-hover">';
                 foreach ($indexerStatus['indexers'] as $singleIndexerStatus) {
-                    $statusLine = htmlspecialchars($singleIndexerStatus['statusText'], ENT_QUOTES, 'UTF-8') . '<br />';
+                    $statusLine = htmlspecialchars($singleIndexerStatus['statusText'], ENT_QUOTES, 'UTF-8');
                     if ($singleIndexerStatus['status'] == $this->indexerStatusService::INDEXER_STATUS_RUNNING) {
-                        $statusLine = '<strong>' . $statusLine . '</strong>';
+                        $statusLine = '<tr class="table-success"><td><strong>' . $statusLine . '</strong></td></tr>';
+                    } else {
+                        $statusLine = '<tr><td>' . $statusLine . '</td></tr>';
                     }
                     $html .= $statusLine;
                 }
+                $html .= '</table></div>';
+                $html .= '<div class="alert alert-notice">Indexer is running since ' . TimeUtility::getRunningTimeHumanReadable($indexerStartTime) . '.' . '</div>';
             }
         }
 

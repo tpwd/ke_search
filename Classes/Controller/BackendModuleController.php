@@ -190,16 +190,16 @@ class BackendModuleController
             if (!$this->getBackendUser()->isAdmin()) {
                 // print warning message for non-admins
                 $content .= '<div class="row"><div class="col-md-8">';
-                $content .= '<div class="alert alert-danger">';
+                $content .= '<div id="kesearch-indexer-running-warning" class="alert alert-danger">';
                 $content .= '<p>WARNING!</p>';
-                $content .= '<p>The indexer is already running and can not be started twice.</p>';
+                $content .= 'The indexer is already running and can not be started twice.';
                 $content .= '</div>';
                 $content .= '</div></div>';
             } else {
                 // show 'remove lock' button for admins
                 $content .= '<div class="row"><div class="col-md-8">';
-                $content .= '<div class="alert alert-info">';
-                $content .= '<p>The indexer is already running and can not be started twice.</p>';
+                $content .= '<div id="kesearch-indexer-running-warning" class="alert alert-info">';
+                $content .= 'The indexer is already running and can not be started twice.';
                 $content .= '</div>';
                 $content .= '<p>The indexing process was started at <strong>' . SearchHelper::formatTimestamp($lockTime) . '.</p></strong>';
                 $content .= '<p>You can remove the lock by clicking the following button.</p>';
@@ -212,13 +212,6 @@ class BackendModuleController
                     ]
                 );
                 $content .= '<a class="btn btn-danger" id="kesearch-button-removelock" href="' . $moduleUrl . '">Remove Lock</a> ';
-                $moduleUrl = $uriBuilder->buildUriFromRoute(
-                    'web_KeSearchBackendModule',
-                    [
-                        'id' => $this->pageId
-                    ]
-                );
-                $content .= ' <a class="btn btn-default" id="kesearch-button-reload" href="' . $moduleUrl . '">Reload</a>';
             }
         } else {
             // no lock set - show "start indexer" link if indexer configurations have been found
@@ -255,6 +248,9 @@ class BackendModuleController
                     . '</div>';
             }
         }
+
+        $moduleUrl = $uriBuilder->buildUriFromRoute('web_KeSearchBackendModule', ['id' => $this->pageId]);
+        $content .= ' <a class="btn btn-default" id="kesearch-button-reload" href="' . $moduleUrl . '">Reload</a>';
 
         $this->addMainMenu($request, $moduleTemplate, 'startIndexing');
 
@@ -459,7 +455,7 @@ class BackendModuleController
      */
     public function printIndexerConfigurations($indexerConfigurations)
     {
-        $content = '<div id="kesearch-startindexing-indexers"><h2>Indexers</h2>';
+        $content = '<div id="kesearch-startindexing-indexers"><h2>Indexer configurations</h2>';
         // show indexer names
         if ($indexerConfigurations) {
             $content .= '<div class="row"><div class="col-md-8">';

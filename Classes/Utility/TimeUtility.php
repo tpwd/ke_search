@@ -6,7 +6,7 @@ class TimeUtility
 {
     public static function getRunningTime(int $indexerStartTime): int
     {
-        return $indexerStartTime ? (time() - $indexerStartTime) : 0;
+        return $indexerStartTime ? (time() - $indexerStartTime) : -1;
     }
 
     public static function getTimeHoursMinutesSeconds(int $time): array
@@ -23,7 +23,7 @@ class TimeUtility
     public static function getRunningTimeHumanReadable(int $indexerStartTime): string
     {
         $indexerRunningTime = TimeUtility::getRunningTime($indexerStartTime);
-        if ($indexerRunningTime < 1) {
+        if ($indexerRunningTime < 0) {
             return '';
         }
         $indexerRunningTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($indexerRunningTime);

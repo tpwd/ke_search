@@ -156,7 +156,7 @@ class Page extends IndexerBase
      */
     protected AdditionalContentService $additionalContentService;
 
-    private IndexerStatusService $indexerStatusService;
+    protected IndexerStatusService $indexerStatusService;
 
     /**
      * tx_kesearch_indexer_types_page constructor.
@@ -270,6 +270,7 @@ class Page extends IndexerBase
         foreach ($indexPids as $uid) {
             $this->indexerStatusService->setRunningStatus($this->indexerConfig, $counter, count($indexPids));
             $this->getPageContent($uid);
+            $counter++;
         }
 
         $logMessage = 'Indexer "' . $this->indexerConfig['title'] . '" finished'
@@ -286,12 +287,18 @@ class Page extends IndexerBase
         }
 
         // show indexer content
-        return
-            count($indexPids) . ' ' . $this->indexedElementsName . ' have been selected for indexing in the main language.' . chr(10)
+        $result =
+            count($indexPids) . ' pages have been selected for indexing in the main language.' . chr(10)
             . count($this->sysLanguages) . ' languages (' . $languageTitles . ') have been found.' . chr(10)
-            . $this->counter . ' ' . $this->indexedElementsName . ' have been indexed. ' . chr(10)
-            . $this->counterWithoutContent . ' had no content or the content was not indexable.' . chr(10)
-            . $this->fileCounter . ' files have been indexed.';
+            . $this->counter . ' ' . $this->indexedElementsName . ' have been indexed. ' . chr(10);
+
+        if ($this->counterWithoutContent) {
+            $result .= $this->counterWithoutContent . ' had no content or the content was not indexable.' . chr(10);
+        }
+
+        $result .= $this->fileCounter . ' files have been indexed.';
+
+        return $result;
     }
 
     /**

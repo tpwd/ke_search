@@ -39,10 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class News extends IndexerBase
 {
-    /**
-     * @var IndexerStatusService
-     */
-    private $indexerStatusService;
+    protected IndexerStatusService $indexerStatusService;
 
     /**
      * Initializes indexer for news

@@ -174,7 +174,7 @@ class IndexerRunner
         $this->prepareStatements();
 
         $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
-        $content .= '<tr><th>Indexer</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
+        $content .= '<tr><th>Indexer configuration</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
         foreach ($configurations as $indexerConfig) {
             $this->indexerStatusService->setScheduledStatus($indexerConfig);
         }
@@ -188,7 +188,7 @@ class IndexerRunner
                 $className .= GeneralUtility::underscoredToUpperCamelCase($this->indexerConfig['type']);
                 if (class_exists($className)) {
                     $this->logger->info(
-                        'Indexer "' . $this->indexerConfig['title'] . '" started ',
+                        'Running indexer configuration "' . $this->indexerConfig['title'] . '"',
                         $this->indexerConfig
                     );
                     $searchObj = GeneralUtility::makeInstance($className, $this);
@@ -217,7 +217,8 @@ class IndexerRunner
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] as $_classRef) {
                     $searchObj = GeneralUtility::makeInstance($_classRef, $this);
                     $this->logger->info(
-                        'Custom indexer "' . $this->indexerConfig['title'] . '" started',
+                        'Running indexer configuration "' . $this->indexerConfig['title'] . '": '
+                        . 'Trying to start custom indexer "' . $_classRef,
                         $this->indexerConfig
                     );
                     if ($indexingMode == IndexerBase::INDEXING_MODE_FULL || !method_exists($searchObj, 'startIncrementalIndexing')) {
@@ -245,14 +246,15 @@ class IndexerRunner
 
         // log finishing
         $indexingTime = $this->endTime - $this->startTime;
-        $content .= '<div class="alert alert-info">';
+        $content .= '<div class="alert alert-success">';
+        $content .= '<h3>Finished</h3>';
 
         $message = 'Indexing finished at ' . SearchHelper::formatTimestamp($this->endTime) . ' (took ' . $this->formatTime($indexingTime) . ').';
-        $content .=  '<p>' . $message . '</p>';
+        $content .= $message;
         $this->logger->info($message);
 
-        $message = 'Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.';
-        $content .=  '<p>' . $message . '</p>';
+        $message = '<br /><i>Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.</i>';
+        $content .= $message;
         $this->logger->info($message);
 
         $content .= '</div>';
@@ -498,7 +500,7 @@ class IndexerRunner
      */
     public function cleanUpIndex(int $indexingMode)
     {
-        $content = '<div class="alert alert-info">';
+        $content = '<div class="alert alert-notice">';
         $content .= '<h3>Cleanup</h3>';
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
             $this->logger->info('Cleanup started');
@@ -533,7 +535,7 @@ class IndexerRunner
                 ->where($where)
                 ->executeStatement();
 
-            $content .= '<p><strong>' . $count . '</strong> entries deleted.</p>' . "\n";
+            $content .= '<strong>' . $count . '</strong> entries deleted.' . "<br />\n";
             $this->logger->info('CleanUpIndex: ' . $count . ' entries deleted.');
 
             // rotate Sphinx Index (ke_search_premium function)
@@ -541,11 +543,11 @@ class IndexerRunner
 
             // calculate duration of indexing process
             $duration = ceil((microtime(true) - $startMicrotime) * 1000);
-            $content .= '<p><i>Cleanup process took ' . $duration . ' ms.</i></p>' . "\n";
+            $content .= '<i>Cleanup process took ' . $duration . ' ms.</i>' . "\n";
         } else {
-            $message = 'Skipping cleanup in incremental mode';
+            $message = 'Skipping cleanup in incremental mode.';
             $this->logger->info($message);
-            $content .= '<p>' . $message . '</p>';
+            $content .= $message;
         }
         $content .= '</div>';
         return $content;

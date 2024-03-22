@@ -88,8 +88,11 @@ class IndexerStatusService
             'statusText' =>
                 '"' . $indexerConfig['title'] . '"'
                 . ' is running'
-                . ' (' . $currentRecordCount . ' / ' . $totalRecordCount . ' records)'
         ];
+        if ($currentRecordCount >= 0 && $totalRecordCount >= 0) {
+            $indexerStatus['indexers'][$indexerConfig['uid']]['statusText'] .=
+                ' (' . $currentRecordCount . ' / ' . $totalRecordCount . ' records)';
+        }
         $this->setIndexerStatus($indexerStatus);
     }
 
