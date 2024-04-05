@@ -90,6 +90,7 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
 
         $this->logger->notice('Indexer process started by command.');
 
+        $this->indexerRunner->setConsoleIo($io);
         $indexerResponse = $this->indexerRunner->startIndexing(true, [], 'CLI', $indexingMode);
         $indexerResponse = $this->indexerRunner->createPlaintextReport($indexerResponse);
 
@@ -107,6 +108,7 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
         $output->getFormatter()->setStyle('title', $titleStyle);
         $warning = false;
 
+        $io->title('Indexing report');
         foreach (explode(chr(10), $indexerResponse) as $line) {
             // skip empty lines
             if (empty(strip_tags($line))) {

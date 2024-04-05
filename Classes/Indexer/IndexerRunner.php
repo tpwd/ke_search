@@ -25,6 +25,7 @@ namespace Tpwd\KeSearch\Indexer;
 use Exception;
 use PDO;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
@@ -83,6 +84,7 @@ class IndexerRunner
     private EventDispatcherInterface $eventDispatcher;
     private IndexRepository $indexRepository;
     private IndexerStatusService $indexerStatusService;
+    private ?SymfonyStyle $io = null;
 
     /**
      * Constructor of this class
@@ -180,6 +182,9 @@ class IndexerRunner
             $this->indexerStatusService->setScheduledStatus($indexerConfig);
         }
         foreach ($configurations as $indexerConfig) {
+            if ($this->io) {
+                $this->io->writeln('Running indexer configuration "' . $indexerConfig['title'] . '"');
+            }
             $this->indexerStatusService->setRunningStatus($indexerConfig);
             $this->indexerConfig = $indexerConfig;
 
@@ -502,6 +507,9 @@ class IndexerRunner
      */
     public function cleanUpIndex(int $indexingMode)
     {
+        if ($this->io) {
+            $this->io->writeln('Cleaning up');
+        }
         $content = '<div class="alert alert-notice">';
         $content .= chr(10) . '<h3>Cleanup</h3>' . chr(10);
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
@@ -1191,5 +1199,11 @@ class IndexerRunner
     {
         unset($fieldValues['content']);
         return $fieldValues;
+    }
+
+    public function setConsoleIo(SymfonyStyle $io): void
+    {
+        $this->io = $io;
+        $this->indexerStatusService->setConsoleIo($io);
     }
 }

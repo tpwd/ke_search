@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Service;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Registry;
@@ -19,6 +20,8 @@ class IndexerStatusService
     public const INDEXER_STATUS_REPORT_FORMAT_PLAIN = 'plain';
 
     private Registry $registry;
+    private ?SymfonyStyle $io = null;
+    private bool $progressBarStarted = false;
 
     public function __construct(Registry $registry)
     {
@@ -79,9 +82,18 @@ class IndexerStatusService
                 ' (' . $indexerStatus['indexers'][$indexerConfig['uid']]['totalRecords'] . ' records)';
         }
         $this->setIndexerStatus($indexerStatus);
+
+        if ($this->io && $this->progressBarStarted) {
+            $this->io->progressFinish();
+            $this->progressBarStarted = false;
+        }
     }
 
-    public function setRunningStatus(array $indexerConfig, int $currentRecordCount = -1, int $totalRecordCount = -1)
+    public function setRunningStatus(
+        array $indexerConfig,
+        int $currentRecordCount = -1,
+        int $totalRecordCount = -1
+    ): void
     {
         $indexerStatus = $this->getIndexerStatus();
         $oldStatus = $indexerStatus['indexers'][$indexerConfig['uid']]['status'] ?? null;
@@ -94,13 +106,28 @@ class IndexerStatusService
                 . ' is running',
         ];
         if ($currentRecordCount >= 0 && $totalRecordCount >= 0) {
+            $percentage = $totalRecordCount > 0
+                ? round($currentRecordCount / $totalRecordCount * 100)
+                : 0;
             $indexerStatus['indexers'][$indexerConfig['uid']]['statusText'] .=
-                ' (' . $currentRecordCount . ' / ' . $totalRecordCount . ' records)';
+                ' (' . $currentRecordCount . ' / ' . $totalRecordCount . ' records)'
+                . ' (' . $percentage . '%)';
         }
+
         // To reduce the amount of database access, we only update the registry if the status was
         // not "running" before and every 100 records
         if ($oldStatus !== self::INDEXER_STATUS_RUNNING || $currentRecordCount % 100 === 0) {
             $this->setIndexerStatus($indexerStatus);
+        }
+
+        if ($this->io && $totalRecordCount > 0) {
+            if (!$this->progressBarStarted) {
+                $this->io->progressStart($totalRecordCount);
+                $this->progressBarStarted = true;
+            }
+            // Assuming that "setRunningStatus" is called on each iteration we now call "progressAdvance" without
+            // a number of steps to advance the progress bar by one step
+            $this->io->progressAdvance();
         }
     }
 
@@ -178,5 +205,10 @@ class IndexerStatusService
             return implode(chr(10), $plain);
         }
         return $html;
+    }
+
+    public function setConsoleIo(SymfonyStyle $io): void
+    {
+        $this->io = $io;
     }
 }
