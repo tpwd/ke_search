@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -53,15 +54,18 @@ class BackendModuleController
     protected int $pageId = 0;
     protected ?string $do;
     protected array $extConf;
+    protected PageRenderer $pageRenderer;
 
     public function __construct(
         Registry $registry,
         IndexRepository $indexRepository,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        PageRenderer $pageRenderer
     ) {
         $this->registry = $registry;
         $this->indexRepository = $indexRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -136,6 +140,13 @@ class BackendModuleController
         $indexer = GeneralUtility::makeInstance(IndexerRunner::class);
         $indexerConfigurations = $indexer->getConfigurations();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+            $this->pageRenderer->addJsFile('EXT:ke_search/Resources/Public/JavaScript/v11/getIndexerStatusRequest.js');
+        } else {
+            // @phpstan-ignore-next-line
+            $this->pageRenderer->loadJavaScriptModule('@tpwd/ke-search/getIndexerStatusRequest.js');
+        }
 
         $indexingMode = (int)($request->getQueryParams()['indexingMode'] ?? IndexerBase::INDEXING_MODE_FULL);
         if (!in_array($indexingMode, [IndexerBase::INDEXING_MODE_INCREMENTAL, IndexerBase::INDEXING_MODE_FULL])) {
@@ -223,7 +234,7 @@ class BackendModuleController
                         'do' => 'startindexer',
                     ]
                 );
-                $content .= '<a class="btn btn-primary" id="kesearch-button-start-full" href="' . $moduleUrl . '">'
+                $content .= '<a class="btn btn-info" id="kesearch-button-start-full" href="' . $moduleUrl . '">'
                     . LocalizationUtility::translate('backend.start_indexer_full', 'ke_search')
                     . '</a>';
                 $moduleUrl = $uriBuilder->buildUriFromRoute(
@@ -464,15 +475,9 @@ class BackendModuleController
             foreach ($indexerConfigurations as $indexerConfiguration) {
                 $content .= '<tr>'
                     . '<td>' . $this->encode($indexerConfiguration['title']) . '</td>'
-                    . '<td>'
-                    . '<span class="label label-primary">' . $indexerConfiguration['type'] . '</span>'
-                    . '</td>'
-                    . '<td>'
-                    . $indexerConfiguration['uid']
-                    . '</td>'
-                    . '<td>'
-                    . $indexerConfiguration['pid']
-                    . '</td>'
+                    . '<td>' . $indexerConfiguration['type'] . '</td>'
+                    . '<td>' . $indexerConfiguration['uid'] . '</td>'
+                    . '<td>' . $indexerConfiguration['pid'] . '</td>'
                     . '</tr>';
             }
             $content .= '</table></div>';
@@ -525,7 +530,7 @@ class BackendModuleController
             $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
             $results_per_type = $indexRepository->getNumberOfRecordsInIndexPerType();
             foreach ($results_per_type as $type => $count) {
-                $content .= '<tr><td><span class="label label-primary">' . $type . '</span></td><td>' . $count . '</td></tr>';
+                $content .= '<tr><td>' . $type . '</td><td>' . $count . '</td></tr>';
             }
 
             $content .= '</table></div>';

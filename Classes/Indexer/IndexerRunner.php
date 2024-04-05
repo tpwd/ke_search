@@ -248,7 +248,7 @@ class IndexerRunner
         // log finishing
         $indexingTime = $this->endTime - $this->startTime;
         $content .= '<div class="alert alert-success">';
-        $content .= '<h3>Finished</h3>' . chr(10);
+        $content .= chr(10) . '<h3>Finished</h3>' . chr(10);
 
         $message = 'Indexing finished at ' . SearchHelper::formatTimestamp($this->endTime) . ' (took ' . $this->formatTime($indexingTime) . ').';
         $content .= $message;
@@ -503,7 +503,7 @@ class IndexerRunner
     public function cleanUpIndex(int $indexingMode)
     {
         $content = '<div class="alert alert-notice">';
-        $content .= '<h3>Cleanup</h3>' . chr(10);
+        $content .= chr(10) . '<h3>Cleanup</h3>' . chr(10);
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
             $this->logger->info('Cleanup started');
             $startMicrotime = microtime(true);
