@@ -73,8 +73,8 @@ Starting the indexing process manually
 
 You can start the indexing process in the :guilabel:`Faceted Search` backend module.
 
-.. figure:: /Images/Indexing/start-indexing.png
-   :alt: View of the backend module
+.. figure:: /Images/QuickStart/start.png
+   :alt: Backend module view
    :class: with-border
 
 You can also start the indexer using the command line
