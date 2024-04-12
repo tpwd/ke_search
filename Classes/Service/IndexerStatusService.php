@@ -93,8 +93,7 @@ class IndexerStatusService
         array $indexerConfig,
         int $currentRecordCount = -1,
         int $totalRecordCount = -1
-    ): void
-    {
+    ): void {
         $indexerStatus = $this->getIndexerStatus();
         $oldStatus = $indexerStatus['indexers'][$indexerConfig['uid']]['status'] ?? null;
         $indexerStatus['indexers'][$indexerConfig['uid']] = [
