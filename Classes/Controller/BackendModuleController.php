@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -38,7 +39,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -49,23 +49,23 @@ class BackendModuleController
 {
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected IndexRepository $indexRepository;
-    protected Registry $registry;
     protected ModuleTemplate $moduleTemplate;
     protected int $pageId = 0;
     protected ?string $do;
     protected array $extConf;
     protected PageRenderer $pageRenderer;
+    protected IndexerStatusService $indexerStatusService;
 
     public function __construct(
-        Registry $registry,
         IndexRepository $indexRepository,
         ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
+        IndexerStatusService $indexerStatusService
     ) {
-        $this->registry = $registry;
         $this->indexRepository = $indexRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->indexerStatusService = $indexerStatusService;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -163,7 +163,7 @@ class BackendModuleController
             if ($this->do == 'rmLock') {
                 // remove lock from registry - admin only!
                 if ($this->getBackendUser()->isAdmin()) {
-                    $this->registry->removeAllByNamespace('tx_kesearch');
+                    $this->indexerStatusService->clearAll();
                 } else {
                     $content .=
                         '<p>'
@@ -178,12 +178,12 @@ class BackendModuleController
 
         // check for index process lock in registry
         // remove lock if older than 12 hours
-        $lockTime = SearchHelper::getIndexerStartTime();
+        $lockTime = $this->indexerStatusService->getIndexerStartTime();
         $compareTime = time() - (60 * 60 * 12);
         if ($lockTime !== 0 && $lockTime < $compareTime) {
             // lock is older than 12 hours
             // remove lock and show "start index" button
-            $this->registry->removeAllByNamespace('tx_kesearch');
+            $this->indexerStatusService->clearAll();
             $lockTime = 0;
         }
 
@@ -510,7 +510,7 @@ class BackendModuleController
                     'KeSearch'
                 ) . '.<br />' . chr(10);
 
-            $lastRun = $this->registry->get('tx_kesearch', 'lastRun');
+            $lastRun = $this->indexerStatusService->getLastRunTime();
             if ($lastRun) {
                 $content .= LocalizationUtility::translate(
                     'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:last_indexing',
