@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [!!!]     The generation of tags has been updated. If a tag is auto-generated e.g. from a category title, it will now be changed if it does not meet the requirements (length, allowed characters, not in list of stop words). If it is too short or is in the list of stop words, the character "A" will be appended automatically. That may affect your filters if you are using tags that don't meet the requirements. In that case re-index and check if the tags in filter options match the tags in the index.
 [FEATURE] Make sure stop words are not used as tags, https://github.com/tpwd/ke_search/issues/81
+[FEATURE] Show progress of indexing in backend module and in console command, add new console command "indexerstatus", https://github.com/tpwd/ke_search/issues/216
 [TASK]    Update default pagination template, add first and last page, thanks to Stephan Bauer, https://github.com/tpwd/ke_search/issues/219 and https://github.com/tpwd/ke_search/pull/218
 [TASK]    Add "ignorePageTypeRestriction" to TCA configs, allow records on default pages and the root page in TYPO3 v12, thanks to Dimitri König, https://github.com/tpwd/ke_search/pull/212
 
