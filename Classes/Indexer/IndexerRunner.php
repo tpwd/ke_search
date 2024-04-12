@@ -700,8 +700,10 @@ class IndexerRunner
             } else {
                 $tags = $tagChar . $indexerTag . $tagChar;
             }
-            $tags = StringUtility::uniqueList($tags);
         }
+
+        // remove duplicates from tags
+        $tags = StringUtility::uniqueList($tags);
 
         // Get additional content for additional word characters
         $additionalContent = AdditionalWordCharactersUtility::getAdditionalContent($content);
