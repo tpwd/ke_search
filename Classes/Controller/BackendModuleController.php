@@ -52,7 +52,6 @@ class BackendModuleController
     protected ModuleTemplate $moduleTemplate;
     protected int $pageId = 0;
     protected ?string $do;
-    protected array $extConf;
     protected PageRenderer $pageRenderer;
     protected IndexerStatusService $indexerStatusService;
 
@@ -73,7 +72,6 @@ class BackendModuleController
         $GLOBALS['LANG']->includeLLFile('LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf');
 
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('ke_search');
         $this->pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;
         $backendUser = $this->getBackendUser();
@@ -158,7 +156,7 @@ class BackendModuleController
         // action: start indexer or remove lock
         if ($this->do == 'startindexer') {
             // start indexing in verbose mode with cleanup process
-            $content .= $indexer->startIndexing(true, $this->extConf, '', $indexingMode);
+            $content .= $indexer->startIndexing(true, [], '', $indexingMode);
         } else {
             if ($this->do == 'rmLock') {
                 // remove lock from registry - admin only!

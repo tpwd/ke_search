@@ -114,12 +114,12 @@ class IndexerRunner
     /**
      * function startIndexing
      * @param $verbose boolean if set, information about the indexing process is returned, otherwise processing is quiet
-     * @param $extConf array extension config array from EXT Manager
+     * @param $_unused array unused parameter, kept for compatibility
      * @param $mode string "CLI" if called from command line, otherwise empty
      * @param int $indexingMode integer full or incremental indexing (possible values: IndexerBase::INDEXING_MODE_FULL or IndexerBase::INDEXING_MODE_INCREMENTAL)
      * @return string output is done only if param $verbose is true
      */
-    public function startIndexing($verbose = true, $extConf = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
+    public function startIndexing($verbose = true, array $_unused = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
     {
         $content = '<div class="row" id="kesearch-indexer-report"><div class="col-md-8">';
         $content .= '<div class="alert alert-info">';
