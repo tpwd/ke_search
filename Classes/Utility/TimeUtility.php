@@ -33,19 +33,19 @@ class TimeUtility
     {
         $timeHMS = TimeUtility::getTimeHoursMinutesSeconds($seconds);
         $result = '';
-        if ($timeHMS['h']) {
+        if ($timeHMS['h'] ?? null) {
             $result .= $timeHMS['h'] . ' h';
         }
-        if (!empty($result)) {
+        if (strlen($result) > 0) {
             $result .= ' ';
         }
-        if ($timeHMS['m']) {
+        if ($timeHMS['m'] ?? null) {
             $result .= $timeHMS['m'] . ' m';
         }
-        if (!empty($result)) {
+        if (strlen($result) > 0) {
             $result .= ' ';
         }
-        if ($timeHMS['s']) {
+        if ($timeHMS['s'] ?? null) {
             $result .= $timeHMS['s'] . ' s';
         }
         return $result;
