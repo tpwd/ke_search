@@ -269,4 +269,32 @@ class IndexRepository
         }
         return $result;
     }
+
+    /**
+     * Returns a list of records which can be used to show the indexed content for the given page in the backend
+     * module. Index records are returned if they are either stored on the given page or, in case the index record is
+     * of type "page", the targetpid is the given page.
+     *
+     * @param int $pageUid
+     * @return mixed
+     */
+    public function findByPageUidToShowIndexedContent(int $pageUid)
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('page')),
+                $queryBuilder->expr()->eq('targetpid', (int)$pageUid)
+            )
+            ->orWhere(
+                $queryBuilder->expr()->neq('type', $queryBuilder->createNamedParameter('page')) .
+                ' AND ' .
+                $queryBuilder->expr()->eq('pid', (int)$pageUid)
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
 }

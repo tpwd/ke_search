@@ -2,14 +2,106 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:kesearch="http://typo3.org/ns/Tpwd/KeSearch/ViewHelpers"
     data-namespace-typo3-fluid="true"><f:layout name="Backend/Default" />
 
-    <f:layout name="Backend/Default" />
+<f:layout name="Backend/Default" />
 
-    <f:section name="Content">
-        <div>
-            <h2><f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:show_indexed_content">Show Indexed Content</f:translate></h2>
-            <f:format.raw>{content}</f:format.raw>
+<f:section name="Content">
+    <div>
+        <h2><f:translate key="LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:show_indexed_content">Show Indexed Content</f:translate></h2>
+        <f:format.raw>{content}</f:format.raw>
+        <f:if condition="{paginator.numberOfPages} > 1">
+            Records {paginator.keyOfFirstPaginatedItem + 1} - {paginator.keyOfLastPaginatedItem + 1}
+            <ul class="pagination">
+                <f:for each="{pagination.allPageNumbers}" as="page">
+                    <li class="page-item ps-2">
+                        <f:be.link route="web_KeSearchBackendModule" parameters="{id: id, do: do, currentPageNumber: page}">
+                            <f:if condition="{page} == {currentPageNumber}">
+                                <f:then> <strong>{page}</strong> </f:then>
+                                <f:else> {page} </f:else>
+                            </f:if>
+                        </f:be.link>
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
+        <div class="table-fit">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Language</th>
+                    <th>Words</th>
+                    <th>Created</th>
+                    <th>Modified</th>
+                    <th>Tags</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <f:for each="{paginator.paginatedItems}" as="record">
+                    <tr>
+                        <td>{record.title}</td>
+                        <td><span class="label label-primary">{record.type}</span></td>
+                        <td>{record.language}</td>
+                        <td><kesearch:count.words>{record.content}</kesearch:count.words></td>
+                        <td><f:format.date format="Y-m-d, H:i:s">{record.crdate}</f:format.date></td>
+                        <td><f:format.date format="Y-m-d, H:i:s">{record.tstamp}</f:format.date></td>
+                        <td><f:for each="{record.tags -> kesearch:explode(string: '{record.tags}')}" as="tag">
+                            <span class="badge badge-info">{tag}</span>
+                        </f:for></td>
+                        <td><a class="btn btn-default" data-bs-toggle="collapse" data-bs-target="#ke_{record.uid}" data-action="expand" data-toggle="collapse" data-target="#ke_{record.uid}" title="Expand record"><span class="icon icon-size-small icon-state-default"><span class="icon-markup"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M7 2.25c0-.14.11-.25.25-.25h1.5c.14 0 .25.11.25.25v1.5c0 .14-.11.25-.25.25h-1.5C7.11 4 7 3.89 7 3.75v-1.5zM10.75 14h-5.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25H7V8h-.75C6.11 8 6 7.89 6 7.75v-1.5A.25.25 0 0 1 6.25 6h2.5a.25.25 0 0 1 .25.25V12h1.75a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25z"/></g></svg> </span></span></a></td>
+                    </tr>
+
+                    <tr class="collapse" id="ke_{record.uid}">
+                        <td colspan="8">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Original PID</th>
+                                    <th>Original UID</th>
+                                    <th>FE Group</th>
+                                    <th>Sort Date</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Target Page</th>
+                                    <th>URL Params</th>
+                                </tr>
+                                </thead>
+                                <tr>
+                                    <td>{record.orig_pid}</td>
+                                    <td>{record.orig_uid}</td>
+                                    <td>{record.fe_group}</td>
+                                    <td><f:if condition="{record.sortdate}"><f:format.date format="Y-m-d, H:i:s">{record.sortdate}</f:format.date></f:if></td>
+                                    <td><f:if condition="{record.starttime}"><f:format.date format="Y-m-d, H:i:s">{record.starttime}</f:format.date></f:if></td>
+                                    <td><f:if condition="{record.endtime}"><f:format.date format="Y-m-d, H:i:s">{record.endtime}</f:format.date></f:if></td>
+                                    <td>{record.targetpid}</td>
+                                    <td>{record.params}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        <f:if condition="{record.abstract}">
+                                            <p><strong>Abstract</strong></p>
+                                            {record.abstract}
+                                        </f:if>
+                                        <f:if condition="{record.content}">
+                                            <p><strong>Content</strong></p>
+                                            {record.content}
+                                        </f:if>
+                                        <f:if condition="{record.hidden_content}">
+                                            <p><strong>Hidden content</strong></p>
+                                            {record.hidden_content}
+                                        </f:if>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
         </div>
-    </f:section>
+    </div>
+</f:section>
 </html>

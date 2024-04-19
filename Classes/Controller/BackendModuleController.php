@@ -38,6 +38,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -279,6 +281,10 @@ class BackendModuleController
      */
     public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
+        $pagination = null;
+        $paginator = null;
+        $currentPageNumber = (int)($request->getQueryParams()['currentPageNumber'] ?? 1);
+
         if ($this->pageId) {
             $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
             $pageInfo = BackendUtility::readPageAccess($this->pageId, $perms_clause);
@@ -286,7 +292,9 @@ class BackendModuleController
             $content = '<h3>Index content for PID ' . $this->pageId;
             $content .= '<span class="small">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path')
                 . ': ' . GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -50) . '</span></h3>';
-            $content .= $this->getIndexedContent($this->pageId);
+            $indexRecords = $this->indexRepository->findByPageUidToShowIndexedContent($this->pageId);
+            $paginator = new ArrayPaginator($indexRecords, $currentPageNumber, 20);
+            $pagination = new SimplePagination($paginator);
         } else {
             // no page selected: show message
             $content = '<div class="alert alert-info">'
@@ -304,10 +312,21 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
             $moduleTemplate->getView()->assign('content', $content);
+            $moduleTemplate->getView()->assign('pagination', $pagination);
+            $moduleTemplate->getView()->assign('paginator', $paginator);
+            $moduleTemplate->getView()->assign('do', $this->do);
+            $moduleTemplate->getView()->assign('id', $this->pageId);
+            $moduleTemplate->getView()->assign('currentPageNumber', $currentPageNumber);
             // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('content', $content);
+        $moduleTemplate->assign('pagination', $pagination);
+        $moduleTemplate->assign('paginator', $paginator);
+        $moduleTemplate->assign('do', $this->do);
+        $moduleTemplate->assign('id', $this->pageId);
+        $moduleTemplate->assign('currentPageNumber', $currentPageNumber);
+
         return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
     }
 
@@ -608,112 +627,6 @@ class BackendModuleController
             return 'n/a';
         }
         return round($size / pow(1024, ($i = floor(log($size, 1024)))), $decimals) . $sizes[$i];
-    }
-
-    /*
-     * function getIndexedContent
-     * @param $pageUid page uid
-     */
-    public function getIndexedContent($pageUid)
-    {
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
-        $contentRows = $queryBuilder
-            ->select('*')
-            ->from('tx_kesearch_index')
-            ->where(
-                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('page')),
-                $queryBuilder->expr()->eq('targetpid', (int)$pageUid)
-            )
-            ->orWhere(
-                $queryBuilder->expr()->neq('type', $queryBuilder->createNamedParameter('page')) .
-                ' AND ' .
-                $queryBuilder->expr()->eq('pid', (int)$pageUid)
-            )
-            ->executeQuery();
-
-        $content = '<div class="table-fit">';
-        $content .= '<table class="table table-hover">'
-            . '<thead>'
-                . '<tr>'
-                    . '<th>Title</th>'
-                    . '<th>Type</th>'
-                    . '<th>Language</th>'
-                    . '<th>Words</th>'
-                    . '<th>Created</th>'
-                    . '<th>Modified</th>'
-                    . '<th>Target Page</th>'
-                    . '<th>URL Params</th>'
-                    . '<th></th>'
-                . '</tr>'
-            . '</thead>';
-        while ($row = $contentRows->fetchAssociative()) {
-            // build tag table
-            $tagTable = '';
-            $tags = GeneralUtility::trimExplode(',', $row['tags'], true);
-            foreach ($tags as $tag) {
-                $tagTable .= '<span class="badge badge-info">' . $this->encode($tag) . '</span> ';
-            }
-
-            // build content
-            $content .=
-                '<tr>'
-                    . '<td>' . $this->encode($row['title']) . '</td>'
-                    . '<td><span class="label label-primary">' . $this->encode($row['type']) . '</span></td>'
-                    . '<td>' . $this->encode($row['language']) . '</td>'
-                    . '<td>' . $this->encode((string)str_word_count($row['content'])) . '</td>'
-                    . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['crdate'])) . '</td>'
-                    . '<td>' . $this->encode(SearchHelper::formatTimestamp($row['tstamp'])) . '</td>'
-                    . '<td>' . $this->encode($row['targetpid']) . '</td>'
-                    . '<td>' . $this->encode($row['params']) . '</td>'
-                    . '<td><a class="btn btn-default" data-bs-toggle="collapse" data-bs-target="#ke' . $row['uid'] . '" data-action="expand" data-toggle="collapse" data-target="#ke' . $row['uid'] . '" title="Expand record"><span class="icon icon-size-small icon-state-default"><span class="icon-markup"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g class="icon-color"><path d="M7 2.25c0-.14.11-.25.25-.25h1.5c.14 0 .25.11.25.25v1.5c0 .14-.11.25-.25.25h-1.5C7.11 4 7 3.89 7 3.75v-1.5zM10.75 14h-5.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25H7V8h-.75C6.11 8 6 7.89 6 7.75v-1.5A.25.25 0 0 1 6.25 6h2.5a.25.25 0 0 1 .25.25V12h1.75a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25z"/></g></svg> </span></span></a></td>'
-                . '</tr>'
-                . '<tr class="collapse" id="ke' . $row['uid'] . '">'
-                    . '<td colspan="9">'
-                        . '<table class="table">'
-                            . '<thead>'
-                                . '<tr>'
-                                    . '<th>Original PID</th>'
-                                    . '<th>Original UID</th>'
-                                    . '<th>FE Group</th>'
-                                    . '<th>Sort Date</th>'
-                                    . '<th>Start Date</th>'
-                                    . '<th>End Date</th>'
-                                    . '<th>Tags</th>'
-                                . '</tr>'
-                            . '</thead>'
-                            . '<tr>'
-                                . '<td>' . $this->encode($row['orig_pid']) . '</td>'
-                                . '<td>' . $this->encode($row['orig_uid']) . '</td>'
-                                . '<td>' . $this->encode($row['fe_group']) . '</td>'
-                                . '<td>' . $this->encode($row['sortdate'] ? SearchHelper::formatTimestamp($row['sortdate']) : '') . '</td>'
-                                . '<td>' . $this->encode($row['starttime'] ? SearchHelper::formatTimestamp($row['starttime']) : '') . '</td>'
-                                . '<td>' . $this->encode($row['endtime'] ? SearchHelper::formatTimestamp($row['endtime']) : '') . '</td>'
-                                . '<td>' . $tagTable . '</td>'
-                            . '</tr>'
-                            . '<tr>'
-                                . '<td colspan="7">'
-                                    . ((trim($row['abstract'])) ? (
-                                        '<p><strong>Abstract</strong></p>'
-                                        . '<p>' . nl2br($this->encode($row['abstract'])) . '</p>'
-                                    ) : '')
-                                    . ((trim($row['content'])) ? (
-                                        '<p><strong>Content</strong></p>'
-                                        . '<p>' . nl2br($this->encode($row['content'])) . '</p>'
-                                    ) : '')
-                                    . ((trim($row['hidden_content'])) ? (
-                                        '<p><strong>Hidden content</strong></p>'
-                                        . '<p>' . nl2br($this->encode($row['hidden_content'])) . '</p>'
-                                    ) : '')
-                                . '</td>'
-                            . '</tr>'
-                        . '</table>'
-                    . '</td>'
-                . '</tr>';
-        }
-        $content .= '</table>';
-        $content .= '</div>';
-
-        return $content;
     }
 
     /**
