@@ -849,8 +849,10 @@ class IndexerRunner
             . $addQueryPartFor['execute'] . ';';
 
         try {
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('BEGIN;');
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -903,8 +905,10 @@ class IndexerRunner
             . ', @uid;';
 
         try {
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('BEGIN;');
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
+            Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
         } catch (Exception $e) {
             // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
