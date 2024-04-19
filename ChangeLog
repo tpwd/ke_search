@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.4.1, 19 April 2024
 [BUGFIX]  Always remove duplicates from tags, not only when a tag is set in the indexer configuration. https://github.com/tpwd/ke_search/issues/211
 [BUGFIX]  Fix TypeError after 'RemoveLock'. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/223
 [BUGFIX]  Avoid PHP warning "Undefined array key" in TimeUtility. https://github.com/tpwd/ke_search/issues/221
