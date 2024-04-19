@@ -165,7 +165,7 @@ class IndexerStatusService
         return $this->registry->get(
             self::INDEXER_STATUS_REGISTRY_NAMESPACE,
             self::INDEXER_STATUS_REGISTRY_LAST_RUN_TIME
-        );
+        ) ?? [];
     }
 
     /**

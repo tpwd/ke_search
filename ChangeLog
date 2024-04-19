@@ -1,22 +1,23 @@
 ChangeLog
 
 Upcoming version
-[BUGFIX]  Always remove duplicates from tags, not only when a tag is set in the indexer configuration, see https://github.com/tpwd/ke_search/issues/211
+[BUGFIX]  Always remove duplicates from tags, not only when a tag is set in the indexer configuration. https://github.com/tpwd/ke_search/issues/211
+[BUGFIX]  Fix TypeError after 'RemoveLock'. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/223
 
 Version 5.4.0, 12 April 2024
 [!!!]     The generation of tags has been updated. If a tag is auto-generated e.g. from a category title, it will now be changed if it does not meet the requirements (length, allowed characters, not in list of stop words). If it is too short or is in the list of stop words, the character "A" will be appended automatically. That may affect your filters if you are using tags that don't meet the requirements. In that case re-index and check if the tags in filter options match the tags in the index.
 [FEATURE] Make sure stop words are not used as tags, https://github.com/tpwd/ke_search/issues/81
-[FEATURE] Show progress of indexing in backend module and in console command, add new console command "indexerstatus", https://github.com/tpwd/ke_search/issues/216
-[TASK]    Update default pagination template, add first and last page, thanks to Stephan Bauer, https://github.com/tpwd/ke_search/issues/219 and https://github.com/tpwd/ke_search/pull/218
-[TASK]    Add "ignorePageTypeRestriction" to TCA configs, allow records on default pages and the root page in TYPO3 v12, thanks to Dimitri König, https://github.com/tpwd/ke_search/pull/212
+[FEATURE] Show progress of indexing in backend module and in console command, add new console command "indexerstatus". https://github.com/tpwd/ke_search/issues/216
+[TASK]    Update default pagination template, add first and last page. Thanks to Stephan Bauer. https://github.com/tpwd/ke_search/issues/219 and https://github.com/tpwd/ke_search/pull/218
+[TASK]    Add "ignorePageTypeRestriction" to TCA configs, allow records on default pages and the root page in TYPO3 v12. Thanks to Dimitri König. https://github.com/tpwd/ke_search/pull/212
 
 Version 5.3.0, 23 February 2024
-[FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package. Bootstrap package elements are pre-configured. Thanks for sponsoring to La Sierra University, https://github.com/tpwd/ke_search/issues/104
+[FEATURE] Make it possible to index content from additional tables in the pages and content element indexer, eg. for EXT:mask and EXT:bootstrap_package. Bootstrap package elements are pre-configured. Thanks for sponsoring to La Sierra University. https://github.com/tpwd/ke_search/issues/104
 [FEATURE] Index files linked in "link" fields
-[FEATURE] Add incremental indexer for tt_content records, https://github.com/tpwd/ke_search/issues/63
-[BUGFIX]  Don't overwrite collected files, https://github.com/tpwd/ke_search/issues/150
-[BUGFIX]  Avoid PHP warning "Undefined array key" for "alternative" and "description". Thanks to medarob, https://github.com/tpwd/ke_search/pull/215
-[TASK]    Raise requirement of TYPO3 to 11.5.11, https://github.com/tpwd/ke_search/issues/208
+[FEATURE] Add incremental indexer for tt_content records. https://github.com/tpwd/ke_search/issues/63
+[BUGFIX]  Don't overwrite collected files. https://github.com/tpwd/ke_search/issues/150
+[BUGFIX]  Avoid PHP warning "Undefined array key" for "alternative" and "description". Thanks to medarob. https://github.com/tpwd/ke_search/pull/215
+[TASK]    Raise requirement of TYPO3 to 11.5.11. https://github.com/tpwd/ke_search/issues/208
 [TASK]    Avoid instantiating of page indexer object in news indexer
 [DOCS]    Add documentation about using custom labels
 
