@@ -2,7 +2,6 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
-[TASK]    Add "ignorePageTypeRestriction" to TCA configs, allow records on default pages and the root page in TYPO3 v12. Thanks to Dimitri König. https://github.com/tpwd/ke_search/pull/212
 [TASK]    Add BEGIN and COMMIT statements needed to run ke_search in a Percona-Database-Cluster with strict-mode. Thanks to rentz-skygate. https://github.com/tpwd/ke_search/issues/222
 
 Version 5.4.1, 19 April 2024
