@@ -786,18 +786,33 @@ class PluginBase extends AbstractPlugin
                 // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
                 // for pages and news we have to fetch the file reference uid
                 if ($type == 'file') {
+                    $fileExtension = '';
                     if ($this->conf['showFilePreview'] ?? '') {
                         // SearchHelper::getFile will return af FILE object if it is a FAL file,
                         // otherwise it's a plain path to a file
-                        if (SearchHelper::getFile($row['orig_uid'])) {
+                        $file = SearchHelper::getFile($row['orig_uid']);
+                        if ($file) {
                             // FAL file
                             $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
+                            $fileExtension = $file->getExtension();
                         } else {
                             // no FAL file or FAL file does not exist
                             if (file_exists($row['directory'] . $row['title'])) {
                                 $resultrowTemplateValues['filePreviewId'] = $row['directory'] . $row['title'];
+                                $fileExtension = pathinfo($row['title'], PATHINFO_EXTENSION);
                             }
                         }
+                    }
+                    $filePreviewPossible = in_array(
+                        $fileExtension,
+                        GeneralUtility::trimExplode(
+                            ',',
+                            $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                            true
+                        )
+                    );
+                    if (!$filePreviewPossible) {
+                        $resultrowTemplateValues['filePreviewId'] = 0;
                     }
                     $resultrowTemplateValues['treatIdAsReference'] = 0;
                 } else {
