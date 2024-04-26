@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\ViewHelpers\Count;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -16,7 +17,7 @@ class WordsViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public static function renderStatic(
         array $arguments,

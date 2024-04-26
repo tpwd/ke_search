@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -39,7 +40,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
-use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -281,28 +282,23 @@ class BackendModuleController
      */
     public function indexedContentAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        $pagination = null;
-        $paginator = null;
-        $currentPageNumber = (int)($request->getQueryParams()['currentPageNumber'] ?? 1);
-
         if ($this->pageId) {
             $perms_clause = $this->getBackendUser()->getPagePermsClause(1);
             $pageInfo = BackendUtility::readPageAccess($this->pageId, $perms_clause);
-            // page is selected: get indexed content
-            $content = '<h3>Index content for PID ' . $this->pageId;
-            $content .= '<span class="small">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path')
-                . ': ' . GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -50) . '</span></h3>';
+            $pagePath = GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -200);
+
             $indexRecords = $this->indexRepository->findByPageUidToShowIndexedContent($this->pageId);
-            $paginator = new ArrayPaginator($indexRecords, $currentPageNumber, 20);
-            $pagination = new SimplePagination($paginator);
-        } else {
-            // no page selected: show message
-            $content = '<div class="alert alert-info">'
-                . LocalizationUtility::translate(
-                    'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:select_a_page',
-                    'KeSearch'
-                )
-                . '</div>';
+            $currentPage = (int)($request->getQueryParams()['currentPage'] ?? 1);
+            $paginator = new ArrayPaginator($indexRecords, $currentPage, 20);
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+                $pagination = new BackportedSlidingWindowPagination($paginator, 15);
+            } else {
+                // PHPStan is complaining that the SlidingWindowPagination class does not exist in TYPO3 11,
+                // so we ignore this error for now
+                // Todo: Remove the PHPStan annotation below once support for TYPO3 11 is dropped
+                // @phpstan-ignore-next-line
+                $pagination = new SlidingWindowPagination($paginator, 15);
+            }
         }
 
         $this->addMainMenu($request, $moduleTemplate, 'indexedContent');
@@ -310,22 +306,28 @@ class BackendModuleController
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
             $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
+            $moduleTemplate->getView()->setPartialRootPaths(
+                array_merge(
+                    $moduleTemplate->getView()->getPartialRootPaths(),
+                    ['EXT:ke_search/Resources/Private/Partials/']
+                )
+            );
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
-            $moduleTemplate->getView()->assign('content', $content);
-            $moduleTemplate->getView()->assign('pagination', $pagination);
-            $moduleTemplate->getView()->assign('paginator', $paginator);
-            $moduleTemplate->getView()->assign('do', $this->do);
-            $moduleTemplate->getView()->assign('id', $this->pageId);
-            $moduleTemplate->getView()->assign('currentPageNumber', $currentPageNumber);
+            $moduleTemplate->getView()->assign('pagination', $pagination ?? null);
+            $moduleTemplate->getView()->assign('paginator', $paginator ?? null);
+            $moduleTemplate->getView()->assign('do', $this->do ?? '');
+            $moduleTemplate->getView()->assign('pageId', $this->pageId ?? 0);
+            $moduleTemplate->getView()->assign('currentPage', $currentPage ?? 1);
+            $moduleTemplate->getView()->assign('pagePath', $pagePath ?? '');
             // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
-        $moduleTemplate->assign('content', $content);
-        $moduleTemplate->assign('pagination', $pagination);
-        $moduleTemplate->assign('paginator', $paginator);
-        $moduleTemplate->assign('do', $this->do);
-        $moduleTemplate->assign('id', $this->pageId);
-        $moduleTemplate->assign('currentPageNumber', $currentPageNumber);
+        $moduleTemplate->assign('pagination', $pagination ?? null);
+        $moduleTemplate->assign('paginator', $paginator ?? null);
+        $moduleTemplate->assign('do', $this->do ?? '');
+        $moduleTemplate->assign('pageId', $this->pageId ?? 0);
+        $moduleTemplate->assign('currentPage', $currentPage ?? 1);
+        $moduleTemplate->assign('pagePath', $pagePath ?? '');
 
         return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
     }

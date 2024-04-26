@@ -1,0 +1,56 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<nav class="mb-2 mt-2" aria-labelledby="recordlist-pagination">
+    <f:comment><!--Number of records--></f:comment>
+    <f:variable name="firstElement" value="{paginator.keyOfFirstPaginatedItem + 1}"></f:variable>
+    <f:variable name="lastElement" value="{paginator.keyOfLastPaginatedItem + 1}"></f:variable>
+    <span id="recordlist-pagination" class="page-item ps-2 pe-2 pagination-label">
+        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:rangeIndicator" arguments="{firstElement: firstElement, lastElement: lastElement}" />
+        <span class="visually-hidden">, <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:pageIndicator" arguments="{currentPage: currentPage, totalPages: totalPages}"/></span>
+    </span>
+
+    <ul class="pagination">
+        <f:comment><!--First page and previous page--></f:comment>
+        <f:if condition="{currentPage} > 1">
+            <f:then>
+                <f:variable name="previousPage" value="{currentPage - 1}" />
+                <li class="page-item ps-2"><f:be.link route="web_KeSearchBackendModule" parameters="{id: pageId, do: do, currentPage: 1}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:first')}"><core:icon identifier="actions-view-paging-first"/></f:be.link></li>
+                <li class="page-item ps-2"><f:be.link route="web_KeSearchBackendModule" parameters="{id: pageId, do: do, currentPage: previousPage}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:previous')}"><core:icon identifier="actions-view-paging-previous" /></f:be.link></li>
+            </f:then>
+            <f:else>
+                <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-first" /></li>
+                <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-previous" /></li>
+            </f:else>
+        </f:if>
+
+        <f:for each="{pagination.allPageNumbers}" as="page">
+            <li class="page-item ps-2">
+                <f:be.link route="web_KeSearchBackendModule" parameters="{id: pageId, do: do, currentPage: page}">
+                    <f:if condition="{page} == {currentPage}">
+                        <f:then> <strong>{page}</strong> </f:then>
+                        <f:else> {page} </f:else>
+                    </f:if>
+                </f:be.link>
+            </li>
+        </f:for>
+
+        <f:comment><!--Next page and last page--></f:comment>
+        <f:if condition="{currentPage} < {totalPages}">
+            <f:then>
+                <f:variable name="nextPage" value="{currentPage + 1}" />
+                <li class="page-item ps-2"><f:be.link route="web_KeSearchBackendModule" parameters="{id: pageId, do: do, currentPage: nextPage}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:next')}"><core:icon identifier="actions-view-paging-next" /></f:be.link></li>
+                <li class="page-item ps-2"><f:be.link route="web_KeSearchBackendModule" parameters="{id: pageId, do: do, currentPage: totalPages}" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:last')}"><core:icon identifier="actions-view-paging-last" /></f:be.link></li>
+            </f:then>
+            <f:else>
+                <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-next" /></li>
+                <li class="page-item ps-2" aria-hidden="true"><core:icon identifier="actions-view-paging-last" /></li>
+            </f:else>
+        </f:if>
+    </ul>
+</nav>
+
+</html>

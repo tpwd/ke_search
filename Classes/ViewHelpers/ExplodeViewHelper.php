@@ -1,4 +1,5 @@
 <?php
+
 namespace Tpwd\KeSearch\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;

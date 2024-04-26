@@ -296,5 +296,4 @@ class IndexRepository
             ->executeQuery()
             ->fetchAllAssociative();
     }
-
 }
