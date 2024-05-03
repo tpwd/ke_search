@@ -159,7 +159,6 @@ class Page extends IndexerBase
     protected IndexerStatusService $indexerStatusService;
 
     /**
-     * tx_kesearch_indexer_types_page constructor.
      * @param IndexerRunner $pObj
      */
     public function __construct($pObj)
@@ -765,7 +764,7 @@ class Page extends IndexerBase
             foreach ($pageContent as $language_uid => $content) {
                 $pageTitle = $this->cachedPageRecords[$language_uid][$uid]['title'] ?? '[empty title]';
                 if (!$pageAccessRestrictions['hidden'] && $this->checkIfpageShouldBeIndexed($uid, $language_uid)) {
-                    $this->pObj->logger->debug('Indexing page ' . $pageTitle . ' (UID ' . $uid . ', L ' . $language_uid . ')');
+                    $this->pObj->logger->debug('Indexing page "' . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')');
                     // overwrite access restrictions with language overlay values
                     $accessRestrictionsLanguageOverlay = $pageAccessRestrictions;
                     $pageAccessRestrictions['fe_group'] = $indexEntryDefaultValues['feGroupsPages'];

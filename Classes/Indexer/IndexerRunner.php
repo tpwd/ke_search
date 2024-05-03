@@ -36,7 +36,6 @@ use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -209,6 +208,7 @@ class IndexerRunner
                             $message .= $searchObj->startIndexing();
                         }
                     }
+                    $this->checkIfIndexerHadErrors($searchObj);
                     $content .= $this->renderIndexingReport($searchObj, $message);
                 } else {
                     $errorMessage = 'Could not find class ' . $className;
@@ -232,6 +232,7 @@ class IndexerRunner
                     } else {
                         $message = $searchObj->startIncrementalIndexing($indexerConfig, $this);
                     }
+                    $this->checkIfIndexerHadErrors($searchObj);
                     if ($message) {
                         $content .= $this->renderIndexingReport($searchObj, $message);
                     }
@@ -254,16 +255,30 @@ class IndexerRunner
         $indexingTime = $this->endTime - $this->startTime;
         $content .= '<div class="alert alert-success">';
         $content .= chr(10) . '<h3>Finished</h3>' . chr(10);
-
         $message = 'Indexing finished at ' . SearchHelper::formatTimestamp($this->endTime) . ' (took ' . $this->formatTime($indexingTime) . ').';
         $content .= $message;
         $this->logger->info($message);
-
         $message = '<br />Index contains ' . $this->indexRepository->getTotalNumberOfRecords() . ' entries.';
         $content .= $message;
         $this->logger->info($message);
+        $content .= '</div>' . chr(10);
 
-        $content .= '</div>';
+        // check if there have been errors during indexing and output them
+        if (count($this->indexingErrors)) {
+            $content .= '<div class="alert alert-warning">';
+            $content .= chr(10) . '<h3>Errors</h3>' . chr(10);
+            $content .= '<p>There have been errors during the indexing process.</p>';
+            $content .= '<p>As a hint here\'s a small part of the errors.</p>';
+            $errorMessageSlices = array_slice(array_unique($this->indexingErrors), 0, 20);
+            $content .= '<ul>';
+            foreach ($errorMessageSlices as $errorMessage) {
+                $content .= '<li>' . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') . '</li>' . chr(10);
+            }
+            $content .= '</ul>';
+            $content .= '<p>Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</p>';
+            $content .= '</div>';
+        }
+
         $content .= '</div></div>';
 
         $this->indexerStatusService->setLastRunTime($this->startTime, $this->endTime, $indexingTime);
@@ -327,7 +342,7 @@ class IndexerRunner
 
         // indexing mode
         $content .= '<td>';
-        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
+        if (is_subclass_of($searchObj, IndexerBase::class)) {
             if (method_exists($searchObj, 'getIndexingMode')) {
                 if ($searchObj->getIndexingMode() == IndexerBase::INDEXING_MODE_INCREMENTAL) {
                     $content .= '<span class="indexingMode">Incremental mode</span>';
@@ -342,19 +357,11 @@ class IndexerRunner
         $content .= '<td>';
         $content .= nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
 
-        // errors
-        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
-            $errors = method_exists($searchObj, 'getErrors') ? $searchObj->getErrors() : [];
-            if (count($errors)) {
-                $content .= '<p class="badge badge-warning">Warning: There have been errors. Please refer to the error log (typically in var/log/)</p>';
-            }
-        }
-
         $content .= '</td>' . chr(10);
 
         // duration, show sec or ms
         $content .= '<td>';
-        if (is_subclass_of($searchObj, '\Tpwd\KeSearch\Indexer\IndexerBase')) {
+        if (is_subclass_of($searchObj, IndexerBase::class)) {
             $duration = method_exists($searchObj, 'getDuration') ? $searchObj->getDuration() : 0;
             if ($duration > 0) {
                 $content .= '<i>Indexing process took ';
@@ -432,51 +439,75 @@ class IndexerRunner
 
         // Statement to check if record already exists in db
         $databaseConnection = Db::getDatabaseConnection('tx_kesearch_index');
-        $databaseConnection->exec('PREPARE searchStmt FROM "
-			SELECT *
-			FROM tx_kesearch_index
-			WHERE orig_uid = ?
-			AND pid = ?
-			AND type = ?
-			AND language = ?
-			LIMIT 1
-		"');
+        try {
+            $databaseConnection->executeStatement('PREPARE searchStmt FROM "
+                SELECT *
+                FROM tx_kesearch_index
+                WHERE orig_uid = ?
+                AND pid = ?
+                AND type = ?
+                AND language = ?
+                LIMIT 1
+            "');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while preparing searchStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
         // Statement to update an existing record in indexer table
         $databaseConnection = Db::getDatabaseConnection('tx_kesearch_index');
-        $databaseConnection->exec('PREPARE updateStmt FROM "
-			UPDATE tx_kesearch_index
-			SET pid=?,
-			title=?,
-			type=?,
-			targetpid=?,
-			content=?,
-			tags=?,
-			params=?,
-			abstract=?,
-			language=?,
-			starttime=?,
-			endtime=?,
-			fe_group=?,
-			tstamp=?' . $addUpdateQuery . '
-			WHERE uid=?
-		"');
+        try {
+            $databaseConnection->executeStatement('PREPARE updateStmt FROM "
+                UPDATE tx_kesearch_index
+                SET pid=?,
+                title=?,
+                type=?,
+                targetpid=?,
+                content=?,
+                tags=?,
+                params=?,
+                abstract=?,
+                language=?,
+                starttime=?,
+                endtime=?,
+                fe_group=?,
+                tstamp=?' . $addUpdateQuery . '
+                WHERE uid=?
+            "');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while preparing updateStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
         // Statement to insert a new records to index table
         $databaseConnection = Db::getDatabaseConnection('tx_kesearch_index');
-        $databaseConnection->exec('PREPARE insertStmt FROM "
-			INSERT INTO tx_kesearch_index
-			(pid, title, type, targetpid, content, tags, params, abstract, language,'
-            . ' starttime, endtime, fe_group, tstamp, crdate' . $addInsertQueryFields . ')
-			VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?' . $addInsertQueryValues . ', ?)
-		"');
+        try {
+            $databaseConnection->executeStatement('PREPARE insertStmt FROM "
+                INSERT INTO tx_kesearch_index
+                (pid, title, type, targetpid, content, tags, params, abstract, language,'
+                    . ' starttime, endtime, fe_group, tstamp, crdate' . $addInsertQueryFields . ')
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?' . $addInsertQueryValues . ', ?)
+            "');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while preparing insertStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
         // disable keys only if indexer table was truncated (has 0 records)
         // this speeds up the first indexing process
         // don't use this for updating index table
         // if you activate this for updating 40.000 existing records, indexing process needs 1 hour longer
         if ($this->indexRepository->getTotalNumberOfRecords() == 0) {
-            Db::getDatabaseConnection('tx_kesearch_index')->exec('ALTER TABLE tx_kesearch_index DISABLE KEYS');
+            try {
+                Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('ALTER TABLE tx_kesearch_index DISABLE KEYS');
+            } catch (Exception $e) {
+                $errorMessage = 'Error while disabling keys: ' . $e->getMessage();
+                $this->logger->error($errorMessage);
+                $this->indexingErrors[] = $errorMessage;
+            }
         }
     }
 
@@ -486,17 +517,41 @@ class IndexerRunner
     public function cleanUpProcessAfterIndexing()
     {
         // enable keys (may have been disabled because it was the first indexing)
-        Db::getDatabaseConnection('tx_kesearch_index')
-            ->exec('ALTER TABLE tx_kesearch_index ENABLE KEYS');
+        try {
+            Db::getDatabaseConnection('tx_kesearch_index')
+                ->executeStatement('ALTER TABLE tx_kesearch_index ENABLE KEYS');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while enabling keys: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
-        Db::getDatabaseConnection('tx_kesearch_index')
-            ->exec('DEALLOCATE PREPARE searchStmt');
+        try {
+            Db::getDatabaseConnection('tx_kesearch_index')
+                ->executeStatement('DEALLOCATE PREPARE searchStmt');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while deallocating searchStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
-        Db::getDatabaseConnection('tx_kesearch_index')
-            ->exec('DEALLOCATE PREPARE updateStmt');
+        try {
+            Db::getDatabaseConnection('tx_kesearch_index')
+                ->executeStatement('DEALLOCATE PREPARE updateStmt');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while deallocating updateStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
-        Db::getDatabaseConnection('tx_kesearch_index')
-            ->exec('DEALLOCATE PREPARE insertStmt');
+        try {
+            Db::getDatabaseConnection('tx_kesearch_index')
+                ->executeStatement('DEALLOCATE PREPARE insertStmt');
+        } catch (Exception $e) {
+            $errorMessage = 'Error while deallocating insertStmt: ' . $e->getMessage();
+            $this->logger->error($errorMessage);
+            $this->indexingErrors[] = $errorMessage;
+        }
 
         $this->indexerStatusService->clearAll();
     }
@@ -545,7 +600,7 @@ class IndexerRunner
                 ->where($where)
                 ->executeStatement();
 
-            $content .= '<strong>' . $count . '</strong> entries deleted.' . "<br />\n";
+            $content .= '<strong>' . $count . '</strong> entries deleted.' . '<br />';
             $this->logger->info('CleanUpIndex: ' . $count . ' entries deleted.');
 
             // rotate Sphinx Index (ke_search_premium function)
@@ -770,35 +825,15 @@ class IndexerRunner
         }
 
         if ($recordExists) { // update existing record
-            $where = 'uid=' . (int)($this->currentRow['uid']);
             unset($fieldValues['crdate']);
-            if ($debugOnly) { // do not process - just debug query
-                DebugUtility::debug(
-                    (string)Db::getDatabaseConnection($table)
-                        ->update(
-                            $table,
-                            $fieldValues,
-                            ['uid' => (int)($this->currentRow['uid'])]
-                        )
-                );
-            } else { // process storing of index record and return true
-                $this->updateRecordInIndex($fieldValues);
-                return true;
-            }
-        } else { // insert new record
-            if ($debugOnly) { // do not process - just debug query
-                DebugUtility::debug(
-                    (string)Db::getDatabaseConnection($table)
-                        ->insert(
-                            $table,
-                            $fieldValues
-                        )
-                );
-            } else { // process storing of index record and return uid
-                $this->insertRecordIntoIndex($fieldValues);
-                return (int)Db::getDatabaseConnection('tx_kesearch_index')->lastInsertId($table);
-            }
+            $this->updateRecordInIndex($fieldValues, $debugOnly);
+            return true;
+        }   // insert new record
+        $this->insertRecordIntoIndex($fieldValues, $debugOnly);
+        if (!$debugOnly) {
+            return (int)Db::getDatabaseConnection('tx_kesearch_index')->lastInsertId($table);
         }
+
         return 0;
     }
 
@@ -806,9 +841,13 @@ class IndexerRunner
      * inserts a new record into the index using a prepared statement
      * @param $fieldValues array
      */
-    public function insertRecordIntoIndex($fieldValues)
+    public function insertRecordIntoIndex($fieldValues, bool $debugOnly = false)
     {
         $this->logger->debug('Inserting: ' . json_encode($this->getDebugValuesFromFieldValues($fieldValues)));
+        if ($debugOnly) {
+            $this->logger->debug('Not executing (debugOnly is activated)');
+            return;
+        }
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
@@ -855,6 +894,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
+            $this->indexingErrors[] = $e->getMessage();
         }
     }
 
@@ -862,9 +902,13 @@ class IndexerRunner
      * updates a record in the index using a prepared statement
      * @param $fieldValues
      */
-    public function updateRecordInIndex($fieldValues)
+    public function updateRecordInIndex($fieldValues, bool $debugOnly = false)
     {
         $this->logger->debug('Updating: ' . json_encode($this->getDebugValuesFromFieldValues($fieldValues)));
+        if ($debugOnly) {
+            $this->logger->debug('Not executing (debugOnly is activated)');
+            return;
+        }
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $addQueryPartFor = $this->getQueryPartForAdditionalFields($fieldValues);
 
@@ -912,6 +956,7 @@ class IndexerRunner
         } catch (Exception $e) {
             // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
+            $this->indexingErrors[] = $e->getMessage();
         }
     }
 
@@ -1128,7 +1173,7 @@ class IndexerRunner
                 $errormessage .= 'STORAGE PID: ' . $storagePid . '; ';
             }
             $this->logger->error($errormessage);
-            $this->indexingErrors[] = ' (' . $errormessage . ')';
+            $this->indexingErrors[] = $errormessage;
 
             // break indexing and wait for next record to store
             return false;
@@ -1211,5 +1256,15 @@ class IndexerRunner
     {
         $this->io = $io;
         $this->indexerStatusService->setConsoleIo($io);
+    }
+
+    protected function checkIfIndexerHadErrors($searchObj)
+    {
+        if (is_subclass_of($searchObj, IndexerBase::class)) {
+            $errors = method_exists($searchObj, 'getErrors') ? $searchObj->getErrors() : [];
+            if (count($errors)) {
+                $this->indexingErrors = array_merge($this->indexingErrors, $errors);
+            }
+        }
     }
 }
