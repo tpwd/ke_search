@@ -2,8 +2,9 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
-[TASK]    Add BEGIN and COMMIT statements needed to run ke_search in a Percona-Database-Cluster with strict-mode. Thanks to rentz-skygate. https://github.com/tpwd/ke_search/issues/222
 [BUGFIX]  Render file preview in result list only for files which are in the "imagefile_ext" list (images and PDF files). https://github.com/tpwd/ke_search/issues/60
+[BUGFIX]  Don't stop indexing if a folder does not exist. Thanks to Philip Hartmann. https://github.com/tpwd/ke_search/issues/225
+[TASK]    Add BEGIN and COMMIT statements needed to run ke_search in a Percona-Database-Cluster with strict-mode. Thanks to rentz-skygate. https://github.com/tpwd/ke_search/issues/222
 [TASK]    Improve logging for Indexer database actions and output errors in indexing report. https://github.com/tpwd/ke_search/issues/59
 
 Version 5.4.1, 19 April 2024

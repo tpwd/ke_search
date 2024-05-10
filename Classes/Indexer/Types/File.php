@@ -175,6 +175,14 @@ class File extends IndexerBase
     public function getFilesFromFal(array &$files, array $directoryArray)
     {
         foreach ($directoryArray as $directory) {
+            if (!$this->storage->hasFolder($directory)) {
+                $errorMessage = 'Folder "' . $directory . '" does not exist.';
+                // @extensionScannerIgnoreLine
+                $this->pObj->logger->error($errorMessage);
+                $this->addError($errorMessage);
+                continue;
+            }
+
             /** @var Folder $folder */
             $folder = $this->storage->getFolder($directory);
 
