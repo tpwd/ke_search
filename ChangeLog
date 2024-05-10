@@ -6,6 +6,7 @@ Upcoming version
 [BUGFIX]  Don't stop indexing if a folder does not exist. Thanks to Philip Hartmann. https://github.com/tpwd/ke_search/issues/225
 [TASK]    Add BEGIN and COMMIT statements needed to run ke_search in a Percona-Database-Cluster with strict-mode. Thanks to rentz-skygate. https://github.com/tpwd/ke_search/issues/222
 [TASK]    Improve logging for Indexer database actions and output errors in indexing report. https://github.com/tpwd/ke_search/issues/59
+[TASK]    Show name of the indexer in which an error occurred in the indexing report.
 
 Version 5.4.1, 19 April 2024
 [BUGFIX]  Always remove duplicates from tags, not only when a tag is set in the indexer configuration. https://github.com/tpwd/ke_search/issues/211

@@ -208,7 +208,7 @@ class IndexerRunner
                             $message .= $searchObj->startIndexing();
                         }
                     }
-                    $this->checkIfIndexerHadErrors($searchObj);
+                    $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
                     $content .= $this->renderIndexingReport($searchObj, $message);
                 } else {
                     $errorMessage = 'Could not find class ' . $className;
@@ -232,7 +232,7 @@ class IndexerRunner
                     } else {
                         $message = $searchObj->startIncrementalIndexing($indexerConfig, $this);
                     }
-                    $this->checkIfIndexerHadErrors($searchObj);
+                    $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
                     if ($message) {
                         $content .= $this->renderIndexingReport($searchObj, $message);
                     }
@@ -267,15 +267,14 @@ class IndexerRunner
         if (count($this->indexingErrors)) {
             $content .= '<div class="alert alert-warning">';
             $content .= chr(10) . '<h3>Errors</h3>' . chr(10);
-            $content .= '<p>There have been errors during the indexing process.</p>';
-            $content .= '<p>As a hint here\'s a small part of the errors.</p>';
+            $content .= '<p>There have been errors during the indexing process:</p>';
             $errorMessageSlices = array_slice(array_unique($this->indexingErrors), 0, 20);
             $content .= '<ul>';
             foreach ($errorMessageSlices as $errorMessage) {
                 $content .= '<li>' . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') . '</li>' . chr(10);
             }
             $content .= '</ul>';
-            $content .= '<p>Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</p>';
+            $content .= '<i>This is list is meant as a hint. It may not contain all errors. Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</i>';
             $content .= '</div>';
         }
 
@@ -1258,13 +1257,16 @@ class IndexerRunner
         $this->indexerStatusService->setConsoleIo($io);
     }
 
-    protected function checkIfIndexerHadErrors($searchObj)
+    protected function mergeIndexingErrors($searchObj, array $indexingErrors): array
     {
         if (is_subclass_of($searchObj, IndexerBase::class)) {
             $errors = method_exists($searchObj, 'getErrors') ? $searchObj->getErrors() : [];
             if (count($errors)) {
-                $this->indexingErrors = array_merge($this->indexingErrors, $errors);
+                foreach ($errors as $error) {
+                    $indexingErrors[] = $searchObj->indexerConfig['title'] . ': ' . $error;
+                }
             }
         }
+        return $indexingErrors;
     }
 }
