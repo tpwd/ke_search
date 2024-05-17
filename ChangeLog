@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.5.0, 17 May 2024
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
 [BUGFIX]  Render file preview in result list only for files which are in the "imagefile_ext" list (images and PDF files). https://github.com/tpwd/ke_search/issues/60
 [BUGFIX]  Don't stop indexing if a folder does not exist. Thanks to Philip Hartmann. https://github.com/tpwd/ke_search/issues/225
