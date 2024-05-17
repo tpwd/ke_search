@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class News extends IndexerBase
 {
     protected IndexerStatusService $indexerStatusService;
+    protected IndexRepository $indexRepository;
 
     /**
      * Initializes indexer for news
@@ -51,6 +52,7 @@ class News extends IndexerBase
         parent::__construct($pObj);
         $this->pObj = $pObj;
         $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
+        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
     /**
@@ -59,7 +61,6 @@ class News extends IndexerBase
      */
     public function startIndexing()
     {
-        $content = '';
         $table = 'tx_news_domain_model_news';
 
         // get the pages from where to index the news
@@ -135,12 +136,11 @@ class News extends IndexerBase
                 // assigned categories and single view from category, if it exists)
                 $categoryData = $this->getCategoryData($newsRecord);
 
-                // If mode equals 2 ('choose categories for indexing')
-                // check if the current news record has one of the categories
-                // assigned that should be indexed.
-                // mode 1 means 'index all news no matter what category
-                // they have'
-                if ($this->indexerConfig['index_news_category_mode'] == '2' && $this->indexerConfig['index_extnews_category_selection']) {
+                // If mode equals 2 ('choose categories for indexing') check if the current news record has one of
+                // the categories assigned that should be indexed.
+                // Mode 1 means 'index all news no matter what category they have'.
+                if ((int)$this->indexerConfig['index_news_category_mode'] == 2
+                    && $this->indexerConfig['index_extnews_category_selection']) {
                     // load category configuration
                     $selectedCategoryUids = $this->getSelectedCategoriesUidList($this->indexerConfig['uid']);
 
@@ -164,17 +164,42 @@ class News extends IndexerBase
                 }
 
                 if ($shouldBeIndexed) {
-                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] . '"', [
-                        'uid' => $newsRecord['uid'],
-                        'pid' => $newsRecord['pid'],
-                        'sys_language_uid' => $newsRecord['sys_language_uid'],
-                    ]);
+                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] . '"',
+                        [
+                            'uid' => $newsRecord['uid'],
+                            'pid' => $newsRecord['pid'],
+                            'sys_language_uid' => $newsRecord['sys_language_uid'],
+                        ]
+                    );
                 } else {
-                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] . '"', [
-                        'uid' => $newsRecord['uid'],
-                        'pid' => $newsRecord['pid'],
-                        'sys_language_uid' => $newsRecord['sys_language_uid'],
-                    ]);
+                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] . '"',
+                        [
+                            'uid' => $newsRecord['uid'],
+                            'pid' => $newsRecord['pid'],
+                            'sys_language_uid' => $newsRecord['sys_language_uid'],
+                        ]
+                    );
+
+                    // In incremental indexing mode we need to remove this record from the index because it may have
+                    // been indexed before
+                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                        $numberOfAffectedRows = $this->indexRepository->deleteCorrespondingIndexRecords(
+                            ($newsRecord['type'] == 2) ? 'external:news' : 'news',
+                            [$newsRecord],
+                            $this->indexerConfig
+                        );
+                        if ($numberOfAffectedRows > 0) {
+                            $this->counterRemoved += $numberOfAffectedRows;
+                            $this->pObj->logger->debug(
+                                'Removed ' . $numberOfAffectedRows . ' index records for record "' . $newsRecord['title'] . '"',
+                                [
+                                    'uid' => $newsRecord['uid'],
+                                    'pid' => $newsRecord['pid'],
+                                    'sys_language_uid' => $newsRecord['sys_language_uid'],
+                                ]
+                            );
+                        }
+                    }
                     continue;
                 }
 
@@ -333,7 +358,18 @@ class News extends IndexerBase
         } else {
             $this->pObj->logger->info('No news records found for indexing.');
         }
-        return $indexedNewsCounter . ' News and ' . $this->fileCounter . ' related files have been indexed.';
+
+        $content = $indexedNewsCounter . ' News and ' . $this->fileCounter . ' related files have been indexed.' . chr(10);
+        if ($this->counterRemoved) {
+            $content .= $this->counterRemoved;
+            if ($this->counterRemoved > 1) {
+                $content .= ' news records have been removed.';
+            } else {
+                $content .= ' news record has been removed.';
+            }
+            $content .= chr(10);
+        }
+        return $content;
     }
 
     /**
@@ -372,7 +408,7 @@ class News extends IndexerBase
 
         // and remove the corresponding index entries
         $count = $indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
-        $message = chr(10) . 'Found ' . $count . ' deleted or hidden record(s).';
+        $message = 'Found ' . $count . ' deleted or hidden record(s).' . chr(10);
         return $message;
     }
 

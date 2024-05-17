@@ -140,12 +140,6 @@ class Page extends IndexerBase
     public $counterWithoutContent = 0;
 
     /**
-     * counter for how many files we have indexed
-     * @var int
-     */
-    public $fileCounter = 0;
-
-    /**
      * sql query for content types
      * @var string
      */
@@ -157,6 +151,7 @@ class Page extends IndexerBase
     protected AdditionalContentService $additionalContentService;
 
     protected IndexerStatusService $indexerStatusService;
+    protected IndexRepository $indexRepository;
 
     /**
      * @param IndexerRunner $pObj
@@ -217,6 +212,7 @@ class Page extends IndexerBase
         $this->filesProcessor = GeneralUtility::makeInstance(FilesProcessor::class);
 
         $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
+        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
     /**
@@ -295,6 +291,10 @@ class Page extends IndexerBase
             $result .= $this->counterWithoutContent . ' had no content or the content was not indexable.' . chr(10);
         }
 
+        if ($this->counterRemoved) {
+            $result .= $this->counterRemoved . ' have been removed.' . chr(10);
+        }
+
         $result .= $this->fileCounter . ' files have been indexed.';
 
         return $result;
@@ -319,9 +319,6 @@ class Page extends IndexerBase
      */
     public function removeDeleted(): string
     {
-        /** @var IndexRepository $indexRepository */
-        $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
-
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
@@ -336,7 +333,7 @@ class Page extends IndexerBase
         $records = $pageRepository->findAllDeletedAndHiddenByUidListAndTimestampInAllLanguages($indexPids, $this->lastRunStartTime);
 
         // and remove the corresponding index entries
-        $count = $indexRepository->deleteCorrespondingIndexRecords('page', $records, $this->indexerConfig);
+        $count = $this->indexRepository->deleteCorrespondingIndexRecords('page', $records, $this->indexerConfig);
         $message = chr(10) . 'Found ' . $count . ' deleted or hidden page(s).';
 
         return $message;
@@ -805,7 +802,25 @@ class Page extends IndexerBase
                     );
                     $this->counter++;
                 } else {
-                    $this->pObj->logger->debug('Skipping page ' . $pageTitle . ' (UID ' . $uid . ', L ' . $language_uid . ')');
+                    $this->pObj->logger->debug(
+                        'Skipping page "' . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')'
+                    );
+                    // In incremental indexing mode we need to remove this page from the index because it may have
+                    // been indexed before
+                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                        $numberOfAffectedRows = $this->indexRepository->deleteCorrespondingIndexRecords(
+                            'page',
+                            [$this->cachedPageRecords[$language_uid][$uid]],
+                            $this->indexerConfig
+                        );
+                        if ($numberOfAffectedRows > 0) {
+                            $this->counterRemoved += $numberOfAffectedRows;
+                            $this->pObj->logger->debug(
+                                'Removed ' . $numberOfAffectedRows . ' index records for page "'
+                                . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')'
+                            );
+                        }
+                    }
                 }
             }
         }

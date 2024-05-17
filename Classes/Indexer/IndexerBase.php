@@ -52,8 +52,16 @@ class IndexerBase
     // string which separates metadata from file content in the index record
     public const METADATASEPARATOR = "\n";
 
-    /** @var int $fileCounter */
+    /**
+     * counter for how many files we have indexed
+     * @var int
+     */
     protected $fileCounter = 0;
+
+    /**
+     * counter for how many records have been removed in incremental mode
+     */
+    protected int $counterRemoved = 0;
 
     /**
      * @var IndexerRunner

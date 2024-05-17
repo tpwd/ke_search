@@ -206,13 +206,15 @@ class IndexRepository
                 } else {
                     $origUid = $record['uid'];
                 }
-                $this->deleteByUniqueProperties(
+                $numberOfAffectedRows = $this->deleteByUniqueProperties(
                     $origUid,
                     $indexerConfig['storagepid'],
                     $type,
                     $record['sys_language_uid']
                 );
-                $count++;
+                if ($numberOfAffectedRows) {
+                    $count += $numberOfAffectedRows;
+                }
             }
         }
         return $count;
