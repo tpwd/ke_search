@@ -164,7 +164,8 @@ class News extends IndexerBase
                 }
 
                 if ($shouldBeIndexed) {
-                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] . '"',
+                    $this->pObj->logger->debug(
+                        'Indexing news record "' . $newsRecord['title'] . '"',
                         [
                             'uid' => $newsRecord['uid'],
                             'pid' => $newsRecord['pid'],
@@ -172,7 +173,8 @@ class News extends IndexerBase
                         ]
                     );
                 } else {
-                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] . '"',
+                    $this->pObj->logger->debug(
+                        'Skipping news record "' . $newsRecord['title'] . '"',
                         [
                             'uid' => $newsRecord['uid'],
                             'pid' => $newsRecord['pid'],
