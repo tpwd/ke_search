@@ -125,6 +125,9 @@ class File extends IndexerBase
         if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL) {
             $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
                 . $counter . ' new or updated files have been indexed.';
+            if ($this->counterRemoved) {
+                $resultMessage .= chr(10) . $this->counterRemoved . ' outdated file index record(s) have been removed.';
+            }
         } else {
             $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
                 . $counter . ' files have been indexed.';
@@ -190,9 +193,16 @@ class File extends IndexerBase
                 $filesInFolder = $folder->getFiles();
                 if (count($filesInFolder)) {
                     foreach ($filesInFolder as $file) {
-                        if ($file instanceof \TYPO3\CMS\Core\Resource\File
-                            && FileUtility::isFileIndexable($file, $this->indexerConfig)) {
-                            $files[] = $file;
+                        if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+                            if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
+                                $files[] = $file;
+                            } else {
+                                // This file should not be indexed. But in incremental indexing mode we also need
+                                // to remove this record from the index because it may have been indexed before.
+                                if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                                    $this->removeFileFromIndex($file);
+                                }
+                            }
                         }
                     }
                 }
@@ -205,6 +215,27 @@ class File extends IndexerBase
                     }
                 }
             }
+        }
+    }
+
+    public function removeFileFromIndex(\TYPO3\CMS\Core\Resource\File $file)
+    {
+        $orig_uid = $file->getUid();
+        $pid = $this->indexerConfig['storagepid'];
+        $language = $this->detectLanguage($file->getProperties());
+        $type = 'file:' . $file->getExtension();
+        $numberOfAffectedRows = $this->indexRepository->deleteByUniqueProperties($orig_uid, $pid, $type, $language);
+        if ($numberOfAffectedRows > 0) {
+            $this->counterRemoved += $numberOfAffectedRows;
+            $this->pObj->logger->debug(
+                'Removed ' . $numberOfAffectedRows . ' index records for file "' . $file->getCombinedIdentifier() . '"',
+                [
+                    'orig_uid' => $orig_uid,
+                    'pid' => $pid,
+                    'type' => $type,
+                    'language' => $language,
+                ]
+            );
         }
     }
 
