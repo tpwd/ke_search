@@ -29,14 +29,12 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Christian Bülter
  */
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AdditionalContentService;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -150,9 +148,6 @@ class Page extends IndexerBase
      */
     protected AdditionalContentService $additionalContentService;
 
-    protected IndexerStatusService $indexerStatusService;
-    protected IndexRepository $indexRepository;
-
     /**
      * @param IndexerRunner $pObj
      */
@@ -210,9 +205,6 @@ class Page extends IndexerBase
 
         // make filesProcessor
         $this->filesProcessor = GeneralUtility::makeInstance(FilesProcessor::class);
-
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
-        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
     /**
@@ -803,23 +795,11 @@ class Page extends IndexerBase
                     $this->counter++;
                 } else {
                     $this->pObj->logger->debug(
-                        'Skipping page "' . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')'
+                        'Skipping page "' . $pageTitle . '"',
+                        $this->cachedPageRecords[$language_uid][$uid]
                     );
-                    // In incremental indexing mode we need to remove this page from the index because it may have
-                    // been indexed before
                     if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
-                        $numberOfAffectedRows = $this->indexRepository->deleteCorrespondingIndexRecords(
-                            'page',
-                            [$this->cachedPageRecords[$language_uid][$uid]],
-                            $this->indexerConfig
-                        );
-                        if ($numberOfAffectedRows > 0) {
-                            $this->counterRemoved += $numberOfAffectedRows;
-                            $this->pObj->logger->debug(
-                                'Removed ' . $numberOfAffectedRows . ' index records for page "'
-                                . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')'
-                            );
-                        }
+                        $this->removeRecordFromIndex('page', $this->cachedPageRecords[$language_uid][$uid]);
                     }
                 }
             }

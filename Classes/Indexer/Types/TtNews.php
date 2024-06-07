@@ -9,7 +9,6 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,8 +38,6 @@ class TtNews extends IndexerBase
     /** @var int $fileCounter */
     protected $fileCounter = 0;
 
-    protected IndexerStatusService $indexerStatusService;
-
     /**
      * Initializes indexer for tt_news
      *
@@ -51,7 +48,6 @@ class TtNews extends IndexerBase
         parent::__construct($pObj);
         $this->pObj = $pObj;
         $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**

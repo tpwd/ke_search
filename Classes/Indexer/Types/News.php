@@ -19,15 +19,14 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\NewsRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,9 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class News extends IndexerBase
 {
-    protected IndexerStatusService $indexerStatusService;
-    protected IndexRepository $indexRepository;
-
     /**
      * Initializes indexer for news
      *
@@ -51,8 +47,6 @@ class News extends IndexerBase
     {
         parent::__construct($pObj);
         $this->pObj = $pObj;
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
-        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
     }
 
     /**
@@ -182,25 +176,11 @@ class News extends IndexerBase
                         ]
                     );
 
-                    // In incremental indexing mode we need to remove this record from the index because it may have
-                    // been indexed before
                     if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
-                        $numberOfAffectedRows = $this->indexRepository->deleteCorrespondingIndexRecords(
+                        $this->removeRecordFromIndex(
                             ($newsRecord['type'] == 2) ? 'external:news' : 'news',
-                            [$newsRecord],
-                            $this->indexerConfig
+                            $newsRecord
                         );
-                        if ($numberOfAffectedRows > 0) {
-                            $this->counterRemoved += $numberOfAffectedRows;
-                            $this->pObj->logger->debug(
-                                'Removed ' . $numberOfAffectedRows . ' index records for record "' . $newsRecord['title'] . '"',
-                                [
-                                    'uid' => $newsRecord['uid'],
-                                    'pid' => $newsRecord['pid'],
-                                    'sys_language_uid' => $newsRecord['sys_language_uid'],
-                                ]
-                            );
-                        }
                     }
                     continue;
                 }
@@ -393,9 +373,6 @@ class News extends IndexerBase
      */
     public function removeDeleted(): string
     {
-        /** @var IndexRepository $indexRepository */
-        $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
-
         /** @var NewsRepository $newsRepository */
         $newsRepository = GeneralUtility::makeInstance(NewsRepository::class);
 
@@ -406,10 +383,13 @@ class News extends IndexerBase
         );
 
         // Fetch all records which have been deleted or hidden since the last indexing
-        $records = $newsRepository->findAllDeletedAndHiddenByPidListAndTimestampInAllLanguages($folders, $this->lastRunStartTime);
+        $records = $newsRepository->findAllDeletedAndHiddenByPidListAndTimestampInAllLanguages(
+            $folders,
+            $this->lastRunStartTime
+        );
 
         // and remove the corresponding index entries
-        $count = $indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
+        $count = $this->indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
         $message = 'Found ' . $count . ' deleted or hidden record(s).' . chr(10);
         return $message;
     }

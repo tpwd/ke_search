@@ -25,21 +25,17 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Filetypes\FileIndexerInterface;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -79,13 +75,6 @@ class File extends IndexerBase
     public ResourceStorage $storage;
 
     /**
-     * @var IndexRepository
-     */
-    private $indexRepository;
-
-    protected IndexerStatusService $indexerStatusService;
-
-    /**
      * Initializes indexer for files
      *
      * @param IndexerRunner $pObj
@@ -96,8 +85,6 @@ class File extends IndexerBase
         $this->pObj = $pObj;
         $this->extConf = SearchHelper::getExtConf();
         $this->fileInfo = GeneralUtility::makeInstance(Fileinfo::class);
-        $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -197,8 +184,6 @@ class File extends IndexerBase
                             if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
                                 $files[] = $file;
                             } else {
-                                // This file should not be indexed. But in incremental indexing mode we also need
-                                // to remove this record from the index because it may have been indexed before.
                                 if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
                                     $this->removeFileFromIndex($file);
                                 }
@@ -215,27 +200,6 @@ class File extends IndexerBase
                     }
                 }
             }
-        }
-    }
-
-    public function removeFileFromIndex(\TYPO3\CMS\Core\Resource\File $file)
-    {
-        $orig_uid = $file->getUid();
-        $pid = $this->indexerConfig['storagepid'];
-        $language = $this->detectLanguage($file->getProperties());
-        $type = 'file:' . $file->getExtension();
-        $numberOfAffectedRows = $this->indexRepository->deleteByUniqueProperties($orig_uid, $pid, $type, $language);
-        if ($numberOfAffectedRows > 0) {
-            $this->counterRemoved += $numberOfAffectedRows;
-            $this->pObj->logger->debug(
-                'Removed ' . $numberOfAffectedRows . ' index records for file "' . $file->getCombinedIdentifier() . '"',
-                [
-                    'orig_uid' => $orig_uid,
-                    'pid' => $pid,
-                    'type' => $type,
-                    'language' => $language,
-                ]
-            );
         }
     }
 
@@ -433,7 +397,7 @@ class File extends IndexerBase
             // get file properties for this file, this information is merged from file record and meta information
             $fileProperties = $file->getProperties();
             $orig_uid = $file->getUid();
-            $language_uid = $this->detectLanguage($fileProperties);
+            $language_uid = $this->detectFileLanguage($fileProperties);
 
             // get raw metadata for this file
             /** @var MetaDataRepository $metaDataRepository */
@@ -529,42 +493,5 @@ class File extends IndexerBase
             $indexRecordValues['debug'],        // debug only?
             $additionalFields                    // additional fields added by hooks
         );
-    }
-
-    /**
-     * Tries to detect the language of file from metadata field 'language' and returns the language_uid.
-     * The field 'language' comes with the optional extension 'filemetadata'.
-     * Returns -1 ("all languages") language could not be determined.
-     *
-     * @param array $fileProperties
-     * @return int
-     */
-    protected function detectLanguage(array $fileProperties): int
-    {
-        $sites = GeneralUtility::makeInstance(SiteFinder::class)->getAllSites();
-        $languages = [];
-        /** @var Site $site */
-        foreach ($sites as $site) {
-            $siteLanguages = $site->getLanguages();
-            foreach ($siteLanguages as $siteLanguageId => $siteLanguage) {
-                $languages[strtolower($siteLanguage->getLocale())] = $siteLanguageId;
-                if ($siteLanguage->getTitle()) {
-                    $languages[strtolower($siteLanguage->getTitle())] = $siteLanguageId;
-                }
-                if ($siteLanguage->getHreflang()) {
-                    $languages[strtolower($siteLanguage->getHreflang())] = $siteLanguageId;
-                }
-                if ($siteLanguage->getTwoLetterIsoCode()) {
-                    $languages[strtolower($siteLanguage->getTwoLetterIsoCode())] = $siteLanguageId;
-                }
-            }
-        }
-
-        if (isset($fileProperties['language']) && array_key_exists($fileProperties['language'], $languages)) {
-            $languageUid = $languages[$fileProperties['language']];
-        } else {
-            $languageUid = -1;
-        }
-        return $languageUid;
     }
 }

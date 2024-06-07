@@ -2,6 +2,7 @@ ChangeLog
 
 Version 5.5.0, 17 May 2024
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
+[FEATURE] Remove obsolete records during incremental indexing. Records and files which should not be indexed (e.g. pages with "no_index" flag) are now removed from the index during incremental indexing. Previously only hidden and deleted pages, records and files were removed.
 [BUGFIX]  Render file preview in result list only for files which are in the "imagefile_ext" list (images and PDF files). https://github.com/tpwd/ke_search/issues/60
 [BUGFIX]  Don't stop indexing if a folder does not exist. Thanks to Philip Hartmann. https://github.com/tpwd/ke_search/issues/225
 [TASK]    Add BEGIN and COMMIT statements needed to run ke_search in a Percona-Database-Cluster with strict-mode. Thanks to rentz-skygate. https://github.com/tpwd/ke_search/issues/222

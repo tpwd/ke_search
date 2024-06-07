@@ -7,7 +7,6 @@ use Tpwd\KeSearch\Domain\Repository\TtAddressRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -36,15 +35,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TtAddress extends IndexerBase
 {
-    protected IndexerStatusService $indexerStatusService;
-
     /**
      * Initializes indexer for tt_address
      */
     public function __construct($pObj)
     {
         parent::__construct($pObj);
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
