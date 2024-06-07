@@ -97,15 +97,17 @@ class TtContent extends Page
 
         if (count($rows)) {
             foreach ($rows as $row) {
+                $shouldBeIndexed = true;
+
                 // skip this content element if the page itself is hidden or a
                 // parent page with "extendToSubpages" set is hidden
                 if ($pageAccessRestrictions['hidden']) {
-                    continue;
+                    $shouldBeIndexed = false;
                 }
 
                 // skip this content element if the page is hidden or set to "no_search"
                 if (!$this->checkIfpageShouldBeIndexed($uid, $row['sys_language_uid'])) {
-                    continue;
+                    $shouldBeIndexed = false;
                 }
 
                 // combine group access restrictons from page(s) and content element
@@ -118,6 +120,13 @@ class TtContent extends Page
                 // element is set to "hide at login"
                 // and the other one has a frontend group attached to it
                 if ($feGroups == DONOTINDEX) {
+                    $shouldBeIndexed = false;
+                }
+
+                if (!$shouldBeIndexed) {
+                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                        $this->removeRecordFromIndex('content', $row);
+                    }
                     continue;
                 }
 

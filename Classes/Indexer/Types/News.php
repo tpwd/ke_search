@@ -19,15 +19,14 @@ namespace Tpwd\KeSearch\Indexer\Types;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Tpwd\KeSearch\Domain\Repository\CategoryRepository;
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\NewsRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,8 +38,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class News extends IndexerBase
 {
-    protected IndexerStatusService $indexerStatusService;
-
     /**
      * Initializes indexer for news
      *
@@ -50,7 +47,6 @@ class News extends IndexerBase
     {
         parent::__construct($pObj);
         $this->pObj = $pObj;
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -59,7 +55,6 @@ class News extends IndexerBase
      */
     public function startIndexing()
     {
-        $content = '';
         $table = 'tx_news_domain_model_news';
 
         // get the pages from where to index the news
@@ -135,12 +130,11 @@ class News extends IndexerBase
                 // assigned categories and single view from category, if it exists)
                 $categoryData = $this->getCategoryData($newsRecord);
 
-                // If mode equals 2 ('choose categories for indexing')
-                // check if the current news record has one of the categories
-                // assigned that should be indexed.
-                // mode 1 means 'index all news no matter what category
-                // they have'
-                if ($this->indexerConfig['index_news_category_mode'] == '2' && $this->indexerConfig['index_extnews_category_selection']) {
+                // If mode equals 2 ('choose categories for indexing') check if the current news record has one of
+                // the categories assigned that should be indexed.
+                // Mode 1 means 'index all news no matter what category they have'.
+                if ((int)$this->indexerConfig['index_news_category_mode'] == 2
+                    && $this->indexerConfig['index_extnews_category_selection']) {
                     // load category configuration
                     $selectedCategoryUids = $this->getSelectedCategoriesUidList($this->indexerConfig['uid']);
 
@@ -164,17 +158,30 @@ class News extends IndexerBase
                 }
 
                 if ($shouldBeIndexed) {
-                    $this->pObj->logger->debug('Indexing news record "' . $newsRecord['title'] . '"', [
-                        'uid' => $newsRecord['uid'],
-                        'pid' => $newsRecord['pid'],
-                        'sys_language_uid' => $newsRecord['sys_language_uid'],
-                    ]);
+                    $this->pObj->logger->debug(
+                        'Indexing news record "' . $newsRecord['title'] . '"',
+                        [
+                            'uid' => $newsRecord['uid'],
+                            'pid' => $newsRecord['pid'],
+                            'sys_language_uid' => $newsRecord['sys_language_uid'],
+                        ]
+                    );
                 } else {
-                    $this->pObj->logger->debug('Skipping news record "' . $newsRecord['title'] . '"', [
-                        'uid' => $newsRecord['uid'],
-                        'pid' => $newsRecord['pid'],
-                        'sys_language_uid' => $newsRecord['sys_language_uid'],
-                    ]);
+                    $this->pObj->logger->debug(
+                        'Skipping news record "' . $newsRecord['title'] . '"',
+                        [
+                            'uid' => $newsRecord['uid'],
+                            'pid' => $newsRecord['pid'],
+                            'sys_language_uid' => $newsRecord['sys_language_uid'],
+                        ]
+                    );
+
+                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                        $this->removeRecordFromIndex(
+                            ($newsRecord['type'] == 2) ? 'external:news' : 'news',
+                            $newsRecord
+                        );
+                    }
                     continue;
                 }
 
@@ -333,7 +340,18 @@ class News extends IndexerBase
         } else {
             $this->pObj->logger->info('No news records found for indexing.');
         }
-        return $indexedNewsCounter . ' News and ' . $this->fileCounter . ' related files have been indexed.';
+
+        $content = $indexedNewsCounter . ' News and ' . $this->fileCounter . ' related files have been indexed.' . chr(10);
+        if ($this->counterRemoved) {
+            $content .= $this->counterRemoved;
+            if ($this->counterRemoved > 1) {
+                $content .= ' news records have been removed.';
+            } else {
+                $content .= ' news record has been removed.';
+            }
+            $content .= chr(10);
+        }
+        return $content;
     }
 
     /**
@@ -355,9 +373,6 @@ class News extends IndexerBase
      */
     public function removeDeleted(): string
     {
-        /** @var IndexRepository $indexRepository */
-        $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
-
         /** @var NewsRepository $newsRepository */
         $newsRepository = GeneralUtility::makeInstance(NewsRepository::class);
 
@@ -368,11 +383,14 @@ class News extends IndexerBase
         );
 
         // Fetch all records which have been deleted or hidden since the last indexing
-        $records = $newsRepository->findAllDeletedAndHiddenByPidListAndTimestampInAllLanguages($folders, $this->lastRunStartTime);
+        $records = $newsRepository->findAllDeletedAndHiddenByPidListAndTimestampInAllLanguages(
+            $folders,
+            $this->lastRunStartTime
+        );
 
         // and remove the corresponding index entries
-        $count = $indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
-        $message = chr(10) . 'Found ' . $count . ' deleted or hidden record(s).';
+        $count = $this->indexRepository->deleteCorrespondingIndexRecords('news', $records, $this->indexerConfig);
+        $message = 'Found ' . $count . ' deleted or hidden record(s).' . chr(10);
         return $message;
     }
 
