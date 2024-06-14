@@ -29,14 +29,12 @@ namespace Tpwd\KeSearch\Indexer\Types;
  * @author Christian Bülter
  */
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
-use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AdditionalContentService;
-use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -140,12 +138,6 @@ class Page extends IndexerBase
     public $counterWithoutContent = 0;
 
     /**
-     * counter for how many files we have indexed
-     * @var int
-     */
-    public $fileCounter = 0;
-
-    /**
      * sql query for content types
      * @var string
      */
@@ -155,8 +147,6 @@ class Page extends IndexerBase
      * Service to process content from additional (related) tables
      */
     protected AdditionalContentService $additionalContentService;
-
-    protected IndexerStatusService $indexerStatusService;
 
     /**
      * @param IndexerRunner $pObj
@@ -215,8 +205,6 @@ class Page extends IndexerBase
 
         // make filesProcessor
         $this->filesProcessor = GeneralUtility::makeInstance(FilesProcessor::class);
-
-        $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
     }
 
     /**
@@ -295,6 +283,10 @@ class Page extends IndexerBase
             $result .= $this->counterWithoutContent . ' had no content or the content was not indexable.' . chr(10);
         }
 
+        if ($this->counterRemoved) {
+            $result .= $this->counterRemoved . ' have been removed.' . chr(10);
+        }
+
         $result .= $this->fileCounter . ' files have been indexed.';
 
         return $result;
@@ -319,9 +311,6 @@ class Page extends IndexerBase
      */
     public function removeDeleted(): string
     {
-        /** @var IndexRepository $indexRepository */
-        $indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
-
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
@@ -336,7 +325,7 @@ class Page extends IndexerBase
         $records = $pageRepository->findAllDeletedAndHiddenByUidListAndTimestampInAllLanguages($indexPids, $this->lastRunStartTime);
 
         // and remove the corresponding index entries
-        $count = $indexRepository->deleteCorrespondingIndexRecords('page', $records, $this->indexerConfig);
+        $count = $this->indexRepository->deleteCorrespondingIndexRecords('page', $records, $this->indexerConfig);
         $message = chr(10) . 'Found ' . $count . ' deleted or hidden page(s).';
 
         return $message;
@@ -805,7 +794,13 @@ class Page extends IndexerBase
                     );
                     $this->counter++;
                 } else {
-                    $this->pObj->logger->debug('Skipping page ' . $pageTitle . ' (UID ' . $uid . ', L ' . $language_uid . ')');
+                    $this->pObj->logger->debug(
+                        'Skipping page "' . $pageTitle . '"',
+                        $this->cachedPageRecords[$language_uid][$uid]
+                    );
+                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                        $this->removeRecordFromIndex('page', $this->cachedPageRecords[$language_uid][$uid]);
+                    }
                 }
             }
         }
