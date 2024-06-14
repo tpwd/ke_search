@@ -567,10 +567,4 @@ class StopWordUtility
         }
         return [];
     }
-
-    public function calculateTimeBetweenDate()
-    {
-    }
-
-    // Calculate time between dates
 }
