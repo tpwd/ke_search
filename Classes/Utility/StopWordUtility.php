@@ -555,7 +555,7 @@ class StopWordUtility
     public static function getStopWords(): array
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionForTable('pages');
+        $connection = $connectionPool->getConnectionForTable('tx_kesearch_index');
         $statement = $connection->prepare("SHOW VARIABLES LIKE 'ft_stopword_file';");
         $resultRows = $statement->executeQuery()->fetchAllAssociative();
 

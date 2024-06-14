@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Use correct table names for query builder or connection. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/228
+
 Version 5.5.0, 17 May 2024
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
 [BUGFIX]  Render file preview in result list only for files which are in the "imagefile_ext" list (images and PDF files). https://github.com/tpwd/ke_search/issues/60

@@ -1226,17 +1226,14 @@ class IndexerRunner
     }
 
     /**
-     * this function returns all indexer configurations found in DB
-     * independant of PID
+     * This function returns all indexer configurations found in DB independent of PID
      */
-    public function getConfigurations()
+    public function getConfigurations(): array
     {
-        $fields = '*';
-        $table = 'tx_kesearch_indexerconfig';
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
+        $queryBuilder = Db::getQueryBuilder('tx_kesearch_indexerconfig');
         return $queryBuilder
-            ->select($fields)
-            ->from($table)
+            ->select('*')
+            ->from('tx_kesearch_indexerconfig')
             ->executeQuery()
             ->fetchAllAssociative();
     }
