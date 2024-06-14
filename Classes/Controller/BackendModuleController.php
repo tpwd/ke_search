@@ -30,6 +30,7 @@ use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearch\Service\IndexerStatusService;
+use Tpwd\KeSearch\Utility\SanityCheckUtility;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -140,12 +141,15 @@ class BackendModuleController
         $indexer = GeneralUtility::makeInstance(IndexerRunner::class);
         $indexerConfigurations = $indexer->getConfigurations();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $mySqlIndexEnabled = SanityCheckUtility::IsIndexTableIndexesEnabled();
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $this->pageRenderer->addJsFile('EXT:ke_search/Resources/Public/JavaScript/v11/getIndexerStatusRequest.js');
-        } else {
-            // @phpstan-ignore-next-line
-            $this->pageRenderer->loadJavaScriptModule('@tpwd/ke-search/getIndexerStatusRequest.js');
+        if ($mySqlIndexEnabled) {
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
+                $this->pageRenderer->addJsFile('EXT:ke_search/Resources/Public/JavaScript/v11/getIndexerStatusRequest.js');
+            } else {
+                // @phpstan-ignore-next-line
+                $this->pageRenderer->loadJavaScriptModule('@tpwd/ke-search/getIndexerStatusRequest.js');
+            }
         }
 
         $indexingMode = (int)($request->getQueryParams()['indexingMode'] ?? IndexerBase::INDEXING_MODE_FULL);
@@ -270,10 +274,12 @@ class BackendModuleController
             $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
             $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/StartIndexing.html');
             $moduleTemplate->getView()->assign('content', $content);
+            $moduleTemplate->getView()->assign('mySqlIndexEnabled', $mySqlIndexEnabled);
             // @extensionScannerIgnoreLine
             return new HtmlResponse($moduleTemplate->renderContent());
         }
         $moduleTemplate->assign('content', $content);
+        $moduleTemplate->assign('mySqlIndexEnabled', $mySqlIndexEnabled);
         return $moduleTemplate->renderResponse('BackendModule/StartIndexing');
     }
 

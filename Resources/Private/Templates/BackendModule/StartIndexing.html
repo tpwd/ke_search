@@ -12,6 +12,18 @@
                 <div class="alert alert-notice">Waiting for indexer status.</div>
             </div>
         </div>
+        <f:if condition="!{mySqlIndexEnabled}">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="alert alert-danger">The MySQL indexes in the table 'tx_kesearch_index' are disabled.
+                        Searching in the frontend will not work.
+                        <br />
+                        This can happen if during first indexing there is an error and the indexing process has been
+                        stopped. Please make sure that the indexing process runs through completely, that will
+                        re-enable the indexes.</div>
+                </div>
+            </div>
+        </f:if>
         <f:format.raw>{content}</f:format.raw>
     </f:section>
 
