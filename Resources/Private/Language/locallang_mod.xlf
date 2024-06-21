@@ -45,6 +45,9 @@
 			<trans-unit id="index_contains" resname="index_contains" >
 				<source>The index currently contains</source>
 			</trans-unit>
+			<trans-unit id="index_is_empty" resname="index_is_empty" >
+				<source>The index is empty.</source>
+			</trans-unit>
 			<trans-unit id="last_indexing" resname="last_indexing" >
 				<source>Last indexing was done on</source>
 			</trans-unit>

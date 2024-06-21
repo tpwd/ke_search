@@ -7,7 +7,7 @@ setInterval(function () {
       const indexerStatus = await response.resolve();
       document.getElementById("kesearch-indexer-status").innerHTML = indexerStatus.html;
       if (indexerStatus.running === true) {
-        let hideElements= ["kesearch-indexer-overview", "kesearch-button-start-full", "kesearch-indexer-report", "kesearch-button-start-incremental", "kesearch-button-reload"];
+        let hideElements= ["kesearch-indexer-overview", "kesearch-button-start-full", "kesearch-indexer-report", "kesearch-button-start-incremental", "kesearch-button-reload", "kesearch-indexes-disabled-warning"];
         hideElements.forEach((element) => {
           if (document.getElementById(element)) {
             document.getElementById(element).style.display = 'none';
