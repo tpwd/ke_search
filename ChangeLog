@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version for TYPO3 13
+[TASK]    Update requirements for TYPO3 13
+
 Upcoming version
 [BUGFIX]  Use correct table names for query builder or connection. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/228
 [TASK]    Add check if MySQL indexes are enabled on the index table and show an error in the backend module if not
