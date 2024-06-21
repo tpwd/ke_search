@@ -568,7 +568,6 @@ class BackendModuleController
                 );
             $content .= '</div>';
             $content .= '</div></div>';
-
         }
 
         return $content;
