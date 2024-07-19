@@ -4,6 +4,7 @@ Upcoming version for TYPO3 13
 [TASK]    Update requirements for TYPO3 13
 [TASK]    Migrate plugin registration
 [TASK]    Remove obsolete ext_tables.php
+[TASK]    Migrate registration of status dashboard widget
 
 Upcoming version
 [BUGFIX]  Use correct table names for query builder or connection. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/228
