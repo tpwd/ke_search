@@ -90,26 +90,21 @@ class SearchPhraseStatisticsRepository
      */
     public function findAllByNumberOfDays($days = 7): array
     {
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable($this->tableName);
+
         $startTime = time() - $days * 24 * 60 * 60;
         $col = 'searchphrase';
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName);
+        $sql = 'SELECT count(' . $col . ') as num, language, ' . $col
+            . ' FROM ' . $this->tableName
+            . ' WHERE tstamp > ' . $startTime
+            . ' GROUP BY ' . $col . ',language HAVING count(' . $col . ')>0'
+            . ' ORDER BY num desc';
 
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $statisticData = $queryBuilder
-            ->add('select', 'count(' . $col . ') as num, language, ' . $col)
-            ->from($this->tableName)
-            ->add(
-                'where',
-                'tstamp > ' . $queryBuilder->quote($startTime, PDO::PARAM_INT)
-            )
-            ->add('groupBy', $col . ',language HAVING count(' . $col . ')>0')
-            ->add('orderBy', 'num desc')
-            ->executeQuery()
-            ->fetchAllAssociative();
-
+        $statement = $connection->prepare($sql);
+        $result = $statement->executeQuery();
+        $statisticData = $result->fetchAllAssociative();
         return $statisticData;
     }
 }
