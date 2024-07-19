@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [BUGFIX]  Use correct table names for query builder or connection. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/228
 [TASK]    Add check if MySQL indexes are enabled on the index table and show an error in the backend module if not
+[BUGFIX]  Respect configured Doktypes while Auto-Tagging #235. Thanks to magicHatOfTYPO3. https://github.com/tpwd/ke_search/pull/235
 
 Version 5.5.0, 17 May 2024
 [FEATURE] Add pagination in the backend module "Indexed content" function and avoid out of memory error. https://github.com/tpwd/ke_search/issues/100
