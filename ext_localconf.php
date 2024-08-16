@@ -93,4 +93,17 @@ defined('TYPO3') or die();
         $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'],
         ['^tx_kesearch_pi1']
     );
+
+    // register statistics tables for garbage collection
+    // see https://docs.typo3.org/c/typo3/cms-scheduler/main/en-us/Installation/BaseTasks/Index.html#table-garbage-collection-task-example
+    if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_kesearch_stat_search'] = [
+            'dateField' => 'tstamp',
+            'expirePeriod' => '180', // days
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_kesearch_stat_word'] = [
+            'dateField' => 'tstamp',
+            'expirePeriod' => '180', // days
+        ];
+    }
 })();
