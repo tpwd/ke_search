@@ -249,6 +249,13 @@ class Page extends IndexerBase
         // excluded (see: http://forge.typo3.org/issues/49435)
         $where = ' (doktype = 1 OR doktype = 2 OR doktype = 4 OR doktype = 5 OR doktype = 254) ';
 
+        // respect configured doktypes but ensure it's only a commaseparated list of integer values to avoid a SQL injection.
+        if (!empty($this->indexerConfig['index_page_doctypes'])) {
+            $indexerConfigDoktypes = GeneralUtility::intExplode(',', $this->indexerConfig['index_page_doctypes'], true);
+            $dokTypes = implode(',', array_unique(array_merge([1, 2, 4, 5, 254], $indexerConfigDoktypes)));
+            $where = 'doktype in (' . $dokTypes . ')';
+        }
+
         // add the tags of each page to the global page array
         $this->addTagsToRecords($indexPids, $where);
 
