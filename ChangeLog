@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
+
 Version 5.5.1, 16 August 2024
 [FEATURE] Add garbage collection for statistics table
 [BUGFIX]  Use correct table names for query builder or connection. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/228
