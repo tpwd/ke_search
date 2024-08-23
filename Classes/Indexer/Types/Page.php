@@ -801,12 +801,13 @@ class Page extends IndexerBase
                     );
                     $this->counter++;
                 } else {
-                    $this->pObj->logger->debug(
-                        'Skipping page "' . $pageTitle . '"',
-                        $this->cachedPageRecords[$language_uid][$uid]
-                    );
-                    if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
-                        $this->removeRecordFromIndex('page', $this->cachedPageRecords[$language_uid][$uid]);
+                    if (isset($this->cachedPageRecords[$language_uid][$uid])) {
+                        $this->pObj->logger->debug(
+                            'Skipping page "' . $pageTitle . '" (UID ' . $uid . ', L ' . $language_uid . ')'
+                        );
+                        if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                            $this->removeRecordFromIndex('page', $this->cachedPageRecords[$language_uid][$uid]);
+                        }
                     }
                 }
             }
