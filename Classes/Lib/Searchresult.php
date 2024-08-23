@@ -242,7 +242,7 @@ class Searchresult
             $amountOfSearchWords = count($this->swords);
             // with each new searchword and all the croppings here the teaser for each word will become too small/short
             // I decided to add 20 additional letters for each searchword. It looks much better and is more readable
-            $charsForEachSearchWord = ceil($this->conf['resultChars'] / $amountOfSearchWords) + 20;
+            $charsForEachSearchWord = ceil(($this->conf['resultChars'] ?? 0) / $amountOfSearchWords) + 20;
             $charsBeforeAfterSearchWord = ceil($charsForEachSearchWord / 2);
             $aSearchWordWasFound = false;
             $isSearchWordAtTheBeginning = false;
@@ -299,7 +299,7 @@ class Searchresult
             // When the searchword was found in title but not in content the teaser is empty
             // in that case we have to get the first x letters without containing any searchword
             if ($aSearchWordWasFound === false) {
-                $teaser = $cObj->crop($content, $this->conf['resultChars'] . '||1');
+                $teaser = $cObj->crop($content, ($this->conf['resultChars'] ?? 0) . '||1');
             } elseif ($isSearchWordAtTheBeginning === true) {
                 $teaser = implode(' ', $teaserArray);
             } else {
@@ -312,6 +312,6 @@ class Searchresult
             }
             return $teaser;
         }
-        return $cObj->crop($content, $this->conf['resultChars'] ?? 0 . '|…|1');
+        return $cObj->crop($content, ($this->conf['resultChars'] ?? 0) . '|…|1');
     }
 }
