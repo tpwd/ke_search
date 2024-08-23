@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
 [BUGFIX]  Fix regression in page indexer if translated page is not available. Thanks to Jens Vollmer. https://github.com/tpwd/ke_search/issues/243
 
