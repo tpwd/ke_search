@@ -33,6 +33,7 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use Tpwd\KeSearch\Utility\TimeUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -575,7 +576,7 @@ class IndexerRunner
             $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
             $where = $queryBuilder->expr()->lt(
                 'tstamp',
-                $queryBuilder->quote($this->indexerStatusService->getIndexerStartTime(), PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->indexerStatusService->getIndexerStartTime(), Connection::PARAM_INT)
             );
 
             // hook for cleanup
@@ -716,7 +717,7 @@ class IndexerRunner
      * @param string $fe_group
      * @param bool $debugOnly
      * @param array $additionalFields
-     * @return bool|int
+     * @return bool
      */
     public function storeInIndex(
         $storagePid,
@@ -733,7 +734,8 @@ class IndexerRunner
         $fe_group = '',
         $debugOnly = false,
         $additionalFields = []
-    ) {
+    ): bool
+    {
         // if there are errors found in current record return false and break processing
         if (!$this->checkIfRecordHasErrorsBeforeIndexing($storagePid, $title, $type, $targetPid)) {
             return false;
@@ -823,17 +825,16 @@ class IndexerRunner
             );
         }
 
-        if ($recordExists) { // update existing record
+        // update existing record
+        if ($recordExists) {
             unset($fieldValues['crdate']);
             $this->updateRecordInIndex($fieldValues, $debugOnly);
             return true;
-        }   // insert new record
-        $this->insertRecordIntoIndex($fieldValues, $debugOnly);
-        if (!$debugOnly) {
-            return (int)Db::getDatabaseConnection('tx_kesearch_index')->lastInsertId($table);
         }
 
-        return 0;
+        // insert new record
+        $this->insertRecordIntoIndex($fieldValues, $debugOnly);
+        return true;
     }
 
     /**
@@ -996,10 +997,10 @@ class IndexerRunner
             ->select('*')
             ->from('tx_kesearch_index')
             ->where(
-                $queryBuilder->expr()->eq('orig_uid', $queryBuilder->quote($uid, PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('pid', $queryBuilder->quote($pid, PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('type', $queryBuilder->quote($type, PDO::PARAM_STR)),
-                $queryBuilder->expr()->eq('language', $queryBuilder->quote($language, PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('orig_uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter($type, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -1037,19 +1038,19 @@ class IndexerRunner
             ->where(
                 $queryBuilder->expr()->eq(
                     'type',
-                    $queryBuilder->quote($type, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($type, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'hash',
-                    $queryBuilder->quote($hash, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($hash, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->quote($pid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sortdate',
-                    $queryBuilder->quote($sortdate, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sortdate, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -1193,7 +1194,7 @@ class IndexerRunner
         $table = 'tx_kesearch_filteroptions';
         $where = $queryBuilder->expr()->eq(
             'uid',
-            $queryBuilder->quote($tagUid, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($tagUid, Connection::PARAM_INT)
         );
 
         $row = $queryBuilder

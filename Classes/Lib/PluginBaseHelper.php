@@ -3,6 +3,7 @@
 namespace Tpwd\KeSearch\Lib;
 
 use Tpwd\KeSearch\Plugins\PluginBase;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -55,7 +56,7 @@ class PluginBaseHelper
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()

@@ -9,6 +9,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -292,7 +293,7 @@ class TtNews extends IndexerBase
         );
         $where[] = $queryBuilder->expr()->eq(
             'tt_news.uid',
-            $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
         );
 
         $catRes = $queryBuilder

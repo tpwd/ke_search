@@ -39,6 +39,7 @@ use Tpwd\KeSearch\Utility\ContentUtility;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -401,11 +402,11 @@ class Page extends IndexerBase
                     ->where(
                         $queryBuilder->expr()->eq(
                             'l10n_parent',
-                            $queryBuilder->quote($pageRow['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageRow['uid'], Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
-                            $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($sysLang['uid'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()
@@ -562,7 +563,7 @@ class Page extends IndexerBase
                 $where = [];
                 $where[] = $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 );
                 $where[] = $this->whereClauseForCType;
 
@@ -624,7 +625,7 @@ class Page extends IndexerBase
             'pid',
             $queryBuilder->createNamedParameter(
                 $uid,
-                \PDO::PARAM_INT
+                Connection::PARAM_INT
             )
         );
         $where[] = $this->whereClauseForCType;

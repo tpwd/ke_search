@@ -200,7 +200,6 @@ class Filters
             return [];
         }
 
-        // @Todo quotes ($this->startingPoints, filterUids)
         $table = 'tx_kesearch_filters';
         $where = 'pid in (' . $this->startingPoints . ')';
         $where .= ' AND find_in_set(uid, "' . $filterUids . '")';
@@ -233,7 +232,6 @@ class Filters
             return [];
         }
 
-        // @Todo quotes ($optionsUids, $this->startingPoints)
         $table = 'tx_kesearch_filteroptions';
         $where = 'FIND_IN_SET(uid, "' . $optionUids . '")';
         $where .= ' AND pid in (' . $this->startingPoints . ')';

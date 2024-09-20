@@ -25,7 +25,6 @@ namespace Tpwd\KeSearch\Plugins;
  ***************************************************************/
 
 use Exception;
-use PDO;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
@@ -40,6 +39,7 @@ use Tpwd\KeSearch\Lib\Sorting;
 use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1168,7 +1168,7 @@ class PluginBase extends AbstractPlugin
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($eventUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($eventUid, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use Doctrine\DBAL\Connection as DoctrineDbalConnection;
-use PDO;
+use TYPO3\CMS\Core\Database\Connection;
 
 /***************************************************************
  *  Copyright notice
@@ -56,19 +55,19 @@ class FileReferenceRepository extends BaseRepository
                 ),
                 $queryBuilder->expr()->eq(
                     'uid_foreign',
-                    $queryBuilder->createNamedParameter($uid_foreign, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid_foreign, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->in(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageIds, DoctrineDbalConnection::PARAM_INT_ARRAY)
+                    $queryBuilder->createNamedParameter($languageIds, Connection::PARAM_INT_ARRAY)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_state',
-                    $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     't3ver_wsid',
-                    $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
             ->orderBy('sorting_foreign', 'asc')

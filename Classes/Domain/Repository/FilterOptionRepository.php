@@ -3,7 +3,6 @@
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
-use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -64,7 +63,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->like(
                     'tag',
-                    $queryBuilder->createNamedParameter($tagPrefix . '%', PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tagPrefix . '%', Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -89,11 +88,11 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->like(
                     'tag',
-                    $queryBuilder->createNamedParameter($tagPrefix . '%', PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tagPrefix . '%', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -148,7 +147,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'l10n_parent',
-                    $queryBuilder->createNamedParameter($l10n_parent, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($l10n_parent, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -169,7 +168,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'tag',
-                    $queryBuilder->createNamedParameter($tag, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tag, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -194,11 +193,11 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'tag',
-                    $queryBuilder->createNamedParameter($tag, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tag, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -294,7 +293,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($filterOptionUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($filterOptionUid, Connection::PARAM_INT)
                 )
             )
             ->executeStatement();
@@ -344,7 +343,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
         foreach ($updateFields as $key => $value) {

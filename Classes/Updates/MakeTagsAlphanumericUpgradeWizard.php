@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Tpwd\KeSearch\Updates;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
@@ -78,7 +79,7 @@ class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
                 $query = $connectionPool->getQueryBuilderForTable('tx_kesearch_filteroptions');
                 $query
                     ->update('tx_kesearch_filteroptions')
-                    ->where($query->expr()->eq('uid', $query->createNamedParameter($filterOptionRow['uid'], \PDO::PARAM_INT)))
+                    ->where($query->expr()->eq('uid', $query->createNamedParameter($filterOptionRow['uid'], Connection::PARAM_INT)))
                     ->set('tag', preg_replace('/[^A-Za-z0-9]/', '', $filterOptionRow['tag']))
                     ->executeStatement();
             }

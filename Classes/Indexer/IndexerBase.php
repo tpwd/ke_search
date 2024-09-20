@@ -20,7 +20,6 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use PDO;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
@@ -28,10 +27,12 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -127,7 +128,7 @@ class IndexerBase
         $pageList = '';
         foreach ($pidsRecursive as $pid) {
             // @extensionScannerIgnoreLine
-            $pageList .= $this->getTreeList((int)$pid, 99, 0, '1=1', $includeDeletedPages) . ',';
+            $pageList .= $this->getTreeList((int)$pid, 99, 0, '', $includeDeletedPages) . ',';
         }
 
         // add non-recursive pids
@@ -165,15 +166,15 @@ class IndexerBase
         // index only page which are not hidden
         $where[] = $queryBuilder->expr()->neq(
             'pages.no_search',
-            $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
         );
         $where[] = $queryBuilder->expr()->eq(
             'pages.hidden',
-            $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
         );
         $where[] = $queryBuilder->expr()->eq(
             'pages.deleted',
-            $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
         );
 
         // add additional where clause
@@ -233,7 +234,7 @@ class IndexerBase
      * @param array $uids Simple array with uids of pages
      * @param string $pageWhere additional where-clause
      */
-    public function addTagsToRecords($uids, $pageWhere = '1=1')
+    public function addTagsToRecords($uids, $pageWhere = '')
     {
         if (empty($uids)) {
             $this->pObj->logger->warning('No pages/sysfolders given to add tags for.');
@@ -259,13 +260,23 @@ class IndexerBase
         $where .= ' AND pages.tx_kesearch_tags <> "" ';
         $where .= ' AND FIND_IN_SET(tx_kesearch_filteroptions.uid, pages.tx_kesearch_tags)';
 
-        $tagQuery = $queryBuilder
-            ->add('select', $fields)
-            ->from('pages')
-            ->from('tx_kesearch_filteroptions')
-            ->add('where', $where)
-            ->groupBy('pages.uid')
-            ->executeQuery();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            $tagQuery = $queryBuilder
+                ->add('select', $fields)
+                ->from('pages')
+                ->from('tx_kesearch_filteroptions')
+                ->add('where', $where)
+                ->groupBy('pages.uid')
+                ->executeQuery();
+        } else {
+            $tagQuery = $queryBuilder
+                ->selectLiteral($fields)
+                ->from('pages')
+                ->from('tx_kesearch_filteroptions')
+                ->where($where)
+                ->groupBy('pages.uid')
+                ->executeQuery();
+        }
 
         while ($row = $tagQuery->fetchAssociative()) {
             if (isset($this->pageRecords[$row['uid']])) {
@@ -289,13 +300,18 @@ class IndexerBase
             ->where(
                 $queryBuilder->expr()->neq(
                     'automated_tagging',
-                    $queryBuilder->quote('', PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $where = $pageWhere . ' AND no_search <> 1 ';
+        if (!empty($pageWhere)) {
+           $where = $pageWhere . ' AND ';
+        } else {
+           $where = '';
+        }
+        $where .= 'no_search <> 1 ';
 
         foreach ($filterOptionsRows as $row) {
             if ($row['automated_tagging_exclude'] > '') {
@@ -420,7 +436,7 @@ class IndexerBase
             ->select('uid_local')
             ->from('sys_category_record_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($indexerConfigUid, PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($indexerConfigUid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tx_kesearch_indexerconfig'))
             )
             ->executeQuery()
@@ -474,7 +490,7 @@ class IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.uid_foreign',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.uid_local',
@@ -482,7 +498,7 @@ class IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.sys_language_uid',
-                    $queryBuilder->createNamedParameter($language, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                 )
             )
             ->orderBy('ref.sorting_foreign')
@@ -724,8 +740,8 @@ class IndexerBase
             $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', 0)
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                 )
                 ->orderBy('uid');
             if ($permClause !== '') {

@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\ContentUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -92,22 +93,22 @@ class News extends IndexerBase
             $where[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq(
                     'archive',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     'archive',
-                    $queryBuilder->quote(time(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(time(), Connection::PARAM_INT)
                 )
             );
         } elseif ($this->indexerConfig['index_news_archived'] == 2) {
             $where[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->gt(
                     'archive',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lt(
                     'archive',
-                    $queryBuilder->quote(time(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(time(), Connection::PARAM_INT)
                 )
             );
         }
@@ -479,7 +480,7 @@ class News extends IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'news.uid',
-                    $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -523,7 +524,7 @@ class News extends IndexerBase
             ->where(
                 $queryBuilder->expr()->eq(
                     'tx_news_related_news',
-                    $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery();

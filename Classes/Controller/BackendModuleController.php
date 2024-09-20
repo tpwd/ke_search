@@ -37,6 +37,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -469,7 +470,7 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->like(
                     'details',
-                    $queryBuilder->quote('[ke_search]%', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('[ke_search]%', Connection::PARAM_STR)
                 )
             )
             ->orderBy('tstamp', 'DESC')
@@ -690,11 +691,11 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->gt(
                     'tstamp',
-                    $queryBuilder->quote($timestampStart, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $isSysFolder ? 'pid' : 'pageid',
-                    $queryBuilder->quote($pageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
             )
             ->groupBy('language')
@@ -777,7 +778,7 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->quote($this->pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->pageId, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)

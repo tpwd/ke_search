@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -115,15 +116,30 @@ class Db implements SingletonInterface
         // build query
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
-        $resultQuery = $queryBuilder
-            ->add('select', $queryParts['SELECT'])
-            ->from($queryParts['FROM'])
-            ->add('where', $queryParts['WHERE']);
-        if (!empty($queryParts['GROUPBY'])) {
-            $resultQuery->add('groupBy', $queryParts['GROUPBY']);
-        }
-        if (!empty($queryParts['ORDERBY'])) {
-            $resultQuery->add('orderBy', $queryParts['ORDERBY']);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            $resultQuery = $queryBuilder
+                ->add('select', $queryParts['SELECT'])
+                ->from($queryParts['FROM'])
+                ->add('where', $queryParts['WHERE']);
+            if (!empty($queryParts['GROUPBY'])) {
+                $resultQuery->add('groupBy', $queryParts['GROUPBY']);
+            }
+            if (!empty($queryParts['ORDERBY'])) {
+                $resultQuery->add('orderBy', $queryParts['ORDERBY']);
+            }
+        } else {
+            $resultQuery = $queryBuilder
+                ->selectLiteral($queryParts['SELECT'])
+                ->from($queryParts['FROM'])
+                ->where($queryParts['WHERE']);
+            if (!empty($queryParts['GROUPBY'])) {
+                $groupParts = explode(',', $queryParts['GROUPBY']);
+                $resultQuery->groupBy($groupParts[0], $groupParts[1]);
+            }
+            if (!empty($queryParts['ORDERBY'])) {
+                $orderParts = explode(' ', $queryParts['ORDERBY']);
+                $resultQuery->orderBy($orderParts[0], $orderParts[1]);
+            }
         }
 
         $limit = $this->getLimit();
@@ -151,10 +167,17 @@ class Db implements SingletonInterface
         if (!empty($this->searchResults)) {
             $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
             $queryBuilder->getRestrictions()->removeAll();
-            $numRows = $queryBuilder
-                ->add('select', 'FOUND_ROWS()')
-                ->executeQuery()
-                ->fetchNumeric()[0];
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+                $numRows = $queryBuilder
+                    ->add('select', 'FOUND_ROWS()')
+                    ->executeQuery()
+                    ->fetchNumeric()[0];
+            } else {
+                $numRows = $queryBuilder
+                    ->selectLiteral('FOUND_ROWS()')
+                    ->executeQuery()
+                    ->fetchNumeric()[0];
+            }
             $this->numberOfResults = $numRows;
         }
     }
