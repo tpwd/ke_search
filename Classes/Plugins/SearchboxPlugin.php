@@ -50,7 +50,7 @@ class SearchboxPlugin extends PluginBase
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
-        $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
+        $this->setLanguageFile('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
@@ -58,7 +58,7 @@ class SearchboxPlugin extends PluginBase
         $this->init($request);
 
         if (empty($this->conf['view'])) {
-            $content = '<div id="textmessage">' . $this->pi_getLL('error_templatePaths') . '</div>';
+            $content = '<div id="textmessage">' . $this->translate('error_templatePaths') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
 

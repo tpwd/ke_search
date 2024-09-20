@@ -109,7 +109,7 @@ class Sorting
                         'url' => $this->generateSortingLink($field, $sortByDir),
                         'urlOnly' => $this->generateSortingLink($field, $sortByDir, true),
                         'class' => $this->getClassNameForUpDownArrow($field, $dbOrdering),
-                        'label' => $this->pObj->pi_getLL('orderlink_' . $field, $field),
+                        'label' => $this->pObj->translate('orderlink_' . $field, $field),
                     ];
                 }
             }
@@ -213,7 +213,7 @@ class Sorting
             $this->pObj->conf['resultPage'],
             $localPiVars,
             [],
-            $this->pObj->pi_getLL('orderlink_' . $field, $field)
+            $this->pObj->translate('orderlink_' . $field, $field)
         );
     }
 }

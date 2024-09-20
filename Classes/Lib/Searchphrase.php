@@ -90,7 +90,7 @@ class Searchphrase
     public function checkAgainstDefaultValue($searchString)
     {
         $searchStringToLower = strtolower(trim($searchString));
-        $defaultValueToLower = strtolower($this->pObj->pi_getLL('searchbox_default_value'));
+        $defaultValueToLower = strtolower($this->pObj->translate('searchbox_default_value'));
         if ($searchStringToLower === $defaultValueToLower) {
             $searchString = '';
         }

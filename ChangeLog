@@ -6,6 +6,7 @@ Upcoming version for TYPO3 13
 [TASK]    Remove obsolete ext_tables.php
 [TASK]    Migrate registration of status dashboard widget, https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96812-NoFrontendTypoScriptBasedTemplateOverridesInTheBackend.html#widget-registration-using-services-yaml
 [TASK]    Don't use QueryBuilder->add() anymore because it has been removed, https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/13.0/Breaking-102875-QueryBuilderChanges.html
+[TASK]    Remove language-related function from AbstractPlugin and use custom translate function instead
 
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242

@@ -54,7 +54,7 @@ class ResultlistPlugin extends PluginBase
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $this->conf = $conf;
-        $this->pi_loadLL('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
+        $this->setLanguageFile('EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf');
         $this->conf = $typoScriptService->convertTypoScriptArrayToPlainArray($conf);
 
         // initializes plugin configuration
@@ -62,12 +62,12 @@ class ResultlistPlugin extends PluginBase
         $this->init($request);
 
         if ($this->conf['resultPage'] != $GLOBALS['TSFE']->id) {
-            $content = '<div id="textmessage">' . $this->pi_getLL('error_resultPage') . '</div>';
+            $content = '<div id="textmessage">' . $this->translate('error_resultPage') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
 
         if (empty($this->conf['view'])) {
-            $content = '<div id="textmessage">' . $this->pi_getLL('error_templatePaths') . '</div>';
+            $content = '<div id="textmessage">' . $this->translate('error_templatePaths') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
 
@@ -97,7 +97,7 @@ class ResultlistPlugin extends PluginBase
         // process query time
         $queryTime = (round(microtime(true) * 1000) - $GLOBALS['TSFE']->register['ke_search_queryStartTime']);
         $this->fluidTemplateVariables['queryTime'] = $queryTime;
-        $this->fluidTemplateVariables['queryTimeText'] = sprintf($this->pi_getLL('query_time'), $queryTime);
+        $this->fluidTemplateVariables['queryTimeText'] = sprintf($this->translate('query_time'), $queryTime);
 
         // get pagination
         $itemsPerPage = (int)($this->conf['resultsPerPage'] ?? 10);

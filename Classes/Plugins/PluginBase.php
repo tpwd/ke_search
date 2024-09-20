@@ -57,6 +57,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class PluginBase extends AbstractPlugin
 {
     protected ?ServerRequestInterface $request = null;
+    protected $languageFile = 'EXT:ke_search/Resources/Private/Language/locallang.xlf';
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
@@ -126,6 +127,8 @@ class PluginBase extends AbstractPlugin
     public function init(ServerRequestInterface $request)
     {
         $this->setRequest($request);
+        $this->frontendController = $request->getAttribute('frontend.controller');
+
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var LanguageAspect $languageAspect */
@@ -658,7 +661,7 @@ class PluginBase extends AbstractPlugin
             $noResultsText = $this->pi_RTEcssText($this->conf['noResultsText'] ?? '');
         } else {
             // use general text
-            $noResultsText = $this->pi_getLL('no_results_found');
+            $noResultsText = $this->translate('no_results_found');
         }
 
         // hook to implement your own idea of a no result message
@@ -1132,7 +1135,7 @@ class PluginBase extends AbstractPlugin
     public function isEmptySearch(): bool
     {
         // check if searchword is emtpy or equal with default searchbox value
-        $emptySearchword = empty($this->sword) || $this->sword == $this->pi_getLL('searchbox_default_value');
+        $emptySearchword = empty($this->sword) || $this->sword == $this->translate('searchbox_default_value');
 
         // check if filters are set
         $filters = $this->filters->getFilters();
@@ -1297,5 +1300,25 @@ class PluginBase extends AbstractPlugin
         if ($this->request === null) {
             $this->request = $request;
         }
+    }
+
+    public function translate(string $key, string $alternativeLabel = ''): string
+    {
+        if (!str_starts_with($key, 'LLL:')) {
+            $key = 'LLL:'. $this->languageFile . ':' . $key;
+        }
+        $label = LocalizationUtility::translate($key, 'KeSearch');
+        if (empty($label)) {
+            $label = $alternativeLabel;
+        }
+        if (empty($label)) {
+            $label = '';
+        }
+        return $label;
+    }
+
+    public function setLanguageFile(string $languageFile): void
+    {
+        $this->languageFile = $languageFile;
     }
 }
