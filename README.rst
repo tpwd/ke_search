@@ -55,7 +55,7 @@ directoy of the package.
 
     cd ke_search
     composer install
-    composer exec typo3-coding-standards extension
+    composer exec typo3-coding-standards setup
 
 Testing
 ~~~~~~~
