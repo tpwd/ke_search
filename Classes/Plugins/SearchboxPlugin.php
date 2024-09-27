@@ -21,7 +21,6 @@ namespace Tpwd\KeSearch\Plugins;
  ***************************************************************/
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -97,10 +96,7 @@ class SearchboxPlugin extends PluginBase
     public function initFluidTemplate()
     {
         $this->searchFormView = GeneralUtility::makeInstance(StandaloneView::class);
-        if (
-            GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11
-            && method_exists($this->searchFormView, 'setRequest')
-        ) {
+        if (method_exists($this->searchFormView, 'setRequest')) {
             $this->searchFormView->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
         $this->searchFormView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);

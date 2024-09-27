@@ -26,8 +26,6 @@
 namespace Tpwd\KeSearch\UserFunction\CustomFieldValidation;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -51,13 +49,7 @@ class FilterOptionTagValidator
         $tag = SearchHelper::makeTag($value, false);
 
         if ($value != $tag) {
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-                // @extensionScannerIgnoreLine
-                $severity = AbstractMessage::INFO;
-            } else {
-                // @phpstan-ignore-next-line
-                $severity = ContextualFeedbackSeverity::INFO;
-            }
+            $severity = ContextualFeedbackSeverity::INFO;
             /** @var FlashMessage $message */
             $message = GeneralUtility::makeInstance(
                 FlashMessage::class,
@@ -69,7 +61,6 @@ class FilterOptionTagValidator
 
             /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            // @extensionScannerIgnoreLine
             $flashMessageService->getMessageQueueByIdentifier()->addMessage($message);
         }
 

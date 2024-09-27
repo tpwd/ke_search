@@ -21,9 +21,7 @@ namespace Tpwd\KeSearch\Plugins;
  ***************************************************************/
 
 use Psr\Http\Message\ServerRequestInterface;
-use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -106,15 +104,7 @@ class ResultlistPlugin extends PluginBase
         // we don't have the full list of search results available
         $dummyResults = array_fill(0, $this->numberOfResults, 1);
         $paginator = new ArrayPaginator($dummyResults, $this->piVars['page'], $itemsPerPage);
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $this->fluidTemplateVariables['pagination'] = new BackportedSlidingWindowPagination($paginator, $maxPages);
-        } else {
-            // PHPStan is complaining that the SlidingWindowPagination class does not exist in TYPO3 11,
-            // so we ignore this error for now
-            // Todo: Remove the PHPStan annotation below once support for TYPO3 11 is dropped
-            // @phpstan-ignore-next-line
-            $this->fluidTemplateVariables['pagination'] = new SlidingWindowPagination($paginator, $maxPages);
-        }
+        $this->fluidTemplateVariables['pagination'] = new SlidingWindowPagination($paginator, $maxPages);
 
         // hook: modifyResultList
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyResultList'] ?? null)) {
@@ -145,10 +135,7 @@ class ResultlistPlugin extends PluginBase
     public function initFluidTemplate()
     {
         $this->resultListView = GeneralUtility::makeInstance(StandaloneView::class);
-        if (
-            GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11
-            && method_exists($this->resultListView, 'setRequest')
-        ) {
+        if (method_exists($this->resultListView, 'setRequest')) {
             $this->resultListView->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
         $this->resultListView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);

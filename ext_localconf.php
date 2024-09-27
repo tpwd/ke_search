@@ -73,15 +73,6 @@ defined('TYPO3') or die();
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']
     ['ke_search-filter-option'] = \Tpwd\KeSearch\Hooks\FilterOptionHook::class;
 
-    // Upgrade Wizards
-    // Todo: Remove the following following registration of upgrade wizards once support for TYPO3 11 is dropped
-    // see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.2/Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.html
-    // @extensionScannerIgnoreLine
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchMakeTagsAlphanumericUpgradeWizard']
-        = \Tpwd\KeSearch\Updates\MakeTagsAlphanumericUpgradeWizard::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchPopulateFilterOptionsSlugsUpgradeWizard']
-        = \Tpwd\KeSearch\Updates\PopulateFilterOptionSlugsUpgradeWizard::class;
-
     // Custom aspects for routing
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['KeSearchUrlEncodeMapper'] =
         \Tpwd\KeSearch\Routing\Aspect\KeSearchUrlEncodeMapper::class;

@@ -1,25 +1,6 @@
 <?php
 
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
-$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-$typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float)$typo3Version->getBranch();
-
-if ($typo3BranchVersion >= 12.3) {
-    $l10nParentItemsArray = [
-        [
-            'label' => '',
-            'value' => 0,
-        ],
-    ];
-} else {
-    $l10nParentItemsArray = [
-        ['', 0],
-    ];
-}
 
 $txKesearchFilteroptionsTCA = [
     'ctrl' => [
@@ -53,7 +34,12 @@ $txKesearchFilteroptionsTCA = [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => $l10nParentItemsArray,
+                'items' => [
+                    [
+                        'label' => '',
+                        'value' => 0,
+                    ],
+                ],
                 'foreign_table' => 'tx_kesearch_filteroptions',
                 'foreign_table_where' => 'AND tx_kesearch_filteroptions.pid=###CURRENT_PID###'
                     . ' AND tx_kesearch_filteroptions.sys_language_uid IN (-1,0)',
@@ -139,9 +125,5 @@ $txKesearchFilteroptionsTCA = [
             . ' title, tag, slug, automated_tagging, automated_tagging_exclude', ],
     ],
 ];
-
-if ($typo3MajorVersion < 12) {
-    $txKesearchFilteroptionsTCA['ctrl']['cruser_id'] = 'cruser_id';
-}
 
 return $txKesearchFilteroptionsTCA;

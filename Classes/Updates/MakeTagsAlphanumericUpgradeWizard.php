@@ -31,22 +31,9 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 /**
  * Class MakeTagsAlphanumericUpgradeWizard
  */
-// Todo: Remove next line once support for TYPO3 11 is dropped
-// @phpstan-ignore-next-line
 #[UpgradeWizard('keSearchMakeTagsAlphanumericUpgradeWizard')]
 class MakeTagsAlphanumericUpgradeWizard implements UpgradeWizardInterface
 {
-    /**
-     * Todo: Remove this function once support for TYPO3 11 is dropped
-     * see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.2/Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.html
-     *
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return 'keSearchMakeTagsAlphanumericUpgradeWizard';
-    }
-
     /**
      * @return string
      */

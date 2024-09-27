@@ -1,44 +1,9 @@
 <?php
 
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') or die();
-$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-$typo3MajorVersion = $typo3Version->getMajorVersion();
-
-if ($typo3MajorVersion < 12) {
-    // @extensionScannerIgnoreLine
-    $txKesearchResultimageConfigArray = ExtensionManagementUtility::getFileFieldTCAConfig(
-        'tx_kesearch_resultimage',
-        [
-            'overrideChildTca' => [
-                'types' => [
-                    File::FILETYPE_IMAGE => [
-                        'showitem' => '
-                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                    --palette--;;filePalette',
-                    ],
-                ],
-            ],
-        ]
-    );
-} else {
-    $txKesearchResultimageConfigArray = [
-        'type' => 'file',
-        'overrideChildTca' => [
-            'types' => [
-                File::FILETYPE_IMAGE => [
-                    'showitem' => '
-                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette',
-                ],
-            ],
-        ],
-    ];
-}
 
 // add tag field to pages
 $tempColumns = [
@@ -68,7 +33,18 @@ $tempColumns = [
     'tx_kesearch_resultimage' => [
         'exclude' => true,
         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:pages.tx_kesearch_resultimage',
-        'config' => $txKesearchResultimageConfigArray,
+        'config' => [
+            'type' => 'file',
+            'overrideChildTca' => [
+                'types' => [
+                    File::FILETYPE_IMAGE => [
+                        'showitem' => '
+                                --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                --palette--;;filePalette',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];
 
