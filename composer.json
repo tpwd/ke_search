@@ -23,14 +23,14 @@
 	"require-dev": {
 		"typo3/cms-dashboard": "^12 || ^13",
 		"typo3/cms-info": "^12 || ^13",
+		"typo3/cms-install": "^12 || ^13",
 		"typo3/coding-standards": "^0.8.0",
 		"phpunit/phpunit": "^10",
 		"phpstan/phpstan": "^1",
 		"ext-zip": "*",
 		"ext-libxml": "*",
 		"ext-dom": "*",
-		"ext-json": "*",
-		"ssch/typo3-rector": "^2"
+		"ext-json": "*"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"
