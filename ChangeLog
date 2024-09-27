@@ -9,6 +9,7 @@ Upcoming version for TYPO3 13
 [TASK]    Remove language-related function from AbstractPlugin and use custom translate function instead
 [TASK]    Migrate database queries to use type constants from Connection instead of PDO, https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Database/QueryBuilder/Index.html#database-query-builder-create-named-parameter
 [TASK]    Remove obsolete code for TYPO3 11 and below
+[TASK]    Migrate FlexfForm definition
 
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
