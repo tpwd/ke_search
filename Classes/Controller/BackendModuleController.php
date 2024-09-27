@@ -37,6 +37,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
@@ -575,7 +576,7 @@ class BackendModuleController
         $isSysFolder = $this->checkSysfolder();
 
         // set folder or single page where the data is selected from
-        $pidWhere = $isSysFolder ? ' AND pid=' . (int)$pageUid . ' ' : ' AND pageid=' . (int)$pageUid . ' ';
+        $isSysFolder ? $pageColumn = 'pid' : $pageColumn = 'pageid';
 
         // get languages
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_stat_word');
@@ -597,7 +598,6 @@ class BackendModuleController
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $content = '';
         if (!count($languageResult)) {
             $statisticData['error'] =
                 'No statistic data found! Please select the sysfolder
@@ -611,7 +611,8 @@ class BackendModuleController
                     'tx_kesearch_stat_search',
                     $languageRow['language'],
                     $timestampStart,
-                    $pidWhere,
+                    $pageColumn,
+                    $pageUid,
                     'searchphrase'
                 );
             } else {
@@ -622,7 +623,8 @@ class BackendModuleController
                 'tx_kesearch_stat_word',
                 $languageRow['language'],
                 $timestampStart,
-                $pidWhere,
+                $pageColumn,
+                $pageUid,
                 'word'
             );
         }
@@ -630,33 +632,48 @@ class BackendModuleController
         return $statisticData;
     }
 
-    /**
-     * @param string $table
-     * @param int $language
-     * @param int $timestampStart
-     * @param string $pidWhere
-     * @param string $tableCol
-     */
-    public function getStatisticTableData($table, $language, $timestampStart, $pidWhere, $tableCol)
+    public function getStatisticTableData(
+        string $table,
+        int $language,
+        int $timestampStart,
+        string $pageColumn,
+        int $pageUid,
+        string $tableCol
+    ): array
     {
-        // get statistic data from db
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
-        $statisticData = $queryBuilder
-            ->add('select', 'count(' . $tableCol . ') as num, ' . $tableCol)
-            ->from($table)
-            ->add(
-                'where',
-                'tstamp > ' . $queryBuilder->quote($timestampStart, \PDO::PARAM_INT) .
-                ' AND language=' . $queryBuilder->quote($language, \PDO::PARAM_INT) . ' ' .
-                $pidWhere
-            )
-            ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
-            ->add('orderBy', 'num desc')
-            ->executeQuery()
-            ->fetchAllAssociative();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            $pidWhere = ' AND ' . $pageColumn . '=' . $pageUid;
+            // @phpstan-ignore-next-line
+            $query = $queryBuilder
+                ->add('select', 'count(' . $tableCol . ') as num, ' . $tableCol)
+                ->from($table)
+                ->add(
+                    'where',
+                    // @phpstan-ignore-next-line
+                    'tstamp > ' . $queryBuilder->quote($timestampStart, \PDO::PARAM_INT) .
+                    // @phpstan-ignore-next-line
+                    ' AND language=' . $queryBuilder->quote($language, \PDO::PARAM_INT) . ' ' .
+                    $pidWhere
+                )
+                ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
+                ->add('orderBy', 'num desc');
+        } else {
+            $query = $queryBuilder
+                ->selectLiteral('count(' . $tableCol . ') as num, ' . $tableCol)
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq($pageColumn, $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT))
+                )
+                ->groupBy($tableCol)
+                ->having('count(' . $tableCol . ')>0')
+                ->orderBy('num', 'desc');
+        }
 
-        return $statisticData;
+        return $query->executeQuery()->fetchAllAssociative();
     }
 
     /*
@@ -664,7 +681,7 @@ class BackendModuleController
      *
      * @return boolean
      */
-    public function checkSysfolder()
+    public function checkSysfolder(): bool
     {
         $queryBuilder = Db::getQueryBuilder('pages');
         $page = $queryBuilder
@@ -680,7 +697,7 @@ class BackendModuleController
             ->executeQuery()
             ->fetchAssociative();
 
-        return $page['doktype'] == 254 ? true : false;
+        return $page['doktype'] == 254;
     }
 
     /**

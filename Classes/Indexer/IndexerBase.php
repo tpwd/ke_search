@@ -261,10 +261,12 @@ class IndexerBase
         $where .= ' AND FIND_IN_SET(tx_kesearch_filteroptions.uid, pages.tx_kesearch_tags)';
 
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
             $tagQuery = $queryBuilder
                 ->add('select', $fields)
                 ->from('pages')
                 ->from('tx_kesearch_filteroptions')
+                // @phpstan-ignore-next-line
                 ->add('where', $where)
                 ->groupBy('pages.uid')
                 ->executeQuery();

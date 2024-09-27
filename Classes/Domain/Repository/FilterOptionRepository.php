@@ -7,6 +7,7 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -33,21 +34,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FilterOptionRepository extends BaseRepository
 {
     /**
-     * Internal storage for database table fields
-     *
-     * @var array
-     */
-    protected $tableFields = [];
-
-    /**
      * @var string
      */
     protected $tableName = 'tx_kesearch_filteroptions';
-
-    /**
-     * @var string
-     */
-    protected $parentTableName = 'tx_kesearch_filters';
 
     /**
      * @param string $tagPrefix
@@ -248,7 +237,6 @@ class FilterOptionRepository extends BaseRepository
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
             'l10n_diffsource' => '',
         ];
-        $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $newRecord = array_merge($newRecord, $additionalFields);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->tableName);
@@ -258,7 +246,12 @@ class FilterOptionRepository extends BaseRepository
             ['l10n_diffsource' => Connection::PARAM_LOB]
         );
         $record = $newRecord;
-        $record['uid'] = (int)$connection->lastInsertId($this->tableName);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $record['uid'] = (int)$connection->lastInsertId($this->tableName);
+        } else {
+            $record['uid'] = (int)$connection->lastInsertId();
+        }
 
         // Create slug
         $this->update($record['uid'], ['slug' => SearchHelper::createFilterOptionSlug($record)]);
@@ -312,22 +305,6 @@ class FilterOptionRepository extends BaseRepository
                 $this->deleteByUid($filterOption['uid']);
             }
         }
-    }
-
-    /**
-     * Gets the fields that are available in the table
-     *
-     * @return array
-     */
-    protected function getTableFields(): array
-    {
-        if (empty($this->tableFields)) {
-            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->tableName)
-                ->getSchemaManager()
-                ->listTableColumns($this->tableName);
-        }
-        return $this->tableFields;
     }
 
     /**

@@ -853,20 +853,20 @@ class IndexerRunner
 
         $queryArray = [];
         $queryArray['set'] = 'SET
-			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
-			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
-			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
-			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
-			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
-			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
-			@abstract = ' . $queryBuilder->quote($fieldValues['abstract'], PDO::PARAM_STR) . ',
-			@language = ' . $queryBuilder->quote($fieldValues['language'], PDO::PARAM_INT) . ',
-			@starttime = ' . $queryBuilder->quote($fieldValues['starttime'], PDO::PARAM_INT) . ',
-			@endtime = ' . $queryBuilder->quote($fieldValues['endtime'], PDO::PARAM_INT) . ',
-			@fe_group = ' . $queryBuilder->quote($fieldValues['fe_group'], PDO::PARAM_INT) . ',
-			@tstamp = ' . $queryBuilder->quote($fieldValues['tstamp'], PDO::PARAM_INT) . ',
-			@crdate = ' . $queryBuilder->quote($fieldValues['crdate'], PDO::PARAM_INT)
+			@pid = ' . $queryBuilder->quote((string)$fieldValues['pid']) . ',
+			@title = ' . $queryBuilder->quote((string)$fieldValues['title']) . ',
+			@type = ' . $queryBuilder->quote((string)$fieldValues['type']) . ',
+			@targetpid = ' . $queryBuilder->quote((string)$fieldValues['targetpid']) . ',
+			@content = ' . $queryBuilder->quote((string)$fieldValues['content']) . ',
+			@tags = ' . $queryBuilder->quote((string)$fieldValues['tags']) . ',
+			@params = ' . $queryBuilder->quote((string)$fieldValues['params']) . ',
+			@abstract = ' . $queryBuilder->quote((string)$fieldValues['abstract']) . ',
+			@language = ' . $queryBuilder->quote((string)$fieldValues['language']) . ',
+			@starttime = ' . $queryBuilder->quote((string)$fieldValues['starttime']) . ',
+			@endtime = ' . $queryBuilder->quote((string)$fieldValues['endtime']) . ',
+			@fe_group = ' . $queryBuilder->quote((string)$fieldValues['fe_group']) . ',
+			@tstamp = ' . $queryBuilder->quote((string)$fieldValues['tstamp']) . ',
+			@crdate = ' . $queryBuilder->quote((string)$fieldValues['crdate'])
             . $addQueryPartFor['set'] . '
 		;';
 
@@ -914,19 +914,19 @@ class IndexerRunner
 
         $queryArray = [];
         $queryArray['set'] = 'SET
-			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
-			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
-			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
-			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
-			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
-			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
-			@abstract = ' . $queryBuilder->quote($fieldValues['abstract'], PDO::PARAM_STR) . ',
-			@language = ' . $queryBuilder->quote($fieldValues['language'], PDO::PARAM_INT) . ',
-			@starttime = ' . $queryBuilder->quote($fieldValues['starttime'], PDO::PARAM_INT) . ',
-			@endtime = ' . $queryBuilder->quote($fieldValues['endtime'], PDO::PARAM_INT) . ',
-			@fe_group = ' . $queryBuilder->quote($fieldValues['fe_group'], PDO::PARAM_INT) . ',
-			@tstamp = ' . $queryBuilder->quote($fieldValues['tstamp'], PDO::PARAM_INT) .
+			@pid = ' . $queryBuilder->quote((string)$fieldValues['pid']) . ',
+			@title = ' . $queryBuilder->quote((string)$fieldValues['title']) . ',
+			@type = ' . $queryBuilder->quote((string)$fieldValues['type']) . ',
+			@targetpid = ' . $queryBuilder->quote((string)$fieldValues['targetpid']) . ',
+			@content = ' . $queryBuilder->quote((string)$fieldValues['content']) . ',
+			@tags = ' . $queryBuilder->quote((string)$fieldValues['tags']) . ',
+			@params = ' . $queryBuilder->quote((string)$fieldValues['params']) . ',
+			@abstract = ' . $queryBuilder->quote((string)$fieldValues['abstract']) . ',
+			@language = ' . $queryBuilder->quote((string)$fieldValues['language']) . ',
+			@starttime = ' . $queryBuilder->quote((string)$fieldValues['starttime']) . ',
+			@endtime = ' . $queryBuilder->quote((string)$fieldValues['endtime']) . ',
+			@fe_group = ' . $queryBuilder->quote((string)$fieldValues['fe_group']) . ',
+			@tstamp = ' . $queryBuilder->quote((string)$fieldValues['tstamp']) .
             $addQueryPartFor['set'] . ',
 			@uid = ' . $this->currentRow['uid'] . '
 		';
@@ -973,7 +973,7 @@ class IndexerRunner
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
 
         foreach ($this->additionalFields as $value) {
-            $queryForSet .= ', @' . $value . ' = ' . $queryBuilder->quote($fieldValues[$value], PDO::PARAM_STR);
+            $queryForSet .= ', @' . $value . ' = ' . $queryBuilder->quote((string)$fieldValues[$value]);
             $queryForExecute .= ', @' . $value;
         }
         return ['set' => $queryForSet, 'execute' => $queryForExecute];
