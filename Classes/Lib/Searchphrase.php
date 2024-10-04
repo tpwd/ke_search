@@ -109,7 +109,7 @@ class Searchphrase
     public function explodeSearchPhrase(string $searchString, bool $replaceAdditionalWordCharacters = false)
     {
         preg_match_all('/([+\-~<>])?\".*?"|[^ ]+/', $searchString, $matches);
-        list($searchParts) = $matches;
+        [$searchParts] = $matches;
         if (is_array($searchParts) && count($searchParts)) {
             foreach ($searchParts as $key => $word) {
                 // check for boolean seperator

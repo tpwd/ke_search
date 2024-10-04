@@ -26,8 +26,8 @@ use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\FileUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -312,9 +312,9 @@ class IndexerBase
             ->fetchAllAssociative();
 
         if (!empty($pageWhere)) {
-           $where = $pageWhere . ' AND ';
+            $where = $pageWhere . ' AND ';
         } else {
-           $where = '';
+            $where = '';
         }
         $where .= 'no_search <> 1 ';
 

@@ -25,8 +25,8 @@ namespace Tpwd\KeSearch\Widgets;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\TimeUtility;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
@@ -40,8 +40,7 @@ class StatusWidget implements WidgetInterface, RequestAwareWidgetInterface
         private readonly WidgetConfigurationInterface $configuration,
         private readonly BackendViewFactory $backendViewFactory,
         private readonly Registry $registry
-    ) {
-    }
+    ) {}
 
     public function setRequest(ServerRequestInterface $request): void
     {

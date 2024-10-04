@@ -22,8 +22,6 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Exception;
-use PDO;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
@@ -449,7 +447,7 @@ class IndexerRunner
                 AND language = ?
                 LIMIT 1
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing searchStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -475,7 +473,7 @@ class IndexerRunner
                 tstamp=?' . $addUpdateQuery . '
                 WHERE uid=?
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing updateStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -490,7 +488,7 @@ class IndexerRunner
                     . ' starttime, endtime, fe_group, tstamp, crdate' . $addInsertQueryFields . ')
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?' . $addInsertQueryValues . ', ?)
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing insertStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -503,7 +501,7 @@ class IndexerRunner
         if ($this->indexRepository->getTotalNumberOfRecords() == 0) {
             try {
                 Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('ALTER TABLE tx_kesearch_index DISABLE KEYS');
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $errorMessage = 'Error while disabling keys: ' . $e->getMessage();
                 $this->logger->error($errorMessage);
                 $this->indexingErrors[] = $errorMessage;
@@ -520,7 +518,7 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('ALTER TABLE tx_kesearch_index ENABLE KEYS');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while enabling keys: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -529,7 +527,7 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE searchStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating searchStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -538,7 +536,7 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE updateStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating updateStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -547,7 +545,7 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE insertStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating insertStmt: ' . $e->getMessage();
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
@@ -644,7 +642,7 @@ class IndexerRunner
                     $content .= '<b>Checking status of Sphinx daemon:</b> ';
                     $sphinxFailedToConnect = false;
                     foreach ($retArr as $retRow) {
-                        if (strpos($retRow, 'WARNING') !== false) {
+                        if (str_contains($retRow, 'WARNING')) {
                             $this->logger->warning('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                             $sphinxFailedToConnect = true;
@@ -680,7 +678,7 @@ class IndexerRunner
                         . '</p>'
                         . "\n\n";
                     foreach ($retArr as $retRow) {
-                        if (strpos($retRow, 'WARNING') !== false) {
+                        if (str_contains($retRow, 'WARNING')) {
                             $this->logger->error('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                         }
@@ -734,8 +732,7 @@ class IndexerRunner
         $fe_group = '',
         $debugOnly = false,
         $additionalFields = []
-    ): bool
-    {
+    ): bool {
         // if there are errors found in current record return false and break processing
         if (!$this->checkIfRecordHasErrorsBeforeIndexing($storagePid, $title, $type, $targetPid)) {
             return false;
@@ -892,7 +889,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             $this->indexingErrors[] = $e->getMessage();
         }
@@ -953,7 +950,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
             $this->indexingErrors[] = $e->getMessage();

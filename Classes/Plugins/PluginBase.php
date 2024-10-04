@@ -24,7 +24,6 @@ namespace Tpwd\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
@@ -174,7 +173,7 @@ class PluginBase extends AbstractPlugin
             $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord('tt_content', (int)($loadFlexformsFromOtherCE));
             if (is_int($contentElement) && $contentElement == 0) {
-                throw new Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
+                throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
@@ -449,8 +448,7 @@ class PluginBase extends AbstractPlugin
 
             // hook for modifying filter options
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] ?? null)) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] as
-                         $_classRef) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] as $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
                     $options = $_procObj->modifyFilterOptionsArray($filter['uid'], $options, $this);
                 }
@@ -477,8 +475,7 @@ class PluginBase extends AbstractPlugin
             // and $filterData['rawHtmlContent'] to your pre-rendered filter code
             // hook for custom filter renderer
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] ?? null)) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as
-                         $_classRef) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
                     $_procObj->customFilterRenderer($filter['uid'], $options, $this, $filterData);
                 }
@@ -758,7 +755,7 @@ class PluginBase extends AbstractPlugin
 
                 // add type marker
                 // for file results just use the "file" type, not the file extension (eg. "file:pdf")
-                list($type) = explode(':', $row['type']);
+                [$type] = explode(':', $row['type']);
                 $tempMarkerArray['type'] = str_replace(' ', '_', $type);
 
                 // use the markers array as a base for the fluid template values
@@ -848,7 +845,7 @@ class PluginBase extends AbstractPlugin
      */
     public function getFileReference($row): int
     {
-        list($type) = explode(':', $row['type']);
+        [$type] = explode(':', $row['type']);
         switch ($type) {
             case 'page':
                 if ($this->conf['showPageImages'] ?? false) {
@@ -914,7 +911,7 @@ class PluginBase extends AbstractPlugin
      */
     public function getTypeIconPath(string $typeComplete): string
     {
-        list($type) = explode(':', $typeComplete);
+        [$type] = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);
 
         if ($this->conf['resultListTypeIcon'][$name] ?? false) {
@@ -1300,7 +1297,7 @@ class PluginBase extends AbstractPlugin
     public function translate(string $key, string $alternativeLabel = ''): string
     {
         if (!str_starts_with($key, 'LLL:')) {
-            $key = 'LLL:'. $this->languageFile . ':' . $key;
+            $key = 'LLL:' . $this->languageFile . ':' . $key;
         }
         $label = LocalizationUtility::translate($key, 'KeSearch');
         if (empty($label)) {

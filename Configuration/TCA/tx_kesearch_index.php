@@ -1,4 +1,5 @@
 <?php
+
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
 
 $txKesearchIndex = [

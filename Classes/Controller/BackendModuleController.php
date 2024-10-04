@@ -639,8 +639,7 @@ class BackendModuleController
         string $pageColumn,
         int $pageUid,
         string $tableCol
-    ): array
-    {
+    ): array {
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {

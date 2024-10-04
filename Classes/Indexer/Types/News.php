@@ -294,8 +294,7 @@ class News extends IndexerBase
 
                 // hook for custom modifications of the indexed data, e.g. the tags
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] ?? null)) {
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] as
-                             $_classRef) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] as $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);
                         $_procObj->modifyExtNewsIndexEntry(
                             $title,
@@ -416,7 +415,7 @@ class News extends IndexerBase
         $categoryData['single_pid'] = 0;
 
         if ($categoryData['uid_list']) {
-            foreach ($categoryData['uid_list']as $categoryUid) {
+            foreach ($categoryData['uid_list'] as $categoryUid) {
                 $newsCat = $categoryRepository->findByUid($categoryUid);
                 // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
                 if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findByUid($newsCat['single_pid'])) {
