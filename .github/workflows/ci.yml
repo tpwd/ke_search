@@ -21,14 +21,22 @@ jobs:
       matrix:
         php-versions:
           - '8.1'
+          - '8.2'
+          - '8.3'
         typo3-versions:
-          - '^11'
           - '^12'
+          - '^13'
         include:
-          - php-versions: '7.4'
-            typo3-versions: '^11'
-          - php-versions: '8.0'
-            typo3-versions: '^11'
+          - php-versions: '8.1'
+            typo3-versions: '^12'
+          - php-versions: '8.2'
+            typo3-versions:
+            - '^12'
+            - '^13'
+          - php-versions: '8.3'
+            typo3-versions:
+              - '^12'
+              - '^13'
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
