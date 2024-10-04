@@ -837,11 +837,14 @@ class IndexerBase
                 if ($siteLanguage->getTitle()) {
                     $languages[strtolower($siteLanguage->getTitle())] = $siteLanguageId;
                 }
+                if ($siteLanguage->getWebsiteTitle()) {
+                    $languages[strtolower($siteLanguage->getWebsiteTitle())] = $siteLanguageId;
+                }
                 if ($siteLanguage->getHreflang()) {
                     $languages[strtolower($siteLanguage->getHreflang())] = $siteLanguageId;
                 }
-                if ($siteLanguage->getTwoLetterIsoCode()) {
-                    $languages[strtolower($siteLanguage->getTwoLetterIsoCode())] = $siteLanguageId;
+                if ($siteLanguage->getTypo3Language()) {
+                    $languages[strtolower($siteLanguage->getTypo3Language())] = $siteLanguageId;
                 }
             }
         }
