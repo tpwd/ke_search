@@ -601,7 +601,6 @@ class News extends IndexerBase
      * extract content from files to index
      *
      * @param array $relatedFiles
-     * @param int $newsUid
      * @return string
      */
     protected function getContentFromRelatedFiles(array $relatedFiles): string
