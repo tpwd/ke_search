@@ -60,8 +60,8 @@ class News extends IndexerBase
 
         // get the pages from where to index the news
         $indexPids = $this->getPidList(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? '',
             $table
         );
 

@@ -11,6 +11,7 @@ Upcoming version for TYPO3 13
 [TASK]    Remove obsolete code for TYPO3 11 and below
 [TASK]    Migrate FlexfForm definition
 [TASK]    Migrate database queries
+[TASK]    Set fallback values for indexer starting pages
 
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242

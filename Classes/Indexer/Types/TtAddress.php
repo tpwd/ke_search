@@ -53,8 +53,8 @@ class TtAddress extends IndexerBase
         $fields = '*';
         $table = 'tt_address';
         $indexPids = $this->getPidList(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? '',
             $table
         );
 

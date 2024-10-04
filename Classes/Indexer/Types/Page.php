@@ -216,8 +216,8 @@ class Page extends IndexerBase
     {
         // get all pages. Regardless if they are shortcut, sysfolder or external link
         $indexPids = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['single_pages']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['single_pages'] ?? ''
         );
 
         // add complete page record to list of pids in $indexPids
@@ -324,8 +324,8 @@ class Page extends IndexerBase
 
         // get all pages (including deleted)
         $indexPids = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['single_pages'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['single_pages'] ?? '',
             true
         );
 

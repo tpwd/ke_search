@@ -291,8 +291,8 @@ class TtContent extends Page
 
         // get the pages from where to index the news
         $folders = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? ''
         );
 
         // Fetch all records which have been deleted or hidden since the last indexing
