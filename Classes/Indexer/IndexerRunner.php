@@ -275,7 +275,7 @@ class IndexerRunner
                 $content .= '<li>' . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') . '</li>' . chr(10);
             }
             $content .= '</ul>';
-            $content .= '<i>This is list is meant as a hint. It may not contain all errors. Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</i>';
+            $content .= '<i>This list is meant as a hint. It may not contain all errors. Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</i>';
             $content .= '</div>';
         }
 

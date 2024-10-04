@@ -215,10 +215,7 @@ class News extends IndexerBase
                     if (!empty($relatedFiles)) {
                         if ($this->indexerConfig['index_news_files_mode'] === 1) {
                             // add file content to news index record
-                            $content .= $this->getContentFromRelatedFiles(
-                                $relatedFiles,
-                                $newsRecord['uid']
-                            );
+                            $content .= $this->getContentFromRelatedFiles($relatedFiles);
                         } else {
                             // index file as separate index record
                             $this->indexFilesAsSeparateResults($relatedFiles, $newsRecord);
@@ -595,7 +592,7 @@ class News extends IndexerBase
      * @param array $relatedFiles
      * @param array $newsRecord
      */
-    protected function indexFilesAsSeparateResults($relatedFiles, $newsRecord)
+    protected function indexFilesAsSeparateResults(array $relatedFiles, array $newsRecord)
     {
         parent::indexFilesAsSeparateResults($relatedFiles, $newsRecord);
     }
@@ -607,7 +604,7 @@ class News extends IndexerBase
      * @param int $newsUid
      * @return string
      */
-    protected function getContentFromRelatedFiles($relatedFiles, $newsUid): string
+    protected function getContentFromRelatedFiles(array $relatedFiles): string
     {
         return $this->getContentFromFiles($relatedFiles);
     }

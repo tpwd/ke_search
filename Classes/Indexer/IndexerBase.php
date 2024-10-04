@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -95,6 +96,7 @@ class IndexerBase
 
     protected IndexerStatusService $indexerStatusService;
     protected IndexRepository $indexRepository;
+    protected ResourceFactory $resourceFactory;
 
     /**
      * Constructor of this object
@@ -108,6 +110,7 @@ class IndexerBase
         $this->lastRunStartTime = SearchHelper::getIndexerLastRunTime();
         $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
         $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
+        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**
@@ -478,7 +481,7 @@ class IndexerBase
 
         $queryBuilder = Db::getQueryBuilder('sys_file');
         $relatedFilesQuery = $queryBuilder
-            ->select('ref.uid')
+            ->select('ref.*')
             ->from('sys_file', 'file')
             ->from('sys_file_reference', 'ref')
             ->where(
@@ -508,8 +511,8 @@ class IndexerBase
 
         if ($relatedFilesQuery->rowCount()) {
             $relatedFiles = $relatedFilesQuery->fetchAllAssociative();
-            foreach ($relatedFiles as $key => $relatedFile) {
-                $fileReference = $fileRepository->findFileReferenceByUid($relatedFile['uid']);
+            foreach ($relatedFiles as $relatedFile) {
+                $fileReference = $this->resourceFactory->createFileReferenceObject($relatedFile);
                 $file = $fileReference->getOriginalFile();
                 if ($file instanceof \TYPO3\CMS\Core\Resource\File
                     && FileUtility::isFileIndexable($file, $this->indexerConfig)) {
