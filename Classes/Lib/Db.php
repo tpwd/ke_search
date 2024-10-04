@@ -117,14 +117,18 @@ class Db implements SingletonInterface
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
             $resultQuery = $queryBuilder
                 ->add('select', $queryParts['SELECT'])
                 ->from($queryParts['FROM'])
+                // @phpstan-ignore-next-line
                 ->add('where', $queryParts['WHERE']);
             if (!empty($queryParts['GROUPBY'])) {
+                // @phpstan-ignore-next-line
                 $resultQuery->add('groupBy', $queryParts['GROUPBY']);
             }
             if (!empty($queryParts['ORDERBY'])) {
+                // @phpstan-ignore-next-line
                 $resultQuery->add('orderBy', $queryParts['ORDERBY']);
             }
         } else {
@@ -168,6 +172,7 @@ class Db implements SingletonInterface
             $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
             $queryBuilder->getRestrictions()->removeAll();
             if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+                // @phpstan-ignore-next-line
                 $numRows = $queryBuilder
                     ->add('select', 'FOUND_ROWS()')
                     ->executeQuery()
@@ -301,7 +306,7 @@ class Db implements SingletonInterface
     public function getQueryParts()
     {
         $databaseConnection = self::getDatabaseConnection($this->table);
-        $searchwordQuoted = $databaseConnection->quote($this->pObj->scoreAgainst, \PDO::PARAM_STR);
+        $searchwordQuoted = $databaseConnection->quote((string)$this->pObj->scoreAgainst);
         $limit = $this->getLimit();
         $queryParts = [
             'SELECT' => $this->getFields($searchwordQuoted),
@@ -397,12 +402,22 @@ class Db implements SingletonInterface
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
 
-        $tagRows = $queryBuilder
-            ->select('tags')
-            ->from($queryParts['FROM'])
-            ->add('where', $queryParts['WHERE'])
-            ->executeQuery()
-            ->fetchAllAssociative();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $tagRows = $queryBuilder
+                ->select('tags')
+                ->from($queryParts['FROM'])
+                ->add('where', $queryParts['WHERE'])
+                ->executeQuery()
+                ->fetchAllAssociative();
+        } else {
+            $tagRows = $queryBuilder
+                ->select('tags')
+                ->from($queryParts['FROM'])
+                ->where($queryParts['WHERE'])
+                ->executeQuery()
+                ->fetchAllAssociative();
+        }
 
         return array_map(
             function ($row) {
@@ -426,7 +441,7 @@ class Db implements SingletonInterface
         if (count($tags) && is_array($tags)) {
             foreach ($tags as $value) {
                 // @TODO: check if this works as intended / search for better way
-                $value = $databaseConnection->quote($value, \PDO::PARAM_STR);
+                $value = $databaseConnection->quote((string)$value);
                 $value = rtrim($value, "'");
                 $value = ltrim($value, "'");
                 $where .= ' AND MATCH (tags) AGAINST (\'' . $value . '\' IN BOOLEAN MODE) ';
@@ -478,10 +493,7 @@ class Db implements SingletonInterface
         $where = '';
 
         $databaseConnection = self::getDatabaseConnection('tx_kesearch_index');
-        $wordsAgainstQuoted = $databaseConnection->quote(
-            $this->pObj->wordsAgainst,
-            \PDO::PARAM_STR
-        );
+        $wordsAgainstQuoted = $databaseConnection->quote((string)$this->pObj->wordsAgainst);
 
         // add boolean where clause for searchwords
         if ($this->pObj->wordsAgainst != '') {

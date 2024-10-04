@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Lib;
 use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -205,12 +206,20 @@ class Filters
         $where .= ' AND find_in_set(uid, "' . $filterUids . '")';
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
-        $filterQuery = $queryBuilder
-            ->select('*')
-            ->from($table)
-            ->add('where', $where)
-            ->add('orderBy', 'find_in_set(uid, "' . $filterUids . '")')
-            ->executeQuery();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $filterQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->add('where', $where)
+                ->executeQuery();
+        } else {
+            $filterQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($where)
+                ->executeQuery();
+        }
 
         $filterRows = [];
         while ($row = $filterQuery->fetchAssociative()) {
@@ -237,12 +246,21 @@ class Filters
         $where .= ' AND pid in (' . $this->startingPoints . ')';
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
-        $optionsQuery = $queryBuilder
-            ->select('*')
-            ->from($table)
-            ->add('where', $where)
-            ->add('orderBy', 'FIND_IN_SET(uid, "' . $optionUids . '")')
-            ->executeQuery();
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $optionsQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->add('where', $where)
+                ->executeQuery();
+        } else {
+            $optionsQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($where)
+                ->executeQuery();
+        }
 
         $optionsRows = [];
         while ($row = $optionsQuery->fetchAssociative()) {

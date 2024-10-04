@@ -40,7 +40,6 @@ use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -1087,39 +1086,35 @@ class PluginBase extends AbstractPlugin
     }
 
     /**
-     * gets all preselected filters from flexform
-     * returns nothing but fills global var with needed data
+     * Fetches preselected filters (set in FlexForm).
+     * Returns nothing but fills global var with needed data.
      */
-    public function getFilterPreselect()
+    public function getFilterPreselect(): void
     {
-        // get definitions from plugin settings
-        // and proceed only when preselectedFilter was not set
-        // this reduces the amount of sql queries, too
         if (($this->conf['preselected_filters'] ?? false) && count($this->preselectedFilter) == 0) {
             $preselectedArray = GeneralUtility::intExplode(',', $this->conf['preselected_filters'], true);
             foreach ($preselectedArray as $option) {
                 $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
-                /** @var PageRepository $pageRepository */
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $filterRows = $queryBuilder
-                    ->add(
-                        'select',
-                        '`tx_kesearch_filters`.`uid` AS filteruid, `tx_kesearch_filteroptions`.`uid` AS optionuid, `tx_kesearch_filteroptions`.`tag`'
+                    ->select(
+                        'tx_kesearch_filters.uid AS filteruid',
+                        'tx_kesearch_filteroptions.uid AS optionuid',
+                        'tx_kesearch_filteroptions.tag'
                     )
                     ->from('tx_kesearch_filters')
                     ->from('tx_kesearch_filteroptions')
-                    ->add(
-                        'where',
-                        'FIND_IN_SET("' . $option . '",tx_kesearch_filters.options)'
-                        . ' AND `tx_kesearch_filteroptions`.`uid` = ' . $option .
-                        // @extensionScannerIgnoreLine
-                        $pageRepository->enableFields('tx_kesearch_filters') .
-                        // @extensionScannerIgnoreLine
-                        $pageRepository->enableFields('tx_kesearch_filteroptions')
+                    ->where(
+                        $queryBuilder->expr()->inSet(
+                            'tx_kesearch_filters.options',
+                            $queryBuilder->createNamedParameter($option)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'tx_kesearch_filteroptions.uid',
+                            $queryBuilder->createNamedParameter($option)
+                        ),
                     )
                     ->executeQuery()
                     ->fetchAllAssociative();
-
                 foreach ($filterRows as $row) {
                     $this->preselectedFilter[$row['filteruid']][$row['optionuid']] = $row['tag'];
                 }
