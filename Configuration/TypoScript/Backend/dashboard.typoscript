@@ -1,9 +1,0 @@
-# TODO: Remove this file once support TYPO3 v11 is dropped (configuration is moved to Configuration/page.tsconfig)
-# https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96812-NoFrontendTypoScriptBasedTemplateOverridesInTheBackend.html
-module.tx_dashboard {
-  view {
-    templateRootPaths {
-      1613733292 = EXT:ke_search/Resources/Private/Dashboard/Templates/
-    }
-  }
-}
