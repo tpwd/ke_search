@@ -30,7 +30,9 @@
 		"ext-zip": "*",
 		"ext-libxml": "*",
 		"ext-dom": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"typo3/cms-indexed-search": "^13",
+		"typo3/cms-scheduler": "^13"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"

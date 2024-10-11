@@ -5,28 +5,52 @@ use Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator;
 defined('TYPO3') or die();
 
 (function () {
-    // add Searchbox Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi1');
+    // Add Searchbox Plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi1.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
+        '
+plugin.tx_kesearch_pi1 = USER_INT
+plugin.tx_kesearch_pi1.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main
+tt_content.ke_search_pi1 =< lib.contentElement
+tt_content.ke_search_pi1 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi1
+}
+',
+        'defaultContentRendering'
     );
 
-    // add Resultlist Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi2');
+    // add Resultlist Plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi2.userFunc = Tpwd\KeSearch\Plugins\ResultlistPlugin->main'
+        '
+plugin.tx_kesearch_pi2 = USER_INT
+plugin.tx_kesearch_pi2.userFunc = Tpwd\KeSearch\Plugins\ResultlistPlugin->main
+tt_content.ke_search_pi2 =< lib.contentElement
+tt_content.ke_search_pi2 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi2
+}
+',
+        'defaultContentRendering'
     );
 
-    // add cachable Searchbox Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi3', 'list_type', 1);
+    // Add cachable Searchbox Plugin (USER instead of USER_INT)
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
+        '
+plugin.tx_kesearch_pi3 = USER
+plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main
+tt_content.ke_search_pi3 =< lib.contentElement
+tt_content.ke_search_pi3 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi3
+}
+',
+        'defaultContentRendering'
     );
 
     // TODO: Remove this once support TYPO3 v11 is dropped, it is moved to Configuration/page.tsconfig which is automatically loaded

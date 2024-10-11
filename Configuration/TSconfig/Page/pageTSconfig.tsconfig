@@ -1,36 +1,36 @@
 mod.web_list.hideTables := addToList(tx_kesearch_index)
 
 // add content element wizards
-mod {
-  wizards.newContentElement.wizardItems.plugins {
-    elements {
-      ke_search_pi1 {
-        iconIdentifier = ext-kesearch-wizard-icon
-        title = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_title
-        description = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_plus_wiz_description
-        tt_content_defValues {
-          CType = list
-          list_type = ke_search_pi1
+// can be removed when support for TYPO3 12 is dropped
+[typo3.branch == "12.4" || typo3.branch == "12.3" || typo3.branch == "12.2" || typo3.branch == "12.1" || typo3.branch == "12.0"]
+  mod {
+    wizards.newContentElement.wizardItems.plugins {
+      elements {
+        ke_search_pi1 {
+          iconIdentifier = ext-kesearch-wizard-icon
+          title = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_title
+          description = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_plus_wiz_description
+          tt_content_defValues {
+            CType = ke_search_pi1
+          }
         }
-      }
-      ke_search_pi2 {
-        iconIdentifier = ext-kesearch-wizard-icon
-        title = LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_title
-        description = LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_plus_wiz_description
-        tt_content_defValues {
-          CType = list
-          list_type = ke_search_pi2
+        ke_search_pi2 {
+          iconIdentifier = ext-kesearch-wizard-icon
+          title = LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_title
+          description = LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_plus_wiz_description
+          tt_content_defValues {
+            CType = ke_search_pi2
+          }
         }
-      }
-      ke_search_pi3 {
-        iconIdentifier = ext-kesearch-wizard-icon
-        title = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_title
-        description = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_plus_wiz_description
-        tt_content_defValues {
-          CType = list
-          list_type = ke_search_pi3
+        ke_search_pi3 {
+          iconIdentifier = ext-kesearch-wizard-icon
+          title = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_title
+          description = LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_plus_wiz_description
+          tt_content_defValues {
+            CType = ke_search_pi3
+          }
         }
       }
     }
   }
-}
+[GLOBAL]

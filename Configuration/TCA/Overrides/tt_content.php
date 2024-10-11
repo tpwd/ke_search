@@ -10,74 +10,77 @@ ExtensionManagementUtility::addStaticFile(
     'Faceted Search'
 );
 
-// show FlexForm field in plugin configuration
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['ke_search_pi1'] = 'pi_flexform';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['ke_search_pi2'] = 'pi_flexform';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['ke_search_pi3'] = 'pi_flexform';
-
-// remove the old "plugin mode" configuration field
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi1'] = 'select_key,recursive';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi2'] = 'select_key,recursive,pages';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['ke_search_pi3'] = 'select_key,recursive';
-
-// add plugins
-if (!is_array($GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] ?? false)) {
-    $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
-}
-
+// Add plugin group
 ExtensionManagementUtility::addTcaSelectItemGroup(
     'tt_content',
-    'list_type',
+    'CType',
     'ke_search',
     'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab',
-    'after:default'
 );
 
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
+// Add plugins
+ExtensionManagementUtility::addPlugin(
     [
-        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_title',
+        'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_plus_wiz_description',
         'value' => 'ke_search_pi1',
         'icon'  => 'ext-kesearch-wizard-icon',
         'group' => 'ke_search',
-    ]
+    ],
+    'CType',
+    'ke_search'
 );
 
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
+ExtensionManagementUtility::addPlugin(
     [
-        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_title',
+        'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_plus_wiz_description',
         'value' => 'ke_search_pi2',
         'icon'  => 'ext-kesearch-wizard-icon',
         'group' => 'ke_search',
-    ]
+    ],
+    'CType',
+    'ke_search'
 );
 
-ExtensionManagementUtility::addTcaSelectItem(
-    'tt_content',
-    'list_type',
+ExtensionManagementUtility::addPlugin(
     [
-        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi3',
+        'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_title',
+        'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_plus_wiz_description',
         'value' => 'ke_search_pi3',
         'icon'  => 'ext-kesearch-wizard-icon',
         'group' => 'ke_search',
-    ]
+    ],
+    'CType',
+    'ke_search'
 );
 
-// Configure FlexForm field
-ExtensionManagementUtility::addPiFlexFormValue(
-    'ke_search_pi1',
-    'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml'
-);
-
-ExtensionManagementUtility::addPiFlexFormValue(
-    'ke_search_pi2',
-    'FILE:EXT:ke_search/Configuration/FlexForms/flexform_resultlist.xml'
-);
-
-ExtensionManagementUtility::addPiFlexFormValue(
-    'ke_search_pi3',
-    'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml'
-);
+// Configure FlexForm fields
+$pluginFlexFormConfigs = [
+    'ke_search_pi1' => 'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml',
+    'ke_search_pi2' => 'FILE:EXT:ke_search/Configuration/FlexForms/flexform_resultlist.xml',
+    'ke_search_pi3' => 'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml',
+];
+foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
+    ExtensionManagementUtility::addPiFlexFormValue('*', $flexFormFile, $pluginName);
+    $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem'] = '
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
+            --palette--;;general,
+            --palette--;;headers,
+        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.plugin,
+            pi_flexform,
+        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+            --palette--;;frames,
+            --palette--;;appearanceLinks,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
+            --palette--;;language,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+            --palette--;;hidden,
+            --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+            categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+            rowDescription,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
+    ';
+}
