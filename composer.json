@@ -24,6 +24,7 @@
 		"typo3/cms-dashboard": "^12 || ^13",
 		"typo3/cms-info": "^12 || ^13",
 		"typo3/cms-install": "^12 || ^13",
+		"friendsofphp/php-cs-fixer": "^3",
 		"typo3/coding-standards": "^0.8.0",
 		"phpunit/phpunit": "^10",
 		"phpstan/phpstan": "^1",
