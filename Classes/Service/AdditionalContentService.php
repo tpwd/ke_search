@@ -87,10 +87,12 @@ class AdditionalContentService
             $errorMessage =
                 'Error while parsing additional table configuration for indexer "' . $this->indexerConfig['title']
                 . '": ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
         }
         if ($additionalTableConfig === false) {
             $errorMessage = 'Could not parse additional table configuration for indexer "' . $this->indexerConfig['title'] . '".';
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $additionalTableConfig = [];
         }
@@ -127,6 +129,7 @@ class AdditionalContentService
                         $fileObjects[] = $hrefInformation['file'];
                     }
                 } catch (\Exception $exception) {
+                    // @extensionScannerIgnoreLine
                     $this->logger->error($exception->getMessage());
                 }
             }

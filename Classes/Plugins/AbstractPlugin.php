@@ -132,10 +132,14 @@ class AbstractPlugin
     public function pi_initPIflexForm(string $field = 'pi_flexform')
     {
         // Converting flexform data into array
+        // @extensionScannerIgnoreLine
         $fieldData = $this->cObj->data[$field] ?? null;
         if (!is_array($fieldData) && $fieldData) {
+            // @extensionScannerIgnoreLine
             $this->cObj->data[$field] = GeneralUtility::xml2array((string)$fieldData);
+            // @extensionScannerIgnoreLine
             if (!is_array($this->cObj->data[$field])) {
+                // @extensionScannerIgnoreLine
                 $this->cObj->data[$field] = [];
             }
         }

@@ -449,6 +449,7 @@ class IndexerRunner
             "');
         } catch (\Exception $e) {
             $errorMessage = 'Error while preparing searchStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -475,6 +476,7 @@ class IndexerRunner
             "');
         } catch (\Exception $e) {
             $errorMessage = 'Error while preparing updateStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -490,6 +492,7 @@ class IndexerRunner
             "');
         } catch (\Exception $e) {
             $errorMessage = 'Error while preparing insertStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -503,6 +506,7 @@ class IndexerRunner
                 Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('ALTER TABLE tx_kesearch_index DISABLE KEYS');
             } catch (\Exception $e) {
                 $errorMessage = 'Error while disabling keys: ' . $e->getMessage();
+                // @extensionScannerIgnoreLine
                 $this->logger->error($errorMessage);
                 $this->indexingErrors[] = $errorMessage;
             }
@@ -520,6 +524,7 @@ class IndexerRunner
                 ->executeStatement('ALTER TABLE tx_kesearch_index ENABLE KEYS');
         } catch (\Exception $e) {
             $errorMessage = 'Error while enabling keys: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -529,6 +534,7 @@ class IndexerRunner
                 ->executeStatement('DEALLOCATE PREPARE searchStmt');
         } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating searchStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -538,6 +544,7 @@ class IndexerRunner
                 ->executeStatement('DEALLOCATE PREPARE updateStmt');
         } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating updateStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -547,6 +554,7 @@ class IndexerRunner
                 ->executeStatement('DEALLOCATE PREPARE insertStmt');
         } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating insertStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -679,17 +687,20 @@ class IndexerRunner
                         . "\n\n";
                     foreach ($retArr as $retRow) {
                         if (str_contains($retRow, 'WARNING')) {
+                            // @extensionScannerIgnoreLine
                             $this->logger->error('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                         }
                     }
                 } else {
+                    // @extensionScannerIgnoreLine
                     $this->logger->error('Sphinx: "exec" call is not allowed. '
                         . 'Check your disable_functions setting in php.ini');
                     $content .= '<div class="error">SPHINX ERROR: "exec" call is not allowed. '
                         . 'Check your disable_functions setting in php.ini.</div>';
                 }
             } else {
+                // @extensionScannerIgnoreLine
                 $this->logger->error('Sphinx: Executables not found or execution permission missing.');
                 $content .= '<div class="error">SPHINX ERROR: Sphinx executables '
                     . 'not found or execution permission is missing.</div>';
@@ -890,6 +901,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
         } catch (\Exception $e) {
+            // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
             $this->indexingErrors[] = $e->getMessage();
         }
@@ -1145,14 +1157,17 @@ class IndexerRunner
 
         // check for empty values
         if (empty($storagePid)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('no storage pid set');
             $errors[] = 'No storage PID set';
         }
         if (empty($type)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('no type set');
             $errors[] = 'No type set';
         }
         if (empty($targetPid)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('No target PID set');
             $errors[] = 'No target PID set';
         }
@@ -1169,6 +1184,7 @@ class IndexerRunner
             if (!empty($storagePid)) {
                 $errormessage .= 'STORAGE PID: ' . $storagePid . '; ';
             }
+            // @extensionScannerIgnoreLine
             $this->logger->error($errormessage);
             $this->indexingErrors[] = $errormessage;
 

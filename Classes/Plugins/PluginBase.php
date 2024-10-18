@@ -174,6 +174,7 @@ class PluginBase extends AbstractPlugin
             if (is_int($contentElement) && $contentElement == 0) {
                 throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
+            // @extensionScannerIgnoreLine
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
 
@@ -333,8 +334,10 @@ class PluginBase extends AbstractPlugin
     public function getFlexFormConfiguration(): array
     {
         $flexFormConfiguration = [];
+        // @extensionScannerIgnoreLine
         if (isset($this->cObj->data['pi_flexform'])) {
             $this->pi_initPIflexForm();
+            // @extensionScannerIgnoreLine
             $piFlexForm = $this->cObj->data['pi_flexform'];
             if (is_array($piFlexForm['data'])) {
                 foreach ($piFlexForm['data'] as $sheetKey => $sheet) {
