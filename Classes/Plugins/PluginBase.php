@@ -967,7 +967,7 @@ class PluginBase extends AbstractPlugin
 
     /**
      * Fetches configuration value given its name.
-     * Merges flexform and TS configuration values.
+     * Merges FlexForm and TS configuration values.
      *
      * @param    string $param Configuration value name
      * @param    string $sheet
@@ -975,13 +975,8 @@ class PluginBase extends AbstractPlugin
      */
     public function fetchConfigurationValue(string $param, string $sheet = 'sDEF'): string
     {
-        $value = trim(
-            $this->pi_getFFvalue(
-                $this->cObj->data['pi_flexform'],
-                $param,
-                $sheet
-            )
-        );
+        // @extensionScannerIgnoreLine
+        $value = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], $param, $sheet));
         return $value ?: ($this->conf[$param] ?? '');
     }
 
