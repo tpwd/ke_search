@@ -54,8 +54,8 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  */
 class PluginBase extends AbstractPlugin
 {
-    protected ?ServerRequestInterface $request = null;
-    protected $languageFile = 'EXT:ke_search/Resources/Private/Language/locallang.xlf';
+    public ?ServerRequestInterface $request = null;
+    public $languageFile = 'EXT:ke_search/Resources/Private/Language/locallang.xlf';
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
@@ -113,7 +113,7 @@ class PluginBase extends AbstractPlugin
     public array $fluidTemplateVariables = [];
 
     // Frontend language ID
-    protected int $languageId;
+    public int $languageId;
 
     // Helper variable to pass the value to a hook
     private int $currentRowNumber;
@@ -125,7 +125,6 @@ class PluginBase extends AbstractPlugin
     public function init(ServerRequestInterface $request)
     {
         $this->setRequest($request);
-        $this->frontendController = $request->getAttribute('frontend.controller');
 
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);

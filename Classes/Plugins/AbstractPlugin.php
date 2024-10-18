@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Derived of the old piBase class typo3/sysext/frontend/Classes/Plugin/AbstractPlugin.php
@@ -56,13 +55,6 @@ class AbstractPlugin
     public array $conf = [];
 
     /**
-     * Property for accessing TypoScriptFrontendController centrally
-     *
-     * @var TypoScriptFrontendController|null
-     */
-    protected ?TypoScriptFrontendController $frontendController;
-
-    /**
      * This setter is called when the plugin is called from UserContentObject (USER)
      * via ContentObjectRenderer->callUserFunction().
      */
@@ -73,30 +65,29 @@ class AbstractPlugin
 
     /**
      * Returns the row $uid from $table
-     * (Simply calling $this->frontendEngine->sys_page->checkRecord())
+     * (Simply calling $pageRepository->checkRecord())
      *
      * @param string $table The table name
      * @param int $uid The uid of the record from the table
      * @param bool $checkPage If $checkPage is set, it's required that the page on which the record resides is accessible
-     * @return array|int If record is found, an array. Otherwise, 0.
+     * @return array|null If record is found, an array. Otherwise, null
      */
     public function pi_getRecord(string $table, int $uid, bool $checkPage = false)
     {
-        return $this->frontendController->sys_page->checkRecord($table, $uid, $checkPage);
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        return $pageRepository->checkRecord($table, $uid, $checkPage);
     }
 
     /**
      * Returns a comma list of page ids for a query (e.g. 'WHERE pid IN (...)')
      *
-     * @param string $pid_list A comma list of page ids (if empty current page is used)
+     * @param string $pid_list A comma list of page ids
      * @param int $recursive An integer >=0 telling how deep to dig for pids under each entry in $pid_list
      * @return string List of PID values (comma separated)
      */
     public function pi_getPidList(string $pid_list, int $recursive = 0): string
     {
-        if (!strcmp($pid_list, '')) {
-            $pid_list = (string)$this->frontendController->id;
-        }
         $recursive = MathUtility::forceIntegerInRange($recursive, 0);
         $pid_list_arr = array_unique(GeneralUtility::intExplode(',', $pid_list, true));
         $pid_list = GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($pid_list_arr, $recursive);
