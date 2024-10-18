@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version for TYPO3 13
+Version 6.0.0, 18 October 2024
 [!!!]     This version drops support for TYPO3 11.
 [!!!]     Plugins are now registered as content elements, not as general plugins ("list_type"). A migration wizard is provided. You may adapt your configuration for content element restrictions e.g. EXT:content_defender or similar. See https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/13.4/Deprecation-105076-PluginContentElementAndPluginSubTypes.html#migration
 [TASK]    Update requirements for TYPO3 13
@@ -11,7 +11,7 @@ Upcoming version for TYPO3 13
 [TASK]    Remove language-related function from AbstractPlugin and use custom translate function instead
 [TASK]    Migrate database queries to use type constants from Connection instead of PDO, https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Database/QueryBuilder/Index.html#database-query-builder-create-named-parameter
 [TASK]    Remove obsolete code for TYPO3 11 and below
-[TASK]    Migrate FlexfForm definition
+[TASK]    Migrate FlexForm definition
 [TASK]    Migrate database queries
 [TASK]    Set fallback values for indexer starting pages
 [TASK]    Use FileResourceFactory instead of fileRepository->findFileReferenceByUid()
