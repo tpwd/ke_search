@@ -529,8 +529,8 @@ class Db implements SingletonInterface
             // @extensionScannerIgnoreLine
             $where .= $pageRepository->enableFields($this->table);
         } else {
-            // extensionScannerIgnoreLine can be removed once support for TYPO3 12 is dropped
-            // @extensionScannerIgnoreLine
+            // phpstan-ignore-next-line can be removed once support for TYPO3 12 is dropped
+            // @phpstan-ignore-next-line
             $constraints = $pageRepository->getDefaultConstraints($this->table);
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table)
