@@ -16,6 +16,7 @@ namespace Tpwd\KeSearch\Plugins;
  */
 
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -76,7 +77,16 @@ class AbstractPlugin
     {
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        return $pageRepository->checkRecord($table, $uid, $checkPage);
+        $record = $pageRepository->checkRecord($table, $uid, $checkPage);
+        // Fix return type of PageRepository->checkRecord() for TYPO3 12
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            if (is_int($record) && $record == 0) {
+                $record = null;
+            }
+        }
+
+        return $record;
     }
 
     /**

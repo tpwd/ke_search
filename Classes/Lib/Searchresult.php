@@ -243,8 +243,8 @@ class Searchresult
             $amountOfSearchWords = count($this->swords);
             // with each new searchword and all the croppings here the teaser for each word will become too small/short
             // I decided to add 20 additional letters for each searchword. It looks much better and is more readable
-            $charsForEachSearchWord = ceil(($this->conf['resultChars'] ?? 0) / $amountOfSearchWords) + 20;
-            $charsBeforeAfterSearchWord = ceil($charsForEachSearchWord / 2);
+            $charsForEachSearchWord = (int)ceil(($this->conf['resultChars'] ?? 0) / $amountOfSearchWords) + 20;
+            $charsBeforeAfterSearchWord = (int)ceil($charsForEachSearchWord / 2);
             $aSearchWordWasFound = false;
             $isSearchWordAtTheBeginning = false;
             $teaserArray = [];
@@ -292,7 +292,7 @@ class Searchresult
                             content: $partWithSearchWord,
                             numberOfChars: $charsForEachSearchWord,
                             replacementForEllipsis: '…',
-                            cropToSpace: 1
+                            cropToSpace: true
                         );
 
                     // crop some words before search word
@@ -306,7 +306,7 @@ class Searchresult
                             content: $temp,
                             numberOfChars: -$length,
                             replacementForEllipsis: '',
-                            cropToSpace: 1
+                            cropToSpace: true
                         );
                 }
             }
@@ -320,7 +320,7 @@ class Searchresult
                             content: $content,
                             numberOfChars: $this->conf['resultChars'] ?? 0,
                             replacementForEllipsis: '',
-                            cropToSpace: 1
+                            cropToSpace: true
                         );
             } elseif ($isSearchWordAtTheBeginning === true) {
                 $teaser = implode(' ', $teaserArray);
@@ -340,7 +340,7 @@ class Searchresult
                     content: $content,
                     numberOfChars: $this->conf['resultChars'] ?? 0,
                     replacementForEllipsis: '…',
-                    cropToSpace: 1
+                    cropToSpace: true
                 );
     }
 }

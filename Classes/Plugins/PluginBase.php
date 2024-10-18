@@ -172,7 +172,7 @@ class PluginBase extends AbstractPlugin
         if (!empty($loadFlexformsFromOtherCE)) {
             $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord('tt_content', (int)($loadFlexformsFromOtherCE));
-            if (is_int($contentElement) && $contentElement == 0) {
+            if (!$contentElement) {
                 throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
             // @extensionScannerIgnoreLine

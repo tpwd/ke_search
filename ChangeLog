@@ -23,6 +23,7 @@ Upcoming version for TYPO3 13
 [TASK]    Migrate usage of $GLOBALS['TSFE']->sys_page->getRecordOverlay()
 [TASK]    Migrate usage of $cObj->crop()
 [TASK]    Remove usage of $GLOBALS['TSFE']->register
+[TASK]    Fix return type of PageRepository->checkRecord() for TYPO3 12
 
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
