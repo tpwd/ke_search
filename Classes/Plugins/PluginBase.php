@@ -59,6 +59,7 @@ class PluginBase extends AbstractPlugin
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
+    public ?float $queryStartTime = null;
 
     public string $prefixId = 'tx_kesearch_pi1';
     public string $extKey = 'ke_search';
@@ -141,8 +142,8 @@ class PluginBase extends AbstractPlugin
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
 
         // set start of query timer
-        if (!($GLOBALS['TSFE']->register['ke_search_queryStartTime'] ?? false)) {
-            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
+        if (!($this->queryStartTime)) {
+            $this->queryStartTime = round(microtime(true) * 1000);
         }
 
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=

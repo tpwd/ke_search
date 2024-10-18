@@ -93,7 +93,7 @@ class ResultlistPlugin extends PluginBase
         $this->renderOrdering();
 
         // process query time
-        $queryTime = (round(microtime(true) * 1000) - $GLOBALS['TSFE']->register['ke_search_queryStartTime']);
+        $queryTime = (round(microtime(true) * 1000) - $this->queryStartTime);
         $this->fluidTemplateVariables['queryTime'] = $queryTime;
         $this->fluidTemplateVariables['queryTimeText'] = sprintf($this->translate('query_time'), $queryTime);
 
