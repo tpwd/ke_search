@@ -254,11 +254,12 @@ class Db implements SingletonInterface
         // add fe_groups to query
         $queryForSphinx .= ' @fe_group _group_NULL | _group_0';
 
+        /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         $feGroups = $context->getPropertyFromAspect('frontend.user', 'groupIds');
         if (count($feGroups)) {
             foreach ($feGroups as $key => $group) {
-                $intval_positive_group = MathUtility::convertToPositiveInteger($group);
+                $intval_positive_group = max(0, (int)$group);
                 if ($intval_positive_group) {
                     $feGroups[$key] = '_group_' . $group;
                 } else {
@@ -523,8 +524,18 @@ class Db implements SingletonInterface
         }
 
         // add enable fields
+        /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $where .= $pageRepository->enableFields($this->table);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @extensionScannerIgnoreLine
+            $where .= $pageRepository->enableFields($this->table);
+        } else {
+            $constraints = $pageRepository->getDefaultConstraints($this->table);
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->table)
+                ->expr();
+            $where .= ' AND ' . $expressionBuilder->and(...$constraints);
+        }
 
         return $where;
     }

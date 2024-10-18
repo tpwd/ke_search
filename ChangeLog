@@ -18,6 +18,8 @@ Upcoming version for TYPO3 13
 [TASK]    Don't use deprecated method getTwoLetterIsoCode() anymore, replace with getTypo3Language() and getWebsiteTitle()
 [TASK]    Remove $frontendController from AbstractPlugin
 [TASK]    Make $request and $languageId public in PluginBase
+[TASK]    Migrate MathUtility::convertToPositiveInteger
+[TASK]    Migrate $pageRepository->enableFields
 
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
