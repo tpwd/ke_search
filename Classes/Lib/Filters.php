@@ -22,6 +22,8 @@ namespace Tpwd\KeSearch\Lib;
 use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -200,18 +202,25 @@ class Filters
             return [];
         }
 
-        // @Todo quotes ($this->startingPoints, filterUids)
         $table = 'tx_kesearch_filters';
         $where = 'pid in (' . $this->startingPoints . ')';
         $where .= ' AND find_in_set(uid, "' . $filterUids . '")';
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
-        $filterQuery = $queryBuilder
-            ->select('*')
-            ->from($table)
-            ->add('where', $where)
-            ->add('orderBy', 'find_in_set(uid, "' . $filterUids . '")')
-            ->executeQuery();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $filterQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->add('where', $where)
+                ->executeQuery();
+        } else {
+            $filterQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($where)
+                ->executeQuery();
+        }
 
         $filterRows = [];
         while ($row = $filterQuery->fetchAssociative()) {
@@ -233,18 +242,26 @@ class Filters
             return [];
         }
 
-        // @Todo quotes ($optionsUids, $this->startingPoints)
         $table = 'tx_kesearch_filteroptions';
         $where = 'FIND_IN_SET(uid, "' . $optionUids . '")';
         $where .= ' AND pid in (' . $this->startingPoints . ')';
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
-        $optionsQuery = $queryBuilder
-            ->select('*')
-            ->from($table)
-            ->add('where', $where)
-            ->add('orderBy', 'FIND_IN_SET(uid, "' . $optionUids . '")')
-            ->executeQuery();
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $optionsQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->add('where', $where)
+                ->executeQuery();
+        } else {
+            $optionsQuery = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($where)
+                ->executeQuery();
+        }
 
         $optionsRows = [];
         while ($row = $optionsQuery->fetchAssociative()) {
@@ -258,7 +275,7 @@ class Filters
     }
 
     /**
-     * replace the commaseperated option list with the original option records from DB
+     * replace the comma separated option list with the original option records from DB
      * @param array $rows The filter records as array
      * @return array The filter records where the option value was replaced with the option records as array
      */
@@ -287,22 +304,29 @@ class Filters
     {
         /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-        $LanguageUid = $languageAspect->getContentId();
-        $LanguageMode = $languageAspect->getLegacyLanguageMode();
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @extensionScannerIgnoreLine
+            $pageRecord = $GLOBALS['TSFE']->page;
+        } else {
+            $pageRecord = $this->pObj->request->getAttribute('frontend.page.information')->getPageRecord();
+        }
 
         // see https://github.com/teaminmedias-pluswerk/ke_search/issues/128
-        $pageTranslationVisibility = new PageTranslationVisibility((int)$GLOBALS['TSFE']->page['l18n_cfg']);
+        $pageTranslationVisibility = new PageTranslationVisibility((int)$pageRecord['l18n_cfg']);
+
         if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
             $LanguageMode = 'hideNonTranslated';
         }
         if (is_array($rows) && count($rows)) {
             foreach ($rows as $key => $row) {
-                if (is_array($row) && $LanguageUid > 0) {
-                    $row = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
+                if (is_array($row) && $languageAspect->getContentId() > 0) {
+                    $row = $pageRepository->getLanguageOverlay(
                         $table,
                         $row,
-                        $LanguageUid,
-                        $LanguageMode
+                        $languageAspect
                     );
 
                     if (is_array($row)) {

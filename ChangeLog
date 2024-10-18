@@ -1,5 +1,30 @@
 ChangeLog
 
+Version 6.0.0, 18 October 2024
+[!!!]     This version drops support for TYPO3 11.
+[!!!]     Plugins are now registered as content elements, not as general plugins ("list_type"). A migration wizard is provided. You may adapt your configuration for content element restrictions e.g. EXT:content_defender or similar. See https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/13.4/Deprecation-105076-PluginContentElementAndPluginSubTypes.html#migration
+[TASK]    Update requirements for TYPO3 13
+[TASK]    Migrate plugin registration
+[TASK]    Remove obsolete ext_tables.php
+[TASK]    Migrate registration of status dashboard widget, https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96812-NoFrontendTypoScriptBasedTemplateOverridesInTheBackend.html#widget-registration-using-services-yaml
+[TASK]    Don't use QueryBuilder->add() anymore because it has been removed, https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/13.0/Breaking-102875-QueryBuilderChanges.html
+[TASK]    Remove language-related function from AbstractPlugin and use custom translate function instead
+[TASK]    Migrate database queries to use type constants from Connection instead of PDO, https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Database/QueryBuilder/Index.html#database-query-builder-create-named-parameter
+[TASK]    Remove obsolete code for TYPO3 11 and below
+[TASK]    Migrate FlexForm definition
+[TASK]    Migrate database queries
+[TASK]    Set fallback values for indexer starting pages
+[TASK]    Use FileResourceFactory instead of fileRepository->findFileReferenceByUid()
+[TASK]    Don't use deprecated method getTwoLetterIsoCode() anymore, replace with getTypo3Language() and getWebsiteTitle()
+[TASK]    Remove $frontendController from AbstractPlugin
+[TASK]    Make $request and $languageId public in PluginBase
+[TASK]    Migrate usage of MathUtility::convertToPositiveInteger()
+[TASK]    Migrate usage of $pageRepository->enableFields()
+[TASK]    Migrate usage of $GLOBALS['TSFE']->sys_page->getRecordOverlay()
+[TASK]    Migrate usage of $cObj->crop()
+[TASK]    Remove usage of $GLOBALS['TSFE']->register
+[TASK]    Fix return type of PageRepository->checkRecord() for TYPO3 12
+
 Version 5.5.2, 23 August 2024
 [BUGFIX]  Fix cropping if "resultChars" is empty. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/242
 [BUGFIX]  Fix regression in page indexer if translated page is not available. Thanks to Jens Vollmer. https://github.com/tpwd/ke_search/issues/243

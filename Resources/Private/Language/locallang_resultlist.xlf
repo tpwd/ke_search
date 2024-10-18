@@ -7,7 +7,7 @@
 				<source>Search resultlist</source>
 			</trans-unit>
 			<trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" >
-				<source>Faceted Search: Show resultlist.</source>
+				<source>Shows the resultlist.</source>
 			</trans-unit>
 			<trans-unit id="ff.main" resname="ff.main" >
 				<source>General</source>

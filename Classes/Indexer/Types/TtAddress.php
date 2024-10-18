@@ -53,8 +53,8 @@ class TtAddress extends IndexerBase
         $fields = '*';
         $table = 'tt_address';
         $indexPids = $this->getPidList(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? '',
             $table
         );
 
@@ -293,8 +293,8 @@ class TtAddress extends IndexerBase
 
         // get the pages from where to index the tt_address records
         $folders = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? ''
         );
 
         // Fetch all records which have been deleted since the last indexing

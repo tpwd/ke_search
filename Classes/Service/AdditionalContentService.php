@@ -87,10 +87,12 @@ class AdditionalContentService
             $errorMessage =
                 'Error while parsing additional table configuration for indexer "' . $this->indexerConfig['title']
                 . '": ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
         }
         if ($additionalTableConfig === false) {
             $errorMessage = 'Could not parse additional table configuration for indexer "' . $this->indexerConfig['title'] . '".';
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $additionalTableConfig = [];
         }
@@ -119,14 +121,15 @@ class AdditionalContentService
         // Find files linked in RTE
         $blockSplit = $this->rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
         foreach ($blockSplit as $k => $v) {
-            list($attributes) = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
+            [$attributes] = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {
                 try {
                     $hrefInformation = $this->linkService->resolve($attributes['href']);
                     if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
                         $fileObjects[] = $hrefInformation['file'];
                     }
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
+                    // @extensionScannerIgnoreLine
                     $this->logger->error($exception->getMessage());
                 }
             }

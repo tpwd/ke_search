@@ -3,6 +3,7 @@
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Database\Connection;
 
 /***************************************************************
  *  Copyright notice
@@ -46,7 +47,7 @@ class FilterRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'l10n_parent',
-                    $queryBuilder->createNamedParameter($l10n_parent, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($l10n_parent, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -66,7 +67,7 @@ class FilterRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
         foreach ($updateFields as $key => $value) {

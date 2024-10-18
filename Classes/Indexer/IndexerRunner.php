@@ -22,8 +22,6 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Exception;
-use PDO;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
@@ -33,6 +31,7 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use Tpwd\KeSearch\Utility\TimeUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -274,7 +273,7 @@ class IndexerRunner
                 $content .= '<li>' . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') . '</li>' . chr(10);
             }
             $content .= '</ul>';
-            $content .= '<i>This is list is meant as a hint. It may not contain all errors. Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</i>';
+            $content .= '<i>This list is meant as a hint. It may not contain all errors. Please refer to the error log (typically in var/log/ of your TYPO3 installation) for the full list of errors.</i>';
             $content .= '</div>';
         }
 
@@ -448,8 +447,9 @@ class IndexerRunner
                 AND language = ?
                 LIMIT 1
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing searchStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -474,8 +474,9 @@ class IndexerRunner
                 tstamp=?' . $addUpdateQuery . '
                 WHERE uid=?
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing updateStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -489,8 +490,9 @@ class IndexerRunner
                     . ' starttime, endtime, fe_group, tstamp, crdate' . $addInsertQueryFields . ')
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?' . $addInsertQueryValues . ', ?)
             "');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while preparing insertStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -502,8 +504,9 @@ class IndexerRunner
         if ($this->indexRepository->getTotalNumberOfRecords() == 0) {
             try {
                 Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('ALTER TABLE tx_kesearch_index DISABLE KEYS');
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $errorMessage = 'Error while disabling keys: ' . $e->getMessage();
+                // @extensionScannerIgnoreLine
                 $this->logger->error($errorMessage);
                 $this->indexingErrors[] = $errorMessage;
             }
@@ -519,8 +522,9 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('ALTER TABLE tx_kesearch_index ENABLE KEYS');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while enabling keys: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -528,8 +532,9 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE searchStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating searchStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -537,8 +542,9 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE updateStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating updateStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -546,8 +552,9 @@ class IndexerRunner
         try {
             Db::getDatabaseConnection('tx_kesearch_index')
                 ->executeStatement('DEALLOCATE PREPARE insertStmt');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $errorMessage = 'Error while deallocating insertStmt: ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
             $this->indexingErrors[] = $errorMessage;
         }
@@ -575,7 +582,7 @@ class IndexerRunner
             $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
             $where = $queryBuilder->expr()->lt(
                 'tstamp',
-                $queryBuilder->quote($this->indexerStatusService->getIndexerStartTime(), PDO::PARAM_INT)
+                $queryBuilder->createNamedParameter($this->indexerStatusService->getIndexerStartTime(), Connection::PARAM_INT)
             );
 
             // hook for cleanup
@@ -643,7 +650,7 @@ class IndexerRunner
                     $content .= '<b>Checking status of Sphinx daemon:</b> ';
                     $sphinxFailedToConnect = false;
                     foreach ($retArr as $retRow) {
-                        if (strpos($retRow, 'WARNING') !== false) {
+                        if (str_contains($retRow, 'WARNING')) {
                             $this->logger->warning('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                             $sphinxFailedToConnect = true;
@@ -679,18 +686,21 @@ class IndexerRunner
                         . '</p>'
                         . "\n\n";
                     foreach ($retArr as $retRow) {
-                        if (strpos($retRow, 'WARNING') !== false) {
+                        if (str_contains($retRow, 'WARNING')) {
+                            // @extensionScannerIgnoreLine
                             $this->logger->error('Sphinx: ' . $retRow);
                             $content .= '<div class="error">SPHINX ' . $retRow . '</div>' . "\n";
                         }
                     }
                 } else {
+                    // @extensionScannerIgnoreLine
                     $this->logger->error('Sphinx: "exec" call is not allowed. '
                         . 'Check your disable_functions setting in php.ini');
                     $content .= '<div class="error">SPHINX ERROR: "exec" call is not allowed. '
                         . 'Check your disable_functions setting in php.ini.</div>';
                 }
             } else {
+                // @extensionScannerIgnoreLine
                 $this->logger->error('Sphinx: Executables not found or execution permission missing.');
                 $content .= '<div class="error">SPHINX ERROR: Sphinx executables '
                     . 'not found or execution permission is missing.</div>';
@@ -716,7 +726,7 @@ class IndexerRunner
      * @param string $fe_group
      * @param bool $debugOnly
      * @param array $additionalFields
-     * @return bool|int
+     * @return bool
      */
     public function storeInIndex(
         $storagePid,
@@ -733,7 +743,7 @@ class IndexerRunner
         $fe_group = '',
         $debugOnly = false,
         $additionalFields = []
-    ) {
+    ): bool {
         // if there are errors found in current record return false and break processing
         if (!$this->checkIfRecordHasErrorsBeforeIndexing($storagePid, $title, $type, $targetPid)) {
             return false;
@@ -823,17 +833,16 @@ class IndexerRunner
             );
         }
 
-        if ($recordExists) { // update existing record
+        // update existing record
+        if ($recordExists) {
             unset($fieldValues['crdate']);
             $this->updateRecordInIndex($fieldValues, $debugOnly);
             return true;
-        }   // insert new record
-        $this->insertRecordIntoIndex($fieldValues, $debugOnly);
-        if (!$debugOnly) {
-            return (int)Db::getDatabaseConnection('tx_kesearch_index')->lastInsertId($table);
         }
 
-        return 0;
+        // insert new record
+        $this->insertRecordIntoIndex($fieldValues, $debugOnly);
+        return true;
     }
 
     /**
@@ -852,20 +861,20 @@ class IndexerRunner
 
         $queryArray = [];
         $queryArray['set'] = 'SET
-			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
-			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
-			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
-			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
-			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
-			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
-			@abstract = ' . $queryBuilder->quote($fieldValues['abstract'], PDO::PARAM_STR) . ',
-			@language = ' . $queryBuilder->quote($fieldValues['language'], PDO::PARAM_INT) . ',
-			@starttime = ' . $queryBuilder->quote($fieldValues['starttime'], PDO::PARAM_INT) . ',
-			@endtime = ' . $queryBuilder->quote($fieldValues['endtime'], PDO::PARAM_INT) . ',
-			@fe_group = ' . $queryBuilder->quote($fieldValues['fe_group'], PDO::PARAM_INT) . ',
-			@tstamp = ' . $queryBuilder->quote($fieldValues['tstamp'], PDO::PARAM_INT) . ',
-			@crdate = ' . $queryBuilder->quote($fieldValues['crdate'], PDO::PARAM_INT)
+			@pid = ' . $queryBuilder->quote((string)$fieldValues['pid']) . ',
+			@title = ' . $queryBuilder->quote((string)$fieldValues['title']) . ',
+			@type = ' . $queryBuilder->quote((string)$fieldValues['type']) . ',
+			@targetpid = ' . $queryBuilder->quote((string)$fieldValues['targetpid']) . ',
+			@content = ' . $queryBuilder->quote((string)$fieldValues['content']) . ',
+			@tags = ' . $queryBuilder->quote((string)$fieldValues['tags']) . ',
+			@params = ' . $queryBuilder->quote((string)$fieldValues['params']) . ',
+			@abstract = ' . $queryBuilder->quote((string)$fieldValues['abstract']) . ',
+			@language = ' . $queryBuilder->quote((string)$fieldValues['language']) . ',
+			@starttime = ' . $queryBuilder->quote((string)$fieldValues['starttime']) . ',
+			@endtime = ' . $queryBuilder->quote((string)$fieldValues['endtime']) . ',
+			@fe_group = ' . $queryBuilder->quote((string)$fieldValues['fe_group']) . ',
+			@tstamp = ' . $queryBuilder->quote((string)$fieldValues['tstamp']) . ',
+			@crdate = ' . $queryBuilder->quote((string)$fieldValues['crdate'])
             . $addQueryPartFor['set'] . '
 		;';
 
@@ -891,7 +900,8 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
             $this->indexingErrors[] = $e->getMessage();
         }
@@ -913,19 +923,19 @@ class IndexerRunner
 
         $queryArray = [];
         $queryArray['set'] = 'SET
-			@pid = ' . $queryBuilder->quote($fieldValues['pid'], PDO::PARAM_INT) . ',
-			@title = ' . $queryBuilder->quote($fieldValues['title'], PDO::PARAM_STR) . ',
-			@type = ' . $queryBuilder->quote($fieldValues['type'], PDO::PARAM_STR) . ',
-			@targetpid = ' . $queryBuilder->quote($fieldValues['targetpid']) . ',
-			@content = ' . $queryBuilder->quote($fieldValues['content'], PDO::PARAM_STR) . ',
-			@tags = ' . $queryBuilder->quote($fieldValues['tags'], PDO::PARAM_STR) . ',
-			@params = ' . $queryBuilder->quote($fieldValues['params'], PDO::PARAM_STR) . ',
-			@abstract = ' . $queryBuilder->quote($fieldValues['abstract'], PDO::PARAM_STR) . ',
-			@language = ' . $queryBuilder->quote($fieldValues['language'], PDO::PARAM_INT) . ',
-			@starttime = ' . $queryBuilder->quote($fieldValues['starttime'], PDO::PARAM_INT) . ',
-			@endtime = ' . $queryBuilder->quote($fieldValues['endtime'], PDO::PARAM_INT) . ',
-			@fe_group = ' . $queryBuilder->quote($fieldValues['fe_group'], PDO::PARAM_INT) . ',
-			@tstamp = ' . $queryBuilder->quote($fieldValues['tstamp'], PDO::PARAM_INT) .
+			@pid = ' . $queryBuilder->quote((string)$fieldValues['pid']) . ',
+			@title = ' . $queryBuilder->quote((string)$fieldValues['title']) . ',
+			@type = ' . $queryBuilder->quote((string)$fieldValues['type']) . ',
+			@targetpid = ' . $queryBuilder->quote((string)$fieldValues['targetpid']) . ',
+			@content = ' . $queryBuilder->quote((string)$fieldValues['content']) . ',
+			@tags = ' . $queryBuilder->quote((string)$fieldValues['tags']) . ',
+			@params = ' . $queryBuilder->quote((string)$fieldValues['params']) . ',
+			@abstract = ' . $queryBuilder->quote((string)$fieldValues['abstract']) . ',
+			@language = ' . $queryBuilder->quote((string)$fieldValues['language']) . ',
+			@starttime = ' . $queryBuilder->quote((string)$fieldValues['starttime']) . ',
+			@endtime = ' . $queryBuilder->quote((string)$fieldValues['endtime']) . ',
+			@fe_group = ' . $queryBuilder->quote((string)$fieldValues['fe_group']) . ',
+			@tstamp = ' . $queryBuilder->quote((string)$fieldValues['tstamp']) .
             $addQueryPartFor['set'] . ',
 			@uid = ' . $this->currentRow['uid'] . '
 		';
@@ -952,7 +962,7 @@ class IndexerRunner
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['set']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement($queryArray['execute']);
             Db::getDatabaseConnection('tx_kesearch_index')->executeStatement('COMMIT;');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // @extensionScannerIgnoreLine
             $this->logger->error($e->getMessage());
             $this->indexingErrors[] = $e->getMessage();
@@ -972,7 +982,7 @@ class IndexerRunner
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
 
         foreach ($this->additionalFields as $value) {
-            $queryForSet .= ', @' . $value . ' = ' . $queryBuilder->quote($fieldValues[$value], PDO::PARAM_STR);
+            $queryForSet .= ', @' . $value . ' = ' . $queryBuilder->quote((string)$fieldValues[$value]);
             $queryForExecute .= ', @' . $value;
         }
         return ['set' => $queryForSet, 'execute' => $queryForExecute];
@@ -996,10 +1006,10 @@ class IndexerRunner
             ->select('*')
             ->from('tx_kesearch_index')
             ->where(
-                $queryBuilder->expr()->eq('orig_uid', $queryBuilder->quote($uid, PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('pid', $queryBuilder->quote($pid, PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('type', $queryBuilder->quote($type, PDO::PARAM_STR)),
-                $queryBuilder->expr()->eq('language', $queryBuilder->quote($language, PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('orig_uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter($type, Connection::PARAM_STR)),
+                $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT))
             )
             ->setMaxResults(1)
             ->executeQuery()
@@ -1037,19 +1047,19 @@ class IndexerRunner
             ->where(
                 $queryBuilder->expr()->eq(
                     'type',
-                    $queryBuilder->quote($type, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($type, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'hash',
-                    $queryBuilder->quote($hash, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($hash, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'pid',
-                    $queryBuilder->quote($pid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sortdate',
-                    $queryBuilder->quote($sortdate, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sortdate, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -1147,14 +1157,17 @@ class IndexerRunner
 
         // check for empty values
         if (empty($storagePid)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('no storage pid set');
             $errors[] = 'No storage PID set';
         }
         if (empty($type)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('no type set');
             $errors[] = 'No type set';
         }
         if (empty($targetPid)) {
+            // @extensionScannerIgnoreLine
             $this->logger->error('No target PID set');
             $errors[] = 'No target PID set';
         }
@@ -1171,6 +1184,7 @@ class IndexerRunner
             if (!empty($storagePid)) {
                 $errormessage .= 'STORAGE PID: ' . $storagePid . '; ';
             }
+            // @extensionScannerIgnoreLine
             $this->logger->error($errormessage);
             $this->indexingErrors[] = $errormessage;
 
@@ -1193,7 +1207,7 @@ class IndexerRunner
         $table = 'tx_kesearch_filteroptions';
         $where = $queryBuilder->expr()->eq(
             'uid',
-            $queryBuilder->quote($tagUid, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($tagUid, Connection::PARAM_INT)
         );
 
         $row = $queryBuilder

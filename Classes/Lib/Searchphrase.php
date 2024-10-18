@@ -90,7 +90,7 @@ class Searchphrase
     public function checkAgainstDefaultValue($searchString)
     {
         $searchStringToLower = strtolower(trim($searchString));
-        $defaultValueToLower = strtolower($this->pObj->pi_getLL('searchbox_default_value'));
+        $defaultValueToLower = strtolower($this->pObj->translate('searchbox_default_value'));
         if ($searchStringToLower === $defaultValueToLower) {
             $searchString = '';
         }
@@ -109,7 +109,7 @@ class Searchphrase
     public function explodeSearchPhrase(string $searchString, bool $replaceAdditionalWordCharacters = false)
     {
         preg_match_all('/([+\-~<>])?\".*?"|[^ ]+/', $searchString, $matches);
-        list($searchParts) = $matches;
+        [$searchParts] = $matches;
         if (is_array($searchParts) && count($searchParts)) {
             foreach ($searchParts as $key => $word) {
                 // check for boolean seperator

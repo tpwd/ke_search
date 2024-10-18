@@ -17,11 +17,11 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -115,15 +115,34 @@ class Db implements SingletonInterface
         // build query
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
-        $resultQuery = $queryBuilder
-            ->add('select', $queryParts['SELECT'])
-            ->from($queryParts['FROM'])
-            ->add('where', $queryParts['WHERE']);
-        if (!empty($queryParts['GROUPBY'])) {
-            $resultQuery->add('groupBy', $queryParts['GROUPBY']);
-        }
-        if (!empty($queryParts['ORDERBY'])) {
-            $resultQuery->add('orderBy', $queryParts['ORDERBY']);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $resultQuery = $queryBuilder
+                ->add('select', $queryParts['SELECT'])
+                ->from($queryParts['FROM'])
+                // @phpstan-ignore-next-line
+                ->add('where', $queryParts['WHERE']);
+            if (!empty($queryParts['GROUPBY'])) {
+                // @phpstan-ignore-next-line
+                $resultQuery->add('groupBy', $queryParts['GROUPBY']);
+            }
+            if (!empty($queryParts['ORDERBY'])) {
+                // @phpstan-ignore-next-line
+                $resultQuery->add('orderBy', $queryParts['ORDERBY']);
+            }
+        } else {
+            $resultQuery = $queryBuilder
+                ->selectLiteral($queryParts['SELECT'])
+                ->from($queryParts['FROM'])
+                ->where($queryParts['WHERE']);
+            if (!empty($queryParts['GROUPBY'])) {
+                $groupParts = explode(',', $queryParts['GROUPBY']);
+                $resultQuery->groupBy($groupParts[0], $groupParts[1]);
+            }
+            if (!empty($queryParts['ORDERBY'])) {
+                $orderParts = explode(' ', $queryParts['ORDERBY']);
+                $resultQuery->orderBy($orderParts[0], $orderParts[1]);
+            }
         }
 
         $limit = $this->getLimit();
@@ -151,10 +170,18 @@ class Db implements SingletonInterface
         if (!empty($this->searchResults)) {
             $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
             $queryBuilder->getRestrictions()->removeAll();
-            $numRows = $queryBuilder
-                ->add('select', 'FOUND_ROWS()')
-                ->executeQuery()
-                ->fetchNumeric()[0];
+            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+                // @phpstan-ignore-next-line
+                $numRows = $queryBuilder
+                    ->add('select', 'FOUND_ROWS()')
+                    ->executeQuery()
+                    ->fetchNumeric()[0];
+            } else {
+                $numRows = $queryBuilder
+                    ->selectLiteral('FOUND_ROWS()')
+                    ->executeQuery()
+                    ->fetchNumeric()[0];
+            }
             $this->numberOfResults = $numRows;
         }
     }
@@ -226,11 +253,12 @@ class Db implements SingletonInterface
         // add fe_groups to query
         $queryForSphinx .= ' @fe_group _group_NULL | _group_0';
 
+        /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         $feGroups = $context->getPropertyFromAspect('frontend.user', 'groupIds');
         if (count($feGroups)) {
             foreach ($feGroups as $key => $group) {
-                $intval_positive_group = MathUtility::convertToPositiveInteger($group);
+                $intval_positive_group = max(0, (int)$group);
                 if ($intval_positive_group) {
                     $feGroups[$key] = '_group_' . $group;
                 } else {
@@ -278,7 +306,7 @@ class Db implements SingletonInterface
     public function getQueryParts()
     {
         $databaseConnection = self::getDatabaseConnection($this->table);
-        $searchwordQuoted = $databaseConnection->quote($this->pObj->scoreAgainst, \PDO::PARAM_STR);
+        $searchwordQuoted = $databaseConnection->quote((string)$this->pObj->scoreAgainst);
         $limit = $this->getLimit();
         $queryParts = [
             'SELECT' => $this->getFields($searchwordQuoted),
@@ -374,12 +402,22 @@ class Db implements SingletonInterface
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
 
-        $tagRows = $queryBuilder
-            ->select('tags')
-            ->from($queryParts['FROM'])
-            ->add('where', $queryParts['WHERE'])
-            ->executeQuery()
-            ->fetchAllAssociative();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $tagRows = $queryBuilder
+                ->select('tags')
+                ->from($queryParts['FROM'])
+                ->add('where', $queryParts['WHERE'])
+                ->executeQuery()
+                ->fetchAllAssociative();
+        } else {
+            $tagRows = $queryBuilder
+                ->select('tags')
+                ->from($queryParts['FROM'])
+                ->where($queryParts['WHERE'])
+                ->executeQuery()
+                ->fetchAllAssociative();
+        }
 
         return array_map(
             function ($row) {
@@ -403,7 +441,7 @@ class Db implements SingletonInterface
         if (count($tags) && is_array($tags)) {
             foreach ($tags as $value) {
                 // @TODO: check if this works as intended / search for better way
-                $value = $databaseConnection->quote($value, \PDO::PARAM_STR);
+                $value = $databaseConnection->quote((string)$value);
                 $value = rtrim($value, "'");
                 $value = ltrim($value, "'");
                 $where .= ' AND MATCH (tags) AGAINST (\'' . $value . '\' IN BOOLEAN MODE) ';
@@ -455,10 +493,7 @@ class Db implements SingletonInterface
         $where = '';
 
         $databaseConnection = self::getDatabaseConnection('tx_kesearch_index');
-        $wordsAgainstQuoted = $databaseConnection->quote(
-            $this->pObj->wordsAgainst,
-            \PDO::PARAM_STR
-        );
+        $wordsAgainstQuoted = $databaseConnection->quote((string)$this->pObj->wordsAgainst);
 
         // add boolean where clause for searchwords
         if ($this->pObj->wordsAgainst != '') {
@@ -488,8 +523,20 @@ class Db implements SingletonInterface
         }
 
         // add enable fields
+        /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $where .= $pageRepository->enableFields($this->table);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @extensionScannerIgnoreLine
+            $where .= $pageRepository->enableFields($this->table);
+        } else {
+            // phpstan-ignore-next-line can be removed once support for TYPO3 12 is dropped
+            // @phpstan-ignore-next-line
+            $constraints = $pageRepository->getDefaultConstraints($this->table);
+            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->table)
+                ->expr();
+            $where .= ' AND ' . $expressionBuilder->and(...$constraints);
+        }
 
         return $where;
     }

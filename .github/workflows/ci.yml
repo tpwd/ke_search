@@ -20,15 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         php-versions:
-          - '8.1'
+          - '8.2'
+          - '8.3'
         typo3-versions:
-          - '^11'
           - '^12'
+          - '^13'
         include:
-          - php-versions: '7.4'
-            typo3-versions: '^11'
-          - php-versions: '8.0'
-            typo3-versions: '^11'
+          - php-versions: '8.1'
+            typo3-versions: '^12'
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -51,7 +50,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install composer dependencies
         run: |
-          composer require typo3/cms-core=${{ matrix.typo3-versions }} typo3/cms-install=${{ matrix.typo3-versions }} --no-progress --prefer-dist --optimize-autoloader && composer exec typo3-coding-standards extension
+          composer require typo3/cms-core=${{ matrix.typo3-versions }} typo3/cms-install=${{ matrix.typo3-versions }} --no-progress --prefer-dist --optimize-autoloader && composer exec typo3-coding-standards setup
       - name: Run PHP linter
         run: |
           find . -name \*.php  ! -path "./.Build/*" -exec php -l {} \;

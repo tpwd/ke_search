@@ -2,7 +2,7 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use PDO;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -84,7 +84,7 @@ class GenericRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -113,11 +113,11 @@ class GenericRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         $transOrigPointerField,
-                        $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
                         $languageField,
-                        $queryBuilder->createNamedParameter($languageId, PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -154,7 +154,7 @@ class GenericRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     $fieldName,
-                    $queryBuilder->createNamedParameter($value, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($value, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

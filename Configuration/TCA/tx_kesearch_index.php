@@ -1,88 +1,6 @@
 <?php
 
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 $langGeneralPath = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:';
-$typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-$typo3MajorVersion = $typo3Version->getMajorVersion();
-$typo3BranchVersion = (float)$typo3Version->getBranch();
-
-if ($typo3MajorVersion < 12) {
-    $starttimeConfigArray = [
-        'type' => 'input',
-        'size' => '8',
-        'eval' => 'date',
-        'renderType' => 'inputDateTime',
-        'default' => '0',
-        'checkbox' => '0',
-    ];
-    $endtimeConfigArray = [
-        'type' => 'input',
-        'size' => '8',
-        'eval' => 'date',
-        'renderType' => 'inputDateTime',
-        'default' => '0',
-        'checkbox' => '0',
-    ];
-    $sortdateConfigArray = [
-        'type' => 'input',
-        'renderType' => 'inputDateTime',
-        'size' => '10',
-        'eval' => 'datetime',
-        'checkbox' => '0',
-        'default' => '0',
-    ];
-} else {
-    $starttimeConfigArray = [
-        'type' => 'datetime',
-        'size' => '8',
-        'format' => 'date',
-        'default' => '0',
-        'checkbox' => '0',
-    ];
-    $endtimeConfigArray = [
-        'type' => 'datetime',
-        'size' => '8',
-        'format' => 'date',
-        'default' => '0',
-        'checkbox' => '0',
-    ];
-    $sortdateConfigArray = [
-        'type' => 'datetime',
-        'size' => '10',
-        'checkbox' => '0',
-        'default' => '0',
-    ];
-}
-
-if ($typo3BranchVersion >= 12.3) {
-    $feGroupItemsArray = [
-        [
-            'label' => '',
-            'value' => 0,
-        ],
-        [
-            'label' => $langGeneralPath . 'LGL.hide_at_login',
-            'value' => -1,
-        ],
-        [
-            'label' => $langGeneralPath . 'LGL.any_login',
-            'value' => -2,
-        ],
-        [
-            'label' => $langGeneralPath . 'LGL.usergroups',
-            'value' => '--div--',
-        ],
-    ];
-} else {
-    $feGroupItemsArray = [
-        ['', 0],
-        [$langGeneralPath . 'LGL.hide_at_login', -1],
-        [$langGeneralPath . 'LGL.any_login', -2],
-        [$langGeneralPath . 'LGL.usergroups', '--div--'],
-    ];
-}
 
 $txKesearchIndex = [
     'ctrl' => [
@@ -105,12 +23,24 @@ $txKesearchIndex = [
         'starttime' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.starttime',
-            'config' => $starttimeConfigArray,
+            'config' => [
+                'type' => 'datetime',
+                'size' => '8',
+                'format' => 'date',
+                'default' => '0',
+                'checkbox' => '0',
+            ],
         ],
         'endtime' => [
             'exclude' => 1,
             'label' => $langGeneralPath . 'LGL.endtime',
-            'config' => $endtimeConfigArray,
+            'config' => [
+                'type' => 'datetime',
+                'size' => '8',
+                'format' => 'date',
+                'default' => '0',
+                'checkbox' => '0',
+            ],
         ],
         'fe_group' => [
             'exclude' => 1,
@@ -118,7 +48,12 @@ $txKesearchIndex = [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingleBox',
-                'items' => $feGroupItemsArray,
+                'items' => [
+                    ['', 0],
+                    [$langGeneralPath . 'LGL.hide_at_login', -1],
+                    [$langGeneralPath . 'LGL.any_login', -2],
+                    [$langGeneralPath . 'LGL.usergroups', '--div--'],
+                ],
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'ORDER BY fe_groups.title',
                 'size' => 6,
@@ -211,7 +146,12 @@ $txKesearchIndex = [
         'sortdate' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.sortdate',
-            'config' => $sortdateConfigArray,
+            'config' => [
+                'type' => 'datetime',
+                'size' => '10',
+                'checkbox' => '0',
+                'default' => '0',
+            ],
         ],
         'orig_uid' => [
             'config' => [
@@ -245,9 +185,5 @@ $txKesearchIndex = [
         '1' => ['showitem' => ''],
     ],
 ];
-
-if ($typo3MajorVersion < 12) {
-    $txKesearchIndex['ctrl']['cruser_id'] = 'cruser_id';
-}
 
 return $txKesearchIndex;

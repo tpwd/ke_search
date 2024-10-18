@@ -22,46 +22,39 @@ declare(strict_types=1);
 
 namespace Tpwd\KeSearch\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\TimeUtility;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class StatusWidget implements WidgetInterface
+class StatusWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
-    public Registry $registry;
-    private WidgetConfigurationInterface $configuration;
-    // Todo: Use $backendViewFactory instead of $view here once support for TYPO3 v11 is dropped and adjust the registration in Services.php
-    // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96812-NoFrontendTypoScriptBasedTemplateOverridesInTheBackend.html
-    private StandaloneView $view;
-    private array $options;
+    private array $options = [];
+    private ?ServerRequestInterface $request = null;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        StandaloneView $view
-    ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->registry = GeneralUtility::makeInstance(Registry::class);
-        $this->options = [];
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly BackendViewFactory $backendViewFactory,
+        private readonly Registry $registry
+    ) {}
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     public function renderWidgetContent(): string
     {
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            $this->view->setTemplate('Widget/StatusWidget');
-        } else {
-            $this->view->setTemplate('Default/Widget/StatusWidget');
-        }
+        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-dashboard', 'tpwd/ke_search']);
 
         $indexerStartTime = SearchHelper::getIndexerStartTime();
         $indexerRunningTime = TimeUtility::getRunningTime($indexerStartTime);
         $indexerRunningTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($indexerRunningTime);
-        $this->view->assignMultiple([
+        $view->assignMultiple([
             'configuration' => $this->configuration,
             'indexerStartTime' => $indexerStartTime,
             'indexerRunningTime' => $indexerRunningTime,
@@ -71,7 +64,7 @@ class StatusWidget implements WidgetInterface
         $lastRun = $this->registry->get('tx_kesearch', 'lastRun');
         if (!empty($lastRun)) {
             $lastRunIndexingTimeHMS = TimeUtility::getTimeHoursMinutesSeconds($lastRun['indexingTime'] ?? 0);
-            $this->view->assignMultiple([
+            $view->assignMultiple([
                 'lastRunStartTime' => $lastRun['startTime'],
                 'lastRunEndTime' => $lastRun['endTime'],
                 'lastRunIndexingTime' => $lastRun['indexingTime'],
@@ -79,7 +72,7 @@ class StatusWidget implements WidgetInterface
             ]);
         }
 
-        return $this->view->render();
+        return $view->render('Widget/StatusWidget');
     }
 
     public function getOptions(): array

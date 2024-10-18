@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -79,7 +80,7 @@ class Searchresult
         // configure the link
         $linkconf = $this->getResultLinkConfiguration();
 
-        list($type) = explode(':', $this->row['type']);
+        [$type] = explode(':', $this->row['type']);
         switch ($type) {
             case 'file':
                 // if we use FAL, see if we have a title in the metadata
@@ -242,8 +243,8 @@ class Searchresult
             $amountOfSearchWords = count($this->swords);
             // with each new searchword and all the croppings here the teaser for each word will become too small/short
             // I decided to add 20 additional letters for each searchword. It looks much better and is more readable
-            $charsForEachSearchWord = ceil(($this->conf['resultChars'] ?? 0) / $amountOfSearchWords) + 20;
-            $charsBeforeAfterSearchWord = ceil($charsForEachSearchWord / 2);
+            $charsForEachSearchWord = (int)ceil(($this->conf['resultChars'] ?? 0) / $amountOfSearchWords) + 20;
+            $charsBeforeAfterSearchWord = (int)ceil($charsForEachSearchWord / 2);
             $aSearchWordWasFound = false;
             $isSearchWordAtTheBeginning = false;
             $teaserArray = [];
@@ -285,21 +286,42 @@ class Searchresult
 
                     // crop some words behind searchword
                     $partWithSearchWord = mb_substr($content, $startPos);
-                    $temp = $cObj->crop($partWithSearchWord, $charsForEachSearchWord . '|…|1');
+                    // @extensionScannerIgnoreLine
+                    $temp = GeneralUtility::makeInstance(TextCropper::class)
+                        ->crop(
+                            content: $partWithSearchWord,
+                            numberOfChars: $charsForEachSearchWord,
+                            replacementForEllipsis: '…',
+                            cropToSpace: true
+                        );
 
                     // crop some words before search word
                     // after last cropping our text is too short now. So we have to find a new cutting position
                     ($startPos > 10) ? $length = strlen($temp) - 10 : $length = strlen($temp);
 
                     // Store content part containing the search word in teaser text array
-                    $teaserArray[] = $cObj->crop($temp, '-' . $length . '||1');
+                    // @extensionScannerIgnoreLine
+                    $teaserArray[] = GeneralUtility::makeInstance(TextCropper::class)
+                        ->crop(
+                            content: $temp,
+                            numberOfChars: -$length,
+                            replacementForEllipsis: '',
+                            cropToSpace: true
+                        );
                 }
             }
 
             // When the searchword was found in title but not in content the teaser is empty
             // in that case we have to get the first x letters without containing any searchword
             if ($aSearchWordWasFound === false) {
-                $teaser = $cObj->crop($content, ($this->conf['resultChars'] ?? 0) . '||1');
+                // @extensionScannerIgnoreLine
+                $teaser = GeneralUtility::makeInstance(TextCropper::class)
+                        ->crop(
+                            content: $content,
+                            numberOfChars: $this->conf['resultChars'] ?? 0,
+                            replacementForEllipsis: '',
+                            cropToSpace: true
+                        );
             } elseif ($isSearchWordAtTheBeginning === true) {
                 $teaser = implode(' ', $teaserArray);
             } else {
@@ -312,6 +334,13 @@ class Searchresult
             }
             return $teaser;
         }
-        return $cObj->crop($content, ($this->conf['resultChars'] ?? 0) . '|…|1');
+        // @extensionScannerIgnoreLine
+        return GeneralUtility::makeInstance(TextCropper::class)
+                ->crop(
+                    content: $content,
+                    numberOfChars: $this->conf['resultChars'] ?? 0,
+                    replacementForEllipsis: '…',
+                    cropToSpace: true
+                );
     }
 }

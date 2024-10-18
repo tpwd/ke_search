@@ -6,6 +6,7 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Domain\Repository\TtContentRepository;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -64,7 +65,7 @@ class TtContent extends Page
             'pid',
             $queryBuilder->createNamedParameter(
                 $uid,
-                \PDO::PARAM_INT
+                Connection::PARAM_INT
             )
         );
         $where[] = $this->whereClauseForCType;
@@ -80,7 +81,7 @@ class TtContent extends Page
                 'colPos',
                 $queryBuilder->createNamedParameter(
                     -2,
-                    \PDO::PARAM_INT
+                    Connection::PARAM_INT
                 )
             );
         }
@@ -214,8 +215,7 @@ class TtContent extends Page
 
                 // hook for custom modifications of the indexed data, e. g. the tags
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'] ?? null)) {
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'] as
-                             $_classRef) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentIndexEntry'] as $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);
                         $_procObj->modifyContentIndexEntry(
                             $row['header'],
@@ -290,8 +290,8 @@ class TtContent extends Page
 
         // get the pages from where to index the news
         $folders = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? ''
         );
 
         // Fetch all records which have been deleted or hidden since the last indexing

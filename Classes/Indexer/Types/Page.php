@@ -39,6 +39,7 @@ use Tpwd\KeSearch\Utility\ContentUtility;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -182,6 +183,7 @@ class Page extends IndexerBase
 
         // Create helper service for additional content
         $this->additionalContentService = $this->getAdditionalContentService();
+        // @extensionScannerIgnoreLine
         $this->additionalContentService->init($this->indexerConfig);
 
         // get all available sys_language_uid records
@@ -215,8 +217,8 @@ class Page extends IndexerBase
     {
         // get all pages. Regardless if they are shortcut, sysfolder or external link
         $indexPids = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['single_pages']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['single_pages'] ?? ''
         );
 
         // add complete page record to list of pids in $indexPids
@@ -323,8 +325,8 @@ class Page extends IndexerBase
 
         // get all pages (including deleted)
         $indexPids = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['single_pages'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['single_pages'] ?? '',
             true
         );
 
@@ -401,11 +403,11 @@ class Page extends IndexerBase
                     ->where(
                         $queryBuilder->expr()->eq(
                             'l10n_parent',
-                            $queryBuilder->quote($pageRow['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($pageRow['uid'], Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
-                            $queryBuilder->quote($sysLang['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($sysLang['uid'], Connection::PARAM_INT)
                         )
                     )
                     ->executeQuery()
@@ -562,7 +564,7 @@ class Page extends IndexerBase
                 $where = [];
                 $where[] = $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 );
                 $where[] = $this->whereClauseForCType;
 
@@ -624,7 +626,7 @@ class Page extends IndexerBase
             'pid',
             $queryBuilder->createNamedParameter(
                 $uid,
-                \PDO::PARAM_INT
+                Connection::PARAM_INT
             )
         );
         $where[] = $this->whereClauseForCType;
@@ -1081,6 +1083,7 @@ class Page extends IndexerBase
     public function findAttachedFiles($ttContentRow)
     {
         // Set current data
+        // @extensionScannerIgnoreLine
         $this->cObj->data = $ttContentRow;
 
         // Get files by filesProcessor
@@ -1146,6 +1149,7 @@ class Page extends IndexerBase
                 );
             }
 
+            // @extensionScannerIgnoreLine
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
 
@@ -1197,8 +1201,7 @@ class Page extends IndexerBase
 
         //hook for custom modifications of the indexed data, e. g. the tags
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] ?? null)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] as
-                     $_classRef) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFileIndexEntryFromContentIndexer'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyFileIndexEntryFromContentIndexer(
                     $fileObject,
@@ -1257,8 +1260,7 @@ class Page extends IndexerBase
 
         // hook for modifiying a content elements content
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] ?? null)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] as
-                     $_classRef) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyContentFromContentElement(
                     $content,

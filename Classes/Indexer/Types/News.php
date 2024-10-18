@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\ContentUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -59,8 +60,8 @@ class News extends IndexerBase
 
         // get the pages from where to index the news
         $indexPids = $this->getPidList(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? '',
             $table
         );
 
@@ -92,22 +93,22 @@ class News extends IndexerBase
             $where[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq(
                     'archive',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
                     'archive',
-                    $queryBuilder->quote(time(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(time(), Connection::PARAM_INT)
                 )
             );
         } elseif ($this->indexerConfig['index_news_archived'] == 2) {
             $where[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->gt(
                     'archive',
-                    $queryBuilder->quote(0, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->lt(
                     'archive',
-                    $queryBuilder->quote(time(), \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter(time(), Connection::PARAM_INT)
                 )
             );
         }
@@ -214,10 +215,7 @@ class News extends IndexerBase
                     if (!empty($relatedFiles)) {
                         if ($this->indexerConfig['index_news_files_mode'] === 1) {
                             // add file content to news index record
-                            $content .= $this->getContentFromRelatedFiles(
-                                $relatedFiles,
-                                $newsRecord['uid']
-                            );
+                            $content .= $this->getContentFromRelatedFiles($relatedFiles);
                         } else {
                             // index file as separate index record
                             $this->indexFilesAsSeparateResults($relatedFiles, $newsRecord);
@@ -296,8 +294,7 @@ class News extends IndexerBase
 
                 // hook for custom modifications of the indexed data, e.g. the tags
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] ?? null)) {
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] as
-                             $_classRef) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtNewsIndexEntry'] as $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);
                         $_procObj->modifyExtNewsIndexEntry(
                             $title,
@@ -378,8 +375,8 @@ class News extends IndexerBase
 
         // get the pages from where to index the news
         $folders = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? ''
         );
 
         // Fetch all records which have been deleted or hidden since the last indexing
@@ -418,7 +415,7 @@ class News extends IndexerBase
         $categoryData['single_pid'] = 0;
 
         if ($categoryData['uid_list']) {
-            foreach ($categoryData['uid_list']as $categoryUid) {
+            foreach ($categoryData['uid_list'] as $categoryUid) {
                 $newsCat = $categoryRepository->findByUid($categoryUid);
                 // check if this category has a single_pid and if this page really is reachable (not deleted, hidden or time restricted)
                 if ($newsCat['single_pid'] && !$categoryData['single_pid'] && $pageRepository->findByUid($newsCat['single_pid'])) {
@@ -479,7 +476,7 @@ class News extends IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'news.uid',
-                    $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -523,7 +520,7 @@ class News extends IndexerBase
             ->where(
                 $queryBuilder->expr()->eq(
                     'tx_news_related_news',
-                    $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
@@ -594,7 +591,7 @@ class News extends IndexerBase
      * @param array $relatedFiles
      * @param array $newsRecord
      */
-    protected function indexFilesAsSeparateResults($relatedFiles, $newsRecord)
+    protected function indexFilesAsSeparateResults(array $relatedFiles, array $newsRecord)
     {
         parent::indexFilesAsSeparateResults($relatedFiles, $newsRecord);
     }
@@ -603,10 +600,9 @@ class News extends IndexerBase
      * extract content from files to index
      *
      * @param array $relatedFiles
-     * @param int $newsUid
      * @return string
      */
-    protected function getContentFromRelatedFiles($relatedFiles, $newsUid): string
+    protected function getContentFromRelatedFiles(array $relatedFiles): string
     {
         return $this->getContentFromFiles($relatedFiles);
     }

@@ -28,7 +28,6 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
-use Tpwd\KeSearch\Pagination\SlidingWindowPagination as BackportedSlidingWindowPagination;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\SanityCheckUtility;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -37,7 +36,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
@@ -78,18 +77,10 @@ class BackendModuleController
         $this->pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;
         $backendUser = $this->getBackendUser();
-        $function = 'function1';
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-            /** @var ModuleData $moduleData */
-            $moduleData = $request->getAttribute('moduleData');
-            $function = $moduleData->get('function', 'function1');
-        } else {
-            $moduleData = $backendUser->getModuleData('web_KeSearchBackendModule');
-            if ($moduleData['function'] ?? '') {
-                $function = $moduleData['function'];
-            }
-        }
+        /** @var ModuleData $moduleData */
+        $moduleData = $request->getAttribute('moduleData');
+        $function = $moduleData->get('function', 'function1');
 
         if ($this->do) {
             switch ($this->do) {
@@ -105,15 +96,8 @@ class BackendModuleController
                     $function = 'function5';
                     break;
             }
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 11) {
-                $moduleData->set('function', $function);
-                $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
-            } else {
-                $moduleData = [
-                    'function' => $function,
-                ];
-                $backendUser->pushModuleData('web_KeSearchBackendModule', $moduleData);
-            }
+            $moduleData->set('function', $function);
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
 
         switch ($function) {
@@ -141,13 +125,7 @@ class BackendModuleController
         $indexer = GeneralUtility::makeInstance(IndexerRunner::class);
         $indexerConfigurations = $indexer->getConfigurations();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $this->pageRenderer->addJsFile('EXT:ke_search/Resources/Public/JavaScript/v11/getIndexerStatusRequest.js');
-        } else {
-            // @phpstan-ignore-next-line
-            $this->pageRenderer->loadJavaScriptModule('@tpwd/ke-search/getIndexerStatusRequest.js');
-        }
+        $this->pageRenderer->loadJavaScriptModule('@tpwd/ke-search/getIndexerStatusRequest.js');
 
         $indexingMode = (int)($request->getQueryParams()['indexingMode'] ?? IndexerBase::INDEXING_MODE_FULL);
         if (!in_array($indexingMode, [IndexerBase::INDEXING_MODE_INCREMENTAL, IndexerBase::INDEXING_MODE_FULL])) {
@@ -265,17 +243,6 @@ class BackendModuleController
         $content .= ' <a class="btn btn-default" id="kesearch-button-reload" href="' . $moduleUrl . '">Reload</a>';
 
         $this->addMainMenu($request, $moduleTemplate, 'startIndexing');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/StartIndexing.html');
-            $moduleTemplate->getView()->assign('content', $content);
-            $moduleTemplate->getView()->assign('mySqlIndexEnabled', SanityCheckUtility::IsIndexTableIndexesEnabled());
-            $moduleTemplate->getView()->assign('indexerIsRunning', $this->indexerStatusService->isRunning());
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('content', $content);
         $moduleTemplate->assign('mySqlIndexEnabled', SanityCheckUtility::IsIndexTableIndexesEnabled());
         $moduleTemplate->assign('indexerIsRunning', $this->indexerStatusService->isRunning());
@@ -295,45 +262,16 @@ class BackendModuleController
             $indexRecords = $this->indexRepository->findByPageUidToShowIndexedContent($this->pageId);
             $currentPage = (int)($request->getQueryParams()['currentPage'] ?? 1);
             $paginator = new ArrayPaginator($indexRecords, $currentPage, 20);
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-                $pagination = new BackportedSlidingWindowPagination($paginator, 15);
-            } else {
-                // PHPStan is complaining that the SlidingWindowPagination class does not exist in TYPO3 11,
-                // so we ignore this error for now
-                // Todo: Remove the PHPStan annotation below once support for TYPO3 11 is dropped
-                // @phpstan-ignore-next-line
-                $pagination = new SlidingWindowPagination($paginator, 15);
-            }
+            $pagination = new SlidingWindowPagination($paginator, 15);
         }
 
         $this->addMainMenu($request, $moduleTemplate, 'indexedContent');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setPartialRootPaths(
-                array_merge(
-                    $moduleTemplate->getView()->getPartialRootPaths(),
-                    ['EXT:ke_search/Resources/Private/Partials/']
-                )
-            );
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexedContent.html');
-            $moduleTemplate->getView()->assign('pagination', $pagination ?? null);
-            $moduleTemplate->getView()->assign('paginator', $paginator ?? null);
-            $moduleTemplate->getView()->assign('do', $this->do ?? '');
-            $moduleTemplate->getView()->assign('pageId', $this->pageId ?? 0);
-            $moduleTemplate->getView()->assign('currentPage', $currentPage ?? 1);
-            $moduleTemplate->getView()->assign('pagePath', $pagePath ?? '');
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('pagination', $pagination ?? null);
         $moduleTemplate->assign('paginator', $paginator ?? null);
         $moduleTemplate->assign('do', $this->do ?? '');
         $moduleTemplate->assign('pageId', $this->pageId ?? 0);
         $moduleTemplate->assign('currentPage', $currentPage ?? 1);
         $moduleTemplate->assign('pagePath', $pagePath ?? '');
-
         return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
     }
 
@@ -345,15 +283,6 @@ class BackendModuleController
         $content = $this->renderIndexTableInformation();
 
         $this->addMainMenu($request, $moduleTemplate, 'indexTableInformation');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/IndexTableInformation.html');
-            $moduleTemplate->getView()->assign('content', $content);
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('content', $content);
         return $moduleTemplate->renderResponse('BackendModule/IndexTableInformation');
     }
@@ -374,18 +303,6 @@ class BackendModuleController
         }
 
         $this->addMainMenu($request, $moduleTemplate, 'searchwordStatistics');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/SearchwordStatistics.html');
-            $moduleTemplate->getView()->assign('days', $days);
-            $moduleTemplate->getView()->assign('data', $data);
-            $moduleTemplate->getView()->assign('error', $error);
-            $moduleTemplate->getView()->assign('languages', $this->getLanguages());
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('days', $days);
         $moduleTemplate->assign('data', $data);
         $moduleTemplate->assign('error', $error);
@@ -419,17 +336,6 @@ class BackendModuleController
         );
 
         $this->addMainMenu($request, $moduleTemplate, 'clearSearchIndex');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/ClearSearchIndex.html');
-            $moduleTemplate->getView()->assign('moduleUrl', $moduleUrl);
-            $moduleTemplate->getView()->assign('isAdmin', $this->getBackendUser()->isAdmin());
-            $moduleTemplate->getView()->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('moduleUrl', $moduleUrl);
         $moduleTemplate->assign('isAdmin', $this->getBackendUser()->isAdmin());
         $moduleTemplate->assign('indexCount', $this->indexRepository->getTotalNumberOfRecords());
@@ -442,15 +348,6 @@ class BackendModuleController
     public function lastIndexingReportAction(ServerRequestInterface $request, ModuleTemplate $moduleTemplate): ResponseInterface
     {
         $this->addMainMenu($request, $moduleTemplate, 'lastIndexingReport');
-
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 12) {
-            $moduleTemplate->getView()->setTemplateRootPaths(['EXT:ke_search/Resources/Private/Templates/BackendModule']);
-            $moduleTemplate->getView()->setLayoutRootPaths(['EXT:ke_search/Resources/Private/Layouts/']);
-            $moduleTemplate->getView()->setTemplatePathAndFilename('EXT:ke_search/Resources/Private/Templates/BackendModule/LastIndexingReport.html');
-            $moduleTemplate->getView()->assign('logEntry', $this->getLastIndexingReport());
-            // @extensionScannerIgnoreLine
-            return new HtmlResponse($moduleTemplate->renderContent());
-        }
         $moduleTemplate->assign('logEntry', $this->getLastIndexingReport());
         return $moduleTemplate->renderResponse('BackendModule/LastIndexingReport');
     }
@@ -469,7 +366,7 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->like(
                     'details',
-                    $queryBuilder->quote('[ke_search]%', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('[ke_search]%', Connection::PARAM_STR)
                 )
             )
             ->orderBy('tstamp', 'DESC')
@@ -679,7 +576,7 @@ class BackendModuleController
         $isSysFolder = $this->checkSysfolder();
 
         // set folder or single page where the data is selected from
-        $pidWhere = $isSysFolder ? ' AND pid=' . (int)$pageUid . ' ' : ' AND pageid=' . (int)$pageUid . ' ';
+        $isSysFolder ? $pageColumn = 'pid' : $pageColumn = 'pageid';
 
         // get languages
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_stat_word');
@@ -690,18 +587,17 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->gt(
                     'tstamp',
-                    $queryBuilder->quote($timestampStart, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     $isSysFolder ? 'pid' : 'pageid',
-                    $queryBuilder->quote($pageUid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT)
                 )
             )
             ->groupBy('language')
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $content = '';
         if (!count($languageResult)) {
             $statisticData['error'] =
                 'No statistic data found! Please select the sysfolder
@@ -715,7 +611,8 @@ class BackendModuleController
                     'tx_kesearch_stat_search',
                     $languageRow['language'],
                     $timestampStart,
-                    $pidWhere,
+                    $pageColumn,
+                    $pageUid,
                     'searchphrase'
                 );
             } else {
@@ -726,7 +623,8 @@ class BackendModuleController
                 'tx_kesearch_stat_word',
                 $languageRow['language'],
                 $timestampStart,
-                $pidWhere,
+                $pageColumn,
+                $pageUid,
                 'word'
             );
         }
@@ -734,33 +632,47 @@ class BackendModuleController
         return $statisticData;
     }
 
-    /**
-     * @param string $table
-     * @param int $language
-     * @param int $timestampStart
-     * @param string $pidWhere
-     * @param string $tableCol
-     */
-    public function getStatisticTableData($table, $language, $timestampStart, $pidWhere, $tableCol)
-    {
-        // get statistic data from db
+    public function getStatisticTableData(
+        string $table,
+        int $language,
+        int $timestampStart,
+        string $pageColumn,
+        int $pageUid,
+        string $tableCol
+    ): array {
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
-        $statisticData = $queryBuilder
-            ->add('select', 'count(' . $tableCol . ') as num, ' . $tableCol)
-            ->from($table)
-            ->add(
-                'where',
-                'tstamp > ' . $queryBuilder->quote($timestampStart, \PDO::PARAM_INT) .
-                ' AND language=' . $queryBuilder->quote($language, \PDO::PARAM_INT) . ' ' .
-                $pidWhere
-            )
-            ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
-            ->add('orderBy', 'num desc')
-            ->executeQuery()
-            ->fetchAllAssociative();
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            $pidWhere = ' AND ' . $pageColumn . '=' . $pageUid;
+            // @phpstan-ignore-next-line
+            $query = $queryBuilder
+                ->add('select', 'count(' . $tableCol . ') as num, ' . $tableCol)
+                ->from($table)
+                ->add(
+                    'where',
+                    // @phpstan-ignore-next-line
+                    'tstamp > ' . $queryBuilder->quote($timestampStart, \PDO::PARAM_INT) .
+                    // @phpstan-ignore-next-line
+                    ' AND language=' . $queryBuilder->quote($language, \PDO::PARAM_INT) . ' ' .
+                    $pidWhere
+                )
+                ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
+                ->add('orderBy', 'num desc');
+        } else {
+            $query = $queryBuilder
+                ->selectLiteral('count(' . $tableCol . ') as num, ' . $tableCol)
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq($pageColumn, $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT))
+                )
+                ->groupBy($tableCol)
+                ->having('count(' . $tableCol . ')>0')
+                ->orderBy('num', 'desc');
+        }
 
-        return $statisticData;
+        return $query->executeQuery()->fetchAllAssociative();
     }
 
     /*
@@ -768,7 +680,7 @@ class BackendModuleController
      *
      * @return boolean
      */
-    public function checkSysfolder()
+    public function checkSysfolder(): bool
     {
         $queryBuilder = Db::getQueryBuilder('pages');
         $page = $queryBuilder
@@ -777,14 +689,14 @@ class BackendModuleController
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->quote($this->pageId, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($this->pageId, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
 
-        return $page['doktype'] == 254 ? true : false;
+        return $page['doktype'] == 254;
     }
 
     /**

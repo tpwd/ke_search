@@ -9,6 +9,7 @@ use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,8 +62,8 @@ class TtNews extends IndexerBase
 
         // get the pages from where to index the news
         $indexPids = $this->getPidList(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder'],
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? '',
             $table
         );
 
@@ -212,8 +213,7 @@ class TtNews extends IndexerBase
 
                 // hook for custom modifications of the indexed data, e.g. the tags
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'] ?? null)) {
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'] as
-                             $_classRef) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyExtTtNewsIndexEntry'] as $_classRef) {
                         $_procObj = GeneralUtility::makeInstance($_classRef);
                         $_procObj->modifyExtNewsIndexEntry(
                             $title,
@@ -292,7 +292,7 @@ class TtNews extends IndexerBase
         );
         $where[] = $queryBuilder->expr()->eq(
             'tt_news.uid',
-            $queryBuilder->createNamedParameter($newsRecord['uid'], \PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter($newsRecord['uid'], Connection::PARAM_INT)
         );
 
         $catRes = $queryBuilder
@@ -347,8 +347,8 @@ class TtNews extends IndexerBase
 
         // get the pages from where to index the news
         $folders = $this->getPagelist(
-            $this->indexerConfig['startingpoints_recursive'],
-            $this->indexerConfig['sysfolder']
+            $this->indexerConfig['startingpoints_recursive'] ?? '',
+            $this->indexerConfig['sysfolder'] ?? ''
         );
 
         // Fetch all records which have been deleted since the last indexing

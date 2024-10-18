@@ -5,35 +5,52 @@ use Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator;
 defined('TYPO3') or die();
 
 (function () {
-    // add Searchbox Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi1');
+    // Add Searchbox Plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi1.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
+        '
+plugin.tx_kesearch_pi1 = USER_INT
+plugin.tx_kesearch_pi1.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main
+tt_content.ke_search_pi1 =< lib.contentElement
+tt_content.ke_search_pi1 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi1
+}
+',
+        'defaultContentRendering'
     );
 
-    // add Resultlist Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi2');
+    // add Resultlist Plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi2.userFunc = Tpwd\KeSearch\Plugins\ResultlistPlugin->main'
+        '
+plugin.tx_kesearch_pi2 = USER_INT
+plugin.tx_kesearch_pi2.userFunc = Tpwd\KeSearch\Plugins\ResultlistPlugin->main
+tt_content.ke_search_pi2 =< lib.contentElement
+tt_content.ke_search_pi2 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi2
+}
+',
+        'defaultContentRendering'
     );
 
-    // add cachable Searchbox Plugin, override class name with namespace
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('ke_search', '', '_pi3', 'list_type', 1);
+    // Add cachable Searchbox Plugin (USER instead of USER_INT)
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
-        'plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main'
-    );
-
-    // TODO: Remove this once support TYPO3 v11 is dropped, it is moved to Configuration/page.tsconfig which is automatically loaded
-    // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions.html
-    // Add TypoScript configuration for dashboard widgets
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TypoScript/Backend/dashboard.typoscript">'
+        '
+plugin.tx_kesearch_pi3 = USER
+plugin.tx_kesearch_pi3.userFunc = Tpwd\KeSearch\Plugins\SearchboxPlugin->main
+tt_content.ke_search_pi3 =< lib.contentElement
+tt_content.ke_search_pi3 {
+    templateName = Generic
+    20 =< plugin.tx_kesearch_pi3
+}
+',
+        'defaultContentRendering'
     );
 
     // add page TSconfig (Content element wizard icons, hide index table)
@@ -72,15 +89,6 @@ defined('TYPO3') or die();
     ['ke_search-filter-option'] = \Tpwd\KeSearch\Hooks\FilterOptionHook::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']
     ['ke_search-filter-option'] = \Tpwd\KeSearch\Hooks\FilterOptionHook::class;
-
-    // Upgrade Wizards
-    // Todo: Remove the following following registration of upgrade wizards once support for TYPO3 11 is dropped
-    // see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.2/Deprecation-99586-RegistrationOfUpgradeWizardsViaGLOBALS.html
-    // @extensionScannerIgnoreLine
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchMakeTagsAlphanumericUpgradeWizard']
-        = \Tpwd\KeSearch\Updates\MakeTagsAlphanumericUpgradeWizard::class;
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['keSearchPopulateFilterOptionsSlugsUpgradeWizard']
-        = \Tpwd\KeSearch\Updates\PopulateFilterOptionSlugsUpgradeWizard::class;
 
     // Custom aspects for routing
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['KeSearchUrlEncodeMapper'] =

@@ -24,8 +24,6 @@ namespace Tpwd\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Exception;
-use PDO;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
@@ -40,7 +38,7 @@ use Tpwd\KeSearch\Lib\Sorting;
 use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -56,10 +54,12 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  */
 class PluginBase extends AbstractPlugin
 {
-    protected ?ServerRequestInterface $request = null;
+    public ?ServerRequestInterface $request = null;
+    public $languageFile = 'EXT:ke_search/Resources/Private/Language/locallang.xlf';
     public Db $db;
     public PluginBaseHelper $div;
     public Filters $filters;
+    public ?float $queryStartTime = null;
 
     public string $prefixId = 'tx_kesearch_pi1';
     public string $extKey = 'ke_search';
@@ -114,7 +114,7 @@ class PluginBase extends AbstractPlugin
     public array $fluidTemplateVariables = [];
 
     // Frontend language ID
-    protected int $languageId;
+    public int $languageId;
 
     // Helper variable to pass the value to a hook
     private int $currentRowNumber;
@@ -126,6 +126,7 @@ class PluginBase extends AbstractPlugin
     public function init(ServerRequestInterface $request)
     {
         $this->setRequest($request);
+
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var LanguageAspect $languageAspect */
@@ -141,8 +142,8 @@ class PluginBase extends AbstractPlugin
         $this->div = GeneralUtility::makeInstance(PluginBaseHelper::class, $this);
 
         // set start of query timer
-        if (!($GLOBALS['TSFE']->register['ke_search_queryStartTime'] ?? false)) {
-            $GLOBALS['TSFE']->register['ke_search_queryStartTime'] = round(microtime(true) * 1000);
+        if (!($this->queryStartTime)) {
+            $this->queryStartTime = round(microtime(true) * 1000);
         }
 
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
@@ -171,9 +172,10 @@ class PluginBase extends AbstractPlugin
         if (!empty($loadFlexformsFromOtherCE)) {
             $currentFlexFormConfiguration = $flexFormConfiguration;
             $contentElement = $this->pi_getRecord('tt_content', (int)($loadFlexformsFromOtherCE));
-            if (is_int($contentElement) && $contentElement == 0) {
-                throw new Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
+            if (!$contentElement) {
+                throw new \Exception('Content element with search configuration is not set or not accessible. Maybe hidden or deleted?');
             }
+            // @extensionScannerIgnoreLine
             $this->cObj->data['pi_flexform'] = $contentElement['pi_flexform'];
             $flexFormConfiguration = array_merge($currentFlexFormConfiguration, $this->getFlexFormConfiguration());
 
@@ -333,8 +335,10 @@ class PluginBase extends AbstractPlugin
     public function getFlexFormConfiguration(): array
     {
         $flexFormConfiguration = [];
+        // @extensionScannerIgnoreLine
         if (isset($this->cObj->data['pi_flexform'])) {
             $this->pi_initPIflexForm();
+            // @extensionScannerIgnoreLine
             $piFlexForm = $this->cObj->data['pi_flexform'];
             if (is_array($piFlexForm['data'])) {
                 foreach ($piFlexForm['data'] as $sheetKey => $sheet) {
@@ -447,8 +451,7 @@ class PluginBase extends AbstractPlugin
 
             // hook for modifying filter options
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] ?? null)) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] as
-                         $_classRef) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyFilterOptionsArray'] as $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
                     $options = $_procObj->modifyFilterOptionsArray($filter['uid'], $options, $this);
                 }
@@ -475,8 +478,7 @@ class PluginBase extends AbstractPlugin
             // and $filterData['rawHtmlContent'] to your pre-rendered filter code
             // hook for custom filter renderer
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] ?? null)) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as
-                         $_classRef) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'] as $_classRef) {
                     $_procObj = GeneralUtility::makeInstance($_classRef);
                     $_procObj->customFilterRenderer($filter['uid'], $options, $this, $filterData);
                 }
@@ -658,7 +660,7 @@ class PluginBase extends AbstractPlugin
             $noResultsText = $this->pi_RTEcssText($this->conf['noResultsText'] ?? '');
         } else {
             // use general text
-            $noResultsText = $this->pi_getLL('no_results_found');
+            $noResultsText = $this->translate('no_results_found');
         }
 
         // hook to implement your own idea of a no result message
@@ -756,7 +758,7 @@ class PluginBase extends AbstractPlugin
 
                 // add type marker
                 // for file results just use the "file" type, not the file extension (eg. "file:pdf")
-                list($type) = explode(':', $row['type']);
+                [$type] = explode(':', $row['type']);
                 $tempMarkerArray['type'] = str_replace(' ', '_', $type);
 
                 // use the markers array as a base for the fluid template values
@@ -846,7 +848,7 @@ class PluginBase extends AbstractPlugin
      */
     public function getFileReference($row): int
     {
-        list($type) = explode(':', $row['type']);
+        [$type] = explode(':', $row['type']);
         switch ($type) {
             case 'page':
                 if ($this->conf['showPageImages'] ?? false) {
@@ -912,7 +914,7 @@ class PluginBase extends AbstractPlugin
      */
     public function getTypeIconPath(string $typeComplete): string
     {
-        list($type) = explode(':', $typeComplete);
+        [$type] = explode(':', $typeComplete);
         $name = str_replace(':', '_', $typeComplete);
 
         if ($this->conf['resultListTypeIcon'][$name] ?? false) {
@@ -965,7 +967,7 @@ class PluginBase extends AbstractPlugin
 
     /**
      * Fetches configuration value given its name.
-     * Merges flexform and TS configuration values.
+     * Merges FlexForm and TS configuration values.
      *
      * @param    string $param Configuration value name
      * @param    string $sheet
@@ -973,13 +975,8 @@ class PluginBase extends AbstractPlugin
      */
     public function fetchConfigurationValue(string $param, string $sheet = 'sDEF'): string
     {
-        $value = trim(
-            $this->pi_getFFvalue(
-                $this->cObj->data['pi_flexform'],
-                $param,
-                $sheet
-            )
-        );
+        // @extensionScannerIgnoreLine
+        $value = trim($this->pi_getFFvalue($this->cObj->data['pi_flexform'], $param, $sheet));
         return $value ?: ($this->conf[$param] ?? '');
     }
 
@@ -1084,39 +1081,35 @@ class PluginBase extends AbstractPlugin
     }
 
     /**
-     * gets all preselected filters from flexform
-     * returns nothing but fills global var with needed data
+     * Fetches preselected filters (set in FlexForm).
+     * Returns nothing but fills global var with needed data.
      */
-    public function getFilterPreselect()
+    public function getFilterPreselect(): void
     {
-        // get definitions from plugin settings
-        // and proceed only when preselectedFilter was not set
-        // this reduces the amount of sql queries, too
         if (($this->conf['preselected_filters'] ?? false) && count($this->preselectedFilter) == 0) {
             $preselectedArray = GeneralUtility::intExplode(',', $this->conf['preselected_filters'], true);
             foreach ($preselectedArray as $option) {
                 $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
-                /** @var PageRepository $pageRepository */
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
                 $filterRows = $queryBuilder
-                    ->add(
-                        'select',
-                        '`tx_kesearch_filters`.`uid` AS filteruid, `tx_kesearch_filteroptions`.`uid` AS optionuid, `tx_kesearch_filteroptions`.`tag`'
+                    ->select(
+                        'tx_kesearch_filters.uid AS filteruid',
+                        'tx_kesearch_filteroptions.uid AS optionuid',
+                        'tx_kesearch_filteroptions.tag'
                     )
                     ->from('tx_kesearch_filters')
                     ->from('tx_kesearch_filteroptions')
-                    ->add(
-                        'where',
-                        'FIND_IN_SET("' . $option . '",tx_kesearch_filters.options)'
-                        . ' AND `tx_kesearch_filteroptions`.`uid` = ' . $option .
-                        // @extensionScannerIgnoreLine
-                        $pageRepository->enableFields('tx_kesearch_filters') .
-                        // @extensionScannerIgnoreLine
-                        $pageRepository->enableFields('tx_kesearch_filteroptions')
+                    ->where(
+                        $queryBuilder->expr()->inSet(
+                            'tx_kesearch_filters.options',
+                            $queryBuilder->createNamedParameter($option)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'tx_kesearch_filteroptions.uid',
+                            $queryBuilder->createNamedParameter($option)
+                        ),
                     )
                     ->executeQuery()
                     ->fetchAllAssociative();
-
                 foreach ($filterRows as $row) {
                     $this->preselectedFilter[$row['filteruid']][$row['optionuid']] = $row['tag'];
                 }
@@ -1132,7 +1125,7 @@ class PluginBase extends AbstractPlugin
     public function isEmptySearch(): bool
     {
         // check if searchword is emtpy or equal with default searchbox value
-        $emptySearchword = empty($this->sword) || $this->sword == $this->pi_getLL('searchbox_default_value');
+        $emptySearchword = empty($this->sword) || $this->sword == $this->translate('searchbox_default_value');
 
         // check if filters are set
         $filters = $this->filters->getFilters();
@@ -1165,7 +1158,7 @@ class PluginBase extends AbstractPlugin
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($eventUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($eventUid, Connection::PARAM_INT)
                 )
             )
             ->setMaxResults(1)
@@ -1297,5 +1290,25 @@ class PluginBase extends AbstractPlugin
         if ($this->request === null) {
             $this->request = $request;
         }
+    }
+
+    public function translate(string $key, string $alternativeLabel = ''): string
+    {
+        if (!str_starts_with($key, 'LLL:')) {
+            $key = 'LLL:' . $this->languageFile . ':' . $key;
+        }
+        $label = LocalizationUtility::translate($key, 'KeSearch');
+        if (empty($label)) {
+            $label = $alternativeLabel;
+        }
+        if (empty($label)) {
+            $label = '';
+        }
+        return $label;
+    }
+
+    public function setLanguageFile(string $languageFile): void
+    {
+        $this->languageFile = $languageFile;
     }
 }

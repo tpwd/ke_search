@@ -3,11 +3,11 @@
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Statement;
-use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -34,21 +34,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FilterOptionRepository extends BaseRepository
 {
     /**
-     * Internal storage for database table fields
-     *
-     * @var array
-     */
-    protected $tableFields = [];
-
-    /**
      * @var string
      */
     protected $tableName = 'tx_kesearch_filteroptions';
-
-    /**
-     * @var string
-     */
-    protected $parentTableName = 'tx_kesearch_filters';
 
     /**
      * @param string $tagPrefix
@@ -64,7 +52,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->like(
                     'tag',
-                    $queryBuilder->createNamedParameter($tagPrefix . '%', PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tagPrefix . '%', Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -89,11 +77,11 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->like(
                     'tag',
-                    $queryBuilder->createNamedParameter($tagPrefix . '%', PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tagPrefix . '%', Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -148,7 +136,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'l10n_parent',
-                    $queryBuilder->createNamedParameter($l10n_parent, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($l10n_parent, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -169,7 +157,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'tag',
-                    $queryBuilder->createNamedParameter($tag, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tag, Connection::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -194,11 +182,11 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'tag',
-                    $queryBuilder->createNamedParameter($tag, PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter($tag, Connection::PARAM_STR)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($sys_language_uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -249,7 +237,6 @@ class FilterOptionRepository extends BaseRepository
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
             'l10n_diffsource' => '',
         ];
-        $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $newRecord = array_merge($newRecord, $additionalFields);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($this->tableName);
@@ -259,7 +246,12 @@ class FilterOptionRepository extends BaseRepository
             ['l10n_diffsource' => Connection::PARAM_LOB]
         );
         $record = $newRecord;
-        $record['uid'] = (int)$connection->lastInsertId($this->tableName);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            // @phpstan-ignore-next-line
+            $record['uid'] = (int)$connection->lastInsertId($this->tableName);
+        } else {
+            $record['uid'] = (int)$connection->lastInsertId();
+        }
 
         // Create slug
         $this->update($record['uid'], ['slug' => SearchHelper::createFilterOptionSlug($record)]);
@@ -294,7 +286,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($filterOptionUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($filterOptionUid, Connection::PARAM_INT)
                 )
             )
             ->executeStatement();
@@ -316,22 +308,6 @@ class FilterOptionRepository extends BaseRepository
     }
 
     /**
-     * Gets the fields that are available in the table
-     *
-     * @return array
-     */
-    protected function getTableFields(): array
-    {
-        if (empty($this->tableFields)) {
-            $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($this->tableName)
-                ->getSchemaManager()
-                ->listTableColumns($this->tableName);
-        }
-        return $this->tableFields;
-    }
-
-    /**
      * @param int $uid
      * @param array $updateFields
      * @return mixed
@@ -344,7 +320,7 @@ class FilterOptionRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                 )
             );
         foreach ($updateFields as $key => $value) {

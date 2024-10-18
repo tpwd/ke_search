@@ -116,7 +116,7 @@ class Pdf extends File implements FileIndexerInterface
 
             CommandUtility::exec($cmd, $output);
 
-            if (is_array($output) && count($output)) {
+            if (is_array($output) && count($output) && $output[0] != '') {
                 $errorMessage =
                     'There have been problems while extracting the content for PDF file '
                     . $file . '. Output from pdftotext: ' . json_encode($output);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Domain\Repository;
 
 use Doctrine\DBAL\Driver\Exception;
-use PDO;
+use TYPO3\CMS\Core\Database\Connection;
 
 /***************************************************************
  *  Copyright notice
@@ -49,11 +49,11 @@ class FileMetaDataRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'file',
-                    $queryBuilder->createNamedParameter($fileUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($fileUid, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($languageUid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

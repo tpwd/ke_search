@@ -3,6 +3,7 @@
 namespace Tpwd\KeSearch\Lib;
 
 use Tpwd\KeSearch\Plugins\PluginBase;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
@@ -55,7 +56,7 @@ class PluginBaseHelper
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()
@@ -67,15 +68,20 @@ class PluginBaseHelper
         } else {
             // if loadFlexformsFromOtherCE is NOT set
             // get startingPoints of current page
+            // @extensionScannerIgnoreLine
             $startingpoint['pages'] = $this->cObj->data['pages'] ?? false;
+            // @extensionScannerIgnoreLine
             $startingpoint['recursive'] = $this->cObj->data['recursive'] ?? false;
         }
 
         // allow to override startingpoint with typoscript like this
         // plugin.tx_kesearch_pi1.overrideStartingPoint = 123
         // plugin.tx_kesearch_pi1.overrideStartingPointRecursive = 1
+        // @extensionScannerIgnoreLine
         if ($this->pObj->conf['overrideStartingPoint'] ?? false) {
+            // @extensionScannerIgnoreLine
             $startingpoint['pages'] = $this->pObj->conf['overrideStartingPoint'];
+            // @extensionScannerIgnoreLine
             $startingpoint['recursive'] = $this->pObj->conf['overrideStartingPointRecursive'];
         }
 
