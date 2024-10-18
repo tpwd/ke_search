@@ -183,6 +183,7 @@ class Page extends IndexerBase
 
         // Create helper service for additional content
         $this->additionalContentService = $this->getAdditionalContentService();
+        // @extensionScannerIgnoreLine
         $this->additionalContentService->init($this->indexerConfig);
 
         // get all available sys_language_uid records
@@ -1082,6 +1083,7 @@ class Page extends IndexerBase
     public function findAttachedFiles($ttContentRow)
     {
         // Set current data
+        // @extensionScannerIgnoreLine
         $this->cObj->data = $ttContentRow;
 
         // Get files by filesProcessor
@@ -1147,6 +1149,7 @@ class Page extends IndexerBase
                 );
             }
 
+            // @extensionScannerIgnoreLine
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
 

@@ -100,6 +100,7 @@ class Fileinfo
                 'mtime' => filemtime($file->getForLocalProcessing(false)),
                 'owner' => '',
                 'group' => '',
+                // @extensionScannerIgnoreLine
                 'size' => $file->getSize(),
                 'type' => 'file',
                 'perms' => '',

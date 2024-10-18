@@ -205,11 +205,13 @@ class Sorting
 
         if ($urlOnly) {
             return SearchHelper::searchLink(
+                // @extensionScannerIgnoreLine
                 $this->pObj->conf['resultPage'],
                 $localPiVars
             );
         }
         return SearchHelper::searchLink(
+            // @extensionScannerIgnoreLine
             $this->pObj->conf['resultPage'],
             $localPiVars,
             [],

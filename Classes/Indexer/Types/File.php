@@ -340,6 +340,7 @@ class File extends IndexerBase
             return false;
         }
         $errorMessage = $filePath . ' is not a file.';
+        // @extensionScannerIgnoreLine
         $this->pObj->logger->error($errorMessage);
         $this->addError($errorMessage);
         return false;
