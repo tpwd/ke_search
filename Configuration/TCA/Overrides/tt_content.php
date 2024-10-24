@@ -69,6 +69,7 @@ foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
             --palette--;;headers,
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.plugin,
             pi_flexform,
+            pages, recursive,
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
             --palette--;;frames,
             --palette--;;appearanceLinks,
