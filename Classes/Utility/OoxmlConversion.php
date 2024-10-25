@@ -36,26 +36,27 @@ class OoxmlConversion
     private function readDocx()
     {
         $content = '';
-        $zip = zip_open($this->filename);
+        $zip = new \ZipArchive();
 
-        if (!$zip || is_numeric($zip)) {
+        if ($zip->open($this->filename) !== true) {
             return false;
         }
 
-        while ($zipEntry = zip_read($zip)) {
-            if (zip_entry_open($zip, $zipEntry) === false) {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $zipEntry = $zip->getNameIndex($i);
+
+            if ($zipEntry !== 'word/document.xml') {
                 continue;
             }
-            if (zip_entry_name($zipEntry) !== 'word/document.xml') {
-                continue;
-            }
-            $content .= zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
-            zip_entry_close($zipEntry);
+
+            $content .= ($zip->getFromName($zipEntry) ?: '');
         }
-        zip_close($zip);
+
+        $zip->close();
 
         $content = str_replace('</w:r></w:p></w:tc><w:tc>', ' ', $content);
         $content = str_replace('</w:r></w:p>', "\r\n", $content);
+
         return strip_tags($content);
     }
 
