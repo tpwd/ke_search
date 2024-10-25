@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.0.1, 25 October 2024
 [BUGFIX]  Add missing storage page and recursive option. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/251
 [BUGFIX]  Undefined array key "sortByAdmin". Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/252
 
