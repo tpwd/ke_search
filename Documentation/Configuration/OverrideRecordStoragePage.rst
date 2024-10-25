@@ -2,14 +2,17 @@
 
 .. _configuration-override-record-storage-page:
 
-============================
-Override record storage page
-============================
+============================================
+Override record storage page (Startingpoint)
+============================================
 
-It is possible to override the record storage page defined in the plugin using TypoScript. This is useful
-if you want to serve different search results depending on TypoScript conditions.
+It is possible to override the record storage page (or "Startingpoint") defined
+in the plugin using TypoScript. This is useful if you want to serve different
+search results depending on TypoScript conditions or if you include the plugin
+via TypoScript.
 
-For example you could serve different search results to logged in users.
+For example you could serve different search results to logged in users by
+setting the override record storage page to a different page id.
 
 Setup TypoScript:
 

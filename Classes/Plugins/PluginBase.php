@@ -187,9 +187,10 @@ class PluginBase extends AbstractPlugin
 
         // make settings from FlexForm available in general configuration ($this->conf)
         $this->moveFlexFormDataToConf($flexFormConfiguration);
+        $this->setConfigurationDefaults();
 
-        // explode flattened piVars to multi-dimensional array and clean them
-        $additionalAllowedPiVars = $this->conf['additionalAllowedPiVars'] ?? '';
+        // explode flattened piVars to multidimensional array and clean them
+        $additionalAllowedPiVars = $this->conf['additionalAllowedPiVars'];
         $this->piVars = SearchHelper::explodePiVars($this->piVars, $additionalAllowedPiVars);
         $this->piVars = $this->div->cleanPiVars($this->piVars, $additionalAllowedPiVars);
 
@@ -284,16 +285,16 @@ class PluginBase extends AbstractPlugin
             $this->piVars['sortByDir'] = 'desc';
         }
 
-        // after the searchword is removed, sorting for "score" is not possible
+        // After the searchword is removed, sorting for "score" is not possible
         // anymore. So remove this sorting here and put it back to default.
         if (!$this->sword && ($this->piVars['sortByField'] ?? '') == 'score') {
             unset($this->piVars['sortByField']);
             unset($this->piVars['sortByDir']);
         }
 
-        // perform search at this point already if we need to calculate what
+        // Perform search at this point already if we need to calculate what
         // filters to display.
-        if (isset($this->conf['checkFilterCondition']) && $this->conf['checkFilterCondition'] != 'none' && !$this->allowEmptySearch()) {
+        if ($this->conf['checkFilterCondition'] != 'none' && !$this->allowEmptySearch()) {
             $this->db->getSearchResults();
         }
 
@@ -307,6 +308,17 @@ class PluginBase extends AbstractPlugin
                 $pageRenderer->addCssFile($cssFile);
             }
         }
+    }
+
+    protected function setConfigurationDefaults(): void
+    {
+        $this->conf['resultsPerPage'] = $this->conf['resultsPerPage'] ?? 10;
+        $this->conf['resultLinkTargetFiles'] = $this->conf['resultLinkTargetFiles'] ?? '_blank';
+        $this->conf['resultLinkTarget'] = $this->conf['resultLinkTarget'] ?? '';
+        $this->conf['additionalAllowedPiVars'] = $this->conf['additionalAllowedPiVars'] ?? '';
+        $this->conf['sortByAdmin'] = $this->conf['sortByAdmin'] ?? 'score desc';
+        $this->conf['sortWithoutSearchword'] = $this->conf['sortWithoutSearchword'] ?? 'sortdate desc';
+        $this->conf['checkFilterCondition'] = $this->conf['checkFilterCondition'] ?? 'multi';
     }
 
     /**
