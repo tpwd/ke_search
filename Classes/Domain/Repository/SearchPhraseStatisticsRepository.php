@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,7 +49,7 @@ class SearchPhraseStatisticsRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -72,7 +71,7 @@ class SearchPhraseStatisticsRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             );
         foreach ($updateFields as $key => $value) {
@@ -103,7 +102,7 @@ class SearchPhraseStatisticsRepository
             ->from($this->tableName)
             ->add(
                 'where',
-                'tstamp > ' . $queryBuilder->quote($startTime, PDO::PARAM_INT)
+                'tstamp > ' . $queryBuilder->quote($startTime, \PDO::PARAM_INT)
             )
             ->add('groupBy', $col . ',language HAVING count(' . $col . ')>0')
             ->add('orderBy', 'num desc')

@@ -61,11 +61,11 @@ if ($typo3BranchVersion >= 12.3) {
         'ke_search',
     ];
     $listTypeKeSearchPi2ItemArray = [
-            'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
-            'ke_search_pi2',
-            'EXT:ke_search/Resources/Public/Icons/Extension.svg',
-            'ke_search',
-        ];
+        'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi2',
+        'ke_search_pi2',
+        'EXT:ke_search/Resources/Public/Icons/Extension.svg',
+        'ke_search',
+    ];
     $listTypeKeSearchPi3ItemArray = [
         'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi3',
         'ke_search_pi3',

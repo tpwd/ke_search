@@ -267,7 +267,7 @@ class SearchHelper
     {
         $linkConf = [];
 
-        list($type) = explode(':', $resultRow['type']);
+        [$type] = explode(':', $resultRow['type']);
 
         switch ($type) {
             case 'file':

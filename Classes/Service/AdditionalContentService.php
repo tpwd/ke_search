@@ -119,14 +119,14 @@ class AdditionalContentService
         // Find files linked in RTE
         $blockSplit = $this->rteHtmlParser->splitIntoBlock('A', (string)$contentRow[$field], true);
         foreach ($blockSplit as $k => $v) {
-            list($attributes) = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
+            [$attributes] = $this->rteHtmlParser->get_tag_attributes($this->rteHtmlParser->getFirstTag($v), true);
             if (!empty($attributes['href'])) {
                 try {
                     $hrefInformation = $this->linkService->resolve($attributes['href']);
                     if ($hrefInformation['type'] === LinkService::TYPE_FILE) {
                         $fileObjects[] = $hrefInformation['file'];
                     }
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
                     $this->logger->error($exception->getMessage());
                 }
             }

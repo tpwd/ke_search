@@ -20,7 +20,6 @@ namespace Tpwd\KeSearch\Indexer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use PDO;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
@@ -165,15 +164,15 @@ class IndexerBase
         // index only page which are not hidden
         $where[] = $queryBuilder->expr()->neq(
             'pages.no_search',
-            $queryBuilder->createNamedParameter(1, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
         );
         $where[] = $queryBuilder->expr()->eq(
             'pages.hidden',
-            $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
         );
         $where[] = $queryBuilder->expr()->eq(
             'pages.deleted',
-            $queryBuilder->createNamedParameter(0, PDO::PARAM_INT)
+            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
         );
 
         // add additional where clause
@@ -289,7 +288,7 @@ class IndexerBase
             ->where(
                 $queryBuilder->expr()->neq(
                     'automated_tagging',
-                    $queryBuilder->quote('', PDO::PARAM_STR)
+                    $queryBuilder->quote('', \PDO::PARAM_STR)
                 )
             )
             ->executeQuery()
@@ -420,7 +419,7 @@ class IndexerBase
             ->select('uid_local')
             ->from('sys_category_record_mm')
             ->where(
-                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($indexerConfigUid, PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($indexerConfigUid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tx_kesearch_indexerconfig'))
             )
             ->executeQuery()
@@ -474,7 +473,7 @@ class IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.uid_foreign',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.uid_local',
@@ -482,7 +481,7 @@ class IndexerBase
                 ),
                 $queryBuilder->expr()->eq(
                     'ref.sys_language_uid',
-                    $queryBuilder->createNamedParameter($language, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
                 )
             )
             ->orderBy('ref.sorting_foreign')

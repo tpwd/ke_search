@@ -79,7 +79,7 @@ class Searchresult
         // configure the link
         $linkconf = $this->getResultLinkConfiguration();
 
-        list($type) = explode(':', $this->row['type']);
+        [$type] = explode(':', $this->row['type']);
         switch ($type) {
             case 'file':
                 // if we use FAL, see if we have a title in the metadata

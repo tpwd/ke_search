@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use PDO;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -84,7 +83,7 @@ class BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -111,7 +110,7 @@ class BaseRepository
             )
             ->andWhere(
                 $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($pidList, Connection::PARAM_INT_ARRAY)),
-                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, PDO::PARAM_INT))
+                $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($tstamp, \PDO::PARAM_INT))
             )
             ->executeQuery()
             ->fetchAllAssociative();

@@ -2,7 +2,6 @@
 
 namespace Tpwd\KeSearch\Domain\Repository;
 
-use PDO;
 use Tpwd\KeSearch\Lib\SearchHelper;
 
 /***************************************************************
@@ -47,7 +46,7 @@ class CategoryRepository extends BaseRepository
             ->where(
                 $queryBuilder->expr()->eq(
                     'parent',
-                    $queryBuilder->createNamedParameter($categoryUid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($categoryUid, \PDO::PARAM_INT)
                 )
             )
             ->executeQuery()
@@ -92,7 +91,7 @@ class CategoryRepository extends BaseRepository
                 ),
                 $queryBuilder->expr()->eq(
                     $tableName . '.uid',
-                    $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'sys_category_record_mm.tablenames',
