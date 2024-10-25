@@ -573,26 +573,27 @@ class Db implements SingletonInterface
      */
     public function getOrdering()
     {
-        // if the following code fails, fall back to this default ordering
-        $orderBy = $this->conf['sortWithoutSearchword'] ?? 'sortdate desc';
+        // If the following code fails, fall back to this default ordering
+        $orderBy = $this->conf['sortWithoutSearchword'];
 
-        // if sorting in FE is allowed
+        // If sorting in FE is allowed
         if ($this->conf['showSortInFrontend'] ?? false) {
             $piVarsField = $this->pObj->piVars['sortByField'] ?? '';
             $piVarsDir = $this->pObj->piVars['sortByDir'] ?? '';
             $piVarsDir = ($piVarsDir == '') ? 'asc' : $piVarsDir;
-            if (!empty($piVarsField)) { // if an ordering field is defined by GET/POST
+
+            // Check if an ordering field is defined by GET/POST and use that.
+            // If sortByVisitor is not set OR not in the list of
+            // allowed fields then use fallback ordering in "sortWithoutSearchword"
+            if (!empty($piVarsField)) {
                 $isInList = GeneralUtility::inList($this->conf['sortByVisitor'], $piVarsField);
                 if ($this->conf['sortByVisitor'] != '' && $isInList) {
                     $orderBy = $piVarsField . ' ' . $piVarsDir;
                 }
-                // if sortByVisitor is not set OR not in the list of
-                // allowed fields then use fallback ordering in "sortWithoutSearchword"
             }
         } else {
-            // if sortByVisitor is not set OR not in the list of
-            // allowed fields then use fallback ordering in "sortWithoutSearchword"
-            if (!empty($this->pObj->wordsAgainst)) { // if sorting is predefined by admin
+            // If sorting is predefined by admin
+            if (!empty($this->pObj->wordsAgainst)) {
                 $orderBy = $this->conf['sortByAdmin'];
             }
         }

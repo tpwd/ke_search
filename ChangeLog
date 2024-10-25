@@ -1,7 +1,8 @@
 ChangeLog
 
 Upcoming version
-[BUGFIX]  Add missing storage page an recursive option. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/251
+[BUGFIX]  Add missing storage page and recursive option. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/251
+[BUGFIX]  Undefined array key "sortByAdmin". Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/252
 
 Version 6.0.0, 18 October 2024
 [!!!]     This version drops support for TYPO3 11.
