@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  parse_ini_string(): Passing null to parameter #1 ($ini_string) of type string is deprecated. Thanks to medarob. https://github.com/tpwd/ke_search/issues/247
+
 Version 6.0.1, 25 October 2024
 [BUGFIX]  Add missing storage page and recursive option. Thanks to Torben Hansen. https://github.com/tpwd/ke_search/issues/251
 [BUGFIX]  Undefined array key "sortByAdmin". Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/252

@@ -82,7 +82,7 @@ class AdditionalContentService
         // parse_ini_string will throw a warning if it could not parse the string.
         // If the system is configured to turn a warning into an exception we catch it here.
         try {
-            $additionalTableConfig = parse_ini_string($this->indexerConfig['additional_tables'], true);
+            $additionalTableConfig = parse_ini_string($this->indexerConfig['additional_tables'] ?? '', true);
         } catch (\Exception $e) {
             $errorMessage =
                 'Error while parsing additional table configuration for indexer "' . $this->indexerConfig['title']
