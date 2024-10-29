@@ -51,11 +51,7 @@ class AdditionalContentService
     {
         $content = ' ';
         $files = [];
-        $config = false;
-        if (isset($this->processedAdditionalTableConfig[$ttContentRow['CType']])) {
-            $config = $this->processedAdditionalTableConfig[$ttContentRow['CType']];
-        }
-        if (is_array($config) & !empty($config['fields'])) {
+        foreach ($this->getProcessedConfigsForCType($ttContentRow['CType']) as $config) {
             $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
             $additionalTableContentRows = $genericRepository->findByReferenceField(
                 $config['table'],
@@ -65,10 +61,10 @@ class AdditionalContentService
             foreach ($additionalTableContentRows as $additionalTableContentRow) {
                 foreach ($config['fields'] as $field) {
                     $content .= ' ' . ContentUtility::getPlainContentFromContentRow(
-                        $additionalTableContentRow,
-                        $field,
-                        $GLOBALS['TCA'][$config['table']]['columns'][$field]['config']['type'] ?? ''
-                    );
+                            $additionalTableContentRow,
+                            $field,
+                            $GLOBALS['TCA'][$config['table']]['columns'][$field]['config']['type'] ?? ''
+                        );
                     $files = array_merge($files, $this->findLinkedFiles($additionalTableContentRow, $field));
                 }
             }
@@ -76,28 +72,43 @@ class AdditionalContentService
         return ['content' => trim($content), 'files' => $files];
     }
 
+    /**
+     * Parses and processes additional table configurations from the indexer configuration. Validates the
+     * configurations and structures them by content types.
+     *
+     * @return array Structured additional table configurations, organized by content types.
+     *               Returns an empty array if any error occurs during parsing or if no valid table configuration is found.
+     */
     protected function parseAndProcessAdditionalTablesConfiguration(): array
     {
-        $additionalTableConfig = false;
+        $tempAdditionalTableConfig = false;
         // parse_ini_string will throw a warning if it could not parse the string.
         // If the system is configured to turn a warning into an exception we catch it here.
         try {
-            $additionalTableConfig = parse_ini_string($this->indexerConfig['additional_tables'] ?? '', true);
+            $tempAdditionalTableConfig = parse_ini_string($this->indexerConfig['additional_tables'] ?? '', true);
         } catch (\Exception $e) {
             $errorMessage =
                 'Error while parsing additional table configuration for indexer "' . $this->indexerConfig['title']
                 . '": ' . $e->getMessage();
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
         }
-        if ($additionalTableConfig === false) {
-            $errorMessage = 'Could not parse additional table configuration for indexer "' . $this->indexerConfig['title'] . '".';
+        if ($tempAdditionalTableConfig === false) {
+            $errorMessage = 'Could not parse additional table configuration for indexer "'
+                . $this->indexerConfig['title'] . '"';
+            // @extensionScannerIgnoreLine
             $this->logger->error($errorMessage);
-            $additionalTableConfig = [];
+            return [];
         }
-        foreach ($additionalTableConfig as $configKey => $config) {
+        foreach ($tempAdditionalTableConfig as $configKey => $config) {
             if (!$this->genericRepository->tableExists($config['table'])) {
-                unset($additionalTableConfig[$configKey]);
+                unset($tempAdditionalTableConfig[$configKey]);
             }
+        }
+        $cTypes = $this->findAllCTypesInConfiguration($tempAdditionalTableConfig);
+        $additionalTableConfig = [];
+        foreach ($cTypes as $cType) {
+            $additionalTableConfig[$cType] = $this->getUnprocessedConfigsForCType($tempAdditionalTableConfig, $cType);
         }
         return $additionalTableConfig;
     }
@@ -127,6 +138,7 @@ class AdditionalContentService
                         $fileObjects[] = $hrefInformation['file'];
                     }
                 } catch (\Exception $exception) {
+                    // @extensionScannerIgnoreLine
                     $this->logger->error($exception->getMessage());
                 }
             }
@@ -147,5 +159,59 @@ class AdditionalContentService
             }
         }
         return $fileObjects;
+    }
+
+    /**
+     * Finds all content types (CTypes) in the provided table configuration.
+     *
+     * @param array $additionalTableConfig The additional table configuration to search for cTypes.
+     * @return array An array of unique cTypes found in the configuration.
+     */
+    protected function findAllCTypesInConfiguration($additionalTableConfig): array
+    {
+        $cTypes = [];
+        foreach ($additionalTableConfig as $cType => $config) {
+            [$cType] = explode('.', $cType);
+            if (!in_array($cType, $cTypes)) {
+                $cTypes[] = $cType;
+            }
+        }
+        return $cTypes;
+    }
+
+    /**
+     * Retrieves an array of unprocessed configurations for a given content type. Unprocessed means
+     * the CTypes names my have indexes in it ("my_ctype.1", "my_ctype.2") and each configuration
+     * configures only one table.
+     *
+     * @param array $additionalTableConfig Array containing configurations for various content types.
+     * @param string $cType The content type for which unprocessed configurations are to be fetched.
+     * @return array Array containing unprocessed configurations specific to the given content type.
+     */
+    protected function getUnprocessedConfigsForCType(array $additionalTableConfig, string $cType): array
+    {
+        $configs = [];
+        foreach ($additionalTableConfig as $currentCType => $currentConfig) {
+            [$currentCType] = explode('.', $currentCType);
+            if ($currentCType === $cType) {
+                if (is_array($currentConfig) & !empty($currentConfig['fields'])) {
+                    $configs[] = $currentConfig;
+                }
+            }
+        }
+        return $configs;
+    }
+
+
+    /**
+     * Retrieves processed configurations for a given content type. The result is a multidimensional array, in the first
+     * level there's one element per table.
+     *
+     * @param string $cType The content type identifier.
+     * @return array The processed configurations associated with the specified content type.
+     */
+    protected function getProcessedConfigsForCType(string $cType): array
+    {
+        return $this->processedAdditionalTableConfig[$cType] ?? $this->processedAdditionalTableConfig[$cType] ?? [];
     }
 }
