@@ -118,7 +118,10 @@ Options
 first line (eg. `[custom_element]`)
     The content type, stored as `CType` in the table `tt_content`. You will
     also have to add this to :guilabel:`Content element types which
-    should be indexed`
+    should be indexed`. If your content element has multiple additional tables,
+    you can have multiple configurations for the same CType by adding a dot and
+    an index, e.g. "my_ctype.1", "my_ctype.2" which then will all internally be
+    mapped to the configuration for "my_ctype".
 
 table
     This is the table that holds the content.
@@ -152,8 +155,8 @@ index the bootstrap package element "accordion" (remember to also add
    fields[] = bodytext
 
 Add this to :guilabel:`Additional tables for content elements` to
-index a mask element (remember to also add
-`mask_list` to :guilabel:`Content element types which should be indexed`:
+index mask elements (remember to also add
+`mask_list` and `mask_mytest` to :guilabel:`Content element types which should be indexed`:
 
 .. code-block:: ini
 
@@ -161,6 +164,16 @@ index a mask element (remember to also add
     table = tx_mask_content
     referenceFieldName = parentid
     fields[] = tx_mask_content_item
+
+    [mask_mytest]
+    table = tx_mask_repeating1
+    referenceFieldName = parentid
+    fields[] = tx_mask_string1
+
+    [mask_mytest.1]
+    table = tx_mask_repeating2
+    referenceFieldName = parentid
+    fields[] = tx_mask_string2
 
 This is an example for a some mask elements:
 
