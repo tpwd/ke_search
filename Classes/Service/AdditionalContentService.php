@@ -258,7 +258,7 @@ class AdditionalContentService
     {
         $configs = $this->processedAdditionalTableConfig[$cType] ?? $this->processedAdditionalTableConfig[$cType] ?? [];
         foreach ($configs as $key => $config) {
-            if ($parentTable != '' && $config['parentTable'] !== $parentTable) {
+            if ($parentTable != '' && isset($config['parentTable']) && $config['parentTable'] !== $parentTable) {
                 unset($configs[$key]);
             }
         }
