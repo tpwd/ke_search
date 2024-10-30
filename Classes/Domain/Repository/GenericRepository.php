@@ -160,6 +160,31 @@ class GenericRepository
             ->fetchAllAssociative();
     }
 
+    public function findByReferenceFieldAndParentTable(
+        string $table,
+        string $parentTable,
+        string $fieldName,
+        int $value,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($table, $includeHiddenAndTimeRestricted);
+        return $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'parenttable',
+                    $queryBuilder->createNamedParameter($parentTable)
+                ),
+                $queryBuilder->expr()->eq(
+                    $fieldName,
+                    $queryBuilder->createNamedParameter($value, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
     public function tableExists(string $table): bool
     {
         $table = strip_tags(htmlentities($table));

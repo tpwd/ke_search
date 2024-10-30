@@ -127,9 +127,18 @@ table
     This is the table that holds the content.
 
 referenceFieldName
-    This ist the field that holds the relation to the tt_content record (the
+    This is the field that holds the relation to the tt_content record (the
     UID of the record). In EXT:bootstrap_package it is named `tt_content`,
     in EXT:mask it is named `parentid`.
+
+parentTable
+    The parent table is an optional setting. It's only necessary if you want to index
+    sub-elements of EXT:mask. For example If you have repeating elements in a mask
+    element which themselves have repeating elements. You can define the parent table
+    for the sub-elements here (see example below). Indexing will be done recursively.
+    If set the database query will contain a "WHERE parenttable = ..." condition. This
+    column exists in content elements from EXT:mask but not in content elements
+    from EXT:bootstrap_package.
 
 fields[]
     A list of database fields which should be indexed. If the field is
@@ -165,15 +174,34 @@ index mask elements (remember to also add
     referenceFieldName = parentid
     fields[] = tx_mask_content_item
 
+This is an example how to add multiple additional tables for the same CType.
+
+.. code-block:: ini
+
     [mask_mytest]
     table = tx_mask_repeating1
     referenceFieldName = parentid
-    fields[] = tx_mask_string1
+    fields[] = tx_mask_name
 
     [mask_mytest.1]
     table = tx_mask_repeating2
     referenceFieldName = parentid
-    fields[] = tx_mask_string2
+    fields[] = tx_mask_title
+
+This is an example how to index sub-elements of additional tables (note the `parentTable` configuration line).
+
+.. code-block:: ini
+
+    [mask_mytest]
+    table = tx_mask_repeating1
+    referenceFieldName = parentid
+    fields[] = tx_mask_name
+
+    [mask_mytest.1]
+    table = tx_mask_repeating2
+    parentTable = tx_mask_repeating1
+    referenceFieldName = parentid
+    fields[] = tx_mask_title
 
 This is an example for a some mask elements:
 

@@ -49,24 +49,67 @@ class AdditionalContentService
      */
     public function getContentAndFilesFromAdditionalTables(array $ttContentRow): array
     {
+        $combinedAdditionalContentAndFiles = [
+            'content' => '',
+            'files' => [],
+        ];
+        foreach ($this->getConfigs($ttContentRow['CType']) as $config) {
+            $additionalContentAndFiles = $this->getContentAndFilesForSingleConfig(
+                $ttContentRow,
+                $ttContentRow['CType'],
+                $config
+            );
+            $combinedAdditionalContentAndFiles['content'] .= ' ' . $additionalContentAndFiles['content'];
+            $combinedAdditionalContentAndFiles['files'] = array_merge(
+                $combinedAdditionalContentAndFiles['files'],
+                $additionalContentAndFiles['files']
+            );
+        }
+        return [
+            'content' => trim($combinedAdditionalContentAndFiles['content']),
+            'files' => $combinedAdditionalContentAndFiles['files'],
+        ];
+    }
+
+    protected function getContentAndFilesForSingleConfig(array $row, string $cType, array $config): array
+    {
         $content = ' ';
         $files = [];
-        foreach ($this->getProcessedConfigsForCType($ttContentRow['CType']) as $config) {
-            $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
-            $additionalTableContentRows = $genericRepository->findByReferenceField(
+        $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
+        if (isset($config['parentTable'])) {
+            $additionalRows = $genericRepository->findByReferenceFieldAndParentTable(
+                $config['table'],
+                $config['parentTable'],
+                $config['referenceFieldName'],
+                $row['uid']
+            );
+        } else {
+            $additionalRows = $genericRepository->findByReferenceField(
                 $config['table'],
                 $config['referenceFieldName'],
-                $ttContentRow['uid']
+                $row['uid']
             );
-            foreach ($additionalTableContentRows as $additionalTableContentRow) {
-                foreach ($config['fields'] as $field) {
-                    $content .= ' ' . ContentUtility::getPlainContentFromContentRow(
-                            $additionalTableContentRow,
-                            $field,
-                            $GLOBALS['TCA'][$config['table']]['columns'][$field]['config']['type'] ?? ''
-                        );
-                    $files = array_merge($files, $this->findLinkedFiles($additionalTableContentRow, $field));
-                }
+        }
+        foreach ($additionalRows as $additionalRow) {
+            foreach ($config['fields'] as $field) {
+                $content .= ' ' . ContentUtility::getPlainContentFromContentRow(
+                    $additionalRow,
+                    $field,
+                    $GLOBALS['TCA'][$config['table']]['columns'][$field]['config']['type'] ?? ''
+                );
+                $files = array_merge($files, $this->findLinkedFiles($additionalRow, $field));
+            }
+
+            // Get content from tables which have the current table as parent recursively
+            $subConfigs = $this->getConfigs($cType, $config['table']);
+            foreach ($subConfigs as $subConfig) {
+                $additionalContentAndFiles = $this->getContentAndFilesForSingleConfig(
+                    $additionalRow,
+                    $cType,
+                    $subConfig
+                );
+                $content .= ' ' . $additionalContentAndFiles['content'];
+                $files = array_merge($files, $additionalContentAndFiles['files']);
             }
         }
         return ['content' => trim($content), 'files' => $files];
@@ -108,7 +151,10 @@ class AdditionalContentService
         $cTypes = $this->findAllCTypesInConfiguration($tempAdditionalTableConfig);
         $additionalTableConfig = [];
         foreach ($cTypes as $cType) {
-            $additionalTableConfig[$cType] = $this->getUnprocessedConfigsForCType($tempAdditionalTableConfig, $cType);
+            $additionalTableConfig[$cType] = $this->getCombinedConfigsForCTypeFromRawConfig(
+                $tempAdditionalTableConfig,
+                $cType
+            );
         }
         return $additionalTableConfig;
     }
@@ -167,7 +213,7 @@ class AdditionalContentService
      * @param array $additionalTableConfig The additional table configuration to search for cTypes.
      * @return array An array of unique cTypes found in the configuration.
      */
-    protected function findAllCTypesInConfiguration($additionalTableConfig): array
+    protected function findAllCTypesInConfiguration(array $additionalTableConfig): array
     {
         $cTypes = [];
         foreach ($additionalTableConfig as $cType => $config) {
@@ -180,15 +226,15 @@ class AdditionalContentService
     }
 
     /**
-     * Retrieves an array of unprocessed configurations for a given content type. Unprocessed means
-     * the CTypes names my have indexes in it ("my_ctype.1", "my_ctype.2") and each configuration
-     * configures only one table.
+     * Retrieves an array of configurations for a given content type. Expects the additional table config in ini
+     * format which may have multiple configurations for the same CType with indexes in it
+     *  ("my_ctype.1", "my_ctype.2") and combines them into one array.
      *
      * @param array $additionalTableConfig Array containing configurations for various content types.
-     * @param string $cType The content type for which unprocessed configurations are to be fetched.
-     * @return array Array containing unprocessed configurations specific to the given content type.
+     * @param string $cType The content type for which configurations are to be fetched.
+     * @return array Array containing combined configurations specific to the given content type.
      */
-    protected function getUnprocessedConfigsForCType(array $additionalTableConfig, string $cType): array
+    protected function getCombinedConfigsForCTypeFromRawConfig(array $additionalTableConfig, string $cType): array
     {
         $configs = [];
         foreach ($additionalTableConfig as $currentCType => $currentConfig) {
@@ -202,16 +248,20 @@ class AdditionalContentService
         return $configs;
     }
 
-
     /**
-     * Retrieves processed configurations for a given content type. The result is a multidimensional array, in the first
-     * level there's one element per table.
+     * Retrieves processed configurations for a given content type and, if given, the parent table.
      *
      * @param string $cType The content type identifier.
      * @return array The processed configurations associated with the specified content type.
      */
-    protected function getProcessedConfigsForCType(string $cType): array
+    protected function getConfigs(string $cType, string $parentTable = ''): array
     {
-        return $this->processedAdditionalTableConfig[$cType] ?? $this->processedAdditionalTableConfig[$cType] ?? [];
+        $configs = $this->processedAdditionalTableConfig[$cType] ?? $this->processedAdditionalTableConfig[$cType] ?? [];
+        foreach ($configs as $key => $config) {
+            if ($parentTable != '' && $config['parentTable'] !== $parentTable) {
+                unset($configs[$key]);
+            }
+        }
+        return $configs;
     }
 }

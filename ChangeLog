@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Make it possible to index multiple additional tables for a content element. https://github.com/tpwd/ke_search/issues/230
+[FEATURE] Allow recursive indexing of additional content
 
 Version 5.5.3, 25 October 2024
 [BUGFIX]  Undefined array key "sortByAdmin". Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/252
