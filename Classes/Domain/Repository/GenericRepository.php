@@ -178,7 +178,7 @@ class GenericRepository
                 ),
                 $queryBuilder->expr()->eq(
                     $fieldName,
-                    $queryBuilder->createNamedParameter($value, Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
                 )
             )
             ->executeQuery()
