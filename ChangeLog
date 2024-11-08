@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.6.0, 8 November 2024
 [FEATURE] Make it possible to index multiple additional tables for a content element. https://github.com/tpwd/ke_search/issues/230
 [FEATURE] Allow recursive indexing of additional content
 
