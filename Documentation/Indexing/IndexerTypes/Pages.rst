@@ -109,6 +109,11 @@ for a 3rd party extension or custom indexer. In the field
 :guilabel:`Additional tables for content elements` you can configure those
 tables. The `ini` configuration format is used here.
 
+Since version 5.6.0 / 6.1.0 it is possible to index sub-elements of additional
+tables. If you have repeating elements in a mask element which themselves have
+repeating elements you can define the parent table for the sub-elements here.
+Indexing will be done recursively.
+
 You need to define the table name, the field which holds the reference to the
 tt_content table and the fields which should be indexed.
 
@@ -132,6 +137,7 @@ referenceFieldName
     in EXT:mask it is named `parentid`.
 
 parentTable
+    (since version 5.6.0 / 6.1.0)
     The parent table is an optional setting. It's only necessary if you want to index
     sub-elements of EXT:mask. For example If you have repeating elements in a mask
     element which themselves have repeating elements. You can define the parent table
