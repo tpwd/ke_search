@@ -1,5 +1,8 @@
 ChangeLog
 
+Version 6.1.1, 25 October 2024
+[BUGFIX]  Fix regression in composer.json which removes TYPO3 13 requirement
+
 Version 6.1.0, 25 October 2024
 [FEATURE] Make it possible to index multiple additional tables for a content element. https://github.com/tpwd/ke_search/issues/230
 [FEATURE] Allow recursive indexing of additional content
