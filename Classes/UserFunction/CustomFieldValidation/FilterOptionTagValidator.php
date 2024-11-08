@@ -69,16 +69,6 @@ class FilterOptionTagValidator
     }
 
     /**
-     * JavaScript validation
-     *
-     * @return string javascript function code for js validation
-     */
-    public function returnFieldJs()
-    {
-        return 'return value;';
-    }
-
-    /**
      * Returns the translation of current language
      *
      * @param string $key
