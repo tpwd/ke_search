@@ -1,10 +1,10 @@
 ChangeLog
 
-Upcoming version
+Version 6.1.2, 15 November 2024
 [BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257
 [TASK]    Update non-oo zip library calls in OoxmlConversion to ZipArchive ones. Thanks to Defcon0. https://github.com/tpwd/ke_search/pull/255
 
-Version 6.1.1, 25 October 2024
+Version 6.1.1, 8 November 2024
 [BUGFIX]  Fix regression in composer.json which removes TYPO3 13 requirement
 
 Version 6.1.0, 25 October 2024
