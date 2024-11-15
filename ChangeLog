@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 5.6.1, 15 November 2024
 [BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257
 [TASK]    Update non-oo zip library calls in OoxmlConversion to ZipArchive ones. Thanks to Defcon0. https://github.com/tpwd/ke_search/pull/255
 
