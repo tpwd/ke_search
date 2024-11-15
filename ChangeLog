@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257
+[TASK]    Update non-oo zip library calls in OoxmlConversion to ZipArchive ones. Thanks to Defcon0. https://github.com/tpwd/ke_search/pull/255
 
 Version 5.6.0, 8 November 2024
 [FEATURE] Make it possible to index multiple additional tables for a content element. https://github.com/tpwd/ke_search/issues/230
