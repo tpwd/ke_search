@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257
+
 Version 6.1.1, 25 October 2024
 [BUGFIX]  Fix regression in composer.json which removes TYPO3 13 requirement
 

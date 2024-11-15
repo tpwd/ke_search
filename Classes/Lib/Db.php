@@ -509,6 +509,11 @@ class Db implements SingletonInterface
         $where .= $this->createQueryForDateRange();
 
         // restrict to storage page
+        if (empty($this->pObj->startingPoints)) {
+            throw new \Exception('No starting point found. Please set the starting point in the plugin'
+                . ' configuration or via TypoScript: '
+                . 'https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Configuration/OverrideRecordStoragePage.html.');
+        }
         $startingPoints = $this->pObj->pi_getPidList($this->pObj->startingPoints);
         $where .= ' AND pid in (' . $startingPoints . ') ';
 

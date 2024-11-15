@@ -85,12 +85,6 @@ class PluginBaseHelper
             $startingpoint['recursive'] = $this->pObj->conf['overrideStartingPointRecursive'] ?? 0;
         }
 
-        if (empty($startingpoint['pages'])) {
-            throw new \Exception('No starting point found. Please set the starting point in the plugin'
-                . ' configuration or via TypoScript: '
-                . 'https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Configuration/OverrideRecordStoragePage.html.');
-        }
-
         return $this->pObj->pi_getPidList($startingpoint['pages'], $startingpoint['recursive']);
     }
 
