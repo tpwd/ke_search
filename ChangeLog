@@ -7,7 +7,7 @@ Version 6.1.2, 15 November 2024
 Version 6.1.1, 8 November 2024
 [BUGFIX]  Fix regression in composer.json which removes TYPO3 13 requirement
 
-Version 6.1.0, 25 October 2024
+Version 6.1.0, 8 November 2024
 [FEATURE] Make it possible to index multiple additional tables for a content element. https://github.com/tpwd/ke_search/issues/230
 [FEATURE] Allow recursive indexing of additional content
 [BUGFIX]  parse_ini_string(): Passing null to parameter #1 ($ini_string) of type string is deprecated. Thanks to medarob. https://github.com/tpwd/ke_search/issues/247
