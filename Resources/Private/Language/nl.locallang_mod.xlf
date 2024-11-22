@@ -59,6 +59,10 @@
         <source>The index currently contains</source>
         <target state="needs-translation">The index currently contains</target>
       </trans-unit>
+      <trans-unit id="index_is_empty" resname="index_is_empty">
+        <source>The index is empty.</source>
+        <target state="needs-translation">The index is empty.</target>
+      </trans-unit>
       <trans-unit id="last_indexing" resname="last_indexing">
         <source>Last indexing was done on</source>
         <target state="needs-translation">Last indexing was done on</target>
@@ -79,13 +83,13 @@
         <source>Indexer configurations have been found:</source>
         <target state="needs-translation">Indexer configurations have been found:</target>
       </trans-unit>
-      <trans-unit id="tag_too_short" resname="tag_too_short">
-        <source>Tag too short</source>
-        <target state="needs-translation">Tag too short</target>
+      <trans-unit id="tag_has_been_updated" resname="tag_has_been_updated">
+        <source>Tag has been updated</source>
+        <target state="needs-translation">Tag has been updated</target>
       </trans-unit>
-      <trans-unit id="tag_too_short_message" resname="tag_too_short_message">
-        <source>The given tag &quot;%s&quot; is too short. A minimum length of %d is required. See extension setting &quot;searchWordLength&quot; for further info.</source>
-        <target state="needs-translation">The given tag "%s" is too short. A minimum length of %d is required. See extension setting "searchWordLength" for further info.</target>
+      <trans-unit id="tag_has_been_updated_message" resname="tag_has_been_updated_message">
+        <source>The given tag &quot;%s&quot; has been updated to &quot;%s&quot; because it did not match the criteria for a tag (length, allowed characters, not in list of stop words).</source>
+        <target state="needs-translation">The given tag "%s" has been updated to "%s" because it did not match the criteria for a tag (length, allowed characters, not in list of stop words).</target>
       </trans-unit>
     </body>
   </file>
