@@ -3,21 +3,21 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:26Z" product-name="ke_search" target-language="ru">
     <header/>
     <body>
-      <trans-unit id="pi_title" resname="pi_title">
+      <trans-unit id="pi_title" resname="pi_title" approved="yes">
         <source>Search resultlist</source>
-        <target state="translated">Результаты поиска</target>
+        <target state="final">Результаты поиска</target>
       </trans-unit>
-      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
         <source>Faceted Search: Show resultlist.</source>
-        <target state="translated">Фасетный поиск: Вывод списка результатов.</target>
+        <target state="final">Фасетный поиск: Вывод списка результатов.</target>
       </trans-unit>
-      <trans-unit id="ff.main" resname="ff.main">
+      <trans-unit id="ff.main" resname="ff.main" approved="yes">
         <source>General</source>
-        <target state="translated">Общее</target>
+        <target state="final">Общее</target>
       </trans-unit>
-      <trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE">
+      <trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE" approved="yes">
         <source>Load FlexForms config from this search box</source>
-        <target state="translated">Загрузить конфигурацию FlexForms этого окна поиска</target>
+        <target state="final">Загрузить конфигурацию FlexForms этого окна поиска</target>
       </trans-unit>
     </body>
   </file>
