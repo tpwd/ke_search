@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Show additional fields which are registered by other extensions in "Indexed content" function of the backend module
+[TASK]    Make it possible to add "having" in the search result query
 
 Version 6.1.2, 15 November 2024
 [BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257

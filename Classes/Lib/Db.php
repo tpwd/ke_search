@@ -130,6 +130,10 @@ class Db implements SingletonInterface
                 // @phpstan-ignore-next-line
                 $resultQuery->add('orderBy', $queryParts['ORDERBY']);
             }
+            if (!empty($queryParts['HAVING'])) {
+                // @phpstan-ignore-next-line
+                $resultQuery->add('having', $queryParts['HAVING']);
+            }
         } else {
             $resultQuery = $queryBuilder
                 ->selectLiteral($queryParts['SELECT'])
@@ -142,6 +146,9 @@ class Db implements SingletonInterface
             if (!empty($queryParts['ORDERBY'])) {
                 $orderParts = explode(' ', $queryParts['ORDERBY']);
                 $resultQuery->orderBy($orderParts[0], $orderParts[1]);
+            }
+            if (!empty($queryParts['HAVING'])) {
+                $resultQuery->having($queryParts['HAVING']);
             }
         }
 
