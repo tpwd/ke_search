@@ -11,13 +11,13 @@
         <source>Cachable Searchbox</source>
         <target state="final">Søgefelt med cache aktiveret</target>
       </trans-unit>
-      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
-        <source>Faceted Search: Show searchbox and filters.</source>
-        <target state="final">Faceteret Søgning: Vis søgefelt og filtre.</target>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+        <source>Shows the searchbox and filters.</source>
+        <target state="needs-translation">Shows the searchbox and filters.</target>
       </trans-unit>
-      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description" approved="yes">
-        <source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
-        <target state="final">Faceteret søgning: Vis søgefelt søgefelt og filtre. Filtre vil ikke blive opdateret af resultaterne, men plugin'et kan caches.</target>
+      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description">
+        <source>Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+        <target state="needs-translation">Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</target>
       </trans-unit>
       <trans-unit id="ff.page.main" resname="ff.page.main" approved="yes">
         <source>General</source>
@@ -270,6 +270,14 @@
       <trans-unit id="pagebrowser_next" resname="pagebrowser_next" approved="yes">
         <source>next</source>
         <target state="final">næste</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_first" resname="pagebrowser_first">
+        <source>first</source>
+        <target state="needs-translation">first</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_last" resname="pagebrowser_last">
+        <source>last</source>
+        <target state="needs-translation">last</target>
       </trans-unit>
       <trans-unit id="label_resulturl" resname="label_resulturl" approved="yes">
         <source>URL</source>
