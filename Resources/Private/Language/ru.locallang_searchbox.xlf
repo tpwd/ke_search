@@ -3,397 +3,389 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:28Z" product-name="ke_search" target-language="ru">
     <header/>
     <body>
-      <trans-unit id="pi_title" resname="pi_title">
+      <trans-unit id="pi_title" resname="pi_title" approved="yes">
         <source>Searchbox</source>
-        <target state="needs-translation">Searchbox</target>
+        <target state="final">Блок поиска</target>
       </trans-unit>
-      <trans-unit id="pi_cachable_title" resname="pi_cachable_title">
+      <trans-unit id="pi_cachable_title" resname="pi_cachable_title" approved="yes">
         <source>Cachable Searchbox</source>
-        <target state="needs-translation">Cachable Searchbox</target>
+        <target state="final">Кешируемый блок поиска</target>
       </trans-unit>
-      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
-        <source>Shows the searchbox and filters.</source>
-        <target state="needs-translation">Shows the searchbox and filters.</target>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
+        <source>Faceted Search: Show searchbox and filters.</source>
+        <target state="final">Фасетный поиск: показать блок поиска с фильтрами.</target>
       </trans-unit>
-      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description">
-        <source>Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
-        <target state="needs-translation">Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</target>
+      <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description" approved="yes">
+        <source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+        <target state="final">Фасетный поиск: показать кешируемый блок поиска с фильтрами. Результаты не обновляются в зависимости от установленных фильтров, зато дополнение кешируемое.</target>
       </trans-unit>
-      <trans-unit id="ff.page.main" resname="ff.page.main">
+      <trans-unit id="ff.page.main" resname="ff.page.main" approved="yes">
         <source>General</source>
-        <target state="needs-translation">General</target>
+        <target state="final">Общее</target>
       </trans-unit>
-      <trans-unit id="ff.resultPage" resname="ff.resultPage">
+      <trans-unit id="ff.resultPage" resname="ff.resultPage" approved="yes">
         <source>Page with result list</source>
-        <target state="needs-translation">Page with result list</target>
+        <target state="final">Страница со списком результатов</target>
       </trans-unit>
-      <trans-unit id="ff.showTextInsteadOfResults" resname="ff.showTextInsteadOfResults">
+      <trans-unit id="ff.showTextInsteadOfResults" resname="ff.showTextInsteadOfResults" approved="yes">
         <source>Show text instead of searchresults if no filter or searchword has been given?</source>
-        <target state="needs-translation">Show text instead of searchresults if no filter or searchword has been given?</target>
+        <target state="final">Показывать текст вместо результатов поиска, если фильтр или поисковый запрос не заданы?</target>
       </trans-unit>
-      <trans-unit id="ff.textForResults" resname="ff.textForResults">
+      <trans-unit id="ff.textForResults" resname="ff.textForResults" approved="yes">
         <source>Insert this text if no filter or searchword has been given.</source>
-        <target state="needs-translation">Insert this text if no filter or searchword has been given.</target>
+        <target state="final">Вставить этот текст, если фильтр или поисковое слово не указано.</target>
       </trans-unit>
-      <trans-unit id="ff.showNoResultsText" resname="ff.showNoResultsText">
+      <trans-unit id="ff.showNoResultsText" resname="ff.showNoResultsText" approved="yes">
         <source>Show individual text if no results were found?</source>
-        <target state="needs-translation">Show individual text if no results were found?</target>
+        <target state="final">Вывести индивидуальный текст при отсутствии результатов поиска?</target>
       </trans-unit>
-      <trans-unit id="ff.noResultsText" resname="ff.noResultsText">
+      <trans-unit id="ff.noResultsText" resname="ff.noResultsText" approved="yes">
         <source>Individual text for &quot;no results found&quot;</source>
-        <target state="needs-translation">Individual text for "no results found"</target>
+        <target state="final">Индивидуальный текст для "Не найдено результатов"</target>
       </trans-unit>
-      <trans-unit id="ff.countSearchPhrases" resname="ff.countSearchPhrases">
+      <trans-unit id="ff.countSearchPhrases" resname="ff.countSearchPhrases" approved="yes">
         <source>Count search phrases in statistic tables?</source>
-        <target state="needs-translation">Count search phrases in statistic tables?</target>
+        <target state="final">Подсчитать поисковые фразы в статистических таблицах?</target>
       </trans-unit>
-      <trans-unit id="ff.cssFile" resname="ff.cssFile">
+      <trans-unit id="ff.cssFile" resname="ff.cssFile" approved="yes">
         <source>CSS File</source>
-        <target state="needs-translation">CSS File</target>
+        <target state="final">Файл CSS</target>
       </trans-unit>
-      <trans-unit id="ff.page.sorting" resname="ff.page.sorting">
+      <trans-unit id="ff.page.sorting" resname="ff.page.sorting" approved="yes">
         <source>Sorting</source>
-        <target state="needs-translation">Sorting</target>
+        <target state="final">Сортировка</target>
       </trans-unit>
-      <trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin">
+      <trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin" approved="yes">
         <source>Sorting for searchresults</source>
-        <target state="needs-translation">Sorting for searchresults</target>
+        <target state="final">Сортировка результатов поиска</target>
       </trans-unit>
-      <trans-unit id="ff.sortWithoutSearchword" resname="ff.sortWithoutSearchword">
+      <trans-unit id="ff.sortWithoutSearchword" resname="ff.sortWithoutSearchword" approved="yes">
         <source>Sorting for searchresults if no searchword/filter is given</source>
-        <target state="needs-translation">Sorting for searchresults if no searchword/filter is given</target>
+        <target state="final">Сортировка результатов поиска, если поисковое слово/фильтр не заданы</target>
       </trans-unit>
-      <trans-unit id="ff.showSortInFrontend" resname="ff.showSortInFrontend">
+      <trans-unit id="ff.showSortInFrontend" resname="ff.showSortInFrontend" approved="yes">
         <source>The website visitor should be able to order the searchresults</source>
-        <target state="needs-translation">The website visitor should be able to order the searchresults</target>
+        <target state="final">Посетитель сайта должен иметь возможность упорядочивать результаты поиска</target>
       </trans-unit>
-      <trans-unit id="ff.sortByVisitor" resname="ff.sortByVisitor">
+      <trans-unit id="ff.sortByVisitor" resname="ff.sortByVisitor" approved="yes">
         <source>Fields the website user should be able to order by</source>
-        <target state="needs-translation">Fields the website user should be able to order by</target>
+        <target state="final">Поля, по которым посетитель сайта сможет сортировать</target>
       </trans-unit>
-      <trans-unit id="ff.page.view" resname="ff.page.view">
+      <trans-unit id="ff.page.view" resname="ff.page.view" approved="yes">
         <source>General Layout</source>
-        <target state="needs-translation">General Layout</target>
+        <target state="final">Общий макет</target>
       </trans-unit>
-      <trans-unit id="ff.showQueryTime" resname="ff.showQueryTime">
+      <trans-unit id="ff.showQueryTime" resname="ff.showQueryTime" approved="yes">
         <source>Show time (query process duration)?</source>
-        <target state="needs-translation">Show time (query process duration)?</target>
+        <target state="final">Показать время (продолжительность процесса запроса)?</target>
       </trans-unit>
-      <trans-unit id="ff.showResultUrl" resname="ff.showResultUrl">
+      <trans-unit id="ff.showResultUrl" resname="ff.showResultUrl" approved="yes">
         <source>Show result URL?</source>
-        <target state="needs-translation">Show result URL?</target>
+        <target state="final">Показать URL результата?</target>
       </trans-unit>
-      <trans-unit id="ff.renderResultUrlAsLink" resname="ff.renderResultUrlAsLink">
+      <trans-unit id="ff.renderResultUrlAsLink" resname="ff.renderResultUrlAsLink" approved="yes">
         <source>Render result URL as link (a-Tag)?</source>
-        <target state="needs-translation">Render result URL as link (a-Tag)?</target>
+        <target state="final">Отобразить URL результата как ссылку (a-Tag)?</target>
       </trans-unit>
-      <trans-unit id="ff.showDate" resname="ff.showDate">
+      <trans-unit id="ff.showDate" resname="ff.showDate" approved="yes">
         <source>Show date?</source>
-        <target state="needs-translation">Show date?</target>
+        <target state="final">Показать дату?</target>
       </trans-unit>
-      <trans-unit id="ff.resultLinkTarget" resname="ff.resultLinkTarget">
+      <trans-unit id="ff.resultLinkTarget" resname="ff.resultLinkTarget" approved="yes">
         <source>Target for result link</source>
-        <target state="needs-translation">Target for result link</target>
+        <target state="final">Цель для ссылок на результат</target>
       </trans-unit>
-      <trans-unit id="ff.resultLinkTargetFiles" resname="ff.resultLinkTargetFiles">
+      <trans-unit id="ff.resultLinkTargetFiles" resname="ff.resultLinkTargetFiles" approved="yes">
         <source>Target for result link for files</source>
-        <target state="needs-translation">Target for result link for files</target>
+        <target state="final">Цель для ссылок на результат для файлов</target>
       </trans-unit>
-      <trans-unit id="ff.resultLinkTarget.I.0" resname="ff.resultLinkTarget.I.0">
+      <trans-unit id="ff.resultLinkTarget.I.0" resname="ff.resultLinkTarget.I.0" approved="yes">
         <source>Open in new window</source>
-        <target state="needs-translation">Open in new window</target>
+        <target state="final">Открыть в новом окне</target>
       </trans-unit>
-      <trans-unit id="ff.resultLinkTarget.I.1" resname="ff.resultLinkTarget.I.1">
+      <trans-unit id="ff.resultLinkTarget.I.1" resname="ff.resultLinkTarget.I.1" approved="yes">
         <source>Open in same window</source>
-        <target state="needs-translation">Open in same window</target>
+        <target state="final">Открыть в том же окне</target>
       </trans-unit>
-      <trans-unit id="ff.resultsNumeration" resname="ff.resultsNumeration">
+      <trans-unit id="ff.resultsNumeration" resname="ff.resultsNumeration" approved="yes">
         <source>Number results consecutively?</source>
-        <target state="needs-translation">Number results consecutively?</target>
+        <target state="final">Нумеровать результаты последовательно?</target>
       </trans-unit>
-      <trans-unit id="ff.templateLayout" resname="ff.templateLayout">
+      <trans-unit id="ff.templateLayout" resname="ff.templateLayout" approved="yes">
         <source>Template Layout</source>
-        <target state="needs-translation">Template Layout</target>
+        <target state="final">Макет шаблона</target>
       </trans-unit>
-      <trans-unit id="ff.templateLayout.I.0" resname="ff.templateLayout.I.0">
+      <trans-unit id="ff.templateLayout.I.0" resname="ff.templateLayout.I.0" approved="yes">
         <source>Default</source>
-        <target state="needs-translation">Default</target>
+        <target state="final">По умолчанию</target>
       </trans-unit>
-      <trans-unit id="ff.highlightSword" resname="ff.highlightSword">
+      <trans-unit id="ff.highlightSword" resname="ff.highlightSword" approved="yes">
         <source>Highlight search word in result preview</source>
-        <target state="needs-translation">Highlight search word in result preview</target>
+        <target state="final">Выделить поисковое слово в предпросмотре результатов</target>
       </trans-unit>
-      <trans-unit id="ff.previewMode" resname="ff.previewMode">
+      <trans-unit id="ff.previewMode" resname="ff.previewMode" approved="yes">
         <source>Text for used for search result (preview text)</source>
-        <target state="needs-translation">Text for used for search result (preview text)</target>
+        <target state="final">Текст, используемый для результата поиска (текст предварительного просмотра)</target>
       </trans-unit>
-      <trans-unit id="ff.previewMode.I.0" resname="ff.previewMode.I.0">
+      <trans-unit id="ff.previewMode.I.0" resname="ff.previewMode.I.0" approved="yes">
         <source>Always show the abstract if set.</source>
-        <target state="needs-translation">Always show the abstract if set.</target>
+        <target state="final">Всегда выводить аннотацию, если она имеется.</target>
       </trans-unit>
-      <trans-unit id="ff.previewMode.I.1" resname="ff.previewMode.I.1">
+      <trans-unit id="ff.previewMode.I.1" resname="ff.previewMode.I.1" approved="yes">
         <source>Show abstract if it contains searchword, otherwise show an excerpt from the content.</source>
-        <target state="needs-translation">Show abstract if it contains searchword, otherwise show an excerpt from the content.</target>
+        <target state="final">Показать аннотацию, если она содержит поисковое слово, в противном случае показать отрывок из содержания.</target>
       </trans-unit>
-      <trans-unit id="ff.resultChars" resname="ff.resultChars">
+      <trans-unit id="ff.resultChars" resname="ff.resultChars" approved="yes">
         <source>Number of characters used for the result preview text.</source>
-        <target state="needs-translation">Number of characters used for the result preview text.</target>
+        <target state="final">Количество символов для текста предварительного просмотра результата.</target>
       </trans-unit>
-      <trans-unit id="ff.page.images" resname="ff.page.images">
+      <trans-unit id="ff.page.images" resname="ff.page.images" approved="yes">
         <source>Images</source>
-        <target state="needs-translation">Images</target>
+        <target state="final">Изображения</target>
       </trans-unit>
-      <trans-unit id="ff.showTypeIcon" resname="ff.showTypeIcon">
+      <trans-unit id="ff.showTypeIcon" resname="ff.showTypeIcon" approved="yes">
         <source>Show result type icon?</source>
-        <target state="needs-translation">Show result type icon?</target>
+        <target state="final">Показать значок типа результата?</target>
       </trans-unit>
-      <trans-unit id="ff.showFilePreview" resname="ff.showFilePreview">
+      <trans-unit id="ff.showFilePreview" resname="ff.showFilePreview" approved="yes">
         <source>Show file preview instead of result icon if possible?</source>
-        <target state="needs-translation">Show file preview instead of result icon if possible?</target>
+        <target state="final">Показывать предварительный просмотр файла вместо значка в результатах, если это возможно?</target>
       </trans-unit>
-      <trans-unit id="ff.showPageImages" resname="ff.showPageImages">
+      <trans-unit id="ff.showPageImages" resname="ff.showPageImages" approved="yes">
         <source>Show page image preview instead of result icon? (Images are taken from the page properties, field &quot;search result image&quot;.)</source>
-        <target state="needs-translation">Show page image preview instead of result icon? (Images are taken from the page properties, field "search result image".)</target>
+        <target state="final">Показывать предварительный просмотр изображения страницы вместо значка результата? (Изображения берутся из свойств страницы, поле "изображение результата поиска").</target>
       </trans-unit>
-      <trans-unit id="ff.showNewsImages" resname="ff.showNewsImages">
+      <trans-unit id="ff.showNewsImages" resname="ff.showNewsImages" approved="yes">
         <source>Show news (ext:news / ext:tt_news) image preview instead of result icon?</source>
-        <target state="needs-translation">Show news (ext:news / ext:tt_news) image preview instead of result icon?</target>
+        <target state="final">Показывать предварительный просмотр изображения новостей (ext:news / ext:tt_news) вместо значка результата?</target>
       </trans-unit>
-      <trans-unit id="ff.page.pagebrowser" resname="ff.page.pagebrowser">
+      <trans-unit id="ff.page.pagebrowser" resname="ff.page.pagebrowser" approved="yes">
         <source>Pagebrowser</source>
-        <target state="needs-translation">Pagebrowser</target>
+        <target state="final">Проводник по страницам</target>
       </trans-unit>
-      <trans-unit id="ff.pagebrowserOnTop" resname="ff.pagebrowserOnTop">
+      <trans-unit id="ff.pagebrowserOnTop" resname="ff.pagebrowserOnTop" approved="yes">
         <source>Show pagebrowser on top of result list</source>
-        <target state="needs-translation">Show pagebrowser on top of result list</target>
+        <target state="final">Показать проводник по страницам над списком результатов</target>
       </trans-unit>
-      <trans-unit id="ff.pagebrowserAtBottom" resname="ff.pagebrowserAtBottom">
+      <trans-unit id="ff.pagebrowserAtBottom" resname="ff.pagebrowserAtBottom" approved="yes">
         <source>Show pagebrowser at the bottom of the result list</source>
-        <target state="needs-translation">Show pagebrowser at the bottom of the result list</target>
+        <target state="final">Показать проводник по страницам под списком результатов</target>
       </trans-unit>
-      <trans-unit id="ff.maxPagesInPagebrowser" resname="ff.maxPagesInPagebrowser">
+      <trans-unit id="ff.maxPagesInPagebrowser" resname="ff.maxPagesInPagebrowser" approved="yes">
         <source>Number of pages shown in pagebrowser</source>
-        <target state="needs-translation">Number of pages shown in pagebrowser</target>
+        <target state="final">Количество страниц, выводимых в проводнике</target>
       </trans-unit>
-      <trans-unit id="ff.resultsPerPage" resname="ff.resultsPerPage">
+      <trans-unit id="ff.resultsPerPage" resname="ff.resultsPerPage" approved="yes">
         <source>Results per page</source>
-        <target state="needs-translation">Results per page</target>
+        <target state="final">Результатов на странице</target>
       </trans-unit>
-      <trans-unit id="ff.page.debug" resname="ff.page.debug">
+      <trans-unit id="ff.page.debug" resname="ff.page.debug" approved="yes">
         <source>Debug (Admin)</source>
-        <target state="needs-translation">Debug (Admin)</target>
+        <target state="final">Отладка (Админ)</target>
       </trans-unit>
-      <trans-unit id="ff.showTags" resname="ff.showTags">
+      <trans-unit id="ff.showTags" resname="ff.showTags" approved="yes">
         <source>Show tags?</source>
-        <target state="needs-translation">Show tags?</target>
+        <target state="final">Показать теги?</target>
       </trans-unit>
-      <trans-unit id="ff.logQuery" resname="ff.logQuery">
+      <trans-unit id="ff.logQuery" resname="ff.logQuery" approved="yes">
         <source>Log query to log file (in var/log/)?</source>
-        <target state="needs-translation">Log query to log file (in var/log/)?</target>
+        <target state="final">Записывать запрос в лог файл (в var/log/)?</target>
       </trans-unit>
-      <trans-unit id="ff.showTaggedContentOnly" resname="ff.showTaggedContentOnly">
+      <trans-unit id="ff.showTaggedContentOnly" resname="ff.showTaggedContentOnly" approved="yes">
         <source>Show tagged content only?</source>
-        <target state="needs-translation">Show tagged content only?</target>
+        <target state="final">Показать только содержимое с тегами?</target>
       </trans-unit>
-      <trans-unit id="ff.page.filter" resname="ff.page.filter">
+      <trans-unit id="ff.page.filter" resname="ff.page.filter" approved="yes">
         <source>Filter</source>
-        <target state="needs-translation">Filter</target>
+        <target state="final">Фильтр</target>
       </trans-unit>
-      <trans-unit id="ff.filters" resname="ff.filters">
+      <trans-unit id="ff.filters" resname="ff.filters" approved="yes">
         <source>Shown Filters</source>
-        <target state="needs-translation">Shown Filters</target>
+        <target state="final">Показанные фильтры</target>
       </trans-unit>
-      <trans-unit id="ff.hiddenfilters" resname="ff.hiddenfilters">
+      <trans-unit id="ff.hiddenfilters" resname="ff.hiddenfilters" approved="yes">
         <source>Hidden Filters (for use with &quot;preselected filter options&quot;)</source>
-        <target state="needs-translation">Hidden Filters (for use with "preselected filter options")</target>
+        <target state="final">Скрытые фильтры (для использования с "предварительно выбранными параметрами фильтров")</target>
       </trans-unit>
-      <trans-unit id="ff.preselected_filters" resname="ff.preselected_filters">
+      <trans-unit id="ff.preselected_filters" resname="ff.preselected_filters" approved="yes">
         <source>Preselected filter options</source>
-        <target state="needs-translation">Preselected filter options</target>
+        <target state="final">Предварительно выбранные параметры фильтра</target>
       </trans-unit>
-      <trans-unit id="ff.checkFilterCondition" resname="ff.checkFilterCondition">
+      <trans-unit id="ff.checkFilterCondition" resname="ff.checkFilterCondition" approved="yes">
         <source>Availability check for filter options</source>
-        <target state="needs-translation">Availability check for filter options</target>
+        <target state="final">Проверка доступности для опций фильтра</target>
       </trans-unit>
-      <trans-unit id="ff.checkFilterCondition.I.0" resname="ff.checkFilterCondition.I.0">
+      <trans-unit id="ff.checkFilterCondition.I.0" resname="ff.checkFilterCondition.I.0" approved="yes">
         <source>Check in condition to other filters</source>
-        <target state="needs-translation">Check in condition to other filters</target>
+        <target state="final">Проверка в условиях остальных фильтров</target>
       </trans-unit>
-      <trans-unit id="ff.checkFilterCondition.I.1" resname="ff.checkFilterCondition.I.1">
+      <trans-unit id="ff.checkFilterCondition.I.1" resname="ff.checkFilterCondition.I.1" approved="yes">
         <source>no check</source>
-        <target state="needs-translation">no check</target>
+        <target state="final">без проверки</target>
       </trans-unit>
-      <trans-unit id="results" resname="results">
+      <trans-unit id="results" resname="results" approved="yes">
         <source>Search results</source>
-        <target state="needs-translation">Search results</target>
+        <target state="final">Результаты поиска</target>
       </trans-unit>
-      <trans-unit id="num_results" resname="num_results">
+      <trans-unit id="num_results" resname="num_results" approved="yes">
         <source>%s results:</source>
-        <target state="needs-translation">%s results:</target>
+        <target state="final">%s результатов:</target>
       </trans-unit>
-      <trans-unit id="num_results_plain" resname="num_results_plain">
+      <trans-unit id="num_results_plain" resname="num_results_plain" approved="yes">
         <source>results</source>
-        <target state="needs-translation">results</target>
+        <target state="final">результаты</target>
       </trans-unit>
-      <trans-unit id="until" resname="until">
+      <trans-unit id="until" resname="until" approved="yes">
         <source>until</source>
-        <target state="needs-translation">until</target>
+        <target state="final">до</target>
       </trans-unit>
-      <trans-unit id="of" resname="of">
+      <trans-unit id="of" resname="of" approved="yes">
         <source>of</source>
-        <target state="needs-translation">of</target>
+        <target state="final">из</target>
       </trans-unit>
-      <trans-unit id="no_results_found" resname="no_results_found">
+      <trans-unit id="no_results_found" resname="no_results_found" approved="yes">
         <source>No results found</source>
-        <target state="needs-translation">No results found</target>
+        <target state="final">Нет результатов</target>
       </trans-unit>
-      <trans-unit id="no_results_refine" resname="no_results_refine">
+      <trans-unit id="no_results_refine" resname="no_results_refine" approved="yes">
         <source>This search term is not specific enough. Please choose another.</source>
-        <target state="needs-translation">This search term is not specific enough. Please choose another.</target>
+        <target state="final">Неопределенный поисковый запрос. Конкретизируйте запрос.</target>
       </trans-unit>
-      <trans-unit id="searchword_length_error" resname="searchword_length_error">
+      <trans-unit id="searchword_length_error" resname="searchword_length_error" approved="yes">
         <source>Search words under length of %d characters are not processed.</source>
-        <target state="needs-translation">Search words under length of %d characters are not processed.</target>
+        <target state="final">Поиск слов длиной %d символов не обрабатывается.</target>
       </trans-unit>
-      <trans-unit id="error_resultPage" resname="error_resultPage">
+      <trans-unit id="error_resultPage" resname="error_resultPage" approved="yes">
         <source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
-        <target state="needs-translation">You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</target>
+        <target state="final">Вы определили страницу результатов в конфигурации вашего плагина. Поэтому не имеет смысла вставлять дополнение с результатами на эту страницу.</target>
       </trans-unit>
-      <trans-unit id="error_templatePaths" resname="error_templatePaths">
+      <trans-unit id="error_templatePaths" resname="error_templatePaths" approved="yes">
         <source>No template paths set. Did you include the static template?</source>
-        <target state="needs-translation">No template paths set. Did you include the static template?</target>
+        <target state="final">Пути к шаблонам не установлены. Включен статический шаблон?</target>
       </trans-unit>
-      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev">
+      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev" approved="yes">
         <source>previous</source>
-        <target state="needs-translation">previous</target>
+        <target state="final">назад</target>
       </trans-unit>
-      <trans-unit id="pagebrowser_next" resname="pagebrowser_next">
+      <trans-unit id="pagebrowser_next" resname="pagebrowser_next" approved="yes">
         <source>next</source>
-        <target state="needs-translation">next</target>
+        <target state="final">далее</target>
       </trans-unit>
-      <trans-unit id="pagebrowser_first" resname="pagebrowser_first">
-        <source>first</source>
-        <target state="needs-translation">first</target>
-      </trans-unit>
-      <trans-unit id="pagebrowser_last" resname="pagebrowser_last">
-        <source>last</source>
-        <target state="needs-translation">last</target>
-      </trans-unit>
-      <trans-unit id="label_resulturl" resname="label_resulturl">
+      <trans-unit id="label_resulturl" resname="label_resulturl" approved="yes">
         <source>URL</source>
-        <target state="needs-translation">URL</target>
+        <target state="final">URL</target>
       </trans-unit>
-      <trans-unit id="label_sort" resname="label_sort">
+      <trans-unit id="label_sort" resname="label_sort" approved="yes">
         <source>Sorting:</source>
-        <target state="needs-translation">Sorting:</target>
+        <target state="final">Сортировка:</target>
       </trans-unit>
-      <trans-unit id="label_score" resname="label_score">
+      <trans-unit id="label_score" resname="label_score" approved="yes">
         <source>Score</source>
-        <target state="needs-translation">Score</target>
+        <target state="final">Оценка</target>
       </trans-unit>
-      <trans-unit id="label_date" resname="label_date">
+      <trans-unit id="label_date" resname="label_date" approved="yes">
         <source>Date</source>
-        <target state="needs-translation">Date</target>
+        <target state="final">Дата</target>
       </trans-unit>
-      <trans-unit id="label_tags" resname="label_tags">
+      <trans-unit id="label_tags" resname="label_tags" approved="yes">
         <source>Tags</source>
-        <target state="needs-translation">Tags</target>
+        <target state="final">Теги</target>
       </trans-unit>
-      <trans-unit id="label_all" resname="label_all">
+      <trans-unit id="label_all" resname="label_all" approved="yes">
         <source>select all / deselect all</source>
-        <target state="needs-translation">select all / deselect all</target>
+        <target state="final">выбрать все / снять выбор</target>
       </trans-unit>
-      <trans-unit id="loading" resname="loading">
+      <trans-unit id="loading" resname="loading" approved="yes">
         <source>Loading</source>
-        <target state="needs-translation">Loading</target>
+        <target state="final">Загрузка</target>
       </trans-unit>
-      <trans-unit id="all_options" resname="all_options">
+      <trans-unit id="all_options" resname="all_options" approved="yes">
         <source>ALL</source>
-        <target state="needs-translation">ALL</target>
+        <target state="final">ВСЕ</target>
       </trans-unit>
-      <trans-unit id="no_options" resname="no_options">
+      <trans-unit id="no_options" resname="no_options" approved="yes">
         <source>---</source>
-        <target state="needs-translation">---</target>
+        <target state="final">---</target>
       </trans-unit>
-      <trans-unit id="message_before_search" resname="message_before_search">
+      <trans-unit id="message_before_search" resname="message_before_search" approved="yes">
         <source>Please choose your search parameters.</source>
-        <target state="needs-translation">Please choose your search parameters.</target>
+        <target state="final">Определите параметры поиска.</target>
       </trans-unit>
-      <trans-unit id="query_time" resname="query_time">
+      <trans-unit id="query_time" resname="query_time" approved="yes">
         <source>The search query was processed in %s ms.</source>
-        <target state="needs-translation">The search query was processed in %s ms.</target>
+        <target state="final">Поисковый запрос обработан за %s мс.</target>
       </trans-unit>
-      <trans-unit id="reset_button" resname="reset_button">
+      <trans-unit id="reset_button" resname="reset_button" approved="yes">
         <source>Reset</source>
-        <target state="needs-translation">Reset</target>
+        <target state="final">Сброс</target>
       </trans-unit>
-      <trans-unit id="reset_filter" resname="reset_filter">
+      <trans-unit id="reset_filter" resname="reset_filter" approved="yes">
         <source>Reset filter</source>
-        <target state="needs-translation">Reset filter</target>
+        <target state="final">Сбросить фильтр</target>
       </trans-unit>
-      <trans-unit id="submit" resname="submit">
+      <trans-unit id="submit" resname="submit" approved="yes">
         <source>Find</source>
-        <target state="needs-translation">Find</target>
+        <target state="final">Найти</target>
       </trans-unit>
-      <trans-unit id="back" resname="back">
+      <trans-unit id="back" resname="back" approved="yes">
         <source>Back</source>
-        <target state="needs-translation">Back</target>
+        <target state="final">Назад</target>
       </trans-unit>
-      <trans-unit id="checkbox_submit" resname="checkbox_submit">
+      <trans-unit id="checkbox_submit" resname="checkbox_submit" approved="yes">
         <source>Apply filter</source>
-        <target state="needs-translation">Apply filter</target>
+        <target state="final">Применить фильтр</target>
       </trans-unit>
-      <trans-unit id="orderlink_title" resname="orderlink_title">
+      <trans-unit id="orderlink_title" resname="orderlink_title" approved="yes">
         <source>Title</source>
-        <target state="needs-translation">Title</target>
+        <target state="final">Заголовок</target>
       </trans-unit>
-      <trans-unit id="orderlink_score" resname="orderlink_score">
+      <trans-unit id="orderlink_score" resname="orderlink_score" approved="yes">
         <source>Relevance</source>
-        <target state="needs-translation">Relevance</target>
+        <target state="final">Релевантность</target>
       </trans-unit>
-      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate">
+      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate" approved="yes">
         <source>Date</source>
-        <target state="needs-translation">Date</target>
+        <target state="final">Дата</target>
       </trans-unit>
-      <trans-unit id="searchbox_default_value" resname="searchbox_default_value">
+      <trans-unit id="searchbox_default_value" resname="searchbox_default_value" approved="yes">
         <source>Your search phrase</source>
-        <target state="needs-translation">Your search phrase</target>
+        <target state="final">Ваш поисковый запрос</target>
       </trans-unit>
-      <trans-unit id="linktext_more" resname="linktext_more">
+      <trans-unit id="linktext_more" resname="linktext_more" approved="yes">
         <source>More %s and Multiselection</source>
-        <target state="needs-translation">More %s and Multiselection</target>
+        <target state="final">Еще %s и множественный выбор</target>
       </trans-unit>
-      <trans-unit id="show_results" resname="show_results">
+      <trans-unit id="show_results" resname="show_results" approved="yes">
         <source>Show results</source>
-        <target state="needs-translation">Show results</target>
+        <target state="final">Показать результаты</target>
       </trans-unit>
-      <trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime">
+      <trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime" approved="yes">
         <source>%B %e, %Y, %I:%M %p</source>
-        <target state="needs-translation">%B %e, %Y, %I:%M %p</target>
+        <target state="final">%B %e, %Y, %I:%M %p</target>
       </trans-unit>
-      <trans-unit id="dateformat.dateAndTimeWithoutYear" resname="dateformat.dateAndTimeWithoutYear">
+      <trans-unit id="dateformat.dateAndTimeWithoutYear" resname="dateformat.dateAndTimeWithoutYear" approved="yes">
         <source>%B %e, %I:%M %p</source>
-        <target state="needs-translation">%B %e, %I:%M %p</target>
+        <target state="final">%B %e, %I:%M %p</target>
       </trans-unit>
-      <trans-unit id="dateformat.time" resname="dateformat.time">
+      <trans-unit id="dateformat.time" resname="dateformat.time" approved="yes">
         <source>%I:%M %p</source>
-        <target state="needs-translation">%I:%M %p</target>
+        <target state="final">%I:%M %p</target>
       </trans-unit>
-      <trans-unit id="dateformat.dateWithYear" resname="dateformat.dateWithYear">
+      <trans-unit id="dateformat.dateWithYear" resname="dateformat.dateWithYear" approved="yes">
         <source>%B %e, %Y</source>
-        <target state="needs-translation">%B %e, %Y</target>
+        <target state="final">%B %e, %Y</target>
       </trans-unit>
-      <trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear">
+      <trans-unit id="dateformat.dateWithoutYear" resname="dateformat.dateWithoutYear" approved="yes">
         <source>%B %e</source>
-        <target state="needs-translation">%B %e</target>
+        <target state="final">%B %e</target>
       </trans-unit>
-      <trans-unit id="dateRange.start" resname="dateRange.start">
+      <trans-unit id="dateRange.start" resname="dateRange.start" approved="yes">
         <source>Start</source>
-        <target state="needs-translation">Start</target>
+        <target state="final">Начало</target>
       </trans-unit>
-      <trans-unit id="dateRange.end" resname="dateRange.end">
+      <trans-unit id="dateRange.end" resname="dateRange.end" approved="yes">
         <source>End</source>
-        <target state="needs-translation">End</target>
+        <target state="final">Конец</target>
       </trans-unit>
     </body>
   </file>
