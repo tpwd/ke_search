@@ -8,8 +8,8 @@
         <target state="needs-translation">Search resultlist</target>
       </trans-unit>
       <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
-        <source>Shows the resultlist.</source>
-        <target state="needs-translation">Shows the resultlist.</target>
+        <source>Faceted Search: Show resultlist.</source>
+        <target state="needs-translation">Faceted Search: Show resultlist.</target>
       </trans-unit>
       <trans-unit id="ff.main" resname="ff.main">
         <source>General</source>
