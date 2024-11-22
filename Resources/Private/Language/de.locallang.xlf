@@ -3,30 +3,30 @@
   <file source-language="en" datatype="plaintext" original="EXT:ke_search/Resources/Private/Language/locallang.xlf" product-name="ke_search" target-language="de">
     <header/>
     <body>
-      <trans-unit id="backend.date.format.day" resname="backend.date.format.day">
+      <trans-unit id="backend.date.format.day" resname="backend.date.format.day" approved="yes">
         <source>m/d/y</source>
-        <target state="needs-translation">m/d/y</target>
+        <target state="final">d m.Y</target>
       </trans-unit>
-      <trans-unit id="backend.date.format.time" resname="backend.date.format.time">
+      <trans-unit id="backend.date.format.time" resname="backend.date.format.time" approved="yes">
         <source>H:i:s</source>
-        <target state="needs-translation">H:i:s</target>
+        <target state="final">H:i:s</target>
       </trans-unit>
       <!-- Backend module -->
-      <trans-unit id="backend.start_indexer_full" resname="backend.start_indexer_full">
+      <trans-unit id="backend.start_indexer_full" resname="backend.start_indexer_full" approved="yes">
         <source>Start full indexing</source>
-        <target state="needs-translation">Start full indexing</target>
+        <target state="final">Vollständige Indexierung starten</target>
       </trans-unit>
-      <trans-unit id="backend.start_indexer_incremental" resname="backend.start_indexer_incremental">
+      <trans-unit id="backend.start_indexer_incremental" resname="backend.start_indexer_incremental" approved="yes">
         <source>Start incremental indexing</source>
-        <target state="needs-translation">Start incremental indexing</target>
+        <target state="final">Inkrementelle Indizierung starten</target>
       </trans-unit>
-      <trans-unit id="backend.indexingMode_0" resname="backend.indexingMode_0">
+      <trans-unit id="backend.indexingMode_0" resname="backend.indexingMode_0" approved="yes">
         <source>full</source>
-        <target state="needs-translation">full</target>
+        <target state="final">vollständig</target>
       </trans-unit>
-      <trans-unit id="backend.indexingMode_1" resname="backend.indexingMode_1">
+      <trans-unit id="backend.indexingMode_1" resname="backend.indexingMode_1" approved="yes">
         <source>incremental</source>
-        <target state="needs-translation">incremental</target>
+        <target state="final">inkrementell</target>
       </trans-unit>
     </body>
   </file>
