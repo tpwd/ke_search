@@ -59,6 +59,10 @@
         <source>Index Overview</source>
         <target state="final">Index Übersicht</target>
       </trans-unit>
+      <trans-unit id="widgets.keSearchIndexOverview.chart.dataSet.0" resname="widgets.keSearchIndexOverview.chart.dataSet.0" approved="yes">
+        <source>Number of records</source>
+        <target state="final">Anzahl der Datensätze</target>
+      </trans-unit>
       <trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description" approved="yes">
         <source>Shows how many records of each type are currently in the index.</source>
         <target state="final">Zeigt wie viele Einträge von welchem Typ derzeit im Index vorhanden sind.</target>
