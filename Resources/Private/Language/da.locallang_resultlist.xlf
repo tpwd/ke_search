@@ -3,21 +3,21 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:05:26Z" product-name="ke_search" target-language="da">
     <header/>
     <body>
-      <trans-unit id="pi_title" resname="pi_title" approved="yes">
+      <trans-unit id="pi_title" resname="pi_title">
         <source>Search resultlist</source>
-        <target state="final">Søgeresultat</target>
+        <target state="needs-translation">Search resultlist</target>
       </trans-unit>
-      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
-        <source>Faceted Search: Show resultlist.</source>
-        <target state="final">Faceteret søgning: Vis resultatliste.</target>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+        <source>Shows the resultlist.</source>
+        <target state="needs-translation">Shows the resultlist.</target>
       </trans-unit>
-      <trans-unit id="ff.main" resname="ff.main" approved="yes">
+      <trans-unit id="ff.main" resname="ff.main">
         <source>General</source>
-        <target state="final">Generelt</target>
+        <target state="needs-translation">General</target>
       </trans-unit>
-      <trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE" approved="yes">
+      <trans-unit id="ff.loadFlexformsFromOtherCE" resname="ff.loadFlexformsFromOtherCE">
         <source>Load FlexForms config from this search box</source>
-        <target state="final">Indlæs FlexForms konfiguration fra dette søgeplugin</target>
+        <target state="needs-translation">Load FlexForms config from this search box</target>
       </trans-unit>
     </body>
   </file>
