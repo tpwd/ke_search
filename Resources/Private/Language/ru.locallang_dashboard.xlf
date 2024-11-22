@@ -3,89 +3,93 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2022-01-20T10:11:58Z" product-name="ke_search" target-language="ru">
     <header/>
     <body>
-      <trans-unit id="dashboard_preset.description" resname="dashboard_preset.description">
+      <trans-unit id="dashboard_preset.description" resname="dashboard_preset.description" approved="yes">
         <source>A dashboard with all available widgets for search.</source>
-        <target state="translated">Панель со всеми доступными для поиска виджетами.</target>
+        <target state="final">Панель со всеми доступными для поиска виджетами.</target>
       </trans-unit>
-      <trans-unit id="dashboard_preset.title" resname="dashboard_preset.title">
+      <trans-unit id="dashboard_preset.title" resname="dashboard_preset.title" approved="yes">
         <source>ke_search</source>
-        <target state="translated">ke_search</target>
+        <target state="final">ke_search</target>
       </trans-unit>
-      <trans-unit id="widget_group.ke_search" resname="widget_group.ke_search">
+      <trans-unit id="widget_group.ke_search" resname="widget_group.ke_search" approved="yes">
         <source>ke_search</source>
-        <target state="translated">ke_search</target>
+        <target state="final">ke_search</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.title" resname="widgets.keSearchStatus.title">
+      <trans-unit id="widgets.keSearchStatus.title" resname="widgets.keSearchStatus.title" approved="yes">
         <source>Indexer Status</source>
-        <target state="translated">Статус индексатора</target>
+        <target state="final">Статус индексатора</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.description" resname="widgets.keSearchStatus.description">
+      <trans-unit id="widgets.keSearchStatus.description" resname="widgets.keSearchStatus.description" approved="yes">
         <source>Shows the current status of the ke_search indexer.</source>
-        <target state="translated">Показывает текущий статус индексатора ke_search.</target>
+        <target state="final">Показывает текущий статус индексатора ke_search.</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.running_since" resname="widgets.keSearchStatus.running_since">
+      <trans-unit id="widgets.keSearchStatus.running_since" resname="widgets.keSearchStatus.running_since" approved="yes">
         <source>Indexer is running since</source>
-        <target state="translated">Индексатор работает с</target>
+        <target state="final">Индексатор работает с</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.not_running" resname="widgets.keSearchStatus.not_running">
+      <trans-unit id="widgets.keSearchStatus.not_running" resname="widgets.keSearchStatus.not_running" approved="yes">
         <source>Currently no indexing process is running</source>
-        <target state="translated">На данный момент процесс индексации не запущен</target>
+        <target state="final">На данный момент процесс индексации не запущен</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.h" resname="widgets.keSearchStatus.h">
+      <trans-unit id="widgets.keSearchStatus.h" resname="widgets.keSearchStatus.h" approved="yes">
         <source>h</source>
-        <target state="translated">ч</target>
+        <target state="final">ч</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.m" resname="widgets.keSearchStatus.m">
+      <trans-unit id="widgets.keSearchStatus.m" resname="widgets.keSearchStatus.m" approved="yes">
         <source>m</source>
-        <target state="translated">м</target>
+        <target state="final">м</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.s" resname="widgets.keSearchStatus.s">
+      <trans-unit id="widgets.keSearchStatus.s" resname="widgets.keSearchStatus.s" approved="yes">
         <source>s</source>
-        <target state="translated">с</target>
+        <target state="final">с</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.last_run_finished" resname="widgets.keSearchStatus.last_run_finished">
+      <trans-unit id="widgets.keSearchStatus.last_run_finished" resname="widgets.keSearchStatus.last_run_finished" approved="yes">
         <source>Last run finished</source>
-        <target state="translated">Последний запуск завершен</target>
+        <target state="final">Последний запуск завершен</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.last_run_finished_at" resname="widgets.keSearchStatus.last_run_finished_at">
+      <trans-unit id="widgets.keSearchStatus.last_run_finished_at" resname="widgets.keSearchStatus.last_run_finished_at" approved="yes">
         <source>at</source>
-        <target state="translated">в</target>
+        <target state="final">в</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchStatus.last_run_took" resname="widgets.keSearchStatus.last_run_took">
+      <trans-unit id="widgets.keSearchStatus.last_run_took" resname="widgets.keSearchStatus.last_run_took" approved="yes">
         <source>and took</source>
-        <target state="translated">и занял</target>
+        <target state="final">и занял</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title">
+      <trans-unit id="widgets.keSearchIndexOverview.title" resname="widgets.keSearchIndexOverview.title" approved="yes">
         <source>Index Overview</source>
-        <target state="translated">Обзор индекса</target>
+        <target state="final">Обзор индекса</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description">
+      <trans-unit id="widgets.keSearchIndexOverview.chart.dataSet.0" resname="widgets.keSearchIndexOverview.chart.dataSet.0">
+        <source>Number of records</source>
+        <target state="translated">Количество записей</target>
+      </trans-unit>
+      <trans-unit id="widgets.keSearchIndexOverview.description" resname="widgets.keSearchIndexOverview.description" approved="yes">
         <source>Shows how many records of each type are currently in the index.</source>
-        <target state="translated">Количество записей каждого типа в индексе на данный момент.</target>
+        <target state="final">Количество записей каждого типа в индексе на данный момент.</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchTrendingSearchphrases.title" resname="widgets.keSearchTrendingSearchphrases.title">
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.title" resname="widgets.keSearchTrendingSearchphrases.title" approved="yes">
         <source>Trending search phrases</source>
-        <target state="translated">Популярные поисковые выражения</target>
+        <target state="final">Популярные поисковые выражения</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchTrendingSearchphrases.description" resname="widgets.keSearchTrendingSearchphrases.description">
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.description" resname="widgets.keSearchTrendingSearchphrases.description" approved="yes">
         <source>Shows search phrases from the last 7 days.</source>
-        <target state="translated">Показывает поисковые фразы за последние 7 дней.</target>
+        <target state="final">Показывает поисковые фразы за последние 7 дней.</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchTrendingSearchphrases.phrase" resname="widgets.keSearchTrendingSearchphrases.phrase">
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.phrase" resname="widgets.keSearchTrendingSearchphrases.phrase" approved="yes">
         <source>Search phrase</source>
-        <target state="translated">Поисковая фраза</target>
+        <target state="final">Поисковая фраза</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchTrendingSearchphrases.number_of_usages" resname="widgets.keSearchTrendingSearchphrases.number_of_usages">
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.number_of_usages" resname="widgets.keSearchTrendingSearchphrases.number_of_usages" approved="yes">
         <source>Number of usages</source>
-        <target state="translated">Использовалось</target>
+        <target state="final">Использовалось</target>
       </trans-unit>
-      <trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language">
+      <trans-unit id="widgets.keSearchTrendingSearchphrases.language" resname="widgets.keSearchTrendingSearchphrases.language" approved="yes">
         <source>Language</source>
-        <target state="translated">Язык</target>
+        <target state="final">Язык</target>
       </trans-unit>
-      <trans-unit id="error_templatePaths" resname="error_templatePaths">
+      <trans-unit id="error_templatePaths" resname="error_templatePaths" approved="yes">
         <source>No template paths set. Did you include the static template?</source>
-        <target state="translated">Пути к шаблонам не установлены. Включен статический шаблон?</target>
+        <target state="final">Пути к шаблонам не установлены. Включен статический шаблон?</target>
       </trans-unit>
     </body>
   </file>
