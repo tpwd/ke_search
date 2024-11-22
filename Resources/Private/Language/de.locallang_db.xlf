@@ -19,13 +19,13 @@
         <source>Abstract for search result</source>
         <target state="final">Abstract für Suchergebnis</target>
       </trans-unit>
-      <trans-unit id="sys_file_metadata.tx_kesearch_label" resname="sys_file_metadata.tx_kesearch_label">
+      <trans-unit id="sys_file_metadata.tx_kesearch_label" resname="sys_file_metadata.tx_kesearch_label" approved="yes">
         <source>Search</source>
-        <target state="needs-translation">Search</target>
+        <target state="final">Suche</target>
       </trans-unit>
-      <trans-unit id="sys_file_metadata.tx_kesearch_no_search" resname="sys_file_metadata.tx_kesearch_no_search">
+      <trans-unit id="sys_file_metadata.tx_kesearch_no_search" resname="sys_file_metadata.tx_kesearch_no_search" approved="yes">
         <source>Include in search</source>
-        <target state="needs-translation">Include in search</target>
+        <target state="final">In Suche einbeziehen</target>
       </trans-unit>
       <trans-unit id="sys_category.tx_kesearch_filter" resname="sys_category.tx_kesearch_filter" approved="yes">
         <source>Category acts as a filter option for these filters</source>
@@ -139,13 +139,13 @@
         <source>Indexed content</source>
         <target state="final">Indizierter Content</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_index.hidden_content" resname="tx_kesearch_index.hidden_content">
+      <trans-unit id="tx_kesearch_index.hidden_content" resname="tx_kesearch_index.hidden_content" approved="yes">
         <source>Indexed hidden content</source>
-        <target state="needs-translation">Indexed hidden content</target>
+        <target state="final">Indexierter versteckter Inhalt</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_index.hidden_content.description" resname="tx_kesearch_index.hidden_content.description">
+      <trans-unit id="tx_kesearch_index.hidden_content.description" resname="tx_kesearch_index.hidden_content.description" approved="yes">
         <source>Will be searched but not shown in the frontend</source>
-        <target state="needs-translation">Will be searched but not shown in the frontend</target>
+        <target state="final">Wird mit durchsucht, aber nicht im Frontend angezeigt</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_index.params" resname="tx_kesearch_index.params" approved="yes">
         <source>Parameters</source>
@@ -183,9 +183,9 @@
         <source>Indexer Configuration</source>
         <target state="final">Indexer Konfiguration</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.tabs.advanced" resname="tx_kesearch_indexerconfig.tabs.advanced">
+      <trans-unit id="tx_kesearch_indexerconfig.tabs.advanced" resname="tx_kesearch_indexerconfig.tabs.advanced" approved="yes">
         <source>Advanced</source>
-        <target state="translated">Erweitert</target>
+        <target state="final">Erweitert</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.title" resname="tx_kesearch_indexerconfig.title" approved="yes">
         <source>Title</source>
@@ -259,9 +259,9 @@
         <source>Index content elements with restrictions?</source>
         <target state="final">Indiziere Content-Elemente mit eingeschränkter Zugänglichkeit?</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.description" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.description">
+      <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.description" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.description" approved="yes">
         <source>Content elements will be indexed even if they have frontend user group access restrictions. This function may be used to "tease" content elements and then tell the user that a login is needed.</source>
-        <target state="translated">Inhaltselemente werden auch dann indiziert, wenn sie Benutzergruppenzugriffsbeschränkungen haben. Diese Funktion kann verwendet werden, um Inhaltselemente zu "teasern" und dann dem Benutzer mitzuteilen, dass ein Login erforderlich ist.</target>
+        <target state="final">Inhaltselemente werden auch dann indiziert, wenn sie Benutzergruppenzugriffsbeschränkungen haben. Diese Funktion kann verwendet werden, um Inhaltselemente zu "teasern" und dann dem Benutzer mitzuteilen, dass ein Login erforderlich ist.</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" resname="tx_kesearch_indexerconfig.index_content_with_restrictions.I.0" approved="yes">
         <source>Yes</source>
@@ -331,13 +331,13 @@
         <source>Add tags to files also?</source>
         <target state="final">Schlagworte auch für Dateien übernehmen?</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes">
+      <trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes" resname="tx_kesearch_indexerconfig.index_page_doctypes" approved="yes">
         <source>Page types which should be indexed</source>
-        <target state="translated">Seitentypen die indiziert werden sollen</target>
+        <target state="final">Seitentypen die indiziert werden sollen</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes.description" resname="tx_kesearch_indexerconfig.index_page_doctypes.description">
+      <trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes.description" resname="tx_kesearch_indexerconfig.index_page_doctypes.description" approved="yes">
         <source>Refers to the field "doktype" in the "pages" table, default: 1</source>
-        <target state="translated">Verweist auf das Feld "doktype" in der "pages" Tabelle, default: 1</target>
+        <target state="final">Verweist auf das Feld "doktype" in der "pages" Tabelle, default: 1</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories" approved="yes">
         <source>Directories</source>
@@ -351,29 +351,29 @@
         <source>File indexer: Comma separated list of allowed file extensions (eg. pdf,ppt,doc,xls)</source>
         <target state="final">Datei-Indexer: Komma-separierte Liste von zu indexierenden Dateiendungen (z.B. pdf,ppt,doc,xls)</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes">
+      <trans-unit id="tx_kesearch_indexerconfig.contenttypes" resname="tx_kesearch_indexerconfig.contenttypes" approved="yes">
         <source>Content element types which should be indexed</source>
-        <target state="translated">Inhaltselemente die indiziert werden sollen</target>
+        <target state="final">Inhaltselemente, die indexiert werden sollen</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.contenttypes.description" resname="tx_kesearch_indexerconfig.contenttypes.description">
+      <trans-unit id="tx_kesearch_indexerconfig.contenttypes.description" resname="tx_kesearch_indexerconfig.contenttypes.description" approved="yes">
         <source>Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut </source>
-        <target state="translated">Verweist auf das Feld "CType" in der Tabelle "tt_content". Standardeinstellung: Text,textpic,bullets,table,html,header,uploads,shortcut </target>
+        <target state="final">Verweist auf das Feld "CType" in der Tabelle "tt_content". Standardeinstellung: Text,textpic,bullets,table,html,header,uploads,shortcut </target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.file_reference_fields" resname="tx_kesearch_indexerconfig.file_reference_fields">
+      <trans-unit id="tx_kesearch_indexerconfig.file_reference_fields" resname="tx_kesearch_indexerconfig.file_reference_fields" approved="yes">
         <source>tt_content fields which should be indexed for file references</source>
-        <target state="translated">tt_content Felder, die für Dateireferenzen indiziert werden sollen</target>
+        <target state="final">tt_content Felder, die für Dateireferenzen indiziert werden sollen</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.file_reference_fields.description" resname="tx_kesearch_indexerconfig.file_reference_fields.description">
+      <trans-unit id="tx_kesearch_indexerconfig.file_reference_fields.description" resname="tx_kesearch_indexerconfig.file_reference_fields.description" approved="yes">
         <source>default: media</source>
-        <target state="needs-translation">default: media</target>
+        <target state="final">Standard: media</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.content_fields" resname="tx_kesearch_indexerconfig.content_fields">
+      <trans-unit id="tx_kesearch_indexerconfig.content_fields" resname="tx_kesearch_indexerconfig.content_fields" approved="yes">
         <source>tt_content fields which should be indexed</source>
-        <target state="translated">tt_content Felder, die indiziert werden sollen</target>
+        <target state="final">tt_content Felder, die indiziert werden sollen</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description">
+      <trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description" approved="yes">
         <source>default: bodytext</source>
-        <target state="needs-translation">default: bodytext</target>
+        <target state="final">Standard: bodytext</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" approved="yes">
         <source>Add tag to all indexed elements</source>
