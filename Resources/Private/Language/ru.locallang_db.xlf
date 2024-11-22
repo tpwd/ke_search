@@ -355,9 +355,33 @@
         <source>Content element types which should be indexed</source>
         <target state="final">Типы индексируемых элементов содержимого</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.contenttypes.description" resname="tx_kesearch_indexerconfig.contenttypes.description" approved="yes">
-        <source>Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut </source>
-        <target state="final">Ссылка на поле "CType" в таблице "tt_content", по умолчанию: text,textpic,bullets,table,html,header,uploads,shortcut </target>
+      <trans-unit id="tx_kesearch_indexerconfig.contenttypes.description" resname="tx_kesearch_indexerconfig.contenttypes.description">
+        <source>Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,icon_group,card_group,timeline</source>
+        <target state="needs-translation">Refers to field "CType" in the "tt_content" table, default: text,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,icon_group,card_group,timeline</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.additional_tables" resname="tx_kesearch_indexerconfig.additional_tables">
+        <source>Additional tables for content elements</source>
+        <target state="needs-translation">Additional tables for content elements</target>
+      </trans-unit>
+      <trans-unit id="tx_kesearch_indexerconfig.additional_tables.description" resname="tx_kesearch_indexerconfig.additional_tables.description">
+        <source><![CDATA[If a content element uses additional tables to store content, these tables can be configured here. This applies e.g. to EXT:bootstrap_package.
+				It uses the ini file configuration syntax.
+Example:
+[accordion]
+table = tx_bootstrappackage_accordion_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+]]></source>
+        <target state="needs-translation"><![CDATA[If a content element uses additional tables to store content, these tables can be configured here. This applies e.g. to EXT:bootstrap_package.
+				It uses the ini file configuration syntax.
+Example:
+[accordion]
+table = tx_bootstrappackage_accordion_item
+referenceFieldName = tt_content
+fields[] = header
+fields[] = bodytext
+]]></target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.file_reference_fields" resname="tx_kesearch_indexerconfig.file_reference_fields" approved="yes">
         <source>tt_content fields which should be indexed for file references</source>
@@ -371,9 +395,9 @@
         <source>tt_content fields which should be indexed</source>
         <target state="final">Индексируемые поля tt_content</target>
       </trans-unit>
-      <trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description" approved="yes">
-        <source>default: bodytext</source>
-        <target state="final">по умолчанию: bodytext</target>
+      <trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description">
+        <source>You can add "text" and "link" fields here. Files linked in link fields and in text fields will be indexed. The field "header" will be added automatically and indexed if not set to "hidden". default: bodytext,subheader,header_link</source>
+        <target state="needs-translation">You can add "text" and "link" fields here. Files linked in link fields and in text fields will be indexed. The field "header" will be added automatically and indexed if not set to "hidden". default: bodytext,subheader,header_link</target>
       </trans-unit>
       <trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" approved="yes">
         <source>Add tag to all indexed elements</source>
