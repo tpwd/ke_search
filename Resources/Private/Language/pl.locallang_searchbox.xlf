@@ -12,12 +12,12 @@
         <target state="needs-translation">Cachable Searchbox</target>
       </trans-unit>
       <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
-        <source>Faceted Search: Show searchbox and filters.</source>
-        <target state="needs-translation">Faceted Search: Show searchbox and filters.</target>
+        <source>Shows the searchbox and filters.</source>
+        <target state="needs-translation">Shows the searchbox and filters.</target>
       </trans-unit>
       <trans-unit id="pi_cachable_plus_wiz_description" resname="pi_cachable_plus_wiz_description">
-        <source>Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
-        <target state="needs-translation">Faceted search: Show cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</target>
+        <source>Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</source>
+        <target state="needs-translation">Shows cachable searchbox and filters. Filters won't be updated by the results, but the plugin is cachable.</target>
       </trans-unit>
       <trans-unit id="ff.page.main" resname="ff.page.main">
         <source>General</source>
@@ -51,9 +51,9 @@
         <source>CSS File</source>
         <target state="needs-translation">CSS File</target>
       </trans-unit>
-      <trans-unit id="ff.page.sorting" resname="ff.page.sorting" approved="yes">
+      <trans-unit id="ff.page.sorting" resname="ff.page.sorting">
         <source>Sorting</source>
-        <target state="final">Sortowanie</target>
+        <target state="needs-translation">Sorting</target>
       </trans-unit>
       <trans-unit id="ff.sortByAdmin" resname="ff.sortByAdmin">
         <source>Sorting for searchresults</source>
@@ -195,9 +195,9 @@
         <source>Show tagged content only?</source>
         <target state="needs-translation">Show tagged content only?</target>
       </trans-unit>
-      <trans-unit id="ff.page.filter" resname="ff.page.filter" approved="yes">
+      <trans-unit id="ff.page.filter" resname="ff.page.filter">
         <source>Filter</source>
-        <target state="final">Filtr</target>
+        <target state="needs-translation">Filter</target>
       </trans-unit>
       <trans-unit id="ff.filters" resname="ff.filters">
         <source>Shown Filters</source>
@@ -223,37 +223,37 @@
         <source>no check</source>
         <target state="needs-translation">no check</target>
       </trans-unit>
-      <trans-unit id="results" resname="results" approved="yes">
+      <trans-unit id="results" resname="results">
         <source>Search results</source>
-        <target state="final">Wyniki wyszukiwania</target>
+        <target state="needs-translation">Search results</target>
       </trans-unit>
-      <trans-unit id="num_results" resname="num_results" approved="yes">
+      <trans-unit id="num_results" resname="num_results">
         <source>%s results:</source>
-        <target state="final">%s wyników:</target>
+        <target state="needs-translation">%s results:</target>
       </trans-unit>
-      <trans-unit id="num_results_plain" resname="num_results_plain" approved="yes">
+      <trans-unit id="num_results_plain" resname="num_results_plain">
         <source>results</source>
-        <target state="final">wyniki</target>
+        <target state="needs-translation">results</target>
       </trans-unit>
-      <trans-unit id="until" resname="until" approved="yes">
+      <trans-unit id="until" resname="until">
         <source>until</source>
-        <target state="final">do</target>
+        <target state="needs-translation">until</target>
       </trans-unit>
-      <trans-unit id="of" resname="of" approved="yes">
+      <trans-unit id="of" resname="of">
         <source>of</source>
-        <target state="final">z</target>
+        <target state="needs-translation">of</target>
       </trans-unit>
-      <trans-unit id="no_results_found" resname="no_results_found" approved="yes">
+      <trans-unit id="no_results_found" resname="no_results_found">
         <source>No results found</source>
-        <target state="final">Brak wyników wyszukiwania</target>
+        <target state="needs-translation">No results found</target>
       </trans-unit>
       <trans-unit id="no_results_refine" resname="no_results_refine">
         <source>This search term is not specific enough. Please choose another.</source>
         <target state="needs-translation">This search term is not specific enough. Please choose another.</target>
       </trans-unit>
-      <trans-unit id="searchword_length_error" resname="searchword_length_error" approved="yes">
+      <trans-unit id="searchword_length_error" resname="searchword_length_error">
         <source>Search words under length of %d characters are not processed.</source>
-        <target state="final">Wyszukiwanie słów poniżej %d znaków nie jest przetwarzane.</target>
+        <target state="needs-translation">Search words under length of %d characters are not processed.</target>
       </trans-unit>
       <trans-unit id="error_resultPage" resname="error_resultPage">
         <source>You have defined an results page in your Plugin configuration. So it makes no sense to insert resultlist plugin on to this page, too.</source>
@@ -263,101 +263,109 @@
         <source>No template paths set. Did you include the static template?</source>
         <target state="needs-translation">No template paths set. Did you include the static template?</target>
       </trans-unit>
-      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev" approved="yes">
+      <trans-unit id="pagebrowser_prev" resname="pagebrowser_prev">
         <source>previous</source>
-        <target state="final">poprzedni</target>
+        <target state="needs-translation">previous</target>
       </trans-unit>
-      <trans-unit id="pagebrowser_next" resname="pagebrowser_next" approved="yes">
+      <trans-unit id="pagebrowser_next" resname="pagebrowser_next">
         <source>next</source>
-        <target state="final">następny</target>
+        <target state="needs-translation">next</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_first" resname="pagebrowser_first">
+        <source>first</source>
+        <target state="needs-translation">first</target>
+      </trans-unit>
+      <trans-unit id="pagebrowser_last" resname="pagebrowser_last">
+        <source>last</source>
+        <target state="needs-translation">last</target>
       </trans-unit>
       <trans-unit id="label_resulturl" resname="label_resulturl">
         <source>URL</source>
         <target state="needs-translation">URL</target>
       </trans-unit>
-      <trans-unit id="label_sort" resname="label_sort" approved="yes">
+      <trans-unit id="label_sort" resname="label_sort">
         <source>Sorting:</source>
-        <target state="final">Sortowanie:</target>
+        <target state="needs-translation">Sorting:</target>
       </trans-unit>
-      <trans-unit id="label_score" resname="label_score" approved="yes">
+      <trans-unit id="label_score" resname="label_score">
         <source>Score</source>
-        <target state="final">Punktacja</target>
+        <target state="needs-translation">Score</target>
       </trans-unit>
-      <trans-unit id="label_date" resname="label_date" approved="yes">
+      <trans-unit id="label_date" resname="label_date">
         <source>Date</source>
-        <target state="final">Data</target>
+        <target state="needs-translation">Date</target>
       </trans-unit>
-      <trans-unit id="label_tags" resname="label_tags" approved="yes">
+      <trans-unit id="label_tags" resname="label_tags">
         <source>Tags</source>
-        <target state="final">Tagi</target>
+        <target state="needs-translation">Tags</target>
       </trans-unit>
       <trans-unit id="label_all" resname="label_all">
         <source>select all / deselect all</source>
         <target state="needs-translation">select all / deselect all</target>
       </trans-unit>
-      <trans-unit id="loading" resname="loading" approved="yes">
+      <trans-unit id="loading" resname="loading">
         <source>Loading</source>
-        <target state="final">Ładuje</target>
+        <target state="needs-translation">Loading</target>
       </trans-unit>
-      <trans-unit id="all_options" resname="all_options" approved="yes">
+      <trans-unit id="all_options" resname="all_options">
         <source>ALL</source>
-        <target state="final">Wszystkie</target>
+        <target state="needs-translation">ALL</target>
       </trans-unit>
       <trans-unit id="no_options" resname="no_options">
         <source>---</source>
         <target state="needs-translation">---</target>
       </trans-unit>
-      <trans-unit id="message_before_search" resname="message_before_search" approved="yes">
+      <trans-unit id="message_before_search" resname="message_before_search">
         <source>Please choose your search parameters.</source>
-        <target state="final">Wybierz parametry wyszukiwania.</target>
+        <target state="needs-translation">Please choose your search parameters.</target>
       </trans-unit>
-      <trans-unit id="query_time" resname="query_time" approved="yes">
+      <trans-unit id="query_time" resname="query_time">
         <source>The search query was processed in %s ms.</source>
-        <target state="final">Zapytanie wyszukiwania zostało przetworzone w %s ms.</target>
+        <target state="needs-translation">The search query was processed in %s ms.</target>
       </trans-unit>
-      <trans-unit id="reset_button" resname="reset_button" approved="yes">
+      <trans-unit id="reset_button" resname="reset_button">
         <source>Reset</source>
-        <target state="final">Anuluj</target>
+        <target state="needs-translation">Reset</target>
       </trans-unit>
-      <trans-unit id="reset_filter" resname="reset_filter" approved="yes">
+      <trans-unit id="reset_filter" resname="reset_filter">
         <source>Reset filter</source>
-        <target state="final">Wyczyść filtr</target>
+        <target state="needs-translation">Reset filter</target>
       </trans-unit>
-      <trans-unit id="submit" resname="submit" approved="yes">
+      <trans-unit id="submit" resname="submit">
         <source>Find</source>
-        <target state="final">Szukaj</target>
+        <target state="needs-translation">Find</target>
       </trans-unit>
-      <trans-unit id="back" resname="back" approved="yes">
+      <trans-unit id="back" resname="back">
         <source>Back</source>
-        <target state="final">Powrót</target>
+        <target state="needs-translation">Back</target>
       </trans-unit>
-      <trans-unit id="checkbox_submit" resname="checkbox_submit" approved="yes">
+      <trans-unit id="checkbox_submit" resname="checkbox_submit">
         <source>Apply filter</source>
-        <target state="final">Zastosuj filter</target>
+        <target state="needs-translation">Apply filter</target>
       </trans-unit>
-      <trans-unit id="orderlink_title" resname="orderlink_title" approved="yes">
+      <trans-unit id="orderlink_title" resname="orderlink_title">
         <source>Title</source>
-        <target state="final">Tytuł</target>
+        <target state="needs-translation">Title</target>
       </trans-unit>
-      <trans-unit id="orderlink_score" resname="orderlink_score" approved="yes">
+      <trans-unit id="orderlink_score" resname="orderlink_score">
         <source>Relevance</source>
-        <target state="final">Trafność</target>
+        <target state="needs-translation">Relevance</target>
       </trans-unit>
-      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate" approved="yes">
+      <trans-unit id="orderlink_sortdate" resname="orderlink_sortdate">
         <source>Date</source>
-        <target state="final">Data</target>
+        <target state="needs-translation">Date</target>
       </trans-unit>
-      <trans-unit id="searchbox_default_value" resname="searchbox_default_value" approved="yes">
+      <trans-unit id="searchbox_default_value" resname="searchbox_default_value">
         <source>Your search phrase</source>
-        <target state="final">Wpisz szukaną frazę</target>
+        <target state="needs-translation">Your search phrase</target>
       </trans-unit>
       <trans-unit id="linktext_more" resname="linktext_more">
         <source>More %s and Multiselection</source>
         <target state="needs-translation">More %s and Multiselection</target>
       </trans-unit>
-      <trans-unit id="show_results" resname="show_results" approved="yes">
+      <trans-unit id="show_results" resname="show_results">
         <source>Show results</source>
-        <target state="final">Pokaż wyniki</target>
+        <target state="needs-translation">Show results</target>
       </trans-unit>
       <trans-unit id="dateformat.dateAndTime" resname="dateformat.dateAndTime">
         <source>%B %e, %Y, %I:%M %p</source>
@@ -379,13 +387,13 @@
         <source>%B %e</source>
         <target state="needs-translation">%B %e</target>
       </trans-unit>
-      <trans-unit id="dateRange.start" resname="dateRange.start" approved="yes">
+      <trans-unit id="dateRange.start" resname="dateRange.start">
         <source>Start</source>
-        <target state="final">Start</target>
+        <target state="needs-translation">Start</target>
       </trans-unit>
-      <trans-unit id="dateRange.end" resname="dateRange.end" approved="yes">
+      <trans-unit id="dateRange.end" resname="dateRange.end">
         <source>End</source>
-        <target state="final">Koniec</target>
+        <target state="needs-translation">End</target>
       </trans-unit>
     </body>
   </file>
