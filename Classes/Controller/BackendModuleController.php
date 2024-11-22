@@ -259,6 +259,17 @@ class BackendModuleController
             $pageInfo = BackendUtility::readPageAccess($this->pageId, $perms_clause);
             $pagePath = GeneralUtility::fixed_lgd_cs($pageInfo['_thePath'], -200);
 
+            // get additional fields which are registered by other extensions
+            $additionalFields = [];
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] ?? null)) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] as $_classRef) {
+                    if ($_classRef != \Tpwd\KeSearch\Hooks\AdditionalFields::class) {
+                        $_procObj = GeneralUtility::makeInstance($_classRef);
+                        $_procObj->registerAdditionalFields($additionalFields);
+                    }
+                }
+            }
+
             $indexRecords = $this->indexRepository->findByPageUidToShowIndexedContent($this->pageId);
             $currentPage = (int)($request->getQueryParams()['currentPage'] ?? 1);
             $paginator = new ArrayPaginator($indexRecords, $currentPage, 20);
@@ -268,6 +279,7 @@ class BackendModuleController
         $this->addMainMenu($request, $moduleTemplate, 'indexedContent');
         $moduleTemplate->assign('pagination', $pagination ?? null);
         $moduleTemplate->assign('paginator', $paginator ?? null);
+        $moduleTemplate->assign('additionalFields', $additionalFields ?? []);
         $moduleTemplate->assign('do', $this->do ?? '');
         $moduleTemplate->assign('pageId', $this->pageId ?? 0);
         $moduleTemplate->assign('currentPage', $currentPage ?? 1);

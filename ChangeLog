@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[FEATURE] Show additional fields which are registered by other extensions in "Indexed content" function of the backend module
+
 Version 6.1.2, 15 November 2024
 [BUGFIX]  Fix regression which required a startingpoint to be always set. https://github.com/tpwd/ke_search/issues/257
 [TASK]    Update non-oo zip library calls in OoxmlConversion to ZipArchive ones. Thanks to Defcon0. https://github.com/tpwd/ke_search/pull/255

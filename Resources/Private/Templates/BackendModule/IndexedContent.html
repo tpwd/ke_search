@@ -76,11 +76,19 @@
                                                 </f:if>
                                                 <f:if condition="{record.content}">
                                                     <p><strong>Content</strong></p>
-                                                    {record.content}
+                                                    <p>{record.content}</p>
                                                 </f:if>
                                                 <f:if condition="{record.hidden_content}">
                                                     <p><strong>Hidden content</strong></p>
-                                                    {record.hidden_content}
+                                                    <p>{record.hidden_content}</p>
+                                                </f:if>
+                                                <f:if condition="{additionalFields}">
+                                                    <p><strong>Additional fields</strong></p>
+                                                    <p>
+                                                        <f:for each="{additionalFields}" as="field">
+                                                            <strong>{field}: </strong>{record.{field}} <br />
+                                                        </f:for>
+                                                    </p>
                                                 </f:if>
                                             </td>
                                         </tr>
