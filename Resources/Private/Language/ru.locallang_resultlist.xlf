@@ -7,9 +7,9 @@
         <source>Search resultlist</source>
         <target state="final">Результаты поиска</target>
       </trans-unit>
-      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description" approved="yes">
-        <source>Faceted Search: Show resultlist.</source>
-        <target state="final">Фасетный поиск: Вывод списка результатов.</target>
+      <trans-unit id="pi_plus_wiz_description" resname="pi_plus_wiz_description">
+        <source>Shows the resultlist.</source>
+        <target state="needs-translation">Shows the resultlist.</target>
       </trans-unit>
       <trans-unit id="ff.main" resname="ff.main" approved="yes">
         <source>General</source>
