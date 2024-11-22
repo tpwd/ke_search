@@ -3,93 +3,89 @@
   <file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:11:00Z" product-name="ke_search" target-language="da">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
         <source>Faceted Search</source>
-        <target state="needs-translation">Faceted Search</target>
+        <target state="final">Faceteret søgning</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
         <source>Manage the search index, manually start the indexer process, see what content has been indexed, clear the the index.</source>
-        <target state="needs-translation">Manage the search index, manually start the indexer process, see what content has been indexed, clear the the index.</target>
+        <target state="final">Håndtér søgeindekset, start indekseringsprocessen manuelt, se hvilket indhold der er blevet indekseret, ryd indekset.</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
         <source>Faceted Search Management</source>
-        <target state="needs-translation">Faceted Search Management</target>
+        <target state="final">Faceteret Søgehåndtering</target>
       </trans-unit>
-      <trans-unit id="title" resname="title">
+      <trans-unit id="title" resname="title" approved="yes">
         <source>Faceted Search</source>
-        <target state="needs-translation">Faceted Search</target>
+        <target state="final">Faceteret Søgning</target>
       </trans-unit>
-      <trans-unit id="function1" resname="function1">
+      <trans-unit id="function1" resname="function1" approved="yes">
         <source>Start indexing</source>
-        <target state="needs-translation">Start indexing</target>
+        <target state="final">Start indeksering</target>
       </trans-unit>
-      <trans-unit id="function2" resname="function2">
+      <trans-unit id="function2" resname="function2" approved="yes">
         <source>Indexed content</source>
-        <target state="needs-translation">Indexed content</target>
+        <target state="final">Indekseret indhold</target>
       </trans-unit>
-      <trans-unit id="function3" resname="function3">
+      <trans-unit id="function3" resname="function3" approved="yes">
         <source>Index table information</source>
-        <target state="needs-translation">Index table information</target>
+        <target state="final">Indeks tabel information</target>
       </trans-unit>
-      <trans-unit id="function4" resname="function4">
+      <trans-unit id="function4" resname="function4" approved="yes">
         <source>Searchword statistics</source>
-        <target state="needs-translation">Searchword statistics</target>
+        <target state="final">Statistik over søgeord</target>
       </trans-unit>
-      <trans-unit id="function5" resname="function5">
+      <trans-unit id="function5" resname="function5" approved="yes">
         <source>Clear search index</source>
-        <target state="needs-translation">Clear search index</target>
+        <target state="final">Ryd søgeindeks</target>
       </trans-unit>
-      <trans-unit id="function6" resname="function6">
+      <trans-unit id="function6" resname="function6" approved="yes">
         <source>Last indexing report</source>
-        <target state="needs-translation">Last indexing report</target>
+        <target state="final">Sidste indeksering rapport</target>
       </trans-unit>
-      <trans-unit id="select_a_page" resname="select_a_page">
+      <trans-unit id="select_a_page" resname="select_a_page" approved="yes">
         <source>Please select a page.</source>
-        <target state="needs-translation">Please select a page.</target>
+        <target state="final">Vælg venligst en side.</target>
       </trans-unit>
-      <trans-unit id="not_allowed_remove_indexer_lock" resname="not_allowed_remove_indexer_lock">
+      <trans-unit id="not_allowed_remove_indexer_lock" resname="not_allowed_remove_indexer_lock" approved="yes">
         <source>You are not allowed to remove the indexer lock! This is for admins only!</source>
-        <target state="needs-translation">You are not allowed to remove the indexer lock! This is for admins only!</target>
+        <target state="final">Du har ikke tilladelse til at fjerne indekseringslåsen! Dette er kun for administratorer!</target>
       </trans-unit>
-      <trans-unit id="no_indexer_configurations" resname="no_indexer_configurations">
+      <trans-unit id="no_indexer_configurations" resname="no_indexer_configurations" approved="yes">
         <source>No indexer configurations have been found. Please create an indexer configuration record first!</source>
-        <target state="needs-translation">No indexer configurations have been found. Please create an indexer configuration record first!</target>
+        <target state="final">Ingen indekseringsindstillinger blev fundet. Opret venligst en indekserings-konfiguration først!</target>
       </trans-unit>
-      <trans-unit id="index_contains" resname="index_contains">
+      <trans-unit id="index_contains" resname="index_contains" approved="yes">
         <source>The index currently contains</source>
-        <target state="needs-translation">The index currently contains</target>
+        <target state="final">Indekset indeholder i øjeblikket</target>
       </trans-unit>
-      <trans-unit id="index_is_empty" resname="index_is_empty">
-        <source>The index is empty.</source>
-        <target state="needs-translation">The index is empty.</target>
-      </trans-unit>
-      <trans-unit id="last_indexing" resname="last_indexing">
+      <trans-unit id="last_indexing" resname="last_indexing" approved="yes">
         <source>Last indexing was done on</source>
-        <target state="needs-translation">Last indexing was done on</target>
+        <target state="final">Sidste indeksering blev udført den</target>
       </trans-unit>
-      <trans-unit id="records" resname="records">
+      <trans-unit id="records" resname="records" approved="yes">
         <source>records</source>
-        <target state="needs-translation">records</target>
+        <target state="final">elementer</target>
       </trans-unit>
-      <trans-unit id="page" resname="page">
+      <trans-unit id="page" resname="page" approved="yes">
         <source>page</source>
-        <target state="needs-translation">page</target>
+        <target state="final">side</target>
       </trans-unit>
-      <trans-unit id="type" resname="type">
+      <trans-unit id="type" resname="type" approved="yes">
         <source>type</source>
-        <target state="needs-translation">type</target>
+        <target state="final">type</target>
       </trans-unit>
-      <trans-unit id="configurations_found" resname="configurations_found">
+      <trans-unit id="configurations_found" resname="configurations_found" approved="yes">
         <source>Indexer configurations have been found:</source>
-        <target state="needs-translation">Indexer configurations have been found:</target>
+        <target state="final">Indekserings konfigurationer er fundet:</target>
       </trans-unit>
-      <trans-unit id="tag_has_been_updated" resname="tag_has_been_updated">
-        <source>Tag has been updated</source>
-        <target state="needs-translation">Tag has been updated</target>
+      <trans-unit id="tag_too_short" resname="tag_too_short" approved="yes">
+        <source>Tag too short</source>
+        <target state="final">Tag for kort</target>
       </trans-unit>
-      <trans-unit id="tag_has_been_updated_message" resname="tag_has_been_updated_message">
-        <source>The given tag &quot;%s&quot; has been updated to &quot;%s&quot; because it did not match the criteria for a tag (length, allowed characters, not in list of stop words).</source>
-        <target state="needs-translation">The given tag "%s" has been updated to "%s" because it did not match the criteria for a tag (length, allowed characters, not in list of stop words).</target>
+      <trans-unit id="tag_too_short_message" resname="tag_too_short_message" approved="yes">
+        <source>The given tag &quot;%s&quot; is too short. A minimum length of %d is required. See extension setting &quot;searchWordLength&quot; for further info.</source>
+        <target state="final">Det angivne tag "%s" er for kort. En minimumslængde på %d er påkrævet. Se udvidelsesindstillingen "searchWordLength" for yderligere information.</target>
       </trans-unit>
     </body>
   </file>
