@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
@@ -144,8 +145,38 @@ class Db implements SingletonInterface
                 $resultQuery->groupBy($groupParts[0], $groupParts[1]);
             }
             if (!empty($queryParts['ORDERBY'])) {
-                $orderParts = explode(' ', $queryParts['ORDERBY']);
-                $resultQuery->orderBy($orderParts[0], $orderParts[1]);
+                $orderChain = explode(',', $queryParts['ORDERBY']);
+                $count = 0;
+                foreach ($orderChain as $order) {
+                    $orderParts = explode(' ', $order);
+                    $orderField = strtoupper($orderParts[0]);
+                    $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
+                    if ($count == 0) {
+                        if (ExtensionManagementUtility::isLoaded('ke_search_premium')
+                            && ($orderField == 'customranking')) {
+                            // We cast `customranking` to integer because additionalFields in ke_search can only
+                            // be string, so we cannot use an integer field, although it's a numeric value (can also be
+                            // negative).
+                            $resultQuery->getConcreteQueryBuilder()->orderBy(
+                                'CAST(' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                                $orderDirection
+                            );
+                        } else {
+                            $resultQuery->orderBy($orderField, $orderDirection);
+                        }
+                    } else {
+                        if (ExtensionManagementUtility::isLoaded('ke_search_premium')
+                            && ($orderField == 'customranking')) {
+                            $resultQuery->getConcreteQueryBuilder()->addOrderBy(
+                                'CAST(' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                                $orderDirection
+                            );
+                        } else {
+                            $resultQuery->addOrderBy($orderField, $orderDirection);
+                        }
+                    }
+                    $count++;
+                }
             }
             if (!empty($queryParts['HAVING'])) {
                 $resultQuery->having($queryParts['HAVING']);
