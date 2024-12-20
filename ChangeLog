@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.1.3, 20 December 2024
 [FEATURE] Show additional fields which are registered by other extensions in "Indexed content" function of the backend module
 [BUGFIX]  Make it possible to have multiple "orderBy" parts in the search result query in TYPO3 13
 [TASK]    Add special treatment for the ke_search_premium "Custom Ranking" feature in the search result query "orderBy" part
