@@ -370,7 +370,7 @@ class SearchHelper
     {
         // If no cObj is available we cannot render the link.
         // This might be the case if the current request is headless (ke_search_premium feature).
-        if (!$GLOBALS['TSFE']->cObj) {
+        if (!isset($GLOBALS['TSFE']) || !isset($GLOBALS['TSFE']->cObj)) {
             return '';
         }
 
