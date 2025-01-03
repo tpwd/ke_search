@@ -79,7 +79,7 @@ Follow these steps to create filters and set up the faceted search:
 
       .. code-block:: typoscript
 
-	     tx_kesearch.filterStorage = 1234
+         tx_kesearch.filterStorage = 1234
 
    #. Add filter to search plugin
 
