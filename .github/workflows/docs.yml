@@ -19,4 +19,5 @@ jobs:
 
       - name: Documentation renders without warnings
         run: |
-          docker run --rm --pull always -v $(pwd):/project ghcr.io/typo3-documentation/render-guides:latest --config=Documentation --no-progress --fail-on-log
+          docker run --rm --pull always -v $(pwd):/project \
+             ghcr.io/typo3-documentation/render-guides:latest --config=Documentation --no-progress --fail-on-log
