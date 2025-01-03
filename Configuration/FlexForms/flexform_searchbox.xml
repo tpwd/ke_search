@@ -16,7 +16,6 @@
                         </label>
                         <config>
                             <type>group</type>
-                            <internal_type>db</internal_type>
                             <allowed>pages</allowed>
                             <size>1</size>
                             <maxitems>1</maxitems>
@@ -167,10 +166,8 @@
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.templateLayout.I.0
-                                    </numIndex>
-                                    <numIndex index="1">10</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.templateLayout.I.0</label>
+                                    <value>10</value>
                                 </numIndex>
                             </items>
                             <size>1</size>
@@ -195,16 +192,12 @@
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.1
-                                    </numIndex>
-                                    <numIndex index="1">_self</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.1</label>
+                                    <value>_self</value>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.0
-                                    </numIndex>
-                                    <numIndex index="1">_blank</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.0</label>
+                                    <value>_blank</value>
                                 </numIndex>
                             </items>
                             <size>1</size>
@@ -221,16 +214,12 @@
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.1
-                                    </numIndex>
-                                    <numIndex index="1">_self</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.1</label>
+                                    <value>_self</value>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.0
-                                    </numIndex>
-                                    <numIndex index="1">_blank</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultLinkTarget.I.0</label>
+                                    <value>_blank</value>
                                 </numIndex>
                             </items>
                             <size>1</size>
@@ -246,16 +235,12 @@
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.previewMode.I.0
-                                    </numIndex>
-                                    <numIndex index="1">abstract</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.previewMode.I.0</label>
+                                    <value>abstract</value>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.previewMode.I.1
-                                    </numIndex>
-                                    <numIndex index="1">hit</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.previewMode.I.1</label>
+                                    <value>hit</value>
                                 </numIndex>
                             </items>
                             <size>1</size>
@@ -267,9 +252,8 @@
                         <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultChars
                         </label>
                         <config>
-                            <type>input</type>
+                            <type>number</type>
                             <size>4</size>
-                            <eval>int</eval>
                             <range type="array">
                                 <upper>9999</upper>
                                 <lower>0</lower>
@@ -403,9 +387,8 @@
                         <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.resultsPerPage
                         </label>
                         <config>
-                            <type>input</type>
+                            <type>number</type>
                             <size>2</size>
-                            <eval>int</eval>
                             <range type="array">
                                 <upper>99</upper>
                                 <lower>1</lower>
@@ -419,9 +402,8 @@
                             LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.maxPagesInPagebrowser
                         </label>
                         <config>
-                            <type>input</type>
+                            <type>number</type>
                             <size>2</size>
-                            <eval>int</eval>
                             <range type="array">
                                 <upper>99</upper>
                                 <lower>1</lower>
@@ -500,16 +482,14 @@
                             <renderType>selectSingle</renderType>
                             <items>
                                 <numIndex index="0">
-                                    <numIndex index="0">
+                                    <label>
                                         LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.checkFilterCondition.I.0
-                                    </numIndex>
-                                    <numIndex index="1">multi</numIndex>
+                                    </label>
+                                    <value>multi</value>
                                 </numIndex>
                                 <numIndex index="1">
-                                    <numIndex index="0">
-                                        LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.checkFilterCondition.I.1
-                                    </numIndex>
-                                    <numIndex index="1">none</numIndex>
+                                    <label>LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:ff.checkFilterCondition.I.1</label>
+                                    <value>none</value>
                                 </numIndex>
                             </items>
                             <size>1</size>
