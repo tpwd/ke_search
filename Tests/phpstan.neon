@@ -4,5 +4,6 @@ parameters:
 		- ../Classes
 		- ../Configuration
 		- ../Tests
+	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		- '#has unknown class Tpwd\\KeSearchPremium\\KeSearchPremium as its type\.#'

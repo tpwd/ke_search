@@ -568,6 +568,7 @@ class Db implements SingletonInterface
             // @extensionScannerIgnoreLine
             $where .= $pageRepository->enableFields($this->table);
         } else {
+            // @phpstan-ignore-next-line
             $constraints = $pageRepository->getDefaultConstraints($this->table);
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table)
