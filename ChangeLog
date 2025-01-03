@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Switch to PHP based rendering for documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/265
+
 Version 6.1.3, 20 December 2024
 [FEATURE] Show additional fields which are registered by other extensions in "Indexed content" function of the backend module
 [BUGFIX]  Make it possible to have multiple "orderBy" parts in the search result query in TYPO3 13
