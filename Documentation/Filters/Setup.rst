@@ -47,8 +47,8 @@ Follow these steps to create filters and set up the faceted search:
 
       You have two possibilities to assign tags to pages:
 
-      #. Open the page properties and in the tab :guilabel:`Search` you find field :guilabel:`Tags for faceted search`
-      #. Use the function :guilabel:`Set tag for all children of this page` in the filter record itself.
+      1. Open the page properties and in the tab :guilabel:`Search` you find field :guilabel:`Tags for faceted search`
+      2. Use the function :guilabel:`Set tag for all children of this page` in the filter record itself.
 
       If you use the option :guilabel:`Set tag for all children of this page` the tag will be set automatically to
       the subpages of the page you set while indexing that pages (you can select multiple pages).
