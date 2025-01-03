@@ -121,18 +121,14 @@ class Db implements SingletonInterface
             $resultQuery = $queryBuilder
                 ->add('select', $queryParts['SELECT'])
                 ->from($queryParts['FROM'])
-                // @phpstan-ignore-next-line
                 ->add('where', $queryParts['WHERE']);
             if (!empty($queryParts['GROUPBY'])) {
-                // @phpstan-ignore-next-line
                 $resultQuery->add('groupBy', $queryParts['GROUPBY']);
             }
             if (!empty($queryParts['ORDERBY'])) {
-                // @phpstan-ignore-next-line
                 $resultQuery->add('orderBy', $queryParts['ORDERBY']);
             }
             if (!empty($queryParts['HAVING'])) {
-                // @phpstan-ignore-next-line
                 $resultQuery->add('having', $queryParts['HAVING']);
             }
         } else {
@@ -572,8 +568,6 @@ class Db implements SingletonInterface
             // @extensionScannerIgnoreLine
             $where .= $pageRepository->enableFields($this->table);
         } else {
-            // phpstan-ignore-next-line can be removed once support for TYPO3 12 is dropped
-            // @phpstan-ignore-next-line
             $constraints = $pageRepository->getDefaultConstraints($this->table);
             $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->table)

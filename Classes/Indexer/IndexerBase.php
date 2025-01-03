@@ -269,7 +269,6 @@ class IndexerBase
                 ->add('select', $fields)
                 ->from('pages')
                 ->from('tx_kesearch_filteroptions')
-                // @phpstan-ignore-next-line
                 ->add('where', $where)
                 ->groupBy('pages.uid')
                 ->executeQuery();

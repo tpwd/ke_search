@@ -4,12 +4,5 @@ parameters:
 		- ../Classes
 		- ../Configuration
 		- ../Tests
-	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		- '#has unknown class Tpwd\\KeSearchPremium\\KeSearchPremium as its type\.#'
-		- '#PHPDoc tag @var for variable \$moduleData contains unknown class TYPO3\\CMS\\Backend\\Module\\ModuleData\.#'
-		- '#Call to method get\(\) on an unknown class TYPO3\\CMS\\Backend\\Module\\ModuleData\.#'
-		- '#Call to an undefined method TYPO3\\CMS\\Backend\\Template\\ModuleTemplate::assign\(\)\.#'
-		- '#Call to an undefined method TYPO3\\CMS\\Backend\\Template\\ModuleTemplate::renderResponse\(\)\.#'
-		- '#Class TYPO3\\CMS\\Backend\\View\\BackendViewFactory not found\.#'
-		- '#Access to constant ERROR on an unknown class TYPO3\\CMS\\Core\\Type\\ContextualFeedbackSeverity\.#'
