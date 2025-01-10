@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [TASK]    Switch to PHP based rendering for documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/265
 [TASK]    Migrate outdated TCA configurations in FlexForms. https://github.com/tpwd/ke_search/issues/264
+[TASK]    Migrate usage of $GLOBALS['TSFE']->tmpl for TYPO3 13. https://github.com/tpwd/ke_search/issues/258
 
 Version 6.1.3, 20 December 2024
 [FEATURE] Show additional fields which are registered by other extensions in "Indexed content" function of the backend module

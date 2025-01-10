@@ -25,14 +25,15 @@ or you can define the result page with help of an URL param if you want:
 Notes on TypoScript and extension configuration
 ===============================================
 
-In :guilabel:`Admin Tools` > :guilabel:`Settings` > :guilabel:`Extension Configuration` you can define basic options
+In :guilabel:`Admin Tools` > :guilabel:`Settings` >
+:guilabel:`Extension Configuration` you can define basic options
 like the minimal length of searchwords.
 
 You can overwrite this configuration in your page TypoScript setup:
 
 .. code-block:: typoscript
 
-   ke_search_premium.extconf.override.searchWordLength = 3
+   ke_search.extconf.override.searchWordLength = 3
 
 or
 

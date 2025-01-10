@@ -76,13 +76,13 @@ class SearchHelper
         } else {
             $extConf['prePostTagChar'] = '#';
         }
-        $extConf['multiplyValueToTitle'] = ($extConf['multiplyValueToTitle']) ? $extConf['multiplyValueToTitle'] : 1;
-        $extConf['searchWordLength'] = ($extConf['searchWordLength']) ? $extConf['searchWordLength'] : 4;
+        $extConf['multiplyValueToTitle'] = $extConf['multiplyValueToTitle'] ?: 1;
+        $extConf['searchWordLength'] = $extConf['searchWordLength'] ?: 4;
 
         // override extConf with TS Setup
-        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'] ?? null)
-            && count($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'])) {
-            foreach ($GLOBALS['TSFE']->tmpl->setup['ke_search.']['extconf.']['override.'] as $key => $value) {
+        $typoScriptSetup = self::getTypoScriptSetup();
+        if (count($typoScriptSetup['ke_search.']['extconf.']['override.'] ?? [])) {
+            foreach ($typoScriptSetup['ke_search.']['extconf.']['override.'] as $key => $value) {
                 $extConf[$key] = $value;
             }
         }
@@ -112,9 +112,9 @@ class SearchHelper
         }
 
         // override extConfPremium with TS Setup
-        if (is_array($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'] ?? null)
-            && count($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'])) {
-            foreach ($GLOBALS['TSFE']->tmpl->setup['ke_search_premium.']['extconf.']['override.'] as $key => $value) {
+        $typoScriptSetup = self::getTypoScriptSetup();
+        if (count($typoScriptSetup['ke_search_premium.']['extconf.']['override.'] ?? [])) {
+            foreach ($typoScriptSetup['ke_search_premium.']['extconf.']['override.'] as $key => $value) {
                 $extConfPremium[$key] = $value;
             }
         }
@@ -509,7 +509,8 @@ class SearchHelper
      */
     public static function getSearchWordParameter(): string
     {
-        return htmlspecialchars($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_kesearch_pi1.']['searchWordParameter'] ?? 'tx_kesearch_pi1[sword]');
+        $typoScriptSetup = self::getTypoScriptSetup();
+        return htmlspecialchars($typoScriptSetup['plugin.']['tx_kesearch_pi1.']['searchWordParameter'] ?? 'tx_kesearch_pi1[sword]');
     }
 
     /**
@@ -533,5 +534,22 @@ class SearchHelper
             }
         }
         return implode(',', $items);
+    }
+
+    public static function getTypoScriptSetup(): array
+    {
+        $request = self::getRequest();
+        if ($request === null) {
+            return [];
+        }
+        if (ApplicationType::fromRequest($request)->isBackend()) {
+            return [];
+        }
+        return $request->getAttribute('frontend.typoscript')->getSetupArray();
+    }
+
+    private static function getRequest(): ?ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'] ?? null;
     }
 }
