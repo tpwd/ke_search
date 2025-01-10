@@ -92,7 +92,7 @@ class Fileinfo
                 'file' => $file->getName(),
                 'filebody' => $file->getNameWithoutExtension(),
                 'fileext' => $file->getExtension(),
-                'realFileext' => $pathInfo['extension'],
+                'realFileext' => $pathInfo['extension'] ?? '',
                 'atime' => $file->getCreationTime(),
                 // We want to make sure that we re-index files which have been modified without FAL noticing it
                 // (e. g. an upload via FTP and not in the TYPO3 backend). So we are using the mtime from the
