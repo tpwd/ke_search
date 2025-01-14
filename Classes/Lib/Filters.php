@@ -222,10 +222,15 @@ class Filters
                 ->executeQuery();
         }
 
-        $filterRows = [];
+        // Retain original order from filters specified in configuration
+        $filterRows = array_fill_keys(GeneralUtility::intExplode(',', $filterUids), null);
+
         while ($row = $filterQuery->fetchAssociative()) {
             $filterRows[$row['uid']] = $row;
         }
+
+        // Remove filters that were in configuration but not found in database
+        $filterRows = array_filter($filterRows);
 
         $filterRows = $this->languageOverlay($filterRows, $table);
         return $this->addOptionsToFilters($filterRows);
