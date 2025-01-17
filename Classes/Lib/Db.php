@@ -148,23 +148,27 @@ class Db implements SingletonInterface
                     $orderField = strtoupper($orderParts[0]);
                     $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
                     if ($count == 0) {
-                        if (ExtensionManagementUtility::isLoaded('ke_search_premium')
-                            && ($orderField == 'customranking')) {
+                        if (
+                            ExtensionManagementUtility::isLoaded('ke_search_premium')
+                            && ($orderField == 'customranking')
+                        ) {
                             // We cast `customranking` to integer because additionalFields in ke_search can only
                             // be string, so we cannot use an integer field, although it's a numeric value (can also be
                             // negative).
                             $resultQuery->getConcreteQueryBuilder()->orderBy(
-                                'CAST(' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                                'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
                                 $orderDirection
                             );
                         } else {
                             $resultQuery->orderBy($orderField, $orderDirection);
                         }
                     } else {
-                        if (ExtensionManagementUtility::isLoaded('ke_search_premium')
-                            && ($orderField == 'customranking')) {
+                        if (
+                            ExtensionManagementUtility::isLoaded('ke_search_premium')
+                            && ($orderField == 'customranking')
+                        ) {
                             $resultQuery->getConcreteQueryBuilder()->addOrderBy(
-                                'CAST(' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                                'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
                                 $orderDirection
                             );
                         } else {
@@ -176,6 +180,17 @@ class Db implements SingletonInterface
             }
             if (!empty($queryParts['HAVING'])) {
                 $resultQuery->having($queryParts['HAVING']);
+            }
+        }
+
+        if (!empty($queryParts['JOIN'] && is_array($queryParts['JOIN']))) {
+            foreach ($queryParts['JOIN'] as $table => $condition) {
+                $resultQuery->join(
+                    'tx_kesearch_index',
+                    $table,
+                    $table,
+                    $condition ?: null,
+                );
             }
         }
 
@@ -345,6 +360,7 @@ class Db implements SingletonInterface
         $queryParts = [
             'SELECT' => $this->getFields($searchwordQuoted),
             'FROM' => $this->table,
+            'JOIN' => null,
             'WHERE' => '1=1' . $this->getWhere(),
             'GROUPBY' => '',
             'ORDERBY' => $this->getOrdering(),
@@ -438,20 +454,18 @@ class Db implements SingletonInterface
 
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
             // @phpstan-ignore-next-line
-            $tagRows = $queryBuilder
-                ->select('tags')
+            $resultQuery = $queryBuilder
+                ->select('tx_kesearch_index.tags')
                 ->from($queryParts['FROM'])
-                ->add('where', $queryParts['WHERE'])
-                ->executeQuery()
-                ->fetchAllAssociative();
+                ->add('where', $queryParts['WHERE']);
         } else {
-            $tagRows = $queryBuilder
-                ->select('tags')
+            $resultQuery = $queryBuilder
+                ->select('tx_kesearch_index.tags')
                 ->from($queryParts['FROM'])
-                ->where($queryParts['WHERE'])
-                ->executeQuery()
-                ->fetchAllAssociative();
+                ->where($queryParts['WHERE']);
         }
+
+        $tagRows = $resultQuery->executeQuery()->fetchAllAssociative();
 
         return array_map(
             function ($row) {
@@ -478,7 +492,7 @@ class Db implements SingletonInterface
                 $value = $databaseConnection->quote((string)$value);
                 $value = rtrim($value, "'");
                 $value = ltrim($value, "'");
-                $where .= ' AND MATCH (tags) AGAINST (\'' . $value . '\' IN BOOLEAN MODE) ';
+                $where .= ' AND MATCH (tx_kesearch_index.tags) AGAINST (\'' . $value . '\' IN BOOLEAN MODE) ';
             }
             return $where;
         }
@@ -502,7 +516,7 @@ class Db implements SingletonInterface
      */
     public function getFields(string $searchwordQuoted): string
     {
-        $fields = 'SQL_CALC_FOUND_ROWS *';
+        $fields = 'SQL_CALC_FOUND_ROWS tx_kesearch_index.*';
 
         // if a searchword was given, calculate score
         if ($this->pObj->sword) {
@@ -510,7 +524,7 @@ class Db implements SingletonInterface
                 ', MATCH (' . $this->getMatchColumns() . ') AGAINST (' . $searchwordQuoted . ')'
                 . '+ ('
                 . $this->pObj->extConf['multiplyValueToTitle']
-                . ' * MATCH (title) AGAINST (' . $searchwordQuoted . ')'
+                . ' * MATCH (tx_kesearch_index.title) AGAINST (' . $searchwordQuoted . ')'
                 . ') AS score';
         }
 
@@ -549,16 +563,16 @@ class Db implements SingletonInterface
                 . 'https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Configuration/OverrideRecordStoragePage.html.');
         }
         $startingPoints = $this->pObj->pi_getPidList($this->pObj->startingPoints);
-        $where .= ' AND pid in (' . $startingPoints . ') ';
+        $where .= ' AND tx_kesearch_index.pid in (' . $startingPoints . ') ';
 
         // add language
         /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-        $where .= ' AND language IN(' . $languageAspect->getId() . ', -1) ';
+        $where .= ' AND tx_kesearch_index.language IN(' . $languageAspect->getId() . ', -1) ';
 
         // add "tagged content only" searchphrase
         if ($this->conf['showTaggedContentOnly'] ?? false) {
-            $where .= ' AND tags <> ""';
+            $where .= ' AND tx_kesearch_index.tags <> ""';
         }
 
         // add enable fields
@@ -593,10 +607,10 @@ class Db implements SingletonInterface
                     $startTimestamp = strtotime($filterValues['start'] ?? '');
                     $endTimestamp = strtotime($filterValues['end'] ?? '');
                     if ($startTimestamp) {
-                        $where .= ' AND sortdate >= ' . $startTimestamp;
+                        $where .= ' AND tx_kesearch_index.sortdate >= ' . $startTimestamp;
                     }
                     if ($endTimestamp) {
-                        $where .= ' AND sortdate <= ' . ($endTimestamp + 24 * 60 * 60);
+                        $where .= ' AND tx_kesearch_index.sortdate <= ' . ($endTimestamp + 24 * 60 * 60);
                     }
                 }
             }

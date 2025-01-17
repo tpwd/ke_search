@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Make it possible to add JOIN query part via "getQueryParts" hook. Thanks to André Müller
 [BUGFIX]  Account for files without file extension. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/268
 [BUGFIX]  Retain filter order from configuration. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/272
 [TASK]    Switch to PHP based rendering for documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/265
