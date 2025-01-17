@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.2.0, 20 December 2024
 [FEATURE] Make it possible to add JOIN query part via "getQueryParts" hook. Thanks to André Müller
 [BUGFIX]  Account for files without file extension. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/268
 [BUGFIX]  Retain filter order from configuration. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/272
