@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Account for files without file extension. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/268
+[BUGFIX]  Retain filter order from configuration. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/272
 [TASK]    Switch to PHP based rendering for documentation. Thanks to Chris Müller. https://github.com/tpwd/ke_search/pull/265
 [TASK]    Migrate outdated TCA configurations in FlexForms. https://github.com/tpwd/ke_search/issues/264
 [TASK]    Migrate usage of $GLOBALS['TSFE']->tmpl for TYPO3 13. https://github.com/tpwd/ke_search/issues/258
