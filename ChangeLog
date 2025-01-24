@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.3.0, 27 January 2025
 [FEATURE] Add support for site sets. https://github.com/tpwd/ke_search/issues/278
 [BUGFIX]  Avoid PHP warning when saving category. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/276
 [DOCS]    Add documentation about indexing content elements made with EXT:content_blocks. https://github.com/tpwd/ke_search/issues/254
