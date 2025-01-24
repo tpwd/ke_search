@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Add support for site sets. https://github.com/tpwd/ke_search/issues/278
 [BUGFIX]  Avoid PHP warning when saving category. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/276
 [DOCS]    Add documentation about indexing content elements made with EXT:content_blocks. https://github.com/tpwd/ke_search/issues/254
 

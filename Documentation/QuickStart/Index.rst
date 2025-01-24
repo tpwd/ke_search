@@ -26,10 +26,36 @@ You can find the current version (and older ones) at
 
 https://extensions.typo3.org/extension/ke_search
 
-Include static template
-=======================
+Include TypoScript
+==================
 
-In your main template include the "static template" of the extension ke_search.
+.. _configuration-site-set:
+Site Sets
+---------
+..  versionadded:: TYPO3 v13.1 / ke_search v6.3.0
+    If you are working with TYPO3 v12.4, use :ref:`configuration-typoscript-record`.
+
+The extension ships some TypoScript code which can be included in the site
+configuration via :ref:`Site sets <t3coreapi/13:site-sets>`:
+
+#.  Got to backend module :guilabel:`Site Management > Sites`.
+#.  Edit the configuration of your site.
+#.  On the first tab go to :guilabel:`Sets for this Site`.
+#.  Include the set :guilabel:`Faceted Search (ke_search)`.
+
+.. _configuration-typoscript-record:
+
+TypoScript sets (the traditional way)
+-------------------------------------
+
+If you are not using :ref:`configuration-site-set` you can
+add the TypoScript via the TypoScript module (formerly known as "Include
+static template"):
+
+#.  Got to backend module :guilabel:`Site Management > TypoScript`.
+#.  Select :guilabel:`Edit TypoScript record` --> :guilabel:`Edit the whole TypoScript record`.
+#.  On the first tab go to :guilabel:`Include TypoScript sets`.
+#.  Include the set :guilabel:`Faceted Search (ke_search)`.
 
 Create pages
 ============
