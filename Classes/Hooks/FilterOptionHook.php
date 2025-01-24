@@ -223,6 +223,9 @@ class FilterOptionHook
                                 ];
                                 foreach ($filters as $origFilter) {
                                     $localizedFilter = $filterRepository->findByL10nParent((int)$origFilter, true);
+                                    if (!$localizedFilter) {
+                                        continue;
+                                    }
                                     $filterOptionRepository->create(
                                         (int)$localizedFilter['uid'],
                                         $localizedFilterOption

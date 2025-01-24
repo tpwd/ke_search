@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Avoid PHP warning when saving category. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/276
+
 Version 6.2.0, 17 January 2025
 [FEATURE] Make it possible to add JOIN query part via "getQueryParts" hook. Thanks to André Müller
 [BUGFIX]  Account for files without file extension. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/pull/268
