@@ -113,3 +113,15 @@ Automated tests in GitHub Actions
 
 The automated tests are automatically executed after a push or a merge
 request by GitHub Actions.
+
+Documentation
+-------------
+
+You can render a local version of the documentation by running
+
+.. code-block::
+
+   composer docs:generate
+
+This will create a directory `Documentation-GENERATED-temp` which contains the
+documentation in HTML format.
