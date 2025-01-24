@@ -13,6 +13,11 @@ index entry. That means if your search word appears in two different text
 elements on a page, you will get only one search result for the page these two
 elements belong to.
 
+There is a set of default content element types which are indexed without
+further configuration needed. If you created your own content elements
+(e.g. with EXT:mask or EXT:content_blocks) you can add them to the
+configuration as described below.
+
 Configuration
 =============
 
@@ -22,8 +27,8 @@ Configuration
 * Set :guilabel:`Startingpoints (recursive)` to the pages you want to index recursively.
 * Set :guilabel:`Single Pages` to the pages you want to index non-recursively.
 
-Content Types
-=============
+Content element types
+=====================
 
 By default the page indexer indexes content element of the following types
 which are delivered by the TYPO3 core:
@@ -77,17 +82,19 @@ Advanced options
   :guilabel:`Page types which should be indexed` set the page types you want
   to index.
 * in :guilabel:`Content element types which should be indexed` you can add your
-  own content element types. For example those created with EXT:mask or from
-  EXT:bootstrap_package. If you are not sure what to enter here, have a look a
-  the table `tt_content` in the column `CType`.
+  own content element types. For example those created with EXT:mask or
+  EXT:content_blocks. If you are not sure what to enter here, have a look a the
+  table `tt_content` in the column `CType` or activate
+  `TYPO3 backend debug mode <https://docs.typo3.org/permalink/t3coreapi:examples-debug-backend>`_.
 * (since version 5.3.0) In :guilabel:`Additional tables for content elements`
   you can define tables which hold additional content. That is used for example
-  by EXT:bootstrap_package or EXT:mask. See below ("Index content from
-  additional tables") for details.
+  by EXT:bootstrap_package, EXT:mask or EXT:content_blocks.
+  See below ("Index content from additional tables") for details.
 * In :guilabel:`tt_content fields which should be indexed` you can define custom
   fields which should be indexed. Default is here "bodytext,subheader,
   header_link" which is used for the default content elements. This is useful
-  if you added your custom content elements for example using EXT:mask.
+  if you added your custom content elements for example using EXT:mask or
+  EXT:content_blocks.
 * Using the field :guilabel:`Comma separated list of allowed file extensions`
   you can set the allowed file extension of files to index. By default this is
   set to `pdf,ppt,doc,xls,docx,xlsx,pptx`. For pdf, ppt, doc and xls files you
@@ -98,11 +105,12 @@ Advanced options
 * You can choose to add a tag to all index entries created by this indexer.
 * You can choose to add that tag also to files indexed by this indexer.
 
-Index content from additional tables (eg. EXT:mask, EXT:bootstrap_package)
---------------------------------------------------------------------------
-Some extension like the widely used `mask` and `bootstrap_package` extensions
-store content not in the tt_content table but in additional tables which
-hold a reference to the record in tt_content.
+Index content from additional tables (eg. mask, bootstrap_package, content_blocks)
+----------------------------------------------------------------------------------
+Some extension
+Some extension like the widely used `mask` and `bootstrap_package` and
+`content_blocks` extensions store content not in the tt_content table but in
+additional tables which hold a reference to the record in tt_content.
 
 Since version 5.3.0 it is possible to index those tables without the need
 for a 3rd party extension or custom indexer. In the field
@@ -134,7 +142,8 @@ table
 referenceFieldName
     This is the field that holds the relation to the tt_content record (the
     UID of the record). In EXT:bootstrap_package it is named `tt_content`,
-    in EXT:mask it is named `parentid`.
+    in EXT:mask it is named `parentid`, in EXT:content_blocks it is named
+    `foreign_table_parent_uid`.
 
 parentTable
     (since version 5.6.0 / 6.1.0)
@@ -157,6 +166,9 @@ fields[]
 Examples
 --------
 
+Bootstrap Package
+.................
+
 Add this to :guilabel:`Additional tables for content elements` to
 index the bootstrap package element "accordion" (remember to also add
 `accordion` to :guilabel:`Content element types which should be indexed`:
@@ -169,6 +181,9 @@ index the bootstrap package element "accordion" (remember to also add
    fields[] = header
    fields[] = bodytext
 
+Mask
+....
+
 Add this to :guilabel:`Additional tables for content elements` to
 index mask elements (remember to also add
 `mask_list` and `mask_mytest` to :guilabel:`Content element types which should be indexed`:
@@ -179,6 +194,9 @@ index mask elements (remember to also add
     table = tx_mask_content
     referenceFieldName = parentid
     fields[] = tx_mask_content_item
+
+Mask with multiple additional tables
+....................................
 
 This is an example how to add multiple additional tables for the same CType.
 
@@ -194,7 +212,11 @@ This is an example how to add multiple additional tables for the same CType.
     referenceFieldName = parentid
     fields[] = tx_mask_title
 
-This is an example how to index sub-elements of additional tables (note the `parentTable` configuration line).
+Mask with sub-elements in additional tables
+...........................................
+
+This is an example how to index sub-elements of additional tables
+(note the `parentTable` configuration line).
 
 .. code-block:: ini
 
@@ -208,6 +230,9 @@ This is an example how to index sub-elements of additional tables (note the `par
     parentTable = tx_mask_repeating1
     referenceFieldName = parentid
     fields[] = tx_mask_title
+
+More Mask examples
+..................
 
 This is an example for a some mask elements:
 
@@ -223,4 +248,24 @@ This is an example for a some mask elements:
 
 .. figure:: /Images/Indexing/custom-elements-02.png
    :alt: Example for indexing a custom elements created with mask 2/2
+   :class: with-border
+
+Content Blocks
+..............
+
+In order to index content elements from EXT:content_blocks you need to add
+
+1. the name of the CType to :guilabel:`Content element types which should be indexed`.
+2. the name of the tt_content field to :guilabel:`tt_content fields which should be indexed`.
+3. (optionally) the configuration for the additional table(s) to :guilabel:`Additional tables for content elements`.
+
+In order to find out the correct names you can activate the
+`TYPO3 backend debug mode <https://docs.typo3.org/permalink/t3coreapi:examples-debug-backend>`_.
+
+.. figure:: /Images/Indexing/indexing-content-blocks-01.png
+   :alt: Finding the field name for a content element made with content blocks
+   :class: with-border
+
+.. figure:: /Images/Indexing/indexing-content-blocks-02.png
+   :alt: Configure the page indexer to index content elements from content blocks
    :class: with-border
