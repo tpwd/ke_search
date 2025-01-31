@@ -131,6 +131,7 @@ class Sorting
             switch ($field) {
                 case 'sortdate':
                 case 'score':
+                case 'customranking':
                     $orderBy = 'desc';
                     break;
                 case 'title':
