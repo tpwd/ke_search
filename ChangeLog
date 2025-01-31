@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix typo in constants.typoscript filename. Thanks to nebrot. https://github.com/tpwd/ke_search/commit/e762364111a78ea8b2378b634ca7cf77d3ae0903#r151745378
+
 Version 6.3.0, 24 January 2025
 [FEATURE] Add support for site sets. https://github.com/tpwd/ke_search/issues/278
 [BUGFIX]  Avoid PHP warning when saving category. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/276
