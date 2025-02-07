@@ -38,6 +38,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ResultlistPlugin extends PluginBase
 {
+    // @phpstan-ignore-next-line
     private ?ViewFactoryInterface $viewFactory;
 
     // TODO: Inject ViewFactoryInterface once TYPO3 v13 is the minimum requirement
@@ -47,6 +48,7 @@ class ResultlistPlugin extends PluginBase
     public function __construct()
     {
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            // @phpstan-ignore-next-line
             $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
         }
     }
@@ -83,12 +85,14 @@ class ResultlistPlugin extends PluginBase
 
         // Initialize the view
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            // @phpstan-ignore-next-line
             $viewFactoryData = new ViewFactoryData(
                 templateRootPaths: $this->conf['view']['templateRootPaths'],
                 partialRootPaths: $this->conf['view']['partialRootPaths'],
                 layoutRootPaths: $this->conf['view']['layoutRootPaths'],
                 request: $this->request,
             );
+            // @phpstan-ignore-next-line
             $view = $this->viewFactory->create($viewFactoryData);
         } else {
             $view = GeneralUtility::makeInstance(StandaloneView::class);
