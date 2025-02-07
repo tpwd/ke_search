@@ -19,10 +19,14 @@ namespace Tpwd\KeSearch\Plugins;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -32,10 +36,17 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class SearchboxPlugin extends PluginBase
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $searchFormView;
+    private ?ViewFactoryInterface $viewFactory;
+
+    // TODO: Inject ViewFactoryInterface once TYPO3 v13 is the minimum requirement
+    //public function __construct(
+        //private readonly ViewFactoryInterface $viewFactory,
+    //) {}
+    public function __construct() {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        }
+    }
 
     /**
      * The main method of the PlugIn
@@ -56,13 +67,36 @@ class SearchboxPlugin extends PluginBase
         // @extensionScannerIgnoreLine
         $this->init($request);
 
+        // Check if "Static Templates" / "Site Sets" have been included
         if (empty($this->conf['view'])) {
             $content = '<div id="textmessage">' . $this->translate('error_templatePaths') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
 
-        // init template for search box
-        $this->initFluidTemplate();
+        // Initialize the view
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: $this->conf['view']['templateRootPaths'],
+                partialRootPaths: $this->conf['view']['partialRootPaths'],
+                layoutRootPaths: $this->conf['view']['layoutRootPaths'],
+                request: $this->request,
+            );
+            $view = $this->viewFactory->create($viewFactoryData);
+        } else {
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            if (method_exists($view, 'setRequest')) {
+                $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+            }
+            $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
+            $view->setPartialRootPaths($this->conf['view']['partialRootPaths']);
+            $view->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
+            $view->setTemplate('SearchForm');
+        }
+
+        // Make settings available in fluid template
+        $view->assign('conf', $this->conf);
+        $view->assign('extConf', $this->extConf);
+        $view->assign('extConfPremium', $this->extConfPremium);
 
         // hook for initials
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] ?? null)) {
@@ -84,29 +118,13 @@ class SearchboxPlugin extends PluginBase
         }
 
         // assign variables and do the rendering
-        $this->searchFormView->assignMultiple($this->fluidTemplateVariables);
-        $htmlOutput = $this->searchFormView->render();
+        $view->assignMultiple($this->fluidTemplateVariables);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $htmlOutput = $view->render('SearchForm');
+        } else {
+            $htmlOutput = $view->render();
+        }
 
         return $htmlOutput;
-    }
-
-    /**
-     * inits the standalone fluid template
-     */
-    public function initFluidTemplate()
-    {
-        $this->searchFormView = GeneralUtility::makeInstance(StandaloneView::class);
-        if (method_exists($this->searchFormView, 'setRequest')) {
-            $this->searchFormView->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-        $this->searchFormView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
-        $this->searchFormView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
-        $this->searchFormView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
-        $this->searchFormView->setTemplate('SearchForm');
-
-        // make settings available in fluid template
-        $this->searchFormView->assign('conf', $this->conf);
-        $this->searchFormView->assign('extConf', $this->extConf);
-        $this->searchFormView->assign('extConfPremium', $this->extConfPremium);
     }
 }

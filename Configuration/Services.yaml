@@ -11,6 +11,10 @@ services:
     resource: '../Classes/Service/*'
     public: true
 
+  Tpwd\KeSearch\Plugins\:
+    resource: '../Classes/Plugins/*'
+    public: true
+
   Tpwd\KeSearch\Controller\:
     resource: '../Classes/Controller/*'
     public: true

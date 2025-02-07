@@ -22,10 +22,13 @@ namespace Tpwd\KeSearch\Plugins;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -35,10 +38,17 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ResultlistPlugin extends PluginBase
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $resultListView;
+    private ?ViewFactoryInterface $viewFactory;
+
+    // TODO: Inject ViewFactoryInterface once TYPO3 v13 is the minimum requirement
+    //public function __construct(
+    //private readonly ViewFactoryInterface $viewFactory,
+    //) {}
+    public function __construct() {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
+        }
+    }
 
     /**
      * The main method of the PlugIn
@@ -64,13 +74,36 @@ class ResultlistPlugin extends PluginBase
             return $this->pi_wrapInBaseClass($content);
         }
 
+        // Check if "Static Templates" / "Site Sets" have been included
         if (empty($this->conf['view'])) {
             $content = '<div id="textmessage">' . $this->translate('error_templatePaths') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
 
-        // init template
-        $this->initFluidTemplate();
+        // Initialize the view
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $viewFactoryData = new ViewFactoryData(
+                templateRootPaths: $this->conf['view']['templateRootPaths'],
+                partialRootPaths: $this->conf['view']['partialRootPaths'],
+                layoutRootPaths: $this->conf['view']['layoutRootPaths'],
+                request: $this->request,
+            );
+            $view = $this->viewFactory->create($viewFactoryData);
+        } else {
+            $view = GeneralUtility::makeInstance(StandaloneView::class);
+            if (method_exists($view, 'setRequest')) {
+                $view->setRequest($GLOBALS['TYPO3_REQUEST']);
+            }
+            $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
+            $view->setPartialRootPaths($this->conf['view']['partialRootPaths']);
+            $view->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
+            $view->setTemplate('ResultList');
+        }
+
+        // Make settings available in fluid template
+        $view->assign('conf', $this->conf);
+        $view->assign('extConf', $this->extConf);
+        $view->assign('extConfPremium', $this->extConfPremium);
 
         // hook for initials
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['initials'] ?? null)) {
@@ -123,29 +156,13 @@ class ResultlistPlugin extends PluginBase
         }
 
         // generate HTML output
-        $this->resultListView->assignMultiple($this->fluidTemplateVariables);
-        $htmlOutput = $this->resultListView->render();
+        $view->assignMultiple($this->fluidTemplateVariables);
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
+            $htmlOutput = $view->render('ResultList');
+        } else {
+            $htmlOutput = $view->render();
+        }
 
         return $htmlOutput;
-    }
-
-    /**
-     * inits the standalone fluid template
-     */
-    public function initFluidTemplate()
-    {
-        $this->resultListView = GeneralUtility::makeInstance(StandaloneView::class);
-        if (method_exists($this->resultListView, 'setRequest')) {
-            $this->resultListView->setRequest($GLOBALS['TYPO3_REQUEST']);
-        }
-        $this->resultListView->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
-        $this->resultListView->setPartialRootPaths($this->conf['view']['partialRootPaths']);
-        $this->resultListView->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
-        $this->resultListView->setTemplate('ResultList');
-
-        // make settings available in fluid template
-        $this->resultListView->assign('conf', $this->conf);
-        $this->resultListView->assign('extConf', $this->extConf);
-        $this->resultListView->assign('extConfPremium', $this->extConfPremium);
     }
 }
