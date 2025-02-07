@@ -44,7 +44,8 @@ class ResultlistPlugin extends PluginBase
     //public function __construct(
     //private readonly ViewFactoryInterface $viewFactory,
     //) {}
-    public function __construct() {
+    public function __construct()
+    {
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
             $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
         }

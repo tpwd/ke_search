@@ -40,9 +40,10 @@ class SearchboxPlugin extends PluginBase
 
     // TODO: Inject ViewFactoryInterface once TYPO3 v13 is the minimum requirement
     //public function __construct(
-        //private readonly ViewFactoryInterface $viewFactory,
+    //private readonly ViewFactoryInterface $viewFactory,
     //) {}
-    public function __construct() {
+    public function __construct()
+    {
         if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
             $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
         }
