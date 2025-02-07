@@ -57,6 +57,16 @@ File indexing
 Files linked in RTE text fields will be detected and indexed. Also files linked
 in fields of type "link" (e.g. `header_link`) will be detected.
 
+Container and Gridelements
+==========================
+
+If content elements are placed inside a container or gridelement, the indexer
+will index these content elements as well, even if they are nested inside other
+containers or gridelements.
+If a container is inserted via the "shortcut" content element on another
+page, the content will be indexed as well (after version 6.3.0), but not
+recursively.
+
 Abstract
 ========
 

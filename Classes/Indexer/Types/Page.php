@@ -562,10 +562,24 @@ class Page extends IndexerBase
 
                 $queryBuilder = Db::getQueryBuilder($tableName);
                 $where = [];
-                $where[] = $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                );
+
+                if (ExtensionManagementUtility::isLoaded('container')) {
+                    $where[] = $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'tx_container_parent',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                        )
+                    );
+                } else {
+                    $where[] = $queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                    );
+                }
                 $where[] = $this->whereClauseForCType;
 
                 $fieldArray = GeneralUtility::trimExplode(',', $fields);
