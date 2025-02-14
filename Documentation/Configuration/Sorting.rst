@@ -39,8 +39,10 @@ If you want other sorting options than relevance, date or title, you will have t
 * Write your own indexer or extend an existing one that fills your new field during the indexing process.
 
 .. note::
-   If you add an "additional field" to the index **every** indexer must set this field. So make sure you use the
-   provided hooks for every indexer you use.
+   If you add an "additional field" to the index **every** indexer must set this
+   field. So make sure you use the provided hooks for every indexer you use.
+   Additional fields cannot be integers, they must be strings.
+   See https://github.com/tpwd/ke_search/issues/248
 
 You can find an example in the extension ke_search_hooks: https://extensions.typo3.org/extension/ke_search_hooks
 
