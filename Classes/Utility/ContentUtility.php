@@ -61,4 +61,19 @@ class ContentUtility
 
         return $content;
     }
+
+    public static function addHiddenContent(array &$additionalFields, string $hiddenContent)
+    {
+        $hiddenContent = trim($hiddenContent);
+        if (empty($hiddenContent)) {
+            return;
+        }
+        if (!isset($additionalFields['hidden_content'])) {
+            $additionalFields['hidden_content'] = '';
+        }
+        if (!empty($additionalFields['hidden_content'])) {
+            $additionalFields['hidden_content'] .= ' ';
+        }
+        $additionalFields['hidden_content'] .= $hiddenContent;
+    }
 }

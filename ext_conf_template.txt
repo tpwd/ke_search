@@ -16,6 +16,9 @@ allowEmptySearch = 1
 # cat=basic//60; type=string; label=Additional word characters:Characters which should be treated as word characters instead of word delimiters, e.g. if you want to search for serial numbers which have dots in it. Does not support unicode (e.g. UTF-8). Does not support space character. Example: ".-," (without the quotes).
 additionalWordCharacters =
 
+# cat=basic//70; type=boolean; label=Index tag titles as hidden content: If activated, tag titles will be indexed as hidden content. This is useful if you want to search for the titles of filter options in the fulltext search. For example if you have a filter option "Sweatshirt" and you want to find all products with this filter option, you can search for "Sweatshirt" in the fulltext search and all products with this filter option will be found.
+indexTagTitlesAsHiddenContent = 1
+
 # cat=notification//10; type=boolean; label= Send notification when finished: If activated, a notification email will be sent when indexing process is finished in CLI / scheduler mode.
 finishNotification = 0
 

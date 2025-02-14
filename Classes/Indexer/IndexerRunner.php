@@ -24,12 +24,15 @@ namespace Tpwd\KeSearch\Indexer;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Tpwd\KeSearch\Domain\Repository\FilterOptionRepository;
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
+use Tpwd\KeSearch\Utility\ContentUtility;
+use Tpwd\KeSearch\Utility\FilterOptionUtility;
 use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Log\Logger;
@@ -83,6 +86,7 @@ class IndexerRunner
     private IndexRepository $indexRepository;
     private IndexerStatusService $indexerStatusService;
     private ?SymfonyStyle $io = null;
+    private FilterOptionRepository $filterOptionRepository;
 
     /**
      * Constructor of this class
@@ -90,11 +94,13 @@ class IndexerRunner
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         IndexRepository $indexRepository,
-        IndexerStatusService $indexerStatusService
+        IndexerStatusService $indexerStatusService,
+        FilterOptionRepository $filterOptionRepository
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->indexRepository = $indexRepository;
         $this->indexerStatusService = $indexerStatusService;
+        $this->filterOptionRepository = $filterOptionRepository;
 
         // get extension configuration array
         $this->extConf = SearchHelper::getExtConf();
@@ -769,19 +775,33 @@ class IndexerRunner
         // remove duplicates from tags
         $tags = StringUtility::uniqueList($tags);
 
-        // Get additional content for additional word characters
-        $additionalContent = AdditionalWordCharactersUtility::getAdditionalContent($content);
-        if (!empty($additionalContent)) {
-            if (!isset($additionalFields['hidden_content'])) {
-                $additionalFields['hidden_content'] = '';
+        // Add additional content for additional word characters
+        ContentUtility::addHiddenContent(
+            $additionalFields,
+            AdditionalWordCharactersUtility::getAdditionalContent($content)
+        );
+
+        // Index the titles of filter options (aka tags) as hidden content by processing the assigned tags
+        // (comma-separated list of strings) and retrieving the title of each tag, respect the language of the
+        // current index record
+        if (($this->extConf['indexTagTitlesAsHiddenContent'] ?? true) && !empty($tags)) {
+            $tagTitles = [];
+            $plainTags = FilterOptionUtility::getPlainTagsFromIndexRecordTags($tags);
+            if (!empty($plainTags)) {
+                foreach ($plainTags as $plainTag) {
+                    $filterOptions = $this->filterOptionRepository->findByTagAndLanguage($plainTag, $language);
+                    if (!empty($filterOptions)) {
+                        foreach ($filterOptions as $filterOption) {
+                            $tagTitles[] = $filterOption['title'];
+                        }
+                    }
+                }
             }
-            if (!empty($additionalFields['hidden_content'])) {
-                $additionalFields['hidden_content'] .= ' ';
+            if (!empty($tagTitles)) {
+                ContentUtility::addHiddenContent($additionalFields, implode(' ', $tagTitles));
             }
-            $additionalFields['hidden_content'] .= $additionalContent;
         }
 
-        $table = 'tx_kesearch_index';
         $fieldValues = $this->createFieldValuesForIndexing(
             $storagePid,
             $title,
