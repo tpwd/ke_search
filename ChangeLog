@@ -7,6 +7,7 @@ Upcoming version
 [BUGFIX]  Prevent undefined array key in page indexer. Thanks to Markus Hackel. https://github.com/tpwd/ke_search/pull/283
 [TASK]    Migrate usage of StandaloneView to ViewFactoryInterface. https://github.com/tpwd/ke_search/issues/249
 [TASK]    Index content elements inside a container element referenced via a shortcut. https://github.com/tpwd/ke_search/issues/246
+[TASK]    Report error if no directories have been configured for file indexing. https://github.com/tpwd/ke_search/issues/281
 [DOCS]    Add note about additional fields type (must be string). https://github.com/tpwd/ke_search/issues/248
 
 Version 6.3.0, 24 January 2025

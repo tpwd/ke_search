@@ -95,6 +95,13 @@ class File extends IndexerBase
     {
         $directories = $this->indexerConfig['directories'];
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
+        if (empty($directoryArray)) {
+            $errorMessage = 'No directories defined for indexing.';
+            // @extensionScannerIgnoreLine
+            $this->pObj->logger->error($errorMessage);
+            $this->addError($errorMessage);
+            return $errorMessage;
+        }
 
         if ($this->indexerConfig['fal_storage'] > 0) {
             /* @var $storageRepository StorageRepository */
