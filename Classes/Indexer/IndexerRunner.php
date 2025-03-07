@@ -580,6 +580,7 @@ class IndexerRunner
         $content = '<div class="alert alert-notice">';
         $content .= chr(10) . '<h3>Cleanup</h3>' . chr(10);
         if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
+            $this->indexerStatusService->setCleanupStatus(true);
             $this->logger->info('Cleanup started');
             $startMicrotime = microtime(true);
             $table = 'tx_kesearch_index';
@@ -607,6 +608,8 @@ class IndexerRunner
                 ->executeQuery()
                 ->fetchNumeric()[0];
 
+            $this->indexerStatusService->setCleanupStatus(true, $count);
+
             $queryBuilder
                 ->delete($table)
                 ->where($where)
@@ -621,6 +624,7 @@ class IndexerRunner
             // calculate duration of indexing process
             $duration = ceil((microtime(true) - $startMicrotime) * 1000);
             $content .= 'Cleanup process took ' . $duration . ' ms.' . "\n";
+            $this->indexerStatusService->setCleanupStatus(false);
         } else {
             $message = 'Skipping cleanup in incremental mode.';
             $this->logger->info($message);

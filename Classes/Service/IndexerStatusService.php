@@ -38,6 +38,27 @@ class IndexerStatusService
         return SearchHelper::getIndexerStartTime();
     }
 
+    public function setCleanupStatus(bool $cleanupInProgress, int $count = 0): void
+    {
+        $indexerStatus = $this->getIndexerStatus();
+        if ($cleanupInProgress) {
+            $statusText = 'Cleaning up';
+            if ($count > 0) {
+                $statusText .= ' (' . $count . ' records)';
+            }
+            $indexerStatus['indexers'][-1] = [
+                'status' => self::INDEXER_STATUS_RUNNING,
+                'statusText' => $statusText,
+            ];
+        } else {
+            $indexerStatus['indexers'][-1] = [
+                'status' => self::INDEXER_STATUS_FINISHED,
+                'statusText' => 'Cleanup finished',
+            ];
+        }
+        $this->setIndexerStatus($indexerStatus);
+    }
+
     public function startIndexerTime(): void
     {
         $this->registry->set(
