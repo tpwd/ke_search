@@ -1187,7 +1187,7 @@ class Page extends IndexerBase
         // assign categories as generic tags (eg. "syscat123")
         SearchHelper::makeSystemCategoryTags($tags, $metadata['uid'], 'sys_file_metadata');
 
-        if ($metadata['title']) {
+        if ($metadata['title'] ?? null) {
             $content = $metadata['title'] . "\n" . $content;
         }
 
