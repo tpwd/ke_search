@@ -19,7 +19,9 @@ $txKesearchFilteroptionsTCA = [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
-        'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_filteroptions.gif',
+        'typeicon_classes' => [
+            'default' => 'form-checkbox',
+        ],
         'searchFields' => 'title,tag,slug',
     ],
     'columns' => [

@@ -18,7 +18,15 @@ $txKesearchIndexerconfig = [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
-        'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_indexerconfig.gif',
+        'typeicon_column' => 'type',
+        'typeicon_classes' => [
+            'default' => 'apps-pagetree-page-default',
+            'news' => 'content-news',
+            'tt_address' => 'content-user',
+            'tt_content' => 'content-inside-text-img-left',
+            'file' => 'apps-filetree-folder',
+            'tt_news' => 'content-news',
+        ],
         'searchFields' => 'title',
     ],
     'columns' => [
@@ -49,32 +57,32 @@ $txKesearchIndexerconfig = [
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.0',
                         'value' => 'page',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_0.gif',
+                        'icon' => 'apps-pagetree-page-default',
                     ],
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.12',
                         'value' => 'news',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_12.gif',
+                        'icon'  => 'content-news',
                     ],
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.5',
                         'value' => 'tt_address',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_5.gif',
+                        'icon'  => 'content-user',
                     ],
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.6',
                         'value' => 'tt_content',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_6.gif',
+                        'icon'  => 'content-inside-text-img-left',
                     ],
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.7',
                         'value' => 'file',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_7.gif',
+                        'icon'  => 'apps-filetree-folder',
                     ],
                     [
                         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.type.I.2',
                         'value' => 'tt_news',
-                        'icon'  => 'EXT:ke_search/Resources/Public/Icons/types_backend/selicon_tx_kesearch_indexerconfig_type_2.gif',
+                        'icon'  => 'content-news',
                     ],
                 ],
                 'itemsProcFunc' => 'Tpwd\KeSearch\Lib\Items->fillIndexerConfig',

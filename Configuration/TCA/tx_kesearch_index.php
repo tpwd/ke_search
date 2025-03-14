@@ -17,7 +17,9 @@ $txKesearchIndex = [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
-        'iconfile' => 'EXT:ke_search/Resources/Public/Icons/table_icons/icon_tx_kesearch_index.gif',
+        'typeicon_classes' => [
+            'default' => 'content-database',
+        ],
     ],
     'columns' => [
         'starttime' => [
