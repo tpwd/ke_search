@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.4.0, 14 March 2025
 [FEATURE] Index tag titles as hidden content, https://github.com/tpwd/ke_search/issues/183
 [FEATURE] Set default sorting direction for "customranking" to "desc". Thanks to Markus Hackel. https://github.com/tpwd/ke_search/issues/279
 [BUGFIX]  Fix typo in constants.typoscript filename. Thanks to nebrot. https://github.com/tpwd/ke_search/commit/e762364111a78ea8b2378b634ca7cf77d3ae0903#r151745378
