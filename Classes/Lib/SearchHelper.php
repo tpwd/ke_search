@@ -385,7 +385,7 @@ class SearchHelper
         // If an alternative search word parameter is given, replace the default search word parameter
         $searchWordParameter = SearchHelper::getSearchWordParameter();
         if ($searchWordParameter != 'tx_kesearch_pi1[sword]' && isset($piVars['sword'])) {
-            $linkconf['additionalParams'] .= '&' . $searchWordParameter . '=' . $piVars['sword'];
+            $linkconf['additionalParams'] .= '&' . $searchWordParameter . '=' . urlencode($piVars['sword']);
             unset($piVars['sword']);
         }
 
