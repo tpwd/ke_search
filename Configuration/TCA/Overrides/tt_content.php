@@ -68,9 +68,9 @@ foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
             --palette--;;general,
             --palette--;;headers,
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.plugin,
-            pi_flexform,
-            pages, recursive,
-        --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+            pi_flexform,'
+        . ($pluginName != 'ke_search_pi2' ? 'pages, recursive,' : '')
+        . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
             --palette--;;frames,
             --palette--;;appearanceLinks,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
