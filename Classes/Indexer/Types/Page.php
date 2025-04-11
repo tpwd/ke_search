@@ -848,26 +848,23 @@ class Page extends IndexerBase
         // joining the tt_content table to itself does not work either, since then all content elements which
         // are not located inside a gridelement won't be indexed then.
         if (ExtensionManagementUtility::isLoaded('gridelements') && $ttContentRow['tx_gridelements_container']) {
-            $queryBuilder = Db::getQueryBuilder('tt_content');
-            $gridelementsContainer = $queryBuilder
-                ->select(...['colPos', 'hidden'])
-                ->from('tt_content')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($ttContentRow['tx_gridelements_container'])
-                    )
-                )
-                ->executeQuery()
-                ->fetchAssociative();
-
-            // If there's no gridelement container found, it means it is hidden or deleted or time restricted.
+            // Loop upwards through the grid elements hierarchy until we find a grid element
+            // which is not inside another grid element (tx_gridelements_container = 0).
+            // If there's no element found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
-            if ($gridelementsContainer === false) {
+            $tempRow = $ttContentRow;
+            while (!empty($tempRow['tx_gridelements_container'])) {
+                $contentRepository = GeneralUtility::makeInstance(TtContentRepository::class);
+                $tempRow = $contentRepository->findByUid($tempRow['tx_gridelements_container']);
+            }
+
+            // If there's no grid element found, it means it is hidden or deleted or time restricted.
+            // In this case, skip the content element.
+            if ($tempRow === false) {
                 $contentElementShouldBeIndexed = false;
             } else {
-                // If the colPos of the gridelement container is -2, it is not on the page, so skip it.
-                if ($gridelementsContainer['colPos'] === -2) {
+                // If the colPos of the grid element is -2, it is not on the page, so skip it.
+                if ($tempRow['colPos'] === -2) {
                     $contentElementShouldBeIndexed = false;
                 }
             }
