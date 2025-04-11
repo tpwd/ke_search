@@ -30,6 +30,7 @@ namespace Tpwd\KeSearch\Indexer\Types;
  */
 use Tpwd\KeSearch\Domain\Repository\ContentRepository;
 use Tpwd\KeSearch\Domain\Repository\PageRepository;
+use Tpwd\KeSearch\Domain\Repository\TtContentRepository;
 use Tpwd\KeSearch\Indexer\IndexerBase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
@@ -874,22 +875,16 @@ class Page extends IndexerBase
 
         // If EXT:container is installed, check if the content element sits inside a container element
         if (ExtensionManagementUtility::isLoaded('container') && $ttContentRow['tx_container_parent']) {
-            $queryBuilder = Db::getQueryBuilder('tt_content');
-            $container = $queryBuilder
-                ->select('uid')
-                ->from('tt_content')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($ttContentRow['tx_container_parent'])
-                    )
-                )
-                ->executeQuery()
-                ->fetchAssociative();
-
-            // If there's no container found, it means it is hidden or deleted or time restricted.
+            // Loop upwards through the container hierarchy until we find a container element
+            // which is not inside another container element (tx_container_parent = 0).
+            // If there's no container element found, it means it is hidden or deleted or time restricted.
             // In this case, skip the content element.
-            $contentElementShouldBeIndexed = !($container === false);
+            $tempRow = $ttContentRow;
+            while (!empty($tempRow['tx_container_parent'])) {
+                $contentRepository = GeneralUtility::makeInstance(TtContentRepository::class);
+                $tempRow = $contentRepository->findByUid($tempRow['tx_container_parent']);
+            }
+            $contentElementShouldBeIndexed = !($tempRow === false);
         }
 
         if (!$this->recordIsLive($ttContentRow)) {

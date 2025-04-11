@@ -1,8 +1,9 @@
 ChangeLog
 
 Upcoming version
-[TASK]    Hide unnecessary "pages" and "recursive" fields in result list plugin settings
 [BUGFIX]  Query in search link breaks if non-default search word parameter contains an &. Thanks to jschlier. https://github.com/tpwd/ke_search/issues/289
+[BUGFIX]  Nested containers children will get indexed even if parent container is deactivated. Thanks to hotbytes-dev. https://github.com/tpwd/ke_search/issues/286
+[TASK]    Hide unnecessary "pages" and "recursive" fields in result list plugin settings
 
 Version 6.4.0, 14 March 2025
 [FEATURE] Index tag titles as hidden content, https://github.com/tpwd/ke_search/issues/183
