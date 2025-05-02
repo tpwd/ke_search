@@ -4,6 +4,7 @@ Upcoming version
 [BUGFIX]  Query in search link breaks if non-default search word parameter contains an &. Thanks to jschlier. https://github.com/tpwd/ke_search/issues/289
 [BUGFIX]  Nested containers children will get indexed even if parent container is deactivated. Thanks to hotbytes-dev. https://github.com/tpwd/ke_search/issues/286
 [BUGFIX]  Content elements are indexed in hidden nested gridelements. https://github.com/tpwd/ke_search/issues/176
+[BUGFIX]  Ensure pages without content are removed in incremental indexing, https://github.com/tpwd/ke_search/issues/292
 [TASK]    Hide unnecessary "pages" and "recursive" fields in result list plugin settings
 
 Version 6.4.0, 14 March 2025

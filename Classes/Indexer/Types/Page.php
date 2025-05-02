@@ -742,6 +742,17 @@ class Page extends IndexerBase
             $this->counterWithoutContent++;
         }
 
+        // In incremental mode make sure that the page is removed from the index if it does not contain content.
+        // Loop through the languages and check if there is content for that language on this page.
+        // If not, remove the corresponding record from the index.
+        if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+            foreach ($this->sysLanguages as $sysLang) {
+                if (isset($this->cachedPageRecords[$sysLang['uid']][$uid]) && !isset($pageContent[$sysLang['uid']])) {
+                    $this->removeRecordFromIndex('page', $this->cachedPageRecords[$sysLang['uid']][$uid]);
+                }
+            }
+        }
+
         // make it possible to modify the indexerConfig via hook
         $additionalFields = [];
         $indexerConfig = $this->indexerConfig;
