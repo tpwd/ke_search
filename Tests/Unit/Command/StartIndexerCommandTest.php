@@ -42,7 +42,7 @@ class StartIndexerCommandTest extends TestCase
         $this->indexerRunnerMock
             ->expects(self::once())
             ->method('startIndexing')
-            ->with(true, [], 'CLI', $expectedMode);
+            ->with(true, [], 'COMMAND', $expectedMode);
 
         // As we test here only the correct handling of the mode the value
         // of the indexerRunner method is of no interest.
@@ -104,7 +104,7 @@ class StartIndexerCommandTest extends TestCase
         $this->indexerRunnerMock
             ->expects(self::once())
             ->method('startIndexing')
-            ->with(true, [], 'CLI', IndexerBase::INDEXING_MODE_FULL)
+            ->with(true, [], 'COMMAND', IndexerBase::INDEXING_MODE_FULL)
             ->willReturn('You can\'t start the indexer twice. Please wait while first indexer process is currently running');
 
         $this->indexerRunnerMock
@@ -131,7 +131,7 @@ class StartIndexerCommandTest extends TestCase
         $this->indexerRunnerMock
             ->expects(self::once())
             ->method('startIndexing')
-            ->with(true, [], 'CLI', IndexerBase::INDEXING_MODE_FULL)
+            ->with(true, [], 'COMMAND', IndexerBase::INDEXING_MODE_FULL)
             ->willReturn($indexerResult);
 
         $this->indexerRunnerMock
