@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix potential null return in preg_replace usage
+
 Version 6.4.1, 2 May 2025
 [BUGFIX]  Query in search link breaks if non-default search word parameter contains an &. Thanks to jschlier. https://github.com/tpwd/ke_search/issues/289
 [BUGFIX]  Nested containers children will get indexed even if parent container is deactivated. Thanks to hotbytes-dev. https://github.com/tpwd/ke_search/issues/286

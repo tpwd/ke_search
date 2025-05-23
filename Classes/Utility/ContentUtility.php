@@ -46,7 +46,7 @@ class ContentUtility
         // remove script and style tags
         // thanks to the wordpress project
         // https://core.trac.wordpress.org/browser/tags/5.3/src/wp-includes/formatting.php#L5178
-        $content = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $content);
+        $content = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $content) ?? '';
 
         // remove other tags
         $content = strip_tags($content);
