@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class IndexerRunner
 {
+    public const CALLED_FROM_COMMAND = 'COMMAND';
     public $counter;
     public $extConf; // extension configuration
     public $extConfPremium = []; // extension configuration of ke_search_premium, if installed
@@ -119,11 +120,11 @@ class IndexerRunner
      * function startIndexing
      * @param $verbose boolean if set, information about the indexing process is returned, otherwise processing is quiet
      * @param $_unused array unused parameter, kept for compatibility
-     * @param $mode string "CLI" if called from command line, otherwise empty
+     * @param $calledFrom string self::CALLED_FROM_COMMAND if called from the command (not from the backend module), otherwise empty
      * @param int $indexingMode integer full or incremental indexing (possible values: IndexerBase::INDEXING_MODE_FULL or IndexerBase::INDEXING_MODE_INCREMENTAL)
      * @return string output is done only if param $verbose is true
      */
-    public function startIndexing($verbose = true, array $_unused = [], $mode = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
+    public function startIndexing($verbose = true, array $_unused = [], string $calledFrom = '', $indexingMode = IndexerBase::INDEXING_MODE_FULL)
     {
         $content = '<div class="row" id="kesearch-indexer-report"><div class="col-md-8">';
         $content .= '<div class="alert alert-info">';
@@ -290,8 +291,8 @@ class IndexerRunner
         // create plaintext report
         $plaintextReport = $this->createPlaintextReport($content);
 
-        // send notification in CLI mode
-        if ($mode == 'CLI') {
+        // send notification if called from the command (not from the backend module)
+        if ($calledFrom == self::CALLED_FROM_COMMAND) {
             // send finishNotification
             $isValidEmail = GeneralUtility::validEmail($this->extConf['notificationRecipient']);
             if ($this->extConf['finishNotification'] && $isValidEmail) {

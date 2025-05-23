@@ -91,7 +91,7 @@ class StartIndexerCommand extends Command implements LoggerAwareInterface
         $this->logger->notice('Indexer process started by command.');
 
         $this->indexerRunner->setConsoleIo($io);
-        $indexerResponse = $this->indexerRunner->startIndexing(true, [], 'CLI', $indexingMode);
+        $indexerResponse = $this->indexerRunner->startIndexing(true, [], IndexerRunner::CALLED_FROM_COMMAND, $indexingMode);
         $indexerResponse = $this->indexerRunner->createPlaintextReport($indexerResponse);
 
         if (str_contains($indexerResponse, 'You can\'t start the indexer twice')) {

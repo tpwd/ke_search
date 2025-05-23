@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Fix potential null return in preg_replace usage
+[TASK]    Refactor indexer command to use explicit call source constant, https://github.com/tpwd/ke_search/issues/99
 
 Version 6.4.1, 2 May 2025
 [BUGFIX]  Query in search link breaks if non-default search word parameter contains an &. Thanks to jschlier. https://github.com/tpwd/ke_search/issues/289
