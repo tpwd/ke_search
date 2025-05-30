@@ -24,6 +24,7 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Types\File;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\AttachedFilesService;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -97,6 +98,7 @@ class IndexerBase
     protected IndexerStatusService $indexerStatusService;
     protected IndexRepository $indexRepository;
     protected ResourceFactory $resourceFactory;
+    protected AttachedFilesService $attachedFilesService;
 
     /**
      * Constructor of this object
@@ -111,6 +113,7 @@ class IndexerBase
         $this->indexerStatusService = GeneralUtility::makeInstance(IndexerStatusService::class);
         $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $this->attachedFilesService = GeneralUtility::makeInstance(AttachedFilesService::class);
     }
 
     /**

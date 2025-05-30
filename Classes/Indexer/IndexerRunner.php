@@ -847,7 +847,8 @@ class IndexerRunner
                 $fieldValues['type'],
                 $fieldValues['hash'],
                 $fieldValues['pid'],
-                $fieldValues['sortdate']
+                $fieldValues['sortdate'],
+                $fieldValues['language']
             );
         } else {
             $recordExists = $this->checkIfRecordWasIndexed(
@@ -1062,7 +1063,7 @@ class IndexerRunner
      * @param int $sortdate contains the file modification time
      * @return bool true if record was found, false if not
      */
-    public function checkIfFileWasIndexed(string $type, string $hash, int $pid, int $sortdate): bool
+    public function checkIfFileWasIndexed(string $type, string $hash, int $pid, int $sortdate, int $language): bool
     {
         // Query DB if record already exists
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
@@ -1085,6 +1086,10 @@ class IndexerRunner
                 $queryBuilder->expr()->eq(
                     'sortdate',
                     $queryBuilder->createNamedParameter($sortdate, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'language',
+                    $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();

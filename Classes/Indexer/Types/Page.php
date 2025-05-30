@@ -44,12 +44,9 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository as CorePageRepository;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\DataProcessing\FilesProcessor;
 
 define('DONOTINDEX', -3);
 
@@ -107,25 +104,6 @@ class Page extends IndexerBase
      * Name of indexed elements. Will be overwritten in content element indexer.
      */
     public $indexedElementsName = 'pages';
-
-    /* @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-    public $fileRepository;
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $cObj;
-
-    /**
-     * @var FilesProcessor
-     */
-    public $filesProcessor;
-
-    /**
-     * Files Processor configuration
-     * @var array
-     */
-    public $filesProcessorConfiguration = [];
 
     /**
      * counter for how many pages we have indexed
@@ -198,16 +176,6 @@ class Page extends IndexerBase
                 $this->sysLanguages[$key] = $lang;
             }
         }
-
-        // make file repository
-        /* @var $this ->fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-        $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-
-        // make cObj
-        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-
-        // make filesProcessor
-        $this->filesProcessor = GeneralUtility::makeInstance(FilesProcessor::class);
     }
 
     /**
@@ -695,7 +663,7 @@ class Page extends IndexerBase
                 foreach ($contentFields as $field) {
                     $fileObjects = array_merge(
                         $fileObjects,
-                        $this->findAttachedFiles($ttContentRow),
+                        $this->attachedFilesService->findAttachedFiles($ttContentRow, $this->indexerConfig),
                         $this->additionalContentService->findLinkedFiles($ttContentRow, $field)
                     );
                     $content .= $this->getContentFromContentElement($ttContentRow, $field) . "\n";
@@ -1065,8 +1033,10 @@ class Page extends IndexerBase
                         $this->pObj->logger->warning($errorMessage);
                         $this->addError($errorMessage);
                     } else {
-                        if ($fileIndexerObject->fileInfo->setFile($fileObject)) {
-                            if (($content = $fileIndexerObject->getFileContent($filePath))) {
+                        $isValidFile = $fileIndexerObject->fileInfo->setFile($fileObject);
+                        if ($isValidFile) {
+                            $content = $fileIndexerObject->getFileContent($filePath);
+                            if ($content !== false) {
                                 $this->storeFileContentToIndex(
                                     $fileObject,
                                     $content,
@@ -1087,43 +1057,6 @@ class Page extends IndexerBase
                 }
             }
         }
-    }
-
-    /**
-     * Finds files attached to the content elements
-     * returns them as file reference objects array
-     * @author Christian Bülter
-     * @since 24.09.13
-     * @param array $ttContentRow content element
-     * @return array
-     */
-    public function findAttachedFiles($ttContentRow)
-    {
-        // Set current data
-        // @extensionScannerIgnoreLine
-        $this->cObj->data = $ttContentRow;
-
-        // Get files by filesProcessor
-        $processedData = [];
-
-        // set tt_content fields used for file references
-        if (empty($this->indexerConfig['file_reference_fields'])) {
-            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration(['media']);
-        } else {
-            $fileReferenceFields = GeneralUtility::trimExplode(
-                ',',
-                $this->indexerConfig['file_reference_fields']
-            );
-            $filesProcessorConfiguration = $this->setFilesProcessorConfiguration($fileReferenceFields);
-        }
-
-        $fileReferenceObjects = [];
-        foreach ($filesProcessorConfiguration as $configuration) {
-            $processedData = $this->filesProcessor->process($this->cObj, [], $configuration, $processedData);
-            $fileReferenceObjects = array_merge($fileReferenceObjects, $processedData['files']);
-        }
-
-        return $fileReferenceObjects;
     }
 
     /**
@@ -1289,38 +1222,6 @@ class Page extends IndexerBase
         }
 
         return $content;
-    }
-
-    /**
-     * Set the $filesProcessorConfiguration according to the Page-Indexer-Configuration
-     *
-     * @param array $fileReferenceFields
-     * @return array
-     */
-    protected function setFilesProcessorConfiguration(array $fileReferenceFields): array
-    {
-        $filesProcessorConfiguration = [];
-        foreach ($fileReferenceFields as $fileReferenceField) {
-            $filesProcessorConfiguration[] = [
-                'references.' => [
-                    'fieldName' => $fileReferenceField,
-                    'table' => 'tt_content',
-                ],
-                'collections.' => [
-                    'field' => 'file_collections',
-                ],
-                'sorting.' => [
-                    'field ' => 'filelink_sorting',
-                ],
-                'as' => 'files',
-            ];
-        }
-        return $filesProcessorConfiguration;
-    }
-
-    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
-    {
-        $this->cObj = $cObj;
     }
 
     protected function getAdditionalContentService(): AdditionalContentService

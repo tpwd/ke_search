@@ -49,7 +49,7 @@ class Fileinfo
      * @param string|File|FileReference $file
      * @return bool is valid file
      */
-    public function setFile($file)
+    public function setFile($file): bool
     {
         return $this->setFileInformations($file);
     }
@@ -60,7 +60,7 @@ class Fileinfo
      * @param $file
      * @return bool is valid file?
      */
-    protected function setFileInformations($file)
+    protected function setFileInformations($file): bool
     {
         $this->fileInfo = []; // reset previously information to have a cleaned object
         if ($file instanceof File) {
