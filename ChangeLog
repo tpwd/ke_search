@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Fix potential null return in preg_replace usage
+[BUGFIX]  Fix wrong highlighting of HTML tags. Thanks to CodeKapitän. https://github.com/tpwd/ke_search/issues/298
 [TASK]    Refactor indexer command to use explicit call source constant, https://github.com/tpwd/ke_search/issues/99
 [TASK]    Respect language for linked files and refactor attached files handling, https://github.com/tpwd/ke_search/issues/82
 
