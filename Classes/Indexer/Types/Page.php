@@ -649,7 +649,7 @@ class Page extends IndexerBase
 
                 // index header
                 // add header only if not set to "hidden", do not add header of html element
-                if ($ttContentRow['header_layout'] != 100 && $ttContentRow['CType'] != 'html') {
+                if ($this->contentElementsHeaderShouldBeIndexed($ttContentRow)) {
                     $content .= strip_tags($ttContentRow['header']) . "\n";
                 }
 
@@ -880,6 +880,18 @@ class Page extends IndexerBase
         }
 
         return $contentElementShouldBeIndexed;
+    }
+
+    /**
+     * Checks if the header field of the given row from tt_content should really be indexed 
+     * by checking if header_layout is not hidden and CType is not html.
+     *
+     * @param $ttContentRow
+     * @return bool
+     */
+    public function contentElementsHeaderShouldBeIndexed($ttContentRow)
+    {
+        return $ttContentRow['header_layout'] != 100 && $ttContentRow['CType'] != 'html';
     }
 
     /**
