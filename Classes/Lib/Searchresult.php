@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -223,7 +224,7 @@ class Searchresult
                 } else {
                     $pattern = '/\b(' . $word . ')/iu';
                 }
-                $content = preg_replace($pattern, $highlightedWord, $content);
+                $content = ContentUtility::replaceInText($pattern, $highlightedWord, $content);
             }
         }
         return $content;

@@ -76,4 +76,23 @@ class ContentUtility
         }
         $additionalFields['hidden_content'] .= $hiddenContent;
     }
+
+    /**
+     * Replaces a pattern in the text content, but only in the text parts, not in the HTML tags.
+     *
+     * @param string $pattern Regular expression pattern to match
+     * @param string $replace Replacement string
+     * @param string $content The content in which to perform the replacement
+     * @return string
+     */
+    public static function replaceInText(string $pattern, string $replace, string $content): string
+    {
+        $parts = preg_split('/(<[^>]+>)/', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+        foreach ($parts as $i => $part) {
+            if ($i % 2 === 0) {
+                $parts[$i] = preg_replace($pattern, $replace, $part);
+            }
+        }
+        return implode('', $parts);
+    }
 }
