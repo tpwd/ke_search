@@ -883,7 +883,7 @@ class Page extends IndexerBase
     }
 
     /**
-     * Checks if the header field of the given row from tt_content should really be indexed 
+     * Checks if the header field of the given row from tt_content should really be indexed
      * by checking if header_layout is not hidden and CType is not html.
      *
      * @param $ttContentRow
