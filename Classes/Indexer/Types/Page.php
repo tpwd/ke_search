@@ -891,7 +891,21 @@ class Page extends IndexerBase
      */
     public function contentElementsHeaderShouldBeIndexed($ttContentRow)
     {
-        return $ttContentRow['header_layout'] != 100 && $ttContentRow['CType'] != 'html';
+        $contentElementsHeaderShouldBeIndexed = $ttContentRow['header_layout'] != 100 && $ttContentRow['CType'] != 'html';
+
+        // hook to add custom check if this content elements header should be indexed
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementsHeaderShouldBeIndexed'] ?? null)) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementsHeaderShouldBeIndexed'] as $_classRef) {
+                $_procObj = GeneralUtility::makeInstance($_classRef);
+                $contentElementsHeaderShouldBeIndexed = $_procObj->contentElementsHeaderShouldBeIndexed(
+                    $ttContentRow,
+                    $contentElementsHeaderShouldBeIndexed,
+                    $this
+                );
+            }
+        }
+
+        return $contentElementsHeaderShouldBeIndexed;
     }
 
     /**
