@@ -136,6 +136,7 @@ CREATE TABLE tx_kesearch_indexerconfig (
 	fileext tinytext,
 	content_fields text,
 	file_reference_fields text,
+	file_collections text,
 	filteroption int(11) DEFAULT '0' NOT NULL,
 	fal_storage int(11) DEFAULT '0' NOT NULL,
 	contenttypes text,

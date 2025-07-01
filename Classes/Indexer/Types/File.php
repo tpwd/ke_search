@@ -32,11 +32,13 @@ use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
@@ -95,23 +97,33 @@ class File extends IndexerBase
     {
         $directories = $this->indexerConfig['directories'];
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
-        if (empty($directoryArray)) {
-            $errorMessage = 'No directories defined for indexing.';
+
+        $fileCollections = $this->indexerConfig['file_collections'];
+
+        if (empty($directoryArray) && empty($fileCollections)) {
+            $errorMessage = 'No directories or file collections defined for indexing.';
             // @extensionScannerIgnoreLine
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
             return $errorMessage;
         }
 
-        if ($this->indexerConfig['fal_storage'] > 0) {
-            /* @var $storageRepository StorageRepository */
-            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
+        $files = [];
+        if (count($directoryArray)) {
+            if ($this->indexerConfig['fal_storage'] > 0) {
+                /* @var $storageRepository StorageRepository */
+                $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+                $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
-            $files = [];
-            $this->getFilesFromFal($files, $directoryArray);
-        } else {
-            $files = $this->getFilesFromDirectories($directoryArray);
+
+                $this->getFilesFromFal($files, $directoryArray);
+            } else {
+                $files = $this->getFilesFromDirectories($directoryArray);
+            }
+        }
+
+        if (!empty($fileCollections)) {
+            $this->getFilesFromFileCollections($files, $fileCollections);
         }
 
         $counter = $this->extractContentAndSaveToIndex($files);
@@ -238,6 +250,27 @@ class File extends IndexerBase
             return $files;
         }
         return [];
+    }
+
+    public function getFilesFromFileCollections(&$files, $fileCollections): void
+    {
+        // Boot up the filecollector
+        $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
+
+        // Extract the IDs of file collections
+        $collectionsArray = GeneralUtility::trimExplode(',', $fileCollections, true);
+
+        // Collect the files associated
+        $fileCollector->addFilesFromFileCollections($collectionsArray);
+
+        // If the file collection "type" is "static" then file references are returned
+        $collectionFiles = array_map(
+            fn ($item) => ($item instanceof FileReference) ? $item->getOriginalFile() : $item,
+            $fileCollector->getFiles()
+        );
+
+        // Get the files & index them
+        $files = array_merge($files, $collectionFiles);
     }
 
     /**
