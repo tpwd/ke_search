@@ -50,6 +50,9 @@ modifyContentIndexEntry
 contentElementShouldBeIndexed
     Use this hook to add a custom check if a specific content element should be indexed.
 
+contentElementsHeaderShouldBeIndexed
+    Use this hook to add a custom check if the header of a specific content element should be indexed. Introduced in version 6.5.0. https://github.com/tpwd/ke_search/pull/297
+
 initials
 	Change any variable while initializing the plugin.
 
