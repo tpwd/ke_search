@@ -169,8 +169,8 @@ class Page extends IndexerBase
         /** @var TranslationConfigurationProvider $translationProvider */
         $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $startingPoints = [];
-        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['startingpoints_recursive'], true);
-        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['single_pages'], true);
+        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['startingpoints_recursive'] ?? '', true);
+        $startingPoints += GeneralUtility::trimExplode(',', $this->indexerConfig['single_pages'] ?? '', true);
         foreach ($startingPoints as $startingPoint) {
             foreach ($translationProvider->getSystemLanguages((int)$startingPoint) as $key => $lang) {
                 $this->sysLanguages[$key] = $lang;
