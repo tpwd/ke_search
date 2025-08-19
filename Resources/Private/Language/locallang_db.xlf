@@ -255,6 +255,9 @@
 			<trans-unit id="tx_kesearch_indexerconfig.index_page_doctypes.description" resname="tx_kesearch_indexerconfig.index_page_doctypes.description" >
 				<source>Refers to the field "doktype" in the "pages" table, default: 1</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.file_collections" resname="tx_kesearch_indexerconfig.file_collections" >
+				<source>File collections</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.directories" resname="tx_kesearch_indexerconfig.directories" >
 				<source>Directories</source>
 			</trans-unit>
