@@ -154,7 +154,7 @@ class Searchphrase
                         ||
                         (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
                     ) {
-                        if ($this->pObj->extConfPremium['enableInWordSearch'] ?? false) {
+                        if (($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false)) {
                             $searchParts[$key] = '*' . trim($searchParts[$key], '*') . '*';
                         } else {
                             $searchParts[$key] = rtrim($searchParts[$key], '*') . '*';
