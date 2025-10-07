@@ -115,7 +115,6 @@ class File extends IndexerBase
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
                 $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
-
                 $this->getFilesFromFal($files, $directoryArray);
             } else {
                 $files = $this->getFilesFromDirectories($directoryArray);
@@ -265,7 +264,7 @@ class File extends IndexerBase
 
         // If the file collection "type" is "static" then file references are returned
         $collectionFiles = array_map(
-            fn ($item) => ($item instanceof FileReference) ? $item->getOriginalFile() : $item,
+            fn($item) => ($item instanceof FileReference) ? $item->getOriginalFile() : $item,
             $fileCollector->getFiles()
         );
 

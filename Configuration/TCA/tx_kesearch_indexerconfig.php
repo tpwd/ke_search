@@ -493,7 +493,7 @@ fields[] = bodytext
         'files_directory_palette' => [
             'showitem' => 'fal_storage,directories,',
         ],
-    ]
+    ],
 ];
 
 return $txKesearchIndexerconfig;
