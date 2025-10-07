@@ -264,6 +264,15 @@ $txKesearchIndexerconfig = [
                 'eval' => 'trim',
             ],
         ],
+        'file_collections' => [
+            'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.file_collections',
+            'displayCond' => 'FIELD:type:IN:file',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'sys_file_collection',
+                'size' => 10,
+            ],
+        ],
         'fileext' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.fileext',
@@ -475,9 +484,14 @@ fields[] = bodytext
                 --div--;LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.tabs.advanced,
             index_content_with_restrictions,
             index_news_archived,index_news_category_mode,index_extnews_category_selection,
-            index_use_page_tags,fal_storage,directories,index_page_doctypes,contenttypes,additional_tables,content_fields,fileext,file_reference_fields,
+            index_use_page_tags,--palette--;;files_directory_palette,file_collections,index_page_doctypes,contenttypes,additional_tables,content_fields,fileext,file_reference_fields,
             index_news_files_mode,
             filteroption,index_use_page_tags_for_files',
+        ],
+    ],
+    'palettes' => [
+        'files_directory_palette' => [
+            'showitem' => 'fal_storage,directories,',
         ],
     ],
 ];

@@ -32,11 +32,13 @@ use Tpwd\KeSearch\Lib\Fileinfo;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
@@ -93,25 +95,34 @@ class File extends IndexerBase
      */
     public function startIndexing(): string
     {
-        $directories = $this->indexerConfig['directories'];
+        $directories = $this->indexerConfig['directories'] ?? '';
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
-        if (empty($directoryArray)) {
-            $errorMessage = 'No directories defined for indexing.';
+
+        $fileCollections = $this->indexerConfig['file_collections'];
+
+        if (empty($directoryArray) && empty($fileCollections)) {
+            $errorMessage = 'No directories or file collections defined for indexing.';
             // @extensionScannerIgnoreLine
             $this->pObj->logger->error($errorMessage);
             $this->addError($errorMessage);
             return $errorMessage;
         }
 
-        if ($this->indexerConfig['fal_storage'] > 0) {
-            /* @var $storageRepository StorageRepository */
-            $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-            $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
+        $files = [];
+        if (count($directoryArray)) {
+            if ($this->indexerConfig['fal_storage'] > 0) {
+                /* @var $storageRepository StorageRepository */
+                $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+                $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
-            $files = [];
-            $this->getFilesFromFal($files, $directoryArray);
-        } else {
-            $files = $this->getFilesFromDirectories($directoryArray);
+                $this->getFilesFromFal($files, $directoryArray);
+            } else {
+                $files = $this->getFilesFromDirectories($directoryArray);
+            }
+        }
+
+        if (!empty($fileCollections)) {
+            $this->getFilesFromFileCollections($files, $fileCollections);
         }
 
         $counter = $this->extractContentAndSaveToIndex($files);
@@ -238,6 +249,27 @@ class File extends IndexerBase
             return $files;
         }
         return [];
+    }
+
+    public function getFilesFromFileCollections(&$files, $fileCollections): void
+    {
+        // Boot up the filecollector
+        $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
+
+        // Extract the IDs of file collections
+        $collectionsArray = GeneralUtility::trimExplode(',', $fileCollections, true);
+
+        // Collect the files associated
+        $fileCollector->addFilesFromFileCollections($collectionsArray);
+
+        // If the file collection "type" is "static" then file references are returned
+        $collectionFiles = array_map(
+            fn($item) => ($item instanceof FileReference) ? $item->getOriginalFile() : $item,
+            $fileCollector->getFiles()
+        );
+
+        // Get the files & index them
+        $files = array_merge($files, $collectionFiles);
     }
 
     /**
@@ -402,7 +434,7 @@ class File extends IndexerBase
 
         // get data from FAL
         if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-            // get file properties for this file, this information is merged from file record and meta information
+            // get file properties for this file. This information is merged from file record and metadata
             $fileProperties = $file->getProperties();
             $orig_uid = $file->getUid();
             $language_uid = $this->detectFileLanguage($fileProperties);
@@ -441,39 +473,36 @@ class File extends IndexerBase
             'hash' => $this->getUniqueHashForFile(),
         ];
 
-        // add metadata content, frontend groups and catagory tags if FAL is used
-        if ($this->indexerConfig['fal_storage'] > 0) {
-            // index meta data from FAL: title, description, alternative
-            if ($fileProperties) {
-                $content = $this->addFileMetata($fileProperties, $content);
-            }
+        if ($fileProperties) {
+            // index metadata from FAL: title, description, alternative
+            $content = $this->addFileMetata($fileProperties, $content);
 
             // use file description as abstract
             $indexRecordValues['abstract'] = $fileProperties['description'] ?? '';
 
             // respect groups from metadata
             $indexRecordValues['fe_group'] = $fileProperties['fe_groups'] ?? '';
+        }
 
-            // get list of assigned system categories
-            if (isset($metaDataProperties['uid'])) {
-                $categories = SearchHelper::getCategories(
-                    $metaDataProperties['uid'],
-                    'sys_file_metadata'
-                );
+        // get the list of assigned system categories
+        if (isset($metaDataProperties['uid'])) {
+            $categories = SearchHelper::getCategories(
+                $metaDataProperties['uid'],
+                'sys_file_metadata'
+            );
 
-                // make Tags from category titles
-                SearchHelper::makeTags(
-                    $indexRecordValues['tags'],
-                    $categories['title_list']
-                );
+            // make Tags from category titles
+            SearchHelper::makeTags(
+                $indexRecordValues['tags'],
+                $categories['title_list']
+            );
 
-                // assign categories as generic tags (eg. "syscat123")
-                SearchHelper::makeSystemCategoryTags(
-                    $indexRecordValues['tags'],
-                    $metaDataProperties['uid'],
-                    'sys_file_metadata'
-                );
-            }
+            // assign categories as generic tags (eg. "syscat123")
+            SearchHelper::makeSystemCategoryTags(
+                $indexRecordValues['tags'],
+                $metaDataProperties['uid'],
+                'sys_file_metadata'
+            );
         }
 
         // hook for custom modifications of the indexed data, e. g. the tags

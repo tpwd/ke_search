@@ -1,6 +1,8 @@
 ChangeLog
 
 Upcoming version
+[!!!]     This version changes the database structure.
+[FEATURE] Allow File Collections to be indexed. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/301
 [TASK]    Refine in-word search logic with SphinxSearch condition
 
 Version 6.5.0, 6 August 2025
