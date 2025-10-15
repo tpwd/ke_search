@@ -46,6 +46,6 @@ class FileUtility
             $file->getExtension()
         );
 
-        return !$isExcludedFromSearch && $isInList;
+        return !$isExcludedFromSearch && $isInList && !$file->isMissing();
     }
 }
