@@ -12,7 +12,9 @@ Templates/SearchForm.html
 		<f:comment><!-- Replace the URL with the speaking URL --></f:comment>
 		<f:if condition="{isEmptySearch} == FALSE ">
 			<f:if condition="{conf.searchWordParameter} == 'tx_kesearch_pi1[sword]'">
-				<f:format.raw><script>history.replaceState(null,'','</f:format.raw><kesearch:link keepPiVars="1" uriOnly="1" /><f:format.raw>');</script></f:format.raw>
+				<f:asset.script identifier="kesearch_historyReplaceState" useNonce="1">
+					<f:format.raw>history.replaceState(null,'','</f:format.raw><kesearch:link keepPiVars="1" uriOnly="1" /><f:format.raw>');</f:format.raw>
+				</f:asset.script>
 			</f:if>
 		</f:if>
 
