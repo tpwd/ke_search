@@ -76,8 +76,8 @@ class SearchHelper
         } else {
             $extConf['prePostTagChar'] = '#';
         }
-        $extConf['multiplyValueToTitle'] = $extConf['multiplyValueToTitle'] ?: 1;
-        $extConf['searchWordLength'] = $extConf['searchWordLength'] ?: 4;
+        $extConf['multiplyValueToTitle'] = $extConf['multiplyValueToTitle'] ?? 1;
+        $extConf['searchWordLength'] = $extConf['searchWordLength'] ?? 4;
 
         // override extConf with TS Setup
         $typoScriptSetup = self::getTypoScriptSetup();
