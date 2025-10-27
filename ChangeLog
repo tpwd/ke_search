@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [!!!]     This version changes the database structure.
 [FEATURE] Allow File Collections to be indexed. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/301
+[FEATURE] Make inline script CSP-compatible. Tanks to Marco Ziesing. https://github.com/tpwd/ke_search/pull/305
 [BUGFIX]  Fix undefined array key PHP warning in page indexer. Thanks to Moritz Ngo. https://github.com/tpwd/ke_search/pull/304
 [TASK]    Refine in-word search logic with SphinxSearch condition
 
