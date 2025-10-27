@@ -158,7 +158,7 @@ class Searchresult
     {
         $content = $this->row['content'];
         if (!empty($this->row['abstract'])) {
-            $content = nl2br($this->row['abstract']);
+            $content = $this->row['abstract'];
             if ($this->conf['previewMode'] == 'hit') {
                 if (!$this->isArrayOfWordsInString($this->swords, $this->row['abstract'])) {
                     $content = $this->row['content'];
