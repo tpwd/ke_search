@@ -8,6 +8,7 @@ Upcoming version
 [BUGFIX]  Fix possible error on processing missing file. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/pull/312
 [TASK]    Refine in-word search logic with SphinxSearch condition
 [TASK]    Replace ternary operators with null coalescing in SearchHelper. Thanks to medarob. https://github.com/tpwd/ke_search/issues/307
+[TASK]    Remove unused ContentObjectRenderer instance in Searchresult
 
 Version 6.5.0, 6 August 2025
 [FEATURE] Add hook to check if header field should be indexed and move the the check into a dedicated method. Thanks to Joost. https://github.com/tpwd/ke_search/pull/297

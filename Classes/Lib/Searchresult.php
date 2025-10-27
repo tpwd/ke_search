@@ -238,7 +238,6 @@ class Searchresult
      */
     public function buildTeaserContent(string $content): string
     {
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $content = strip_tags($content);
         if (count($this->swords)) {
             $amountOfSearchWords = count($this->swords);
