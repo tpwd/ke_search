@@ -273,10 +273,32 @@ class Filters
             $optionsRows[$row['uid']] = $row;
         }
 
-        return $this->languageOverlay(
+        // Apply language overlay
+        $optionsOverlayed = $this->languageOverlay(
             $optionsRows,
             $table
         );
+
+        // Reorder results to match the order of $optionUids
+        // 1) Normalize the incoming list of UIDs
+        $uidsInOrder = GeneralUtility::intExplode(',', (string)$optionUids, true);
+
+        // 2) Ensure we have a map by UID even after overlay
+        $optionsByUid = [];
+        foreach ($optionsOverlayed as $key => $row) {
+            $uid = isset($row['uid']) ? (int)$row['uid'] : (int)$key;
+            $optionsByUid[$uid] = $row;
+        }
+
+        // 3) Build the ordered array according to the incoming UID list
+        $ordered = [];
+        foreach ($uidsInOrder as $uid) {
+            if (isset($optionsByUid[$uid])) {
+                $ordered[$uid] = $optionsByUid[$uid];
+            }
+        }
+
+        return $ordered;
     }
 
     /**
