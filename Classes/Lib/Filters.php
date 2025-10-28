@@ -29,9 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
- * @author    Stefan Froemken
- * @author    Christian Bülter
+ * Class Filters is responsible for managing filters and their options, including
+ * retrieval, selection, and configuration based on different input sources like frontend or backend.
  */
 class Filters
 {
@@ -53,7 +52,7 @@ class Filters
     protected $extConfPremium = [];
 
     /**
-     * contains all tags of current search result, false if not initialized yet
+     * contains all tags of the current search result, false if not initialized yet
      * @var bool|array
      */
     protected $tagsInSearchResult = false;
@@ -181,9 +180,9 @@ class Filters
     }
 
     /**
-     * get filters and options as associative array
+     * Retrieves the filters associated with the current object.
      *
-     * @return array Filters with including Options
+     * @return array The list of filters.
      */
     public function getFilters()
     {
@@ -191,10 +190,10 @@ class Filters
     }
 
     /**
-     * get the filter records from DB which are configured in FlexForm
+     * Retrieves filter records from the database based on a list of filter UIDs.
      *
-     * @param string $filterUids A commaseperated list of filter uids
-     * @return array Array with filter records
+     * @param string $filterUids A comma-separated list of filter UIDs to fetch from the database.
+     * @return array An array of filter records with options and language overlay applied, or an empty array if no filters are found.
      */
     public function getFiltersFromUidList($filterUids)
     {
@@ -237,9 +236,10 @@ class Filters
     }
 
     /**
-     * get the option records from DB which are configured as commaseperate list within the filter records
-     * @param string $optionUids A commaseperated list of option uids
-     * @return array Array with option records
+     * Retrieves options from a list of UIDs.
+     *
+     * @param string $optionUids Comma-separated list of UIDs representing filter options.
+     * @return array An array of filter options with language overlay applied.
      */
     public function getOptionsFromUidList($optionUids)
     {
@@ -280,9 +280,10 @@ class Filters
     }
 
     /**
-     * replace the comma separated option list with the original option records from DB
-     * @param array $rows The filter records as array
-     * @return array The filter records where the option value was replaced with the option records as array
+     * Adds options to the provided filters by processing the 'options' field in each row.
+     *
+     * @param array $rows The array of filter rows, each having an 'options' field that may contain a UID list.
+     * @return array The modified array of rows where the 'options' field is processed into structured data.
      */
     public function addOptionsToFilters(array $rows)
     {
@@ -300,10 +301,17 @@ class Filters
     }
 
     /**
-     * Translate the given records
-     * @param array $rows The records which have to be translated
-     * @param string $table Define the table from where the records come from
-     * @return array The localized records
+     * Applies language overlay to an array of database rows for a specific table.
+     *
+     * This function processes the given array of rows and applies the necessary language-based overlays
+     * based on the current language context. It handles scenarios where no translated record exists
+     * and applies the appropriate visibility settings. The function works with TYPO3's PageRepository
+     * and language aspects to adjust the content accordingly.
+     *
+     * @param array $rows An array of database rows that need language overlay processing.
+     * @param string $table The name of the database table associated with the rows.
+     * @return array The processed array of rows with language overlays applied,
+     *               or an empty array if no rows are available.
      */
     public function languageOverlay(array $rows, string $table): array
     {
@@ -350,14 +358,14 @@ class Filters
     }
 
     /**
-     * Checks if a tag is found in the current result list
+     * Checks if a given tag matches the records in the search result.
      *
-     * @param string $tag The tag to match against the search result
-     * @return bool TRUE if tag was found, otherwise FALSE
+     * @param string $tag The tag to check for in the search result records.
+     * @return bool True if the tag is found in the records, false otherwise.
      */
     public function checkIfTagMatchesRecords(string $tag): bool
     {
-        // If tag list is not defined yet, fetch it from the result list, otherwise use the cached tag list.
+        // If the tag list is not defined yet, fetch it from the result list, otherwise use the cached tag list.
         if ($this->tagsInSearchResult === false) {
             if ($this->pObj->tagsInSearchResult === false) {
                 $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
