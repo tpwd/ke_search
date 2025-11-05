@@ -519,7 +519,7 @@ class Page extends IndexerBase
                 continue;
             }
 
-            $recordList = GeneralUtility::trimExplode(',', $row['records'], true);
+            $recordList = GeneralUtility::trimExplode(',', $row['records'] ?? '', true);
             foreach ($recordList as $recordIdentifier) {
                 $split = BackendUtility::splitTable_Uid($recordIdentifier);
                 $tableName = empty($split[0]) ? 'tt_content' : $split[0];

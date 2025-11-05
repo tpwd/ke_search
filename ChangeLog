@@ -11,6 +11,7 @@ Upcoming version
 [TASK]    Remove unused ContentObjectRenderer instance in Searchresult
 [TASK]    Remove nl2br usage for abstract in Searchresult content rendering. Thanks to Philipp Parzer. https://github.com/tpwd/ke_search/issues/308
 [TASK]    Respect manual ordering of filter options. Thanks to Jens Bodenröder. https://github.com/tpwd/ke_search/issues/309
+[BUFIX]   Respect empty shortcut record. Thanks to p2media. https://github.com/tpwd/ke_search/issues/313
 
 Version 6.5.0, 6 August 2025
 [FEATURE] Add hook to check if header field should be indexed and move the the check into a dedicated method. Thanks to Joost. https://github.com/tpwd/ke_search/pull/297
