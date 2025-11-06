@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
 [FEATURE] Allow File Collections to be indexed. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/301
 [FEATURE] Make inline script CSP-compatible. Tanks to Marco Ziesing. https://github.com/tpwd/ke_search/pull/305
