@@ -5,6 +5,7 @@ namespace Tpwd\KeSearch\ViewHelpers;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\RequestUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -45,9 +46,13 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $uriOnly = $this->arguments['uriOnly'] ?? false;
         $section = $this->arguments['section'] ?? '';
 
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
         /** @var ServerRequestInterface $request */
-        // @phpstan-ignore-next-line
-        $request = $this->renderingContext->getRequest();
+        $request = null;
+        if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
+        }
 
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
         $searchWordParameter = SearchHelper::getSearchWordParameter();

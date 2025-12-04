@@ -59,6 +59,7 @@ class SearchboxPlugin extends PluginBase
      * @param ServerRequestInterface $request
      * @return string The content that is displayed on the website
      */
+    #[\TYPO3\CMS\Core\Attribute\AsAllowedCallable]
     public function main(string $content, array $conf, ServerRequestInterface $request): string
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);

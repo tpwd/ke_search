@@ -71,8 +71,6 @@ class BackendModuleController
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $GLOBALS['LANG']->includeLLFile('LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf');
-
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;

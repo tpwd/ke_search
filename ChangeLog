@@ -5,6 +5,10 @@ Upcoming version 7
 [TASK]    Mark as compatible with TYPO3 13 and 14
 [TASK]    Remove outdated Page TSconfig for TYPO3 12 compatibility
 [TASK]    Replace `File::FILETYPE_IMAGE` with `FileType::IMAGE->value`
+[TASK]    Use `RenderingContext` attributes for retrieving `ServerRequestInterface` in LinkViewHelper
+[TASK]    Add `#[AsAllowedCallable]` attribute to plugin classes
+[TASK]    Replace `$GLOBALS['TSFE']` usage with `request->getAttribute` calls
+[TASK]    Remove deprecated `includeLLFile` call in BackendModuleController
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.

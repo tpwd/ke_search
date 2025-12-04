@@ -216,8 +216,7 @@ class PluginBase extends AbstractPlugin
 
         // set some default values (this part has to be after stdWrap!!!)
         if (!($this->conf['resultPage'] ?? false)) {
-            // @extensionScannerIgnoreLine
-            $this->conf['resultPage'] = $GLOBALS['TSFE']->id;
+            $this->conf['resultPage'] = $this->request->getAttribute('frontend.page.information')->getId();
         }
         if (!isset($this->piVars['page'])) {
             $this->piVars['page'] = 1;
@@ -1079,8 +1078,7 @@ class PluginBase extends AbstractPlugin
                     'pid' => $this->firstStartingPoint,
                     'word' => $searchWord,
                     'tstamp' => time(),
-                    // @extensionScannerIgnoreLine
-                    'pageid' => $GLOBALS['TSFE']->id,
+                    'pageid' =>$this->request->getAttribute('frontend.page.information')->getId(),
                     'resultsfound' => $hits ? 1 : 0,
                     'language' => $this->languageId,
                 ];

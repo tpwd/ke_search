@@ -61,6 +61,7 @@ class ResultlistPlugin extends PluginBase
      * @param ServerRequestInterface $request
      * @return string The content that is displayed on the website
      */
+    #[\TYPO3\CMS\Core\Attribute\AsAllowedCallable]
     public function main(string $content, array $conf, ServerRequestInterface $request): string
     {
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
@@ -72,7 +73,7 @@ class ResultlistPlugin extends PluginBase
         // @extensionScannerIgnoreLine
         $this->init($request);
 
-        if ($this->conf['resultPage'] != $GLOBALS['TSFE']->id) {
+        if ($this->conf['resultPage'] != $this->request->getAttribute('frontend.page.information')->getId()) {
             $content = '<div id="textmessage">' . $this->translate('error_resultPage') . '</div>';
             return $this->pi_wrapInBaseClass($content);
         }
