@@ -1,1 +1,2 @@
+mod.web_list.hideTables := addToList(tx_kesearch_index)
 templates.typo3/cms-dashboard.1613733292 = tpwd/ke_search:Resources/Private/Dashboard

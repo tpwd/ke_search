@@ -53,11 +53,6 @@ tt_content.ke_search_pi3 {
         'defaultContentRendering'
     );
 
-    // add page TSconfig (Content element wizard icons, hide index table)
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:ke_search/Configuration/TSconfig/Page/pageTSconfig.tsconfig">'
-    );
-
     // use hooks for generation of sortdate values
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
         \Tpwd\KeSearch\Hooks\AdditionalFields::class;

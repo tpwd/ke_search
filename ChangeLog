@@ -1,5 +1,10 @@
 ChangeLog
 
+Upcoming version 7
+[!!!]     This version drops support for TYPO3 12
+[TASK]    Mark as compatible with TYPO3 13 and 14
+[TASK]    Remove outdated Page TSconfig for TYPO3 12 compatibility
+
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
 [FEATURE] Allow File Collections to be indexed. Thanks to Mike Street. https://github.com/tpwd/ke_search/pull/301
