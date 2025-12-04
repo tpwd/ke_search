@@ -1,6 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') or die();
@@ -37,7 +36,7 @@ $tempColumns = [
             'type' => 'file',
             'overrideChildTca' => [
                 'types' => [
-                    File::FILETYPE_IMAGE => [
+                    \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
                         'showitem' => '
                                 --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                 --palette--;;filePalette',

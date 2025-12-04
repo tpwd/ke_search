@@ -4,6 +4,7 @@ Upcoming version 7
 [!!!]     This version drops support for TYPO3 12
 [TASK]    Mark as compatible with TYPO3 13 and 14
 [TASK]    Remove outdated Page TSconfig for TYPO3 12 compatibility
+[TASK]    Replace `File::FILETYPE_IMAGE` with `FileType::IMAGE->value`
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
