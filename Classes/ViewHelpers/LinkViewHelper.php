@@ -17,17 +17,16 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('page', 'int', 'Target page', false);
         $this->registerArgument('piVars', 'array', 'piVars', false);
         $this->registerArgument('resetFilters', 'array', 'Filters to reset', false);
         $this->registerArgument('content', 'string', 'content', false, '');
         $this->registerArgument('keepPiVars', 'boolean', 'keep piVars?', false, '');
         $this->registerArgument('uriOnly', 'bool', 'url only', false, false);
-        $this->registerTagAttribute('section', 'string', 'Anchor for links', false);
+        $this->registerArgument('section', 'string', 'Anchor for links', false);
     }
 
     /**
@@ -44,6 +43,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         $keepPiVars = !empty($this->arguments['keepPiVars']);
         $piVars = $this->arguments['piVars'] ?? [];
         $uriOnly = $this->arguments['uriOnly'] ?? false;
+        $section = $this->arguments['section'] ?? '';
 
         /** @var ServerRequestInterface $request */
         // @phpstan-ignore-next-line
@@ -89,8 +89,8 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             return $linkedContent;
         }
 
-        if ($this->hasArgument('section')) {
-            $url .= '#' . $this->arguments['section'];
+        if ($section !== '') {
+            $url .= '#' . $section;
         }
 
         $this->tag->addAttribute('href', $url);

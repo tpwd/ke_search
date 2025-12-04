@@ -2,14 +2,10 @@
 
 namespace Tpwd\KeSearch\ViewHelpers\Count;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 class WordsViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -19,11 +15,8 @@ class WordsViewHelper extends AbstractViewHelper
     /**
      * @return int
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        return str_word_count($renderChildrenClosure());
+    public function render()
+    {
+        return str_word_count($this->renderChildren());
     }
 }
