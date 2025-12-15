@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * helper functions
@@ -368,9 +369,9 @@ class SearchHelper
      */
     public static function searchLink(int $parameter, array $piVars = [], $resetFilters = [], $linkText = ''): string
     {
-        // If no cObj is available we cannot render the link.
-        // This might be the case if the current request is headless (ke_search_premium feature).
-        if (!isset($GLOBALS['TSFE']) || !isset($GLOBALS['TSFE']->cObj)) {
+        // Create a content object renderer instance
+        $contentObjectRenderer = self::getCObj();
+        if ($contentObjectRenderer === null) {
             return '';
         }
 
@@ -416,9 +417,9 @@ class SearchHelper
 
         // Build the link
         if (empty($linkText)) {
-            return $GLOBALS['TSFE']->cObj->typoLink_URL($linkconf);
+            return $contentObjectRenderer->typoLink_URL($linkconf);
         }
-        return $GLOBALS['TSFE']->cObj->typoLink($linkText, $linkconf);
+        return $contentObjectRenderer->typoLink($linkText, $linkconf);
     }
 
     /**
@@ -551,5 +552,17 @@ class SearchHelper
     private static function getRequest(): ?ServerRequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'] ?? null;
+    }
+
+    private static function getCObj(): ContentObjectRenderer|null
+    {
+        $request = self::getRequest();
+        if ($request === null) {
+            return null;
+        }
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setRequest($request);
+        $cObj->start($request->getAttribute('frontend.page.information')->getPageRecord(), 'pages');
+        return $cObj;
     }
 }

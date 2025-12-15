@@ -10,6 +10,7 @@ Upcoming version 7
 [TASK]    Replace `$GLOBALS['TSFE']` usage with `request->getAttribute` calls
 [TASK]    Remove deprecated `includeLLFile` call in BackendModuleController
 [TASK]    Update Page TSconfig for ke_search table restrictions, deny index and filter option records
+[TASK]    Replace `$GLOBALS['TSFE']->cObj`
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
