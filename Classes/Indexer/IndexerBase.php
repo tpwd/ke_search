@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -266,24 +265,13 @@ class IndexerBase
         $where .= ' AND pages.tx_kesearch_tags <> "" ';
         $where .= ' AND FIND_IN_SET(tx_kesearch_filteroptions.uid, pages.tx_kesearch_tags)';
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $tagQuery = $queryBuilder
-                ->add('select', $fields)
-                ->from('pages')
-                ->from('tx_kesearch_filteroptions')
-                ->add('where', $where)
-                ->groupBy('pages.uid')
-                ->executeQuery();
-        } else {
-            $tagQuery = $queryBuilder
-                ->selectLiteral($fields)
-                ->from('pages')
-                ->from('tx_kesearch_filteroptions')
-                ->where($where)
-                ->groupBy('pages.uid')
-                ->executeQuery();
-        }
+        $tagQuery = $queryBuilder
+            ->selectLiteral($fields)
+            ->from('pages')
+            ->from('tx_kesearch_filteroptions')
+            ->where($where)
+            ->groupBy('pages.uid')
+            ->executeQuery();
 
         while ($row = $tagQuery->fetchAssociative()) {
             if (isset($this->pageRecords[$row['uid']])) {

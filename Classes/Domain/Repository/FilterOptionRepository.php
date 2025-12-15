@@ -246,12 +246,7 @@ class FilterOptionRepository extends BaseRepository
             ['l10n_diffsource' => Connection::PARAM_LOB]
         );
         $record = $newRecord;
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $record['uid'] = (int)$connection->lastInsertId($this->tableName);
-        } else {
-            $record['uid'] = (int)$connection->lastInsertId();
-        }
+        $record['uid'] = (int)$connection->lastInsertId();
 
         // Create slug
         $this->update($record['uid'], ['slug' => SearchHelper::createFilterOptionSlug($record)]);

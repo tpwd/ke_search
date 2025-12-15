@@ -37,7 +37,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
@@ -652,35 +651,17 @@ class BackendModuleController
     ): array {
         $queryBuilder = Db::getQueryBuilder($table);
         $queryBuilder->getRestrictions()->removeAll();
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            $pidWhere = ' AND ' . $pageColumn . '=' . $pageUid;
-            // @phpstan-ignore-next-line
-            $query = $queryBuilder
-                ->add('select', 'count(' . $tableCol . ') as num, ' . $tableCol)
-                ->from($table)
-                ->add(
-                    'where',
-                    // @phpstan-ignore-next-line
-                    'tstamp > ' . $queryBuilder->quote($timestampStart, \PDO::PARAM_INT) .
-                    // @phpstan-ignore-next-line
-                    ' AND language=' . $queryBuilder->quote($language, \PDO::PARAM_INT) . ' ' .
-                    $pidWhere
-                )
-                ->add('groupBy', $tableCol . ' HAVING count(' . $tableCol . ')>0')
-                ->add('orderBy', 'num desc');
-        } else {
-            $query = $queryBuilder
-                ->selectLiteral('count(' . $tableCol . ') as num, ' . $tableCol)
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq($pageColumn, $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT))
-                )
-                ->groupBy($tableCol)
-                ->having('count(' . $tableCol . ')>0')
-                ->orderBy('num', 'desc');
-        }
+        $query = $queryBuilder
+            ->selectLiteral('count(' . $tableCol . ') as num, ' . $tableCol)
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter($timestampStart, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('language', $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq($pageColumn, $queryBuilder->createNamedParameter($pageUid, Connection::PARAM_INT))
+            )
+            ->groupBy($tableCol)
+            ->having('count(' . $tableCol . ')>0')
+            ->orderBy('num', 'desc');
 
         return $query->executeQuery()->fetchAllAssociative();
     }

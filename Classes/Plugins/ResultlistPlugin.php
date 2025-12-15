@@ -22,14 +22,12 @@ namespace Tpwd\KeSearch\Plugins;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearchPremium\Headless\HeadlessApi;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Plugin 'Faceted search - resultlist plugin' for the 'ke_search' extension.
@@ -38,20 +36,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ResultlistPlugin extends PluginBase
 {
-    // @phpstan-ignore-next-line
-    private ?ViewFactoryInterface $viewFactory;
-
-    // TODO: Inject ViewFactoryInterface once TYPO3 v13 is the minimum requirement
-    //public function __construct(
-    //private readonly ViewFactoryInterface $viewFactory,
-    //) {}
-    public function __construct()
-    {
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
-            // @phpstan-ignore-next-line
-            $this->viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        }
-    }
+    public function __construct(private readonly ViewFactoryInterface $viewFactory)
+    { }
 
     /**
      * The main method of the PlugIn
@@ -85,26 +71,13 @@ class ResultlistPlugin extends PluginBase
         }
 
         // Initialize the view
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
-            // @phpstan-ignore-next-line
-            $viewFactoryData = new ViewFactoryData(
-                templateRootPaths: $this->conf['view']['templateRootPaths'],
-                partialRootPaths: $this->conf['view']['partialRootPaths'],
-                layoutRootPaths: $this->conf['view']['layoutRootPaths'],
-                request: $this->request,
-            );
-            // @phpstan-ignore-next-line
-            $view = $this->viewFactory->create($viewFactoryData);
-        } else {
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            if (method_exists($view, 'setRequest')) {
-                $view->setRequest($GLOBALS['TYPO3_REQUEST']);
-            }
-            $view->setTemplateRootPaths($this->conf['view']['templateRootPaths']);
-            $view->setPartialRootPaths($this->conf['view']['partialRootPaths']);
-            $view->setLayoutRootPaths($this->conf['view']['layoutRootPaths']);
-            $view->setTemplate('ResultList');
-        }
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: $this->conf['view']['templateRootPaths'],
+            partialRootPaths: $this->conf['view']['partialRootPaths'],
+            layoutRootPaths: $this->conf['view']['layoutRootPaths'],
+            request: $this->request,
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
 
         // Make settings available in fluid template
         $view->assign('conf', $this->conf);
@@ -163,12 +136,6 @@ class ResultlistPlugin extends PluginBase
 
         // generate HTML output
         $view->assignMultiple($this->fluidTemplateVariables);
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() > 12) {
-            $htmlOutput = $view->render('ResultList');
-        } else {
-            $htmlOutput = $view->render();
-        }
-
-        return $htmlOutput;
+        return $view->render('ResultList');
     }
 }

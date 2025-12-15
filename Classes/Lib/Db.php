@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -116,71 +115,54 @@ class Db implements SingletonInterface
         // build query
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $resultQuery = $queryBuilder
-                ->add('select', $queryParts['SELECT'])
-                ->from($queryParts['FROM'])
-                ->add('where', $queryParts['WHERE']);
-            if (!empty($queryParts['GROUPBY'])) {
-                $resultQuery->add('groupBy', $queryParts['GROUPBY']);
-            }
-            if (!empty($queryParts['ORDERBY'])) {
-                $resultQuery->add('orderBy', $queryParts['ORDERBY']);
-            }
-            if (!empty($queryParts['HAVING'])) {
-                $resultQuery->add('having', $queryParts['HAVING']);
-            }
-        } else {
-            $resultQuery = $queryBuilder
-                ->selectLiteral($queryParts['SELECT'])
-                ->from($queryParts['FROM'])
-                ->where($queryParts['WHERE']);
-            if (!empty($queryParts['GROUPBY'])) {
-                $groupParts = explode(',', $queryParts['GROUPBY']);
-                $resultQuery->groupBy($groupParts[0], $groupParts[1]);
-            }
-            if (!empty($queryParts['ORDERBY'])) {
-                $orderChain = explode(',', $queryParts['ORDERBY']);
-                $count = 0;
-                foreach ($orderChain as $order) {
-                    $orderParts = explode(' ', $order);
-                    $orderField = strtoupper($orderParts[0]);
-                    $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
-                    if ($count == 0) {
-                        if (
-                            ExtensionManagementUtility::isLoaded('ke_search_premium')
-                            && ($orderField == 'customranking')
-                        ) {
-                            // We cast `customranking` to integer because additionalFields in ke_search can only
-                            // be string, so we cannot use an integer field, although it's a numeric value (can also be
-                            // negative).
-                            $resultQuery->getConcreteQueryBuilder()->orderBy(
-                                'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
-                                $orderDirection
-                            );
-                        } else {
-                            $resultQuery->orderBy($orderField, $orderDirection);
-                        }
+        $resultQuery = $queryBuilder
+            ->selectLiteral($queryParts['SELECT'])
+            ->from($queryParts['FROM'])
+            ->where($queryParts['WHERE']);
+        if (!empty($queryParts['GROUPBY'])) {
+            $groupParts = explode(',', $queryParts['GROUPBY']);
+            $resultQuery->groupBy($groupParts[0], $groupParts[1]);
+        }
+        if (!empty($queryParts['ORDERBY'])) {
+            $orderChain = explode(',', $queryParts['ORDERBY']);
+            $count = 0;
+            foreach ($orderChain as $order) {
+                $orderParts = explode(' ', $order);
+                $orderField = strtoupper($orderParts[0]);
+                $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
+                if ($count == 0) {
+                    if (
+                        ExtensionManagementUtility::isLoaded('ke_search_premium')
+                        && ($orderField == 'customranking')
+                    ) {
+                        // We cast `customranking` to integer because additionalFields in ke_search can only
+                        // be string, so we cannot use an integer field, although it's a numeric value (can also be
+                        // negative).
+                        $resultQuery->getConcreteQueryBuilder()->orderBy(
+                            'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                            $orderDirection
+                        );
                     } else {
-                        if (
-                            ExtensionManagementUtility::isLoaded('ke_search_premium')
-                            && ($orderField == 'customranking')
-                        ) {
-                            $resultQuery->getConcreteQueryBuilder()->addOrderBy(
-                                'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
-                                $orderDirection
-                            );
-                        } else {
-                            $resultQuery->addOrderBy($orderField, $orderDirection);
-                        }
+                        $resultQuery->orderBy($orderField, $orderDirection);
                     }
-                    $count++;
+                } else {
+                    if (
+                        ExtensionManagementUtility::isLoaded('ke_search_premium')
+                        && ($orderField == 'customranking')
+                    ) {
+                        $resultQuery->getConcreteQueryBuilder()->addOrderBy(
+                            'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                            $orderDirection
+                        );
+                    } else {
+                        $resultQuery->addOrderBy($orderField, $orderDirection);
+                    }
                 }
+                $count++;
             }
-            if (!empty($queryParts['HAVING'])) {
-                $resultQuery->having($queryParts['HAVING']);
-            }
+        }
+        if (!empty($queryParts['HAVING'])) {
+            $resultQuery->having($queryParts['HAVING']);
         }
 
         if (!empty($queryParts['JOIN'] && is_array($queryParts['JOIN']))) {
@@ -219,18 +201,10 @@ class Db implements SingletonInterface
         if (!empty($this->searchResults)) {
             $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
             $queryBuilder->getRestrictions()->removeAll();
-            if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-                // @phpstan-ignore-next-line
-                $numRows = $queryBuilder
-                    ->add('select', 'FOUND_ROWS()')
-                    ->executeQuery()
-                    ->fetchNumeric()[0];
-            } else {
-                $numRows = $queryBuilder
-                    ->selectLiteral('FOUND_ROWS()')
-                    ->executeQuery()
-                    ->fetchNumeric()[0];
-            }
+            $numRows = $queryBuilder
+                ->selectLiteral('FOUND_ROWS()')
+                ->executeQuery()
+                ->fetchNumeric()[0];
             $this->numberOfResults = $numRows;
         }
     }
@@ -452,18 +426,10 @@ class Db implements SingletonInterface
         $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
         $queryBuilder->getRestrictions()->removeAll();
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $resultQuery = $queryBuilder
-                ->select('tx_kesearch_index.tags')
-                ->from($queryParts['FROM'])
-                ->add('where', $queryParts['WHERE']);
-        } else {
-            $resultQuery = $queryBuilder
-                ->select('tx_kesearch_index.tags')
-                ->from($queryParts['FROM'])
-                ->where($queryParts['WHERE']);
-        }
+        $resultQuery = $queryBuilder
+            ->select('tx_kesearch_index.tags')
+            ->from($queryParts['FROM'])
+            ->where($queryParts['WHERE']);
 
         $tagRows = $resultQuery->executeQuery()->fetchAllAssociative();
 
@@ -578,17 +544,11 @@ class Db implements SingletonInterface
         // add enable fields
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @extensionScannerIgnoreLine
-            $where .= $pageRepository->enableFields($this->table);
-        } else {
-            // @phpstan-ignore-next-line
-            $constraints = $pageRepository->getDefaultConstraints($this->table);
-            $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($this->table)
-                ->expr();
-            $where .= ' AND ' . $expressionBuilder->and(...$constraints);
-        }
+        $constraints = $pageRepository->getDefaultConstraints($this->table);
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->table)
+            ->expr();
+        $where .= ' AND ' . $expressionBuilder->and(...$constraints);
 
         return $where;
     }

@@ -23,7 +23,6 @@ use Tpwd\KeSearch\Plugins\PluginBase;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -206,20 +205,11 @@ class Filters
         $where .= ' AND find_in_set(uid, "' . $filterUids . '")';
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filters');
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $filterQuery = $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->add('where', $where)
-                ->executeQuery();
-        } else {
-            $filterQuery = $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where($where)
-                ->executeQuery();
-        }
+        $filterQuery = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($where)
+            ->executeQuery();
 
         // Retain original order from filters specified in configuration
         $filterRows = array_fill_keys(GeneralUtility::intExplode(',', $filterUids), null);
@@ -253,20 +243,11 @@ class Filters
 
         $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @phpstan-ignore-next-line
-            $optionsQuery = $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->add('where', $where)
-                ->executeQuery();
-        } else {
-            $optionsQuery = $queryBuilder
-                ->select('*')
-                ->from($table)
-                ->where($where)
-                ->executeQuery();
-        }
+        $optionsQuery = $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where($where)
+            ->executeQuery();
 
         $optionsRows = [];
         while ($row = $optionsQuery->fetchAssociative()) {
@@ -342,12 +323,7 @@ class Filters
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
-        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
-            // @extensionScannerIgnoreLine
-            $pageRecord = $GLOBALS['TSFE']->page;
-        } else {
-            $pageRecord = $this->pObj->request->getAttribute('frontend.page.information')->getPageRecord();
-        }
+        $pageRecord = $this->pObj->request->getAttribute('frontend.page.information')->getPageRecord();
 
         // see https://github.com/teaminmedias-pluswerk/ke_search/issues/128
         $pageTranslationVisibility = new PageTranslationVisibility((int)$pageRecord['l18n_cfg']);
