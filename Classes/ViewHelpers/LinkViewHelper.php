@@ -37,15 +37,6 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
-        // @extensionScannerIgnoreLine
-        $page = $this->arguments['page'] ?? $GLOBALS['TSFE']->id;
-        $resetFilters = $this->arguments['resetFilters'] ?? [];
-        $content = $this->arguments['content'] ?? '';
-        $keepPiVars = !empty($this->arguments['keepPiVars']);
-        $piVars = $this->arguments['piVars'] ?? [];
-        $uriOnly = $this->arguments['uriOnly'] ?? false;
-        $section = $this->arguments['section'] ?? '';
-
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;
         /** @var ServerRequestInterface $request */
@@ -53,6 +44,14 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
         if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
             $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         }
+
+        $page = $this->arguments['page'] ?? $request->getAttribute('frontend.page.information')->getId() ?? null;
+        $resetFilters = $this->arguments['resetFilters'] ?? [];
+        $content = $this->arguments['content'] ?? '';
+        $keepPiVars = !empty($this->arguments['keepPiVars']);
+        $piVars = $this->arguments['piVars'] ?? [];
+        $uriOnly = $this->arguments['uriOnly'] ?? false;
+        $section = $this->arguments['section'] ?? '';
 
         // Use alternative search word parameter (e.g. "query=") in URL but map to tx_kesearch_pi1[sword]=
         $searchWordParameter = SearchHelper::getSearchWordParameter();
@@ -84,7 +83,11 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
             $content = $linkedContent;
         }
 
-        $url = SearchHelper::searchLink($page, $piVars, $resetFilters);
+        if ($page) {
+            $url = SearchHelper::searchLink($page, $piVars, $resetFilters);
+        } else {
+            $url = '';
+        }
 
         if ($uriOnly) {
             return $url;
