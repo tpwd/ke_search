@@ -20,6 +20,7 @@ Upcoming version 7
 [TASK]    Simplify file indexability check in `IndexerBase`
 [TASK]    Replace `send` method of MailMessage with `MailerInterface->send`
 [TASK]    Suppress PHPStan errors in `IndexerRunner` for compatibility reasons
+[TASK]    Simplify checks in `File.php`
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.

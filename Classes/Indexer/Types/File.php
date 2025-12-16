@@ -176,7 +176,9 @@ class File extends IndexerBase
         return $message;
     }
 
-    /** * fetches files recurively using FAL
+    /**
+     * fetches files recursively using FAL
+     *
      * @param array $files
      * @param array $directoryArray
      */
@@ -198,13 +200,11 @@ class File extends IndexerBase
                 $filesInFolder = $folder->getFiles();
                 if (count($filesInFolder)) {
                     foreach ($filesInFolder as $file) {
-                        if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-                            if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
-                                $files[] = $file;
-                            } else {
-                                if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
-                                    $this->removeFileFromIndex($file);
-                                }
+                        if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
+                            $files[] = $file;
+                        } else {
+                            if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
+                                $this->removeFileFromIndex($file);
                             }
                         }
                     }
@@ -231,7 +231,7 @@ class File extends IndexerBase
     public function getFilesFromDirectories(array $directoryArray): array
     {
         $directoryArray = $this->getAbsoluteDirectoryPath($directoryArray);
-        if (is_array($directoryArray) && count($directoryArray)) {
+        if (count($directoryArray)) {
             $files = [];
             foreach ($directoryArray as $directory) {
                 $foundFiles = GeneralUtility::getAllFilesAndFoldersInPath(
@@ -240,7 +240,7 @@ class File extends IndexerBase
                     $this->indexerConfig['fileext']
                 );
 
-                if (is_array($foundFiles) && count($foundFiles)) {
+                if (count($foundFiles)) {
                     foreach ($foundFiles as $file) {
                         $files[] = $file;
                     }
