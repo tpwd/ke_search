@@ -20,10 +20,8 @@ namespace Tpwd\KeSearch\Updates;
 use Doctrine\DBAL\Schema\Column;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
@@ -34,7 +32,6 @@ final class KeSearchCTypeMigration implements UpgradeWizardInterface
     protected const TABLE_BACKEND_USER_GROUPS = 'be_groups';
 
     public function __construct(
-        private readonly Registry $registry,
         private readonly ConnectionPool $connectionPool,
     ) {}
 
@@ -60,7 +57,6 @@ final class KeSearchCTypeMigration implements UpgradeWizardInterface
         return ($this->columnsExistInContentTable() && $this->hasContentElementsToUpdate())
             || (
                 $this->columnsExistInBackendUserGroupsTable()
-                && $this->backendGroupsExplicitAllowDenyMigrationHasBeenExecuted()
                 && $this->hasBackendUserGroupsToUpdate()
             );
     }
@@ -71,7 +67,6 @@ final class KeSearchCTypeMigration implements UpgradeWizardInterface
             $this->updateContentElements();
         }
         if ($this->columnsExistInBackendUserGroupsTable()
-            && $this->backendGroupsExplicitAllowDenyMigrationHasBeenExecuted()
             && $this->hasBackendUserGroupsToUpdate()
         ) {
             $this->updateBackendUserGroups();
@@ -119,11 +114,6 @@ final class KeSearchCTypeMigration implements UpgradeWizardInterface
     protected function hasBackendUserGroupsToUpdate(): bool
     {
         return (bool)$this->getPreparedQueryBuilderForBackendUserGroups()->count('uid')->executeQuery()->fetchOne();
-    }
-
-    protected function backendGroupsExplicitAllowDenyMigrationHasBeenExecuted(): bool
-    {
-        return (bool)$this->registry->get('installUpdate', BackendGroupsExplicitAllowDenyMigration::class, false);
     }
 
     protected function getContentElementsToUpdate(): array

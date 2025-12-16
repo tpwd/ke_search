@@ -110,7 +110,7 @@ class Searchphrase
     {
         preg_match_all('/([+\-~<>])?\".*?"|[^ ]+/', $searchString, $matches);
         [$searchParts] = $matches;
-        if (is_array($searchParts) && count($searchParts)) {
+        if (count($searchParts)) {
             foreach ($searchParts as $key => $word) {
                 // check for boolean seperator
                 if ($word === '|') {

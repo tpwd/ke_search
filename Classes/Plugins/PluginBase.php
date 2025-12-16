@@ -525,13 +525,11 @@ class PluginBase extends AbstractPlugin
 
                 // check if current option (of searchresults) is in array of all possible options
                 $isOptionInOptionArray = false;
-                if (is_array($options)) {
-                    foreach ($options as $optionInResultList) {
-                        if ($optionInResultList['value'] == $data['tag']) {
-                            $isOptionInOptionArray = true;
-                            $data['results'] = $optionInResultList['results'] ?? 0;
-                            break;
-                        }
+                foreach ($options as $optionInResultList) {
+                    if ($optionInResultList['value'] == $data['tag']) {
+                        $isOptionInOptionArray = true;
+                        $data['results'] = $optionInResultList['results'] ?? 0;
+                        break;
                     }
                 }
 
@@ -737,118 +735,116 @@ class PluginBase extends AbstractPlugin
         $resultRowRenderer->setSwords($this->swords);
 
         $this->fluidTemplateVariables['resultrows'] = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $resultRowRenderer->setRow($row);
+        foreach ($rows as $row) {
+            $resultRowRenderer->setRow($row);
 
-                $tempMarkerArray = [
-                    'orig_uid' => $row['orig_uid'],
-                    'orig_pid' => $row['orig_pid'],
-                    'orig_row' => $genericRepository->findByUidAndType($row['orig_uid'], $row['type']),
-                    'title_text' => $row['title'],
-                    'content_text' => $row['content'],
-                    'title' => $resultRowRenderer->getTitle(),
-                    'teaser' => $resultRowRenderer->getTeaser(),
-                ];
+            $tempMarkerArray = [
+                'orig_uid' => $row['orig_uid'],
+                'orig_pid' => $row['orig_pid'],
+                'orig_row' => $genericRepository->findByUidAndType($row['orig_uid'], $row['type']),
+                'title_text' => $row['title'],
+                'content_text' => $row['content'],
+                'title' => $resultRowRenderer->getTitle(),
+                'teaser' => $resultRowRenderer->getTeaser(),
+            ];
 
-                if (substr($row['type'], 0, 4) == 'file' && !empty($row['orig_uid'])) {
-                    $tempMarkerArray['metadata'] = $fileMetaDataRepository->findByFileUidAndLanguageUid(
-                        $row['orig_uid'],
-                        $this->languageId
-                    );
+            if (substr($row['type'], 0, 4) == 'file' && !empty($row['orig_uid'])) {
+                $tempMarkerArray['metadata'] = $fileMetaDataRepository->findByFileUidAndLanguageUid(
+                    $row['orig_uid'],
+                    $this->languageId
+                );
+            }
+
+            // hook for additional markers in result row
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] ?? null)) {
+                // make curent row number available to hook
+                $this->currentRowNumber = $resultCount;
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] as $_classRef) {
+                    $_procObj = GeneralUtility::makeInstance($_classRef);
+                    $_procObj->additionalResultMarker($tempMarkerArray, $row, $this);
                 }
+                unset($this->currentRowNumber);
+            }
 
-                // hook for additional markers in result row
-                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] ?? null)) {
-                    // make curent row number available to hook
-                    $this->currentRowNumber = $resultCount;
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'] as $_classRef) {
-                        $_procObj = GeneralUtility::makeInstance($_classRef);
-                        $_procObj->additionalResultMarker($tempMarkerArray, $row, $this);
-                    }
-                    unset($this->currentRowNumber);
-                }
+            // add type marker
+            // for file results just use the "file" type, not the file extension (eg. "file:pdf")
+            [$type] = explode(':', $row['type']);
+            $tempMarkerArray['type'] = str_replace(' ', '_', $type);
 
-                // add type marker
-                // for file results just use the "file" type, not the file extension (eg. "file:pdf")
-                [$type] = explode(':', $row['type']);
-                $tempMarkerArray['type'] = str_replace(' ', '_', $type);
+            // use the markers array as a base for the fluid template values
+            $resultrowTemplateValues = $tempMarkerArray;
 
-                // use the markers array as a base for the fluid template values
-                $resultrowTemplateValues = $tempMarkerArray;
+            // set result url
+            $resultUrl = $resultRowRenderer->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
+            $resultrowTemplateValues['url'] = $resultUrl;
 
-                // set result url
-                $resultUrl = $resultRowRenderer->getResultUrl($this->conf['renderResultUrlAsLink'] ?? false);
-                $resultrowTemplateValues['url'] = $resultUrl;
+            // set result numeration
+            $resultNumber = $resultCount
+                + ($this->piVars['page'] * $this->conf['resultsPerPage'])
+                - $this->conf['resultsPerPage'];
+            $resultrowTemplateValues['number'] = $resultNumber;
 
-                // set result numeration
-                $resultNumber = $resultCount
-                    + ($this->piVars['page'] * $this->conf['resultsPerPage'])
-                    - $this->conf['resultsPerPage'];
-                $resultrowTemplateValues['number'] = $resultNumber;
+            // set date (formatted and raw as a timestamp)
+            $resultDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['sortdate']);
+            $resultrowTemplateValues['date'] = $resultDate;
+            $resultrowTemplateValues['date_timestamp'] = $row['sortdate'];
 
-                // set date (formatted and raw as a timestamp)
-                $resultDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['sortdate']);
-                $resultrowTemplateValues['date'] = $resultDate;
-                $resultrowTemplateValues['date_timestamp'] = $row['sortdate'];
+            // show tags?
+            $tags = $row['tags'];
+            $tags = str_replace('#', ' ', $tags);
+            $resultrowTemplateValues['tags'] = $tags;
 
-                // show tags?
-                $tags = $row['tags'];
-                $tags = str_replace('#', ' ', $tags);
-                $resultrowTemplateValues['tags'] = $tags;
-
-                // set preview image and/or type icons
-                // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
-                // for pages and news we have to fetch the file reference uid
-                if ($type == 'file') {
-                    $fileExtension = '';
-                    if ($this->conf['showFilePreview'] ?? '') {
-                        // SearchHelper::getFile will return af FILE object if it is a FAL file,
-                        // otherwise it's a plain path to a file
-                        $file = SearchHelper::getFile($row['orig_uid']);
-                        if ($file) {
-                            // FAL file
-                            $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
-                            $fileExtension = $file->getExtension();
-                        } else {
-                            // no FAL file or FAL file does not exist
-                            if (file_exists($row['directory'] . $row['title'])) {
-                                $resultrowTemplateValues['filePreviewId'] = $row['directory'] . $row['title'];
-                                $fileExtension = pathinfo($row['title'], PATHINFO_EXTENSION);
-                            }
+            // set preview image and/or type icons
+            // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)
+            // for pages and news we have to fetch the file reference uid
+            if ($type == 'file') {
+                $fileExtension = '';
+                if ($this->conf['showFilePreview'] ?? '') {
+                    // SearchHelper::getFile will return af FILE object if it is a FAL file,
+                    // otherwise it's a plain path to a file
+                    $file = SearchHelper::getFile($row['orig_uid']);
+                    if ($file) {
+                        // FAL file
+                        $resultrowTemplateValues['filePreviewId'] = $row['orig_uid'];
+                        $fileExtension = $file->getExtension();
+                    } else {
+                        // no FAL file or FAL file does not exist
+                        if (file_exists($row['directory'] . $row['title'])) {
+                            $resultrowTemplateValues['filePreviewId'] = $row['directory'] . $row['title'];
+                            $fileExtension = pathinfo($row['title'], PATHINFO_EXTENSION);
                         }
                     }
-                    $filePreviewPossible = in_array(
-                        $fileExtension,
-                        GeneralUtility::trimExplode(
-                            ',',
-                            $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                            true
-                        )
-                    );
-                    if (!$filePreviewPossible) {
-                        $resultrowTemplateValues['filePreviewId'] = 0;
-                    }
-                    $resultrowTemplateValues['treatIdAsReference'] = 0;
-                } else {
-                    $resultrowTemplateValues['filePreviewId'] = $this->getFileReference($row);
-                    $resultrowTemplateValues['treatIdAsReference'] = 1;
                 }
-
-                // get the icon for the current record type
-                $resultrowTemplateValues['typeIconPath'] = $this->getTypeIconPath($row['type']);
-
-                // set end date for cal events
-                if ($type == 'cal') {
-                    $resultrowTemplateValues['cal'] = $this->getCalEventEnddate($row['orig_uid']);
+                $filePreviewPossible = in_array(
+                    $fileExtension,
+                    GeneralUtility::trimExplode(
+                        ',',
+                        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+                        true
+                    )
+                );
+                if (!$filePreviewPossible) {
+                    $resultrowTemplateValues['filePreviewId'] = 0;
                 }
-
-                // add result row to the variables array
-                $this->fluidTemplateVariables['resultrows'][] = $resultrowTemplateValues;
-
-                // increase result counter
-                $resultCount++;
+                $resultrowTemplateValues['treatIdAsReference'] = 0;
+            } else {
+                $resultrowTemplateValues['filePreviewId'] = $this->getFileReference($row);
+                $resultrowTemplateValues['treatIdAsReference'] = 1;
             }
+
+            // get the icon for the current record type
+            $resultrowTemplateValues['typeIconPath'] = $this->getTypeIconPath($row['type']);
+
+            // set end date for cal events
+            if ($type == 'cal') {
+                $resultrowTemplateValues['cal'] = $this->getCalEventEnddate($row['orig_uid']);
+            }
+
+            // add result row to the variables array
+            $this->fluidTemplateVariables['resultrows'][] = $resultrowTemplateValues;
+
+            // increase result counter
+            $resultCount++;
         }
     }
 
@@ -1142,11 +1138,9 @@ class PluginBase extends AbstractPlugin
         // check if filters are set
         $filters = $this->filters->getFilters();
         $filterSet = false;
-        if (is_array($filters)) {
-            foreach ($filters as $filter) {
-                if (!empty($this->piVars['filter'][$filter['uid']])) {
-                    $filterSet = true;
-                }
+        foreach ($filters as $filter) {
+            if (!empty($this->piVars['filter'][$filter['uid']])) {
+                $filterSet = true;
             }
         }
 

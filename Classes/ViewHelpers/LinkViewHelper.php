@@ -39,7 +39,7 @@ class LinkViewHelper extends AbstractTagBasedViewHelper
     {
         /** @var RenderingContext $renderingContext */
         $renderingContext = $this->renderingContext;
-        /** @var ServerRequestInterface $request */
+        /** @var ServerRequestInterface|null $request */
         $request = null;
         if ($renderingContext->hasAttribute(ServerRequestInterface::class)) {
             $request = $renderingContext->getAttribute(ServerRequestInterface::class);

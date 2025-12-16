@@ -122,10 +122,7 @@ class Filters
                 $selected = true;
             } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) {
                 // multi-dimensional piVars
-                if (
-                    is_array($this->pObj->preselectedFilter)
-                    && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)
-                ) {
+                if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
                     $selected = true;
                     // add preselected filter to piVars
                     $this->pObj->piVars['filter'][$filter['uid']][$option['uid']] = $option['tag'];
@@ -142,10 +139,7 @@ class Filters
                     && strlen($this->pObj->piVars['filter'][$filter['uid']]) === 1
                 )
             ) {
-                if (
-                    is_array($this->pObj->preselectedFilter)
-                    && $this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)
-                ) {
+                if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
                     $selected = true;
                     // add preselected filter to piVars
                     $this->pObj->piVars['filter'][$filter['uid']] = [$option['uid'] => $option['tag']];
@@ -290,7 +284,7 @@ class Filters
      */
     public function addOptionsToFilters(array $rows)
     {
-        if (is_array($rows) && count($rows)) {
+        if (count($rows)) {
             foreach ($rows as $key => $row) {
                 if (!empty($row['options'])) {
                     $rows[$key]['options'] = $this->getOptionsFromUidList($row['options']);
@@ -331,7 +325,7 @@ class Filters
         if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
             $LanguageMode = 'hideNonTranslated';
         }
-        if (is_array($rows) && count($rows)) {
+        if (count($rows)) {
             foreach ($rows as $key => $row) {
                 if (is_array($row) && $languageAspect->getContentId() > 0) {
                     $row = $pageRepository->getLanguageOverlay(

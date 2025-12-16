@@ -133,7 +133,7 @@ class Db implements SingletonInterface
                 if ($count == 0) {
                     if (
                         ExtensionManagementUtility::isLoaded('ke_search_premium')
-                        && ($orderField == 'customranking')
+                        && ($orderField == strtoupper('customranking'))
                     ) {
                         // We cast `customranking` to integer because additionalFields in ke_search can only
                         // be string, so we cannot use an integer field, although it's a numeric value (can also be
@@ -148,7 +148,7 @@ class Db implements SingletonInterface
                 } else {
                     if (
                         ExtensionManagementUtility::isLoaded('ke_search_premium')
-                        && ($orderField == 'customranking')
+                        && ($orderField == strtoupper('customranking'))
                     ) {
                         $resultQuery->getConcreteQueryBuilder()->addOrderBy(
                             'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
@@ -177,10 +177,8 @@ class Db implements SingletonInterface
         }
 
         $limit = $this->getLimit();
-        if (is_array($limit)) {
-            $resultQuery->setMaxResults($limit[1]);
-            $resultQuery->setFirstResult($limit[0]);
-        }
+        $resultQuery->setMaxResults($limit[1]);
+        $resultQuery->setFirstResult($limit[0]);
 
         // execute query
         try {
@@ -452,7 +450,7 @@ class Db implements SingletonInterface
     {
         $databaseConnection = self::getDatabaseConnection('tx_kesearch_index');
         $where = '';
-        if (count($tags) && is_array($tags)) {
+        if (count($tags)) {
             foreach ($tags as $value) {
                 // @TODO: check if this works as intended / search for better way
                 $value = $databaseConnection->quote((string)$value);

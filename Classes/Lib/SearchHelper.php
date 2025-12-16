@@ -183,7 +183,7 @@ class SearchHelper
      */
     public static function makeTags(&$tags, array $tagTitles)
     {
-        if (is_array($tagTitles) && count($tagTitles)) {
+        if (count($tagTitles)) {
             $tags = $tags ?? '';
             foreach ($tagTitles as $title) {
                 if (!empty($tags)) {

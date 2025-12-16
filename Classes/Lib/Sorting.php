@@ -127,7 +127,7 @@ class Sorting
      */
     public function getDefaultSortingDirection($field): string
     {
-        if (!empty($field) && is_string($field)) {
+        if (!empty($field)) {
             switch ($field) {
                 case 'sortdate':
                 case 'score':
@@ -172,10 +172,10 @@ class Sorting
      * @param array $dbOrdering An array containing the field and ordering of current DB Ordering
      * @return string The class name
      */
-    public function getClassNameForUpDownArrow($field, $dbOrdering)
+    public function getClassNameForUpDownArrow(string $field, array $dbOrdering)
     {
         $className = '';
-        if (is_array($dbOrdering) && count($dbOrdering)) {
+        if (count($dbOrdering)) {
             if ($field == $dbOrdering[0]) {
                 if ($dbOrdering[1] == 'asc') {
                     $className = 'up';
