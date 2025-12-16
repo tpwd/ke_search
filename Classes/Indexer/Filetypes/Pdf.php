@@ -180,22 +180,20 @@ class Pdf extends File implements FileIndexerInterface
      * @param array $pdfInfoArray Data of PDF content, coming from the pdfinfo tool
      * @return array The pdf information as array in a usable format
      */
-    public function splitPdfInfo($pdfInfoArray)
+    public function splitPdfInfo(array $pdfInfoArray)
     {
         $res = [];
-        if (is_array($pdfInfoArray)) {
-            foreach ($pdfInfoArray as $line) {
-                $parts = explode(':', $line, 2);
-                if (count($parts) > 1 && trim($parts[0])) {
-                    $key = strtolower(trim($parts[0]));
-                    $newKey = $key;
-                    $i = 1;
-                    while (array_key_exists($newKey, $res)) {
-                        $newKey = $key . $i;
-                        $i++;
-                    }
-                    $res[$newKey] = trim($parts[1]);
+        foreach ($pdfInfoArray as $line) {
+            $parts = explode(':', $line, 2);
+            if (count($parts) > 1 && trim($parts[0])) {
+                $key = strtolower(trim($parts[0]));
+                $newKey = $key;
+                $i = 1;
+                while (array_key_exists($newKey, $res)) {
+                    $newKey = $key . $i;
+                    $i++;
                 }
+                $res[$newKey] = trim($parts[1]);
             }
         }
         return $res;

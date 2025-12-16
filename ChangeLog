@@ -15,6 +15,7 @@ Upcoming version 7
 [TASK]    Add comments for TYPO3 14 migration and deprecations
 [TASK]    Update FlexForm configuration handling for tt_content types
 [TASK]    Fix size calculation to prevent index out-of-range error in function formatFileSize
+[TASK]    Refactor `splitPdfInfo` method to improve type safety and readability
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
