@@ -22,6 +22,7 @@ Upcoming version 7
 [TASK]    Suppress PHPStan errors in `IndexerRunner` for compatibility reasons
 [TASK]    Simplify checks in `File.php`
 [TASK]    Simplify checks across multiple classes
+[TASK]    Update CI workflow to include PHP 8.4, 8.5 and TYPO3 14 support
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
