@@ -70,18 +70,18 @@ if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
     ExtensionManagementUtility::addPlugin($pluginConfig3, $pluginFlexFormConfigs['ke_search_pi3']);
 }
 
-foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
-    if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
+// Set FlexForm File and show "pi_flexform" field (can be removed once support for TYPO3 13 is removed)
+if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
+    foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
         ExtensionManagementUtility::addPiFlexFormValue('*', $flexFormFile, $pluginName);
-    }
-    $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem'] = '
+        $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
             --palette--;;general,
             --palette--;;headers,
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.plugin,
             pi_flexform,'
-        . ($pluginName != 'ke_search_pi2' ? 'pages, recursive,' : '')
-        . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+            . ($pluginName != 'ke_search_pi2' ? 'pages, recursive,' : '')
+            . '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
             --palette--;;frames,
             --palette--;;appearanceLinks,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
@@ -95,4 +95,5 @@ foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
     ';
+    }
 }
