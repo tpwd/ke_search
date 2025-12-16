@@ -62,7 +62,8 @@ $pluginFlexFormConfigs = [
     'ke_search_pi3' => 'FILE:EXT:ke_search/Configuration/FlexForms/flexform_searchbox.xml',
 ];
 foreach ($pluginFlexFormConfigs as $pluginName => $flexFormFile) {
-    ExtensionManagementUtility::addPiFlexFormValue('*', $flexFormFile, $pluginName);
+    $GLOBALS['TCA']['tt_content']['types'][$pluginName]['columnsOverrides']['pi_flexform']['config']['ds']
+        = $flexFormFile;
     $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
             --palette--;;general,
