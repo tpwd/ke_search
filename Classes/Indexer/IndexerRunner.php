@@ -37,6 +37,7 @@ use Tpwd\KeSearch\Utility\TimeUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -88,6 +89,7 @@ class IndexerRunner
     private IndexerStatusService $indexerStatusService;
     private ?SymfonyStyle $io = null;
     private FilterOptionRepository $filterOptionRepository;
+    private MailerInterface $mailer;
 
     /**
      * Constructor of this class
@@ -96,12 +98,14 @@ class IndexerRunner
         EventDispatcherInterface $eventDispatcher,
         IndexRepository $indexRepository,
         IndexerStatusService $indexerStatusService,
-        FilterOptionRepository $filterOptionRepository
+        FilterOptionRepository $filterOptionRepository,
+        MailerInterface $mailer,
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->indexRepository = $indexRepository;
         $this->indexerStatusService = $indexerStatusService;
         $this->filterOptionRepository = $filterOptionRepository;
+        $this->mailer = $mailer;
 
         // get extension configuration array
         $this->extConf = SearchHelper::getExtConf();
@@ -303,7 +307,7 @@ class IndexerRunner
                 $mail->setTo([$this->extConf['notificationRecipient']]);
                 $mail->setSubject($this->extConf['notificationSubject']);
                 $mail->text($plaintextReport);
-                $mail->send();
+                $this->mailer->send($mail);
             }
         }
 
