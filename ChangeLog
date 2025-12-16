@@ -14,7 +14,7 @@ Upcoming version 7
 [TASK]    Replace `$GLOBALS['TSFE']->cObj`
 [TASK]    Remove Typo3Version checks for TYPO3 < 13 compatibility
 [TASK]    Add comments for TYPO3 14 migration and deprecations
-[TASK]    Update FlexForm configuration handling for tt_content types
+[TASK]    Refactor plugin registration and FlexForm handling
 [TASK]    Fix size calculation to prevent index out-of-range error in function formatFileSize
 [TASK]    Refactor `splitPdfInfo` method to improve type safety and readability
 [TASK]    Simplify file indexability check in `IndexerBase`
