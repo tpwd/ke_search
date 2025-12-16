@@ -301,6 +301,8 @@ class PluginBase extends AbstractPlugin
 
         // add cssTag to header if set
         if (!empty($this->conf['cssFile'])) {
+            // Use the System Resource API instead of FilePathSanitizer once support for TYPO3 13 is dropped
+            // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107537-FilePathSanitizer.html
             $filePathSanitizer = GeneralUtility::makeInstance(FilePathSanitizer::class);
             $cssFile = $filePathSanitizer->sanitize($this->conf['cssFile'], true);
             if (!empty($cssFile)) {

@@ -100,6 +100,9 @@ tt_content.ke_search_pi3 {
     // register statistics tables for garbage collection
     // see https://docs.typo3.org/c/typo3/cms-scheduler/main/en-us/Installation/BaseTasks/Index.html#table-garbage-collection-task-example
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+        // Once support for TYPO3 13 is dropped, instead of configuring tables via $GLOBALS['TYPO3_CONF_VARS'],
+        // tables should now be configured in TCA using the taskOptions configuration
+        // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107550-TableGarbageCollectionTaskConfigurationViaGlobals.html
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_kesearch_stat_search'] = [
             'dateField' => 'tstamp',
             'expirePeriod' => '180', // days

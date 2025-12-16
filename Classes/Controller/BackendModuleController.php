@@ -724,6 +724,10 @@ class BackendModuleController
     protected function addMainMenu(ServerRequestInterface $request, ModuleTemplate $view, string $currentAction): void
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        // Once support for TYPO3 13 is dropped
+        // Inject \TYPO3\CMS\Backend\Template\Components\ComponentFactory use its create*() methods
+        // instead of ButtonBar::make*().
+        // https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/14.0/Deprecation-107823-ButtonBarMakeMethods.html
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('KeSearchModuleMenu');
 
