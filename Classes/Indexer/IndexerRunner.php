@@ -352,6 +352,9 @@ class IndexerRunner
         // indexing mode
         $content .= '<td>';
         if (is_subclass_of($searchObj, IndexerBase::class)) {
+            // Ignore error "Call to function method_exists() 'getIndexingMode' will always evaluate to true." because
+            // in older ke_search versions this method does not exist and custom indexers may still not have it.
+            // @phpstan-ignore-next-line
             if (method_exists($searchObj, 'getIndexingMode')) {
                 if ($searchObj->getIndexingMode() == IndexerBase::INDEXING_MODE_INCREMENTAL) {
                     $content .= '<span class="indexingMode">Incremental mode</span>';
@@ -371,6 +374,9 @@ class IndexerRunner
         // duration, show sec or ms
         $content .= '<td>';
         if (is_subclass_of($searchObj, IndexerBase::class)) {
+            // Ignore error "Call to function method_exists() 'getIndexingMode' will always evaluate to true." because
+            // in older ke_search versions this method does not exist and custom indexers may still not have it.
+            // @phpstan-ignore-next-line
             $duration = method_exists($searchObj, 'getDuration') ? $searchObj->getDuration() : 0;
             if ($duration > 0) {
                 $content .= '<i>Indexing process took ';
@@ -1305,6 +1311,9 @@ class IndexerRunner
     protected function mergeIndexingErrors($searchObj, array $indexingErrors): array
     {
         if (is_subclass_of($searchObj, IndexerBase::class)) {
+            // Ignore error "Call to function method_exists() 'getIndexingMode' will always evaluate to true." because
+            // in older ke_search versions this method does not exist and custom indexers may still not have it.
+            // @phpstan-ignore-next-line
             $errors = method_exists($searchObj, 'getErrors') ? $searchObj->getErrors() : [];
             if (count($errors)) {
                 foreach ($errors as $error) {
