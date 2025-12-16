@@ -549,7 +549,7 @@ class BackendModuleController
         if ($size == 0) {
             return 'n/a';
         }
-        $i = (int) floor(log($size, 1024));
+        $i = (int)floor(log($size, 1024));
         $i = max(0, min($i, count($sizes) - 1));
         return round($size / (1024 ** $i), $decimals) . $sizes[$i];
     }

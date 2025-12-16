@@ -34,8 +34,7 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  */
 class SearchboxPlugin extends PluginBase
 {
-    public function __construct(private readonly ViewFactoryInterface $viewFactory)
-    { }
+    public function __construct(private readonly ViewFactoryInterface $viewFactory) {}
 
     /**
      * The main method of the PlugIn

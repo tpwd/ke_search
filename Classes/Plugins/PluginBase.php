@@ -1076,7 +1076,7 @@ class PluginBase extends AbstractPlugin
                     'pid' => $this->firstStartingPoint,
                     'word' => $searchWord,
                     'tstamp' => time(),
-                    'pageid' =>$this->request->getAttribute('frontend.page.information')->getId(),
+                    'pageid' => $this->request->getAttribute('frontend.page.information')->getId(),
                     'resultsfound' => $hits ? 1 : 0,
                     'language' => $this->languageId,
                 ];
