@@ -504,8 +504,7 @@ class IndexerBase
             foreach ($relatedFiles as $relatedFile) {
                 $fileReference = $this->resourceFactory->createFileReferenceObject($relatedFile);
                 $file = $fileReference->getOriginalFile();
-                if ($file instanceof \TYPO3\CMS\Core\Resource\File
-                    && FileUtility::isFileIndexable($file, $this->indexerConfig)) {
+                if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
                     $filesToIndex[] = $fileReference;
                 }
             }
