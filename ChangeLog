@@ -25,6 +25,7 @@ Upcoming version 7
 [TASK]    Simplify checks across multiple classes
 [TASK]    Update CI workflow to include PHP 8.4, 8.5 and TYPO3 14 support
 [TASK]    Simplify and restructure CSS
+[TASK]    Trim whitespace in ORDERBY clause handling in `Db.php`. Thanks to haraldglaser. https://github.com/tpwd/ke_search/issues/320
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
