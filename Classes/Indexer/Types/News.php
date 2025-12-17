@@ -28,6 +28,7 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\ContentUtility;
+use Tpwd\KeSearch\Utility\TypoLinkUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -155,6 +156,12 @@ class News extends IndexerBase
                 }
 
                 if (!$this->recordIsLive($newsRecord)) {
+                    $shouldBeIndexed = false;
+                }
+
+                // Make sure the target page exists if the news record is an internal target
+                // Note: This won't work in incremental indexing if the target disappears after a full indexing
+                if ($newsRecord['type'] == 1 && !$this->internalTargetExists($newsRecord)) {
                     $shouldBeIndexed = false;
                 }
 
@@ -606,4 +613,17 @@ class News extends IndexerBase
     {
         return $this->getContentFromFiles($relatedFiles);
     }
+
+    protected function internalTargetExists(array $newsRecord): bool
+    {
+        $targetExists = false;
+        $pageUid = TypoLinkUtility::extractPageUidFromTypoLink($newsRecord['internalurl']);
+        if ($pageUid) {
+            /** @var PageRepository $pageRepository */
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $targetExists = !empty($pageRepository->findByUid($pageUid));
+        }
+        return $targetExists;
+    }
+
 }

@@ -26,6 +26,7 @@ Upcoming version 7
 [TASK]    Update CI workflow to include PHP 8.4, 8.5 and TYPO3 14 support
 [TASK]    Simplify and restructure CSS
 [TASK]    Trim whitespace in ORDERBY clause handling in `Db.php`. Thanks to haraldglaser. https://github.com/tpwd/ke_search/issues/320
+[TASK]    Validate internal target pages in news indexer. Thanks to Nando Bosshart. https://github.com/tpwd/ke_search/issues/319
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
