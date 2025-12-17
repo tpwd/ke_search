@@ -127,7 +127,7 @@ class Db implements SingletonInterface
             $orderChain = explode(',', $queryParts['ORDERBY']);
             $count = 0;
             foreach ($orderChain as $order) {
-                $orderParts = explode(' ', $order);
+                $orderParts = explode(' ', trim($order));
                 $orderField = strtoupper($orderParts[0]);
                 $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
                 if ($count == 0) {
