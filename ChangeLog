@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version 7
 [!!!]     This version drops support for TYPO3 12
 [!!!]     Clear the caches after updating because there were updates in injected dependencies
+[!!!]     The default frontend CSS has changed. If you rely on the default CSS and don't want the styling to change after updating, copy over and include the styles from the previous version
 [TASK]    Mark as compatible with TYPO3 13 and 14
 [TASK]    Remove outdated Page TSconfig for TYPO3 12 compatibility
 [TASK]    Replace `File::FILETYPE_IMAGE` with `FileType::IMAGE->value`
@@ -23,6 +24,7 @@ Upcoming version 7
 [TASK]    Simplify checks in `File.php`
 [TASK]    Simplify checks across multiple classes
 [TASK]    Update CI workflow to include PHP 8.4, 8.5 and TYPO3 14 support
+[TASK]    Simplify and restructure CSS
 
 Version 6.6.0, 6 November 2025
 [!!!]     This version changes the database structure.
