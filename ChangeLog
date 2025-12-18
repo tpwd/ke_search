@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version 7
+Version 7.0.0, 6 November 2025
 [!!!]     This version drops support for TYPO3 12
 [!!!]     Clear the caches after updating because there were updates in injected dependencies
 [!!!]     The default frontend CSS has changed. If you rely on the default CSS and don't want the styling to change after updating, copy over and include the styles from the previous version

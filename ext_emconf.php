@@ -5,7 +5,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Faceted Search',
     'description' => 'Faceted fulltext search for TYPO3. Fast, flexible and easy to install and use. Indexes content directly from the databases. Features faceting / filtering, file indexing, images in result lists and respects access restrictions.',
     'category' => 'plugin',
-    'version' => '7.0.0-beta',
+    'version' => '7.0.0',
     'state' => 'stable',
     'author' => 'ke_search Dev Team',
     'author_email' => 'ke_search@tpwd.de',
@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [
-            'dashboard' => '12.4.0-13.99.99',
+            'dashboard' => '13.4.0-14.99.99',
         ],
     ],
     'autoload' => [
