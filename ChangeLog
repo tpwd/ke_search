@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Add null coalescing for file_collections in File indexer. Thanks to mcmietz. https://github.com/tpwd/ke_search/issues/315
+
 Version 7.0.0, 18 December 2025
 [!!!]     This version drops support for TYPO3 12
 [!!!]     Clear the caches after updating because there were updates in injected dependencies

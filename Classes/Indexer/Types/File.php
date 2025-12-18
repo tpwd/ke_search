@@ -98,7 +98,7 @@ class File extends IndexerBase
         $directories = $this->indexerConfig['directories'] ?? '';
         $directoryArray = GeneralUtility::trimExplode(',', $directories, true);
 
-        $fileCollections = $this->indexerConfig['file_collections'];
+        $fileCollections = $this->indexerConfig['file_collections'] ?? null;
 
         if (empty($directoryArray) && empty($fileCollections)) {
             $errorMessage = 'No directories or file collections defined for indexing.';
