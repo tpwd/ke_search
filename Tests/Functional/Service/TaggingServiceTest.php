@@ -24,7 +24,7 @@ class TaggingServiceTest extends FunctionalTestCase
 
     public function testAddTagsToPageRecordsWithPageProperties(): void
     {
-        $this->markTestSkipped('FIND_IN_SET is not supported in SQLite');
+        self::markTestSkipped('FIND_IN_SET is not supported in SQLite');
     }
 
     public function testAddTagsToPageRecordsWithAutomatedTagging(): void
@@ -46,9 +46,9 @@ class TaggingServiceTest extends FunctionalTestCase
 
         // Expect calls for tag3 (PID 10)
         // Note: TaggingService calls getTreeList for each PID in automated_tagging
-        $treeServiceMock->expects($this->any())
+        $treeServiceMock->expects(self::any())
             ->method('getTreeList')
-            ->willReturnCallback(function($pid, $depth, $begin, $where) {
+            ->willReturnCallback(function ($pid, $depth, $begin, $where) {
                 if ($pid == 10) {
                     if (str_contains($where, 'NOT IN (12)')) {
                         return '10,11';
@@ -70,21 +70,21 @@ class TaggingServiceTest extends FunctionalTestCase
         $result = $method->invoke($this->subject, $pageRecords, $tagChar);
 
         // tag3 is automated for PID 10 and its children (10, 11, 12)
-        $this->assertStringContainsString('#tag3#', $result[10]['tags']);
-        $this->assertStringContainsString('#tag3#', $result[11]['tags']);
-        $this->assertStringContainsString('#tag3#', $result[12]['tags']);
-        $this->assertStringNotContainsString('#tag3#', $result[20]['tags']);
+        self::assertStringContainsString('#tag3#', $result[10]['tags']);
+        self::assertStringContainsString('#tag3#', $result[11]['tags']);
+        self::assertStringContainsString('#tag3#', $result[12]['tags']);
+        self::assertStringNotContainsString('#tag3#', $result[20]['tags']);
 
         // tag4 is automated for PID 10 and its children, but excludes PID 12
-        $this->assertStringContainsString('#tag4#', $result[10]['tags']);
-        $this->assertStringContainsString('#tag4#', $result[11]['tags']);
-        $this->assertStringNotContainsString('#tag4#', $result[12]['tags']);
+        self::assertStringContainsString('#tag4#', $result[10]['tags']);
+        self::assertStringContainsString('#tag4#', $result[11]['tags']);
+        self::assertStringNotContainsString('#tag4#', $result[12]['tags']);
     }
 
     public function testAddTagsToPageRecordsEmptyUids(): void
     {
         $pageRecords = [10 => ['uid' => 10, 'tags' => '']];
         $result = $this->subject->addTagsToPageRecords($pageRecords, [], '#');
-        $this->assertEquals($pageRecords, $result);
+        self::assertEquals($pageRecords, $result);
     }
 }
