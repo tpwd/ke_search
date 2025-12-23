@@ -32,9 +32,7 @@ class ClearIndexCommandTest extends TestCase
         $this->commandTester = new CommandTester($command);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function noEntriesInIndexTableThenNoteIsDisplayed(): void
     {
         $this->indexRepositoryMock
@@ -54,9 +52,7 @@ class ClearIndexCommandTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function entriesInTableThenSuccessMessageIsDisplayed(): void
     {
         $this->indexRepositoryMock
@@ -80,9 +76,7 @@ class ClearIndexCommandTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function errorMessageIsDisplayedWhenExceptionOccurs(): void
     {
         $this->indexRepositoryMock

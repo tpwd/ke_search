@@ -32,9 +32,7 @@ class RemoveLockCommandTest extends TestCase
         $this->commandTester = new CommandTester($command);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function startTimeOfIndexerIsNotDefinedThenNoteIsDisplayed(): void
     {
         $this->registryMock
@@ -56,9 +54,7 @@ class RemoveLockCommandTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function startTimeOfIndexerIsDefinedThenSuccessMessageIsDisplayed(): void
     {
         $this->registryMock
@@ -81,9 +77,7 @@ class RemoveLockCommandTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function errorMessageIsDisplayedWhenExceptionOccurs(): void
     {
         $this->registryMock

@@ -33,10 +33,8 @@ class StartIndexerCommandTest extends TestCase
         $this->commandTester = new CommandTester($command);
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForIndexingModeOption
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProviderForIndexingModeOption')]
     public function indexingModeOptionIsAppliedCorrectly(string $option, string $mode, int $expectedMode): void
     {
         $this->indexerRunnerMock
@@ -57,7 +55,7 @@ class StartIndexerCommandTest extends TestCase
         $this->commandTester->execute($options);
     }
 
-    public function dataProviderForIndexingModeOption(): iterable
+    public static function dataProviderForIndexingModeOption(): iterable
     {
         yield 'No option is given means full indexing' => [
             'option' => '',
@@ -96,9 +94,7 @@ class StartIndexerCommandTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function indexerRunsAlreadyWarningIsDisplayed(): void
     {
         $this->indexerRunnerMock
@@ -122,10 +118,8 @@ class StartIndexerCommandTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForIndexerOutput
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('dataProviderForIndexerOutput')]
     public function indexerOutputIsCorrectlyDisplayed(string $indexerResult, string $plaintextResult, array $expectedLines): void
     {
         $this->indexerRunnerMock
@@ -148,7 +142,7 @@ class StartIndexerCommandTest extends TestCase
         }
     }
 
-    public function dataProviderForIndexerOutput(): iterable
+    public static function dataProviderForIndexerOutput(): iterable
     {
         $indexerResult = <<<EOL
 <div class="row"><div class="col-md-6"><div class="alert alert-info">Running indexing process in full mode.</div><table class="table table-striped table-hover"><tr><th>Indexer configuration</th><th>Mode</th><th>Info</th><th>Time</th></tr><tr><td><span class="title">Pages</span></td><td></td><td>10 pages have been selected for indexing in the main language.<br />
