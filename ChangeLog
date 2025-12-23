@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [TASK]    Add null coalescing for file_collections in File indexer. Thanks to mcmietz. https://github.com/tpwd/ke_search/issues/315
+[TASK]    Refactor addTagsToRecords for improved readability and maintainability. https://github.com/tpwd/ke_search/issues/238
 
 Version 7.0.0, 18 December 2025
 [!!!]     This version drops support for TYPO3 12

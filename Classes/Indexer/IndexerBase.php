@@ -26,13 +26,10 @@ use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AttachedFilesService;
 use Tpwd\KeSearch\Service\IndexerStatusService;
+use Tpwd\KeSearch\Service\TaggingService;
+use Tpwd\KeSearch\Service\TreeService;
 use Tpwd\KeSearch\Utility\FileUtility;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -98,6 +95,8 @@ class IndexerBase
     protected IndexRepository $indexRepository;
     protected ResourceFactory $resourceFactory;
     protected AttachedFilesService $attachedFilesService;
+    protected TreeService $treeService;
+    protected TaggingService $taggingService;
 
     /**
      * Constructor of this object
@@ -113,6 +112,8 @@ class IndexerBase
         $this->indexRepository = GeneralUtility::makeInstance(IndexRepository::class);
         $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->attachedFilesService = GeneralUtility::makeInstance(AttachedFilesService::class);
+        $this->treeService = GeneralUtility::makeInstance(TreeService::class);
+        $this->taggingService = GeneralUtility::makeInstance(TaggingService::class);
     }
 
     /**
@@ -133,7 +134,7 @@ class IndexerBase
         $pageList = '';
         foreach ($pidsRecursive as $pid) {
             // @extensionScannerIgnoreLine
-            $pageList .= $this->getTreeList((int)$pid, 99, 0, '', $includeDeletedPages) . ',';
+            $pageList .= $this->treeService->getTreeList((int)$pid, 99, 0, '', $includeDeletedPages) . ',';
         }
 
         // add non-recursive pids
@@ -234,104 +235,19 @@ class IndexerBase
     }
 
     /**
-     * Add Tags to records array
+     * Adds tags to an array of page records ("automated tagging").
      *
      * @param array $uids Simple array with uids of pages
      * @param string $pageWhere additional where-clause
      */
-    public function addTagsToRecords($uids, $pageWhere = '')
+    public function addTagsToRecords(array $uids, string $pageWhere = ''): void
     {
-        if (empty($uids)) {
-            $this->pObj->logger->warning('No pages/sysfolders given to add tags for.');
-            return;
-        }
-
-        $tagChar = $this->pObj->extConf['prePostTagChar'];
-
-        // add tags which are defined by page properties
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_filteroptions');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-        $fields = 'pages.uid, GROUP_CONCAT(CONCAT("'
-            . $tagChar
-            . '", tx_kesearch_filteroptions.tag, "'
-            . $tagChar
-            . '")) as tags';
-
-        $where = 'pages.uid IN (' . implode(',', $uids) . ')';
-        $where .= ' AND pages.tx_kesearch_tags <> "" ';
-        $where .= ' AND FIND_IN_SET(tx_kesearch_filteroptions.uid, pages.tx_kesearch_tags)';
-
-        $tagQuery = $queryBuilder
-            ->selectLiteral($fields)
-            ->from('pages')
-            ->from('tx_kesearch_filteroptions')
-            ->where($where)
-            ->groupBy('pages.uid')
-            ->executeQuery();
-
-        while ($row = $tagQuery->fetchAssociative()) {
-            if (isset($this->pageRecords[$row['uid']])) {
-                $this->pageRecords[$row['uid']]['tags'] = $row['tags'];
-            }
-        }
-
-        // add system categories as tags
-        foreach ($uids as $page_uid) {
-            if (isset($this->pageRecords[$page_uid])) {
-                SearchHelper::makeSystemCategoryTags($this->pageRecords[$page_uid]['tags'], $page_uid, 'pages');
-            }
-        }
-
-        // add tags which are defined by filteroption records
-        $table = 'tx_kesearch_filteroptions';
-        $queryBuilder = Db::getQueryBuilder($table);
-        $filterOptionsRows = $queryBuilder
-            ->select('automated_tagging', 'automated_tagging_exclude', 'tag')
-            ->from($table)
-            ->where(
-                $queryBuilder->expr()->neq(
-                    'automated_tagging',
-                    $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
-                )
-            )
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        if (!empty($pageWhere)) {
-            $where = $pageWhere . ' AND ';
-        } else {
-            $where = '';
-        }
-        $where .= 'no_search <> 1 ';
-
-        foreach ($filterOptionsRows as $row) {
-            if ($row['automated_tagging_exclude'] > '') {
-                $whereRow = $where . 'AND FIND_IN_SET(pages.pid, "' . $row['automated_tagging_exclude'] . '") = 0';
-            } else {
-                $whereRow = $where;
-            }
-
-            $pageList = [];
-            $automated_tagging_arr = explode(',', $row['automated_tagging']);
-            foreach ($automated_tagging_arr as $key => $value) {
-                $tmpPageList = GeneralUtility::trimExplode(
-                    ',',
-                    // @extensionScannerIgnoreLine
-                    $this->getTreeList((int)$value, 99, 0, $whereRow)
-                );
-                $pageList = array_merge($tmpPageList, $pageList);
-            }
-
-            foreach ($pageList as $uid) {
-                if (isset($this->pageRecords[$uid])) {
-                    $this->pageRecords[$uid]['tags'] = SearchHelper::addTag($row['tag'], $this->pageRecords[$uid]['tags']);
-                }
-            }
-        }
+        $this->pageRecords = $this->taggingService->addTagsToPageRecords(
+            $this->pageRecords,
+            $uids,
+            $this->pObj->extConf['prePostTagChar'] ?? '',
+            $pageWhere
+        );
     }
 
     /**
@@ -696,67 +612,6 @@ class IndexerBase
         }
 
         return $recordIsLive;
-    }
-
-    /**
-     * Recursively fetch all descendants of a given page
-     * Originally taken from class QueryGenerator (deprecated for v11)
-     *
-     * @param int $id uid of the page
-     * @param int $depth
-     * @param int $begin
-     * @param string $permClause
-     * @param bool $includeDeletedPages
-     * @return string comma separated list of descendant pages
-     */
-    public function getTreeList($id, $depth, $begin = 0, $permClause = '', $includeDeletedPages = false)
-    {
-        $depth = (int)$depth;
-        $begin = (int)$begin;
-        $id = (int)$id;
-        if ($id < 0) {
-            $id = abs($id);
-        }
-        if ($begin === 0) {
-            $theList = $id;
-        } else {
-            $theList = '';
-        }
-        if ($id && $depth > 0) {
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()->removeAll();
-            if (!$includeDeletedPages) {
-                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            } else {
-                $queryBuilder->getRestrictions()->removeAll();
-            }
-            $queryBuilder->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)),
-                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-                )
-                ->orderBy('uid');
-            if ($permClause !== '') {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
-            }
-            $statement = $queryBuilder->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                if ($begin <= 0) {
-                    $theList .= ',' . $row['uid'];
-                }
-                if ($depth > 1) {
-                    // @extensionScannerIgnoreLine
-                    $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
-                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
-                        $theList .= ',';
-                    }
-                    $theList .= $theSubList;
-                }
-            }
-        }
-        return $theList;
     }
 
     /**
