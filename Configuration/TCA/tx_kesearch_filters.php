@@ -23,7 +23,6 @@ $txKesearchFiltersTCA = [
         'typeicon_classes' => [
             'default' => 'content-elements-searchform',
         ],
-        'searchFields' => 'title',
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -51,14 +50,6 @@ $txKesearchFiltersTCA = [
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => '0',
             ],
         ],
         'title' => [
@@ -189,5 +180,9 @@ $txKesearchFiltersTCA = [
             . ' title,rendertype', ],
     ],
 ];
+
+if (TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Information\Typo3Version::class)->getMajorVersion() < 14) {
+    $txKesearchFiltersTCA['ctrl']['searchFields'] = 'title';
+}
 
 return $txKesearchFiltersTCA;

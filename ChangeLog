@@ -1,9 +1,11 @@
 ChangeLog
 
 Upcoming version
+[!!!]     Clear the caches after updating because there were updates in injected dependencies
 [TASK]    Add null coalescing for file_collections in File indexer. Thanks to mcmietz. https://github.com/tpwd/ke_search/issues/315
 [TASK]    Refactor addTagsToRecords for improved readability and maintainability. https://github.com/tpwd/ke_search/issues/238
 [TASK]    Update PHPUnit to version 11
+[TASK]    Update TCA definitions for TYPO3 13
 
 Version 7.0.0, 18 December 2025
 [!!!]     This version drops support for TYPO3 12

@@ -27,17 +27,8 @@ $txKesearchIndexerconfig = [
             'file' => 'apps-filetree-folder',
             'tt_news' => 'content-news',
         ],
-        'searchFields' => 'title',
     ],
     'columns' => [
-        'hidden' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => '0',
-            ],
-        ],
         'title' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_indexerconfig.title',
@@ -495,5 +486,9 @@ fields[] = bodytext
         ],
     ],
 ];
+
+if (TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Information\Typo3Version::class)->getMajorVersion() < 14) {
+    $txKesearchIndexerconfig['ctrl']['searchFields'] = 'title';
+}
 
 return $txKesearchIndexerconfig;

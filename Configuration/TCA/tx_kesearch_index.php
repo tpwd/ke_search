@@ -22,47 +22,6 @@ $txKesearchIndex = [
         ],
     ],
     'columns' => [
-        'starttime' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.starttime',
-            'config' => [
-                'type' => 'datetime',
-                'size' => '8',
-                'format' => 'date',
-                'default' => '0',
-                'checkbox' => '0',
-            ],
-        ],
-        'endtime' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.endtime',
-            'config' => [
-                'type' => 'datetime',
-                'size' => '8',
-                'format' => 'date',
-                'default' => '0',
-                'checkbox' => '0',
-            ],
-        ],
-        'fe_group' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.fe_group',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingleBox',
-                'items' => [
-                    ['', 0],
-                    [$langGeneralPath . 'LGL.hide_at_login', -1],
-                    [$langGeneralPath . 'LGL.any_login', -2],
-                    [$langGeneralPath . 'LGL.usergroups', '--div--'],
-                ],
-                'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'ORDER BY fe_groups.title',
-                'size' => 6,
-                'minitems' => 0,
-                'maxitems' => 99999,
-            ],
-        ],
         'targetpid' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_db.xlf:tx_kesearch_index.targetpid',

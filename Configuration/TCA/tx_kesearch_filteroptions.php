@@ -22,7 +22,6 @@ $txKesearchFilteroptionsTCA = [
         'typeicon_classes' => [
             'default' => 'form-checkbox',
         ],
-        'searchFields' => 'title,tag,slug',
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -51,14 +50,6 @@ $txKesearchFilteroptionsTCA = [
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-            ],
-        ],
-        'hidden' => [
-            'exclude' => 1,
-            'label' => $langGeneralPath . 'LGL.hidden',
-            'config' => [
-                'type' => 'check',
-                'default' => '0',
             ],
         ],
         'title' => [
@@ -127,5 +118,9 @@ $txKesearchFilteroptionsTCA = [
             . ' title, tag, slug, automated_tagging, automated_tagging_exclude', ],
     ],
 ];
+
+if (TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Information\Typo3Version::class)->getMajorVersion() < 14) {
+    $txKesearchFilteroptionsTCA['ctrl']['searchFields'] = 'title, tag, slug';
+}
 
 return $txKesearchFilteroptionsTCA;
