@@ -32,7 +32,8 @@
 		"ext-zip": "*",
 		"ext-libxml": "*",
 		"ext-dom": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"typo3/testing-framework": "^9.3"
 	},
 	"suggest": {
 		"typo3/cms-dashboard": "Use widgets in dashboard"
@@ -66,6 +67,7 @@
 	"scripts": {
 		"docs:generate": "docker run --rm --pull always -v $(pwd):/project -it ghcr.io/typo3-documentation/render-guides:latest --config=Documentation --fail-on-log --no-progress",
 		"test:unit": ".Build/bin/phpunit -c Tests/phpunit.xml.dist",
+		"test:functional": ".Build/bin/phpunit -c Tests/phpunit.functional.xml",
 		"test:phpstan": ".Build/bin/phpstan clear-result-cache && .Build/bin/phpstan --configuration=Tests/phpstan.neon --memory-limit=256M > phpstan-report.log",
 		"test:php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --using-cache=no > php-cs-fixer-report.log"
 	}

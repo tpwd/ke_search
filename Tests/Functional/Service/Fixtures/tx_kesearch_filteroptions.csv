@@ -1,0 +1,4 @@
+"tx_kesearch_filteroptions"
+,"uid","pid","title","tag","automated_tagging","automated_tagging_exclude","hidden","deleted"
+,3,1,"Automated Tag 3","tag3","10","",0,0
+,4,1,"Automated Tag 4 with Exclude","tag4","10","12",0,0

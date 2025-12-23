@@ -79,6 +79,15 @@ To run the unit tests:
 
     composer test:unit
 
+Functional Tests
+................
+
+To run the functional tests:
+
+.. code-block::
+
+    composer test:functional
+
 PHPStan
 .......
 
