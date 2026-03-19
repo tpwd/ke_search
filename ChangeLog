@@ -1,7 +1,10 @@
 ChangeLog
 
-Upcoming version
+Upcoming version 7.1
 [!!!]     Clear the caches after updating because there were updates in injected dependencies
+[!!!]     The Db class is no longer a singleton. Extensions that rely on GeneralUtility::makeInstance(Db::class) returning a shared instance must use the SearchService API or the request-scoped Db from the plugin context instead.
+[!!!]     There has been done some refactoring due to the SearchService feature. setPluginbase() and Db::$pObj are deprecated but still supported for backward compatibility.
+[FEATURE] A new SearchService allows third party-extensions to execute a search programatically. See section "Developer --> Public Search API" in the documentation.
 [TASK]    Add null coalescing for file_collections in File indexer. Thanks to mcmietz. https://github.com/tpwd/ke_search/issues/315
 [TASK]    Refactor addTagsToRecords for improved readability and maintainability. https://github.com/tpwd/ke_search/issues/238
 [TASK]    Update TCA definitions for TYPO3 13

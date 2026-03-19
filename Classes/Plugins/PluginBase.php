@@ -24,13 +24,16 @@ namespace Tpwd\KeSearch\Plugins;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Domain\Repository\FileMetaDataRepository;
 use Tpwd\KeSearch\Domain\Repository\FileReferenceRepository;
 use Tpwd\KeSearch\Domain\Repository\GenericRepository;
+use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\Filters;
 use Tpwd\KeSearch\Lib\PluginBaseHelper;
+use Tpwd\KeSearch\Lib\SearchDbRegistry;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Lib\Searchphrase;
 use Tpwd\KeSearch\Lib\Searchresult;
@@ -52,7 +55,7 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  * @author    Stefan Froemken
  * @author    Christian Bülter
  */
-class PluginBase extends AbstractPlugin
+class PluginBase extends AbstractPlugin implements SearchContextInterface
 {
     public ?ServerRequestInterface $request = null;
     public $languageFile = 'EXT:ke_search/Resources/Private/Language/locallang.xlf';
@@ -225,10 +228,11 @@ class PluginBase extends AbstractPlugin
             $this->conf['additionalPathForTypeIcons'] = rtrim($this->conf['additionalPathForTypeIcons'], '/') . '/';
         }
 
-        // prepare database object
-        $this->db = GeneralUtility::makeInstance(Db::class);
-        if (!isset($this->db->pObj)) {
-            $this->db->setPluginbase($this);
+        // prepare database object (one shared Db per request via SearchDbRegistry so the search runs only once)
+        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
+        $this->db = SearchDbRegistry::getDbForRequest($this->request, $eventDispatcher, $this);
+        if (!isset($this->db->searchContext)) {
+            $this->db->setSearchContext($this);
         }
 
         // set startingPoints
@@ -711,11 +715,10 @@ class PluginBase extends AbstractPlugin
         }
 
         // fetch the search results
-        $limit = $this->db->getLimit();
         $rows = $this->db->getSearchResults();
         $this->fluidTemplateVariables['errors'] = $this->db->getErrors();
 
-        // set number of results
+        // set the number of results
         $this->numberOfResults = $this->db->getAmountOfSearchResults();
 
         // count search phrase in ke_search statistic tables
@@ -1296,6 +1299,99 @@ class PluginBase extends AbstractPlugin
         if ($this->request === null) {
             $this->request = $request;
         }
+    }
+
+    public function getConf(): array
+    {
+        return $this->conf;
+    }
+
+    public function getExtConf(): array
+    {
+        return $this->extConf;
+    }
+
+    public function getExtConfPremium(): array
+    {
+        return $this->extConfPremium;
+    }
+
+    public function &getPiVars(): array
+    {
+        return $this->piVars;
+    }
+
+    public function getSword(): string
+    {
+        return $this->sword;
+    }
+
+    public function getWordsAgainst(): string
+    {
+        return $this->wordsAgainst;
+    }
+
+    public function getScoreAgainst(): string
+    {
+        return $this->scoreAgainst;
+    }
+
+    public function getTagsAgainst(): array
+    {
+        return $this->tagsAgainst;
+    }
+
+    public function getStartingPoints(): string
+    {
+        return $this->startingPoints;
+    }
+
+    public function getIsEmptySearch(): bool
+    {
+        return $this->isEmptySearch;
+    }
+
+    public function getFilters(): Filters
+    {
+        return $this->filters;
+    }
+
+    public function getDb(): Db
+    {
+        return $this->db;
+    }
+
+    /** @return array<int, array<int, string>> */
+    public function getPreselectedFilter(): array
+    {
+        return $this->preselectedFilter;
+    }
+
+    public function getHasTooShortWords(): bool
+    {
+        return $this->hasTooShortWords;
+    }
+
+    public function setHasTooShortWords(bool $value): void
+    {
+        $this->hasTooShortWords = $value;
+    }
+
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    /** @return array<string, int>|false */
+    public function getTagsInSearchResult(): array|false
+    {
+        return $this->tagsInSearchResult;
+    }
+
+    /** @param array<string, int>|false $value */
+    public function setTagsInSearchResult(array|false $value): void
+    {
+        $this->tagsInSearchResult = $value;
     }
 
     public function translate(string $key, string $alternativeLabel = ''): string
