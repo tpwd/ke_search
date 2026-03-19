@@ -21,7 +21,7 @@
 		"ext-pdo": "*"
 	},
 	"require-dev": {
-		"typo3/cms-dashboard": "^13 || ^14",
+		"typo3/cms-base-distribution": "^13 || ^14",
 		"typo3/cms-info": "^13 || ^14",
 		"typo3/cms-install": "^13 || ^14",
 		"typo3/cms-scheduler": "^13 || ^14",
