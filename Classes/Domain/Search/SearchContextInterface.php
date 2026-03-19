@@ -76,3 +76,4 @@ interface SearchContextInterface
     /** @param array<string, int>|false $value */
     public function setTagsInSearchResult(array|false $value): void;
 }
+

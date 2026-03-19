@@ -28,7 +28,8 @@ final class SearchResult
         private array $results,
         private int $totalCount,
         private ?array $tagsFromSearchResult = null,
-    ) {}
+    ) {
+    }
 
     /** @return array<int, array<string, mixed>> */
     public function getResults(): array

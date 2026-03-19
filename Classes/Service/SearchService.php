@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tpwd\KeSearch\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Domain\Search\SearchExecutionContext;
 use Tpwd\KeSearch\Domain\Search\SearchRequest;
 use Tpwd\KeSearch\Domain\Search\SearchResult;
@@ -50,7 +51,8 @@ class SearchService
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function search(SearchRequest $searchRequest): SearchResult
     {

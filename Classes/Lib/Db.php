@@ -61,7 +61,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Db
 {
-    public const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
+    public const string DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
 
     public array $conf = [];
     public int $countResultsOfTags = 0;
@@ -413,7 +413,7 @@ class Db
     {
         if ($this->sphinxSearchEnabled()) {
             $rows = $this->getSearchResultBySphinx(false);
-            return array_map('intval', array_column($rows, 'uid'));
+            return array_values(array_map('intval', array_column($rows, 'uid')));
         }
 
         $queryParts = $this->getQueryParts();
@@ -426,9 +426,8 @@ class Db
             return [];
         }
 
-        return array_map('intval', array_column($rows, 'uid'));
+        return array_values(array_map('intval', array_column($rows, 'uid')));
     }
-
     /**
      * get all tags which are found in search result
      * additional the tags are counted

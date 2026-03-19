@@ -32,6 +32,7 @@ use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\Filters;
+use Tpwd\KeSearch\Lib\SearchDbRegistry;
 use Tpwd\KeSearch\Lib\PluginBaseHelper;
 use Tpwd\KeSearch\Lib\SearchDbRegistry;
 use Tpwd\KeSearch\Lib\SearchHelper;
