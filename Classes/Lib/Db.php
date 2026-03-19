@@ -8,8 +8,8 @@ namespace Tpwd\KeSearch\Lib;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
-use Tpwd\KeSearch\Event\MatchColumnsEvent;
 use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
+use Tpwd\KeSearch\Event\MatchColumnsEvent;
 use Tpwd\KeSearch\Plugins\PluginBase;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
@@ -413,7 +413,7 @@ class Db
     {
         if ($this->sphinxSearchEnabled()) {
             $rows = $this->getSearchResultBySphinx(false);
-            return array_values(array_map('intval', array_column($rows, 'uid')));
+            return array_map('intval', array_column($rows, 'uid'));
         }
 
         $queryParts = $this->getQueryParts();
@@ -426,7 +426,7 @@ class Db
             return [];
         }
 
-        return array_values(array_map('intval', array_column($rows, 'uid')));
+        return array_map('intval', array_column($rows, 'uid'));
     }
 
     /**

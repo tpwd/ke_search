@@ -36,8 +36,7 @@ final class SearchRequest
         private array $conf = [],
         private ?int $languageId = null,
         private ?ServerRequestInterface $request = null,
-    ) {
-    }
+    ) {}
 
     public function getSearchWord(): string
     {
@@ -133,7 +132,7 @@ final class SearchRequest
 
     /**
      * Build from array (e.g. for custom API calls).
-     * @param array{searchWord?: string, startingPoints?: string, filter?: array, page?: int, sortByField?: string, sortByDir?: string, limit?: int, conf?: array, languageId?: int} $data
+     * @param array{searchWord?: string, startingPoints?: string, filter?: array, page?: int, sortByField?: string, sortByDir?: string, limit?: int, conf?: array, languageId?: int, request?: ServerRequestInterface} $data
      */
     public static function fromArray(array $data): self
     {
