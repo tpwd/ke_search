@@ -413,7 +413,7 @@ class Db
     {
         if ($this->sphinxSearchEnabled()) {
             $rows = $this->getSearchResultBySphinx(false);
-            return array_values(array_map('intval', array_column($rows, 'uid')));
+            return array_map('intval', array_column($rows, 'uid'));
         }
 
         $queryParts = $this->getQueryParts();
@@ -426,7 +426,7 @@ class Db
             return [];
         }
 
-        return array_values(array_map('intval', array_column($rows, 'uid')));
+        return array_map('intval', array_column($rows, 'uid'));
     }
     /**
      * get all tags which are found in search result

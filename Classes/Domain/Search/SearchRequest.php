@@ -36,8 +36,7 @@ final class SearchRequest
         private array $conf = [],
         private ?int $languageId = null,
         private ?ServerRequestInterface $request = null,
-    ) {
-    }
+    ) {}
 
     public function getSearchWord(): string
     {

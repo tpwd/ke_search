@@ -7,9 +7,9 @@ namespace Tpwd\KeSearch\Domain\Search;
 use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\Filters;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
