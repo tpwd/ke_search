@@ -20,7 +20,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Tpwd\KeSearch\Plugins\PluginBase;
+use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,17 +39,29 @@ class Searchphrase
     public const IGNORE_FOR_TAG_BUILDING = ['start', 'end'];
 
     /**
-     * @var PluginBase
+     * @var SearchContextInterface
+     */
+    private $searchContext;
+
+    /**
+     * @deprecated Use $searchContext or getSearchContext(). Will be removed in next major version.
+     * @var SearchContextInterface
      */
     public $pObj;
 
     /**
      * initializes this object
-     * @param PluginBase $pObj
+     * @param SearchContextInterface $pObj
      */
-    public function initialize(PluginBase $pObj)
+    public function initialize(SearchContextInterface $pObj)
     {
+        $this->searchContext = $pObj;
         $this->pObj = $pObj;
+    }
+
+    public function getSearchContext(): SearchContextInterface
+    {
+        return $this->searchContext;
     }
 
     /**
@@ -60,7 +72,7 @@ class Searchphrase
     {
         $cleanSearchStringParts = [];
         $tagsAgainst = $this->buildTagsAgainst();
-        $searchString = trim($this->pObj->piVars['sword'] ?? '');
+        $searchString = trim($this->searchContext->getPiVars()['sword'] ?? '');
         $searchString = $this->checkAgainstDefaultValue($searchString);
         $searchStringParts = $this->explodeSearchPhrase($searchString);
         foreach ($searchStringParts as $key => $part) {
@@ -90,7 +102,7 @@ class Searchphrase
     public function checkAgainstDefaultValue($searchString)
     {
         $searchStringToLower = strtolower(trim($searchString));
-        $defaultValueToLower = strtolower($this->pObj->translate('searchbox_default_value'));
+        $defaultValueToLower = strtolower($this->searchContext->translate('searchbox_default_value'));
         if ($searchStringToLower === $defaultValueToLower) {
             $searchString = '';
         }
@@ -130,8 +142,8 @@ class Searchphrase
 
                 // check for word length
                 $searchWordLength = mb_strlen($word);
-                if ($searchWordLength < $this->pObj->extConf['searchWordLength']) {
-                    $this->pObj->hasTooShortWords = true;
+                if ($searchWordLength < $this->searchContext->getExtConf()['searchWordLength']) {
+                    $this->searchContext->setHasTooShortWords(true);
                     unset($searchParts[$key]);
                 }
             }
@@ -148,13 +160,13 @@ class Searchphrase
                     // Enable partial word search (default: on) and in-word-search (Sphinx-based or native).
                     // Partial word search is activated automatically if in-word-search is activated
                     if (
-                        ($this->pObj->extConf['enablePartSearch'] ?? true)
+                        ($this->searchContext->getExtConf()['enablePartSearch'] ?? true)
                         ||
-                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false))
+                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && (int)($this->searchContext->getExtConfPremium()['enableInWordSearch'] ?? false))
                         ||
-                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->pObj->extConfPremium['enableNativeInWordSearch'] ?? false))
+                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableNativeInWordSearch'] ?? false))
                     ) {
-                        if (($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && (int)($this->pObj->extConfPremium['enableInWordSearch'] ?? false)) {
+                        if (($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && (int)($this->searchContext->getExtConfPremium()['enableInWordSearch'] ?? false)) {
                             $searchParts[$key] = '*' . trim($searchParts[$key], '*') . '*';
                         } else {
                             $searchParts[$key] = rtrim($searchParts[$key], '*') . '*';
@@ -162,7 +174,7 @@ class Searchphrase
                     }
 
                     // add + explicit to all search words to make the searchresults equal to sphinx search results
-                    if ($this->pObj->extConf['enableExplicitAnd']) {
+                    if ($this->searchContext->getExtConf()['enableExplicitAnd']) {
                         $searchParts[$key] = '+' . ltrim($searchParts[$key], '+');
                     }
                 }
@@ -191,13 +203,13 @@ class Searchphrase
      */
     public function buildPreselectedTagsAgainst(array &$tagsAgainst)
     {
-        $tagChar = $this->pObj->extConf['prePostTagChar'];
-        foreach ($this->pObj->preselectedFilter as $key => $filterTags) {
+        $tagChar = $this->searchContext->getExtConf()['prePostTagChar'];
+        foreach ($this->searchContext->getPreselectedFilter() as $key => $filterTags) {
             // Add it only, if no other filter options of this filter has been selected in the frontend.
             // We ignore values with one character length here (e.g. "-"), those are coming from the routing
             // configuration and are necessary for the routing but should be ignored here.
-            if (!isset($this->pObj->piVars['filter'][$key])
-                || (is_string($this->pObj->piVars['filter'][$key]) && strlen($this->pObj->piVars['filter'][$key]) === 1)
+            if (!isset($this->searchContext->getPiVars()['filter'][$key])
+                || (is_string($this->searchContext->getPiVars()['filter'][$key] ?? null) && strlen($this->searchContext->getPiVars()['filter'][$key]) === 1)
             ) {
                 if (!isset($tagsAgainst[$key])) {
                     $tagsAgainst[$key] = '';
@@ -208,13 +220,13 @@ class Searchphrase
                     $filterTags[$k] = $queryBuilder->quote($v);
                 }
                 // if we are in checkbox mode
-                if (count($this->pObj->preselectedFilter[$key]) >= 2) {
+                if (count($this->searchContext->getPreselectedFilter()[$key]) >= 2) {
                     $tagsAgainst[$key] .= ' "'
                         . $tagChar
                         . implode($tagChar . '" "' . $tagChar, $filterTags)
                         . $tagChar
                         . '"';
-                } elseif (count($this->pObj->preselectedFilter[$key]) == 1) {
+                } elseif (count($this->searchContext->getPreselectedFilter()[$key]) == 1) {
                     // if we are in select or list mode
                     $tagsAgainst[$key] .= ' +"' . $tagChar . array_shift($filterTags) . $tagChar . '"';
                 }
@@ -231,13 +243,14 @@ class Searchphrase
     public function buildPiVarsTagsAgainst(array &$tagsAgainst)
     {
         // add filter options selected in the frontend
-        $tagChar = $this->pObj->extConf['prePostTagChar'];
-        if (is_array($this->pObj->piVars['filter'] ?? null)) {
-            foreach ($this->pObj->piVars['filter'] as $key => $tag) {
-                // If this->pObj->piVars['filter'][$key] is an array this means the filter
+        $tagChar = $this->searchContext->getExtConf()['prePostTagChar'];
+        $piVarsFilter = $this->searchContext->getPiVars()['filter'] ?? null;
+        if (is_array($piVarsFilter)) {
+            foreach ($piVarsFilter as $key => $tag) {
+                // If $this->searchContext->getPiVars()['filter'][$key] is an array this means the filter
                 // is a "checkbox" filter with multi-selection of the values.
-                if (is_array($this->pObj->piVars['filter'][$key] ?? null)) {
-                    foreach ($this->pObj->piVars['filter'][$key] as $subkey => $subtag) {
+                if (is_array($piVarsFilter[$key] ?? null)) {
+                    foreach ($piVarsFilter[$key] as $subkey => $subtag) {
                         // Don't add the tag if it is already inserted by preselected filters
                         if (!empty($subtag)
                             && strstr($tagsAgainst[$key] ?? '', $subtag) === false

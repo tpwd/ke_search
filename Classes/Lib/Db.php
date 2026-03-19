@@ -9,6 +9,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Tpwd\KeSearch\Event\MatchColumnsEvent;
+use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Plugins\PluginBase;
 use Tpwd\KeSearchPremium\KeSearchPremium;
 use TYPO3\CMS\Core\Context\Context;
@@ -19,7 +20,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,47 +42,76 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  ***************************************************************/
 
 /**
- * DB Class for ke_search, generates search queries.
- * @author    Stefan Froemken
+ * Database access layer for ke_search: builds and runs search queries against the index.
+ *
+ * This class is responsible for:
+ * - Building SQL query parts (SELECT, FROM, WHERE, GROUP BY, ORDER BY, HAVING, JOIN) from the
+ *   current search context (search phrase, filters, sorting, date range, etc.)
+ * - Executing the search either via MySQL against tx_kesearch_index or via Sphinx when
+ *   ke_search_premium is used (sphinxSearchEnabled())
+ * - Returning paginated result sets and the total number of results
+ * - Extracting and aggregating tags from the result set (for filter facets)
+ * - Applying configuration from the plugin/search context (visibility, language, fe_groups)
+ *
+ * A SearchContextInterface (e.g. PluginBase) must be set via setSearchContext() before running
+ * searches. The class is not a singleton; frontend plugins share one instance per request via
+ * SearchDbRegistry.
+ *
+ * @author Stefan Froemken
  */
-class Db implements SingletonInterface
+class Db
 {
-    public const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
-    public $conf = [];
-    public $countResultsOfTags = 0;
-    public $countResultsOfContent = 0;
-    public $table = 'tx_kesearch_index';
-    protected $hasSearchResults = true;
-    protected $searchResults = [];
-    protected $numberOfResults = 0;
+    public const string DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
+
+    public array $conf = [];
+    public int $countResultsOfTags = 0;
+    public int $countResultsOfContent = 0;
+    public string $table = 'tx_kesearch_index';
+    protected bool $hasSearchResults = true;
+    protected array $searchResults = [];
+    protected int $numberOfResults = 0;
     protected KeSearchPremium $keSearchPremium;
-    protected $errors = [];
+    protected array $errors = [];
     private EventDispatcherInterface $eventDispatcher;
-    public PluginBase $pObj;
+    public SearchContextInterface $searchContext;
+
+    /**
+     * @deprecated Use $searchContext instead. Set automatically when context is PluginBase.
+     */
+    public ?PluginBase $pObj = null;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function setPluginbase(PluginBase $pObj)
+    public function setSearchContext(SearchContextInterface $searchContext): void
     {
-        $this->pObj = $pObj;
+        $this->searchContext = $searchContext;
+        $this->pObj = $searchContext instanceof PluginBase ? $searchContext : null;
         // @extensionScannerIgnoreLine
-        $this->conf = $this->pObj->conf;
+        $this->conf = $this->searchContext->getConf();
+    }
+
+    /**
+     * @deprecated Use setSearchContext() instead. Will be removed in a future version.
+     */
+    public function setPluginbase(PluginBase $pObj): void
+    {
+        $this->setSearchContext($pObj);
     }
 
     /**
      * Returns the search result for the current search parameters, either using the default search
      * based on MySQL or based on Sphinx (ke_search_premium feature).
-     * If there is a cached result list, it is returned directly without executing the search, otherwise
+     * If there is a cached result list, it is returned directly without executing the search; otherwise
      * search is executed.
      *
      * @return array
      */
     public function getSearchResults()
     {
-        // if there are no search results return the empty result array directly
+        // if there are no search results, return the empty result array directly
         if (!$this->hasSearchResults) {
             return $this->searchResults;
         }
@@ -101,24 +130,21 @@ class Db implements SingletonInterface
     }
 
     /**
-     * get a limitted amount of search results for a requested page
+     * Builds the search result query from query parts (SELECT, FROM, WHERE, GROUP BY, ORDER BY, HAVING, JOIN).
+     * Does not apply LIMIT; callers can set limit and execute.
+     *
+     * @param array $queryParts Result of getQueryParts() (SELECT may be overridden by caller)
+     * @return QueryBuilder
      */
-    public function getSearchResultByMySQL()
+    private function buildSearchResultQuery(array $queryParts): QueryBuilder
     {
-        /** @var LogManager */
-        $logManager = GeneralUtility::makeInstance(LogManager::class);
-        /** @var Logger $logger */
-        $logger = $logManager->getLogger(__CLASS__);
-
-        $queryParts = $this->getQueryParts();
-
-        // build query
-        $queryBuilder = self::getQueryBuilder('tx_kesearch_index');
+        $queryBuilder = self::getQueryBuilder($this->table);
         $queryBuilder->getRestrictions()->removeAll();
         $resultQuery = $queryBuilder
             ->selectLiteral($queryParts['SELECT'])
             ->from($queryParts['FROM'])
             ->where($queryParts['WHERE']);
+
         if (!empty($queryParts['GROUPBY'])) {
             $groupParts = explode(',', $queryParts['GROUPBY']);
             $resultQuery->groupBy($groupParts[0], $groupParts[1]);
@@ -130,16 +156,16 @@ class Db implements SingletonInterface
                 $orderParts = explode(' ', trim($order));
                 $orderField = strtoupper($orderParts[0]);
                 $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
-                if ($count == 0) {
+                if ($count === 0) {
                     if (
                         ExtensionManagementUtility::isLoaded('ke_search_premium')
-                        && ($orderField == strtoupper('customranking'))
+                        && ($orderField === strtoupper('customranking'))
                     ) {
                         // We cast `customranking` to integer because additionalFields in ke_search can only
                         // be string, so we cannot use an integer field, although it's a numeric value (can also be
                         // negative).
                         $resultQuery->getConcreteQueryBuilder()->orderBy(
-                            'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                            'CAST(' . $this->table . '.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
                             $orderDirection
                         );
                     } else {
@@ -148,10 +174,10 @@ class Db implements SingletonInterface
                 } else {
                     if (
                         ExtensionManagementUtility::isLoaded('ke_search_premium')
-                        && ($orderField == strtoupper('customranking'))
+                        && ($orderField === strtoupper('customranking'))
                     ) {
                         $resultQuery->getConcreteQueryBuilder()->addOrderBy(
-                            'CAST(tx_kesearch_index.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
+                            'CAST(' . $this->table . '.' . $queryBuilder->quoteIdentifier($orderField) . ' AS SIGNED)',
                             $orderDirection
                         );
                     } else {
@@ -164,17 +190,32 @@ class Db implements SingletonInterface
         if (!empty($queryParts['HAVING'])) {
             $resultQuery->having($queryParts['HAVING']);
         }
-
-        if (!empty($queryParts['JOIN'] && is_array($queryParts['JOIN']))) {
+        if (!empty($queryParts['JOIN']) && is_array($queryParts['JOIN'])) {
             foreach ($queryParts['JOIN'] as $table => $condition) {
                 $resultQuery->join(
-                    'tx_kesearch_index',
+                    $this->table,
                     $table,
                     $table,
                     $condition ?: null,
                 );
             }
         }
+
+        return $resultQuery;
+    }
+
+    /**
+     * get a limited number of search results for a requested page
+     */
+    public function getSearchResultByMySQL()
+    {
+        /** @var LogManager $logManager */
+        $logManager = GeneralUtility::makeInstance(LogManager::class);
+        /** @var Logger $logger */
+        $logger = $logManager->getLogger(__CLASS__);
+
+        $queryParts = $this->getQueryParts();
+        $resultQuery = $this->buildSearchResultQuery($queryParts);
 
         $limit = $this->getLimit();
         $resultQuery->setMaxResults($limit[1]);
@@ -244,23 +285,23 @@ class Db implements SingletonInterface
             $this->keSearchPremium->setLimit(
                 $limit[0],
                 $limit[1],
-                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0)
+                (int)($this->searchContext->getExtConfPremium()['sphinxLimit'] ?? 0)
             );
         } else {
             $this->keSearchPremium->setLimit(
                 0,
-                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0),
-                (int)($this->pObj->extConfPremium['sphinxLimit'] ?? 0)
+                (int)($this->searchContext->getExtConfPremium()['sphinxLimit'] ?? 0),
+                (int)($this->searchContext->getExtConfPremium()['sphinxLimit'] ?? 0)
             );
         }
 
         // generate query
         $queryForSphinx = '';
-        if ($this->pObj->wordsAgainst) {
-            $queryForSphinx .= ' @(title,content) ' . $this->escapeString($this->pObj->wordsAgainst);
+        if ($this->searchContext->getWordsAgainst()) {
+            $queryForSphinx .= ' @(title,content) ' . $this->escapeString($this->searchContext->getWordsAgainst());
         }
-        if (count($this->pObj->tagsAgainst)) {
-            foreach ($this->pObj->tagsAgainst as $value) {
+        if (count($this->searchContext->getTagsAgainst())) {
+            foreach ($this->searchContext->getTagsAgainst() as $value) {
                 // in normal case only checkbox mode has spaces
                 $queryForSphinx .= ' @tags ' . str_replace('" "', '" | "', trim($value));
             }
@@ -292,7 +333,7 @@ class Db implements SingletonInterface
         }
 
         // restrict to storage page (in MySQL: $where .= ' AND pid in (' .  . ') ';)
-        $startingPoints = GeneralUtility::trimExplode(',', $this->pObj->startingPoints);
+        $startingPoints = GeneralUtility::trimExplode(',', $this->searchContext->getStartingPoints());
         $queryForSphinx .= ' @pid ';
         $first = true;
         foreach ($startingPoints as $startingPoint) {
@@ -327,7 +368,7 @@ class Db implements SingletonInterface
     public function getQueryParts()
     {
         $databaseConnection = self::getDatabaseConnection($this->table);
-        $searchwordQuoted = $databaseConnection->quote((string)$this->pObj->scoreAgainst);
+        $searchwordQuoted = $databaseConnection->quote((string)$this->searchContext->getScoreAgainst());
         $limit = $this->getLimit();
         $queryParts = [
             'SELECT' => $this->getFields($searchwordQuoted),
@@ -363,6 +404,32 @@ class Db implements SingletonInterface
     }
 
     /**
+     * Returns UIDs of all search results (no pagination, no full row data).
+     * Efficient for RAG/API use cases where only index UIDs are needed.
+     *
+     * @return list<int> UIDs from tx_kesearch_index
+     */
+    public function getSearchResultUids(): array
+    {
+        if ($this->sphinxSearchEnabled()) {
+            $rows = $this->getSearchResultBySphinx(false);
+            return array_values(array_map('intval', array_column($rows, 'uid')));
+        }
+
+        $queryParts = $this->getQueryParts();
+        $queryParts['SELECT'] = $this->table . '.uid';
+        $resultQuery = $this->buildSearchResultQuery($queryParts);
+
+        try {
+            $rows = $resultQuery->executeQuery()->fetchAllAssociative();
+        } catch (DriverException $e) {
+            return [];
+        }
+
+        return array_values(array_map('intval', array_column($rows, 'uid')));
+    }
+
+    /**
      * get all tags which are found in search result
      * additional the tags are counted
      *
@@ -371,7 +438,7 @@ class Db implements SingletonInterface
     public function getTagsFromSearchResult(): array
     {
         $tags = [];
-        $tagChar = $this->pObj->extConf['prePostTagChar'];
+        $tagChar = $this->searchContext->getExtConf()['prePostTagChar'];
         $tagDivider = $tagChar . ',' . $tagChar;
 
         if ($this->sphinxSearchEnabled()) {
@@ -452,11 +519,8 @@ class Db implements SingletonInterface
         $where = '';
         if (count($tags)) {
             foreach ($tags as $value) {
-                // @TODO: check if this works as intended / search for better way
-                $value = $databaseConnection->quote((string)$value);
-                $value = rtrim($value, "'");
-                $value = ltrim($value, "'");
-                $where .= ' AND MATCH (tx_kesearch_index.tags) AGAINST (\'' . $value . '\' IN BOOLEAN MODE) ';
+                $quotedValue = $databaseConnection->quote((string)$value);
+                $where .= ' AND MATCH (tx_kesearch_index.tags) AGAINST (' . $quotedValue . ' IN BOOLEAN MODE) ';
             }
             return $where;
         }
@@ -483,11 +547,11 @@ class Db implements SingletonInterface
         $fields = 'SQL_CALC_FOUND_ROWS tx_kesearch_index.*';
 
         // if a searchword was given, calculate score
-        if ($this->pObj->sword) {
+        if ($this->searchContext->getSword()) {
             $fields .=
                 ', MATCH (' . $this->getMatchColumns() . ') AGAINST (' . $searchwordQuoted . ')'
                 . '+ ('
-                . $this->pObj->extConf['multiplyValueToTitle']
+                . $this->searchContext->getExtConf()['multiplyValueToTitle']
                 . ' * MATCH (tx_kesearch_index.title) AGAINST (' . $searchwordQuoted . ')'
                 . ') AS score';
         }
@@ -505,28 +569,28 @@ class Db implements SingletonInterface
         $where = '';
 
         $databaseConnection = self::getDatabaseConnection('tx_kesearch_index');
-        $wordsAgainstQuoted = $databaseConnection->quote((string)$this->pObj->wordsAgainst);
+        $wordsAgainstQuoted = $databaseConnection->quote((string)$this->searchContext->getWordsAgainst());
 
         // add boolean where clause for searchwords
-        if ($this->pObj->wordsAgainst != '') {
+        if ($this->searchContext->getWordsAgainst() != '') {
             $where .= ' AND MATCH (' . $this->getMatchColumns() . ') AGAINST (';
             $where .= $wordsAgainstQuoted . ' IN BOOLEAN MODE) ';
         }
 
         // add boolean where clause for tags
-        if (($tagWhere = $this->createQueryForTags($this->pObj->tagsAgainst))) {
+        if (($tagWhere = $this->createQueryForTags($this->searchContext->getTagsAgainst()))) {
             $where .= $tagWhere;
         }
 
         $where .= $this->createQueryForDateRange();
 
         // restrict to storage page
-        if (empty($this->pObj->startingPoints)) {
+        if (empty($this->searchContext->getStartingPoints())) {
             throw new \Exception('No starting point found. Please set the starting point in the plugin'
                 . ' configuration or via TypoScript: '
                 . 'https://docs.typo3.org/p/tpwd/ke_search/main/en-us/Configuration/OverrideRecordStoragePage.html.');
         }
-        $startingPoints = $this->pObj->pi_getPidList($this->pObj->startingPoints);
+        $startingPoints = $this->searchContext->pi_getPidList($this->searchContext->getStartingPoints());
         $where .= ' AND tx_kesearch_index.pid in (' . $startingPoints . ') ';
 
         // add language
@@ -554,14 +618,14 @@ class Db implements SingletonInterface
     public function createQueryForDateRange()
     {
         $where = '';
-        $filters = $this->pObj->filters->getFilters();
+        $filters = $this->searchContext->getFilters()->getFilters();
         if (!empty($filters)) {
             foreach ($filters as $filterUid => $filter) {
                 if (
                     $filter['rendertype'] == 'dateRange'
-                    && isset($this->pObj->piVars['filter'][$filterUid])
+                    && isset($this->searchContext->getPiVars()['filter'][$filterUid])
                 ) {
-                    $filterValues = $this->pObj->piVars['filter'][$filterUid];
+                    $filterValues = $this->searchContext->getPiVars()['filter'][$filterUid];
                     $startTimestamp = strtotime($filterValues['start'] ?? '');
                     $endTimestamp = strtotime($filterValues['end'] ?? '');
                     if ($startTimestamp) {
@@ -588,8 +652,8 @@ class Db implements SingletonInterface
 
         // If sorting in FE is allowed
         if ($this->conf['showSortInFrontend'] ?? false) {
-            $piVarsField = $this->pObj->piVars['sortByField'] ?? '';
-            $piVarsDir = $this->pObj->piVars['sortByDir'] ?? '';
+            $piVarsField = $this->searchContext->getPiVars()['sortByField'] ?? '';
+            $piVarsDir = $this->searchContext->getPiVars()['sortByDir'] ?? '';
             $piVarsDir = ($piVarsDir == '') ? 'asc' : $piVarsDir;
 
             // Check if an ordering field is defined by GET/POST and use that.
@@ -603,7 +667,7 @@ class Db implements SingletonInterface
             }
         } else {
             // If sorting is predefined by admin
-            if (!empty($this->pObj->wordsAgainst)) {
+            if (!empty($this->searchContext->getWordsAgainst())) {
                 $orderBy = $this->conf['sortByAdmin'];
             }
         }
@@ -629,8 +693,8 @@ class Db implements SingletonInterface
         $start = 0;
         $limit = ($this->conf['resultsPerPage'] ?? 10) ?: 10;
 
-        if ($this->pObj->piVars['page'] ?? false) {
-            $start = ($this->pObj->piVars['page'] * $limit) - $limit;
+        if ($this->searchContext->getPiVars()['page'] ?? false) {
+            $start = ($this->searchContext->getPiVars()['page'] * $limit) - $limit;
             if ($start < 0) {
                 $start = 0;
             }
@@ -638,7 +702,7 @@ class Db implements SingletonInterface
 
         $startLimit = [$start, $limit];
 
-        // hook for third party pagebrowsers or for modification $this->pObj->piVars['page'] parameter
+        // hook for third party page browsers or for modification of the $this->searchContext->getPiVars()['page'] parameter
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'] ?? null)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getLimit'] as $_classRef) {
                 $_procObj = GeneralUtility::makeInstance($_classRef);
@@ -656,7 +720,7 @@ class Db implements SingletonInterface
      */
     protected function sphinxSearchEnabled()
     {
-        return ($this->pObj->extConfPremium['enableSphinxSearch'] ?? false) && !$this->pObj->isEmptySearch;
+        return ($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && !$this->searchContext->getIsEmptySearch();
     }
 
     /**

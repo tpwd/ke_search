@@ -1,4 +1,4 @@
-﻿.. include:: /Includes.rst.txt
+.. include:: /Includes.rst.txt
 
 .. _start:
 
@@ -53,6 +53,7 @@ and a command-line interface.
    Behaviour/Index
    Statistics/Index
    Hooks/Index
+   Developer/Index
    Logging/Index
    CommandLine/Index
    Changelog/Index

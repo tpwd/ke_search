@@ -19,7 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Tpwd\KeSearch\Plugins\PluginBase;
+use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -33,22 +33,13 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class Filters
 {
-    /**
-     * @var PluginBase
-     */
-    protected $pObj;
-
-    /**
-     * @var Db
-     */
+    protected SearchContextInterface $searchContext;
     protected Db $db;
-
-    protected $tagChar = '#';
-    protected $filters = [];
-    protected $conf = [];
-    protected $piVars = [];
-    protected $extConf = [];
-    protected $extConfPremium = [];
+    protected string $tagChar = '#';
+    protected array $filters = [];
+    protected array $conf = [];
+    protected array $piVars = [];
+    protected array $extConf = [];
 
     /**
      * contains all tags of the current search result, false if not initialized yet
@@ -60,17 +51,17 @@ class Filters
 
     /**
      * Initializes this object
-     * @param PluginBase $pObj
+     * @param SearchContextInterface $searchContext
      */
-    public function initialize(PluginBase $pObj)
+    public function initialize(SearchContextInterface $searchContext)
     {
-        $this->pObj = $pObj;
-        $this->db = $this->pObj->db;
+        $this->searchContext = $searchContext;
+        $this->db = $this->searchContext->getDb();
         // @extensionScannerIgnoreLine
-        $this->conf = $this->pObj->conf;
-        $this->piVars = $this->pObj->piVars;
-        $this->startingPoints = $this->pObj->startingPoints;
-        $this->tagChar = $this->pObj->extConf['prePostTagChar'];
+        $this->conf = $this->searchContext->getConf();
+        $this->piVars = $this->searchContext->getPiVars();
+        $this->startingPoints = $this->searchContext->getStartingPoints();
+        $this->tagChar = $this->searchContext->getExtConf()['prePostTagChar'];
 
         // get filters and filter options
         $this->filters = $this->getFiltersFromUidList(
@@ -115,34 +106,34 @@ class Filters
             $selected = false;
 
             if (
-                isset($this->pObj->piVars['filter'][$filter['uid']])
-                && $this->pObj->piVars['filter'][$filter['uid']] == $option['tag']
+                isset($this->searchContext->getPiVars()['filter'][$filter['uid']])
+                && $this->searchContext->getPiVars()['filter'][$filter['uid']] == $option['tag']
             ) {
                 // one-dimensional piVar: filter option is set
                 $selected = true;
-            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) {
+            } elseif (is_array($this->searchContext->getPiVars()['filter'][$filter['uid']] ?? null)) {
                 // multi-dimensional piVars
-                if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
+                if ($this->searchContext->in_multiarray($option['tag'], $this->searchContext->getPreselectedFilter())) {
                     $selected = true;
                     // add preselected filter to piVars
-                    $this->pObj->piVars['filter'][$filter['uid']][$option['uid']] = $option['tag'];
+                    $this->searchContext->getPiVars()['filter'][$filter['uid']][$option['uid']] = $option['tag'];
                 } else {
                     // already selected via piVars?
-                    $selected = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
+                    $selected = in_array($option['tag'], $this->searchContext->getPiVars()['filter'][$filter['uid']]);
                 }
             } elseif (
                 // No piVars for this filter are set or the length of the option is one character (dummy placeholder
                 // for the routing configuration).
-                !isset($this->pObj->piVars['filter'][$filter['uid']])
+                !isset($this->searchContext->getPiVars()['filter'][$filter['uid']])
                 || (
-                    is_string($this->pObj->piVars['filter'][$filter['uid']])
-                    && strlen($this->pObj->piVars['filter'][$filter['uid']]) === 1
+                    is_string($this->searchContext->getPiVars()['filter'][$filter['uid']])
+                    && strlen($this->searchContext->getPiVars()['filter'][$filter['uid']]) === 1
                 )
             ) {
-                if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
+                if ($this->searchContext->in_multiarray($option['tag'], $this->searchContext->getPreselectedFilter())) {
                     $selected = true;
                     // add preselected filter to piVars
-                    $this->pObj->piVars['filter'][$filter['uid']] = [$option['uid'] => $option['tag']];
+                    $this->searchContext->getPiVars()['filter'][$filter['uid']] = [$option['uid'] => $option['tag']];
                 }
             }
 
@@ -317,10 +308,10 @@ class Filters
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
-        $pageRecord = $this->pObj->request->getAttribute('frontend.page.information')->getPageRecord();
+        $pageRecord = $this->searchContext->getRequest()?->getAttribute('frontend.page.information')?->getPageRecord();
 
         // see https://github.com/teaminmedias-pluswerk/ke_search/issues/128
-        $pageTranslationVisibility = new PageTranslationVisibility((int)$pageRecord['l18n_cfg']);
+        $pageTranslationVisibility = new PageTranslationVisibility((int)($pageRecord['l18n_cfg'] ?? 0));
 
         if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
             $LanguageMode = 'hideNonTranslated';
@@ -359,10 +350,12 @@ class Filters
     {
         // If the tag list is not defined yet, fetch it from the result list, otherwise use the cached tag list.
         if ($this->tagsInSearchResult === false) {
-            if ($this->pObj->tagsInSearchResult === false) {
-                $this->tagsInSearchResult = $this->pObj->tagsInSearchResult = $this->db->getTagsFromSearchResult();
+            if ($this->searchContext->getTagsInSearchResult() === false) {
+                $tags = $this->db->getTagsFromSearchResult();
+                $this->tagsInSearchResult = $tags;
+                $this->searchContext->setTagsInSearchResult($tags);
             } else {
-                $this->tagsInSearchResult = $this->pObj->tagsInSearchResult;
+                $this->tagsInSearchResult = $this->searchContext->getTagsInSearchResult();
             }
         }
 

@@ -10,7 +10,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***************************************************************
  *  Copyright notice
- *  (c) 2010 Stefan Froemken
  *  All rights reserved
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -26,10 +25,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Plugin 'Faceted search - searchbox and filters' for the 'ke_search' extension.
- * @author    Stefan Froemken
- */
 class Searchresult
 {
     private array $row = [];
