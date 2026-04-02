@@ -48,11 +48,11 @@ Inject the service and run a search with custom parameters:
        }
    }
 
-RAG / AI use case (same search, empty phrase)
-=============================================
+Advanced usage (same search, empty phrase)
+==========================================
 
 This feature can be useful e.g. to run the **same** search as the current plugin (same filters, starting points, configuration)
-but **without** a search phrase, e.g. to use the result set as context for a RAG-based AI answer.
+but **without** a search phrase, e.g. to use the result set for further processing.
 
 Use this in a hook (e.g. :ref:`modifyResultList <hooks>`) where you have access to the plugin instance
 (:php:`$pObj` or :php:`$this` in a hook class that receives the plugin):
@@ -63,30 +63,30 @@ Use this in a hook (e.g. :ref:`modifyResultList <hooks>`) where you have access 
    use Tpwd\KeSearch\Service\SearchService;
 
    // Inside a hook (e.g. modifyResultList) with access to the plugin $pObj:
-   $ragRequest = SearchRequest::fromContext($pObj)->withEmptySearchPhrase();
-   $ragResult = $this->searchService->search($ragRequest);
+   $customRequest = SearchRequest::fromContext($pObj)->withEmptySearchPhrase();
+   $customResult = $this->searchService->search($customRequest);
 
-   $indexRows = $ragResult->getResults();   // Use e.g. as context for your AI/RAG pipeline
-   $total = $ragResult->getTotalCount();
+   $indexRows = $customResult->getResults();   // Use the rows for further processing
+   $total = $customResult->getTotalCount();
 
 :php:`SearchRequest::fromContext($context)` copies the current plugin's configuration (FlexForm/conf),
 starting points, selected filters, sort order, and results per page. :php:`withEmptySearchPhrase()` returns
 a new request with the same parameters but an empty search word.
 
-RAG: all result UIDs only (efficient, no pagination)
-===================================================
+All result UIDs only (efficient, no pagination)
+============================================
 
-For RAG you often need **all** matching index records (not just the first page) but only the **UIDs**
+You may need **all** matching index records (not just the first page) but only the **UIDs**
 to load full records or content elsewhere. Use :php:`searchUids()` to run the same search without
 pagination and get a list of UIDs (no full row data, efficient):
 
 .. code-block:: php
 
    // Inside a hook with access to the plugin $pObj:
-   $ragRequest = SearchRequest::fromContext($pObj)->withEmptySearchPhrase();
-   $uids = $this->searchService->searchUids($ragRequest);   // list<int> of tx_kesearch_index UIDs
+   $customRequest = SearchRequest::fromContext($pObj)->withEmptySearchPhrase();
+   $uids = $this->searchService->searchUids($customRequest);   // list<int> of tx_kesearch_index UIDs
 
-   // Use $uids to load full records, build context for AI, etc.
+   // Use $uids to load full records, build custom lists, etc.
    foreach ($uids as $uid) {
        // ...
    }
@@ -111,7 +111,7 @@ SearchResult methods
 SearchService::searchUids()
 ===========================
 
-* :php:`searchUids(SearchRequest $request): array` – Runs the search with the same filters/context but **no pagination** and returns only UIDs: ``list<int>`` of :php:`tx_kesearch_index` UIDs. Use for RAG when you need all matching IDs without full row data.
+* :php:`searchUids(SearchRequest $request): array` – Runs the search with the same filters/context but **no pagination** and returns only UIDs: ``list<int>`` of :php:`tx_kesearch_index` UIDs. Use when you need all matching IDs without full row data.
 
 Notes
 =====
