@@ -61,7 +61,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Db
 {
-    public const string DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
+    public const DEFAULT_MATCH_COLUMS = 'title,content,hidden_content';
 
     public array $conf = [];
     public int $countResultsOfTags = 0;
