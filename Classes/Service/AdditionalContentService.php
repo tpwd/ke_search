@@ -144,7 +144,7 @@ class AdditionalContentService
             return [];
         }
         foreach ($tempAdditionalTableConfig as $configKey => $config) {
-            if (!$this->genericRepository->tableExists($config['table'])) {
+            if (!$this->genericRepository->tableExists($config['table']) || !$this->isConfigAllowed($config)) {
                 unset($tempAdditionalTableConfig[$configKey]);
             }
         }
@@ -263,5 +263,100 @@ class AdditionalContentService
             }
         }
         return $configs;
+    }
+
+    /**
+     * Determines whether a specific additional table config is allowed to be used.
+     * The check is based on the TCA configuration. This prevents reading from arbitrary
+     * tables and copying sensitive data from system tables like be_users.
+     * EXT:mask and EXT:bootstrap_package use the "select" type and set
+     * `foreign_table` either to `tt_content` or to a custom parent table.
+     * EXT:content_blocks sets the type of the reference field to `passthrough` and
+     * on the parent table adds a field with `foreign_table` and `foreign_field` configuration.
+     *
+     * @param array $config
+     * @return bool True if the field is allowed, false otherwise.
+     */
+    public function isConfigAllowed(array $config): bool
+    {
+        if (!isset($GLOBALS['TCA'][$config['table']]['columns'][$config['referenceFieldName']]['config'])) {
+            return false;
+        }
+
+        if ($this->isValidReferenceField($config)) {
+            return true;
+        }
+
+        if ($this->isValidReferenceFieldInParentTable($config)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a reference field configuration points to the expected parent table.
+     * This is used for configurations created by EXT:mask and EXT:bootstrap_package.
+     *
+     * @param array $config
+     * @return bool True if the TCA `foreign_table` matches the configured parent table.
+     */
+    protected function isValidReferenceField(array $config): bool
+    {
+        $tcaConfig = $GLOBALS['TCA'][$config['table']]['columns'][$config['referenceFieldName']]['config'] ?? [];
+        if (!is_array($tcaConfig)) {
+            return false;
+        }
+
+        // Content Blocks reference fields are usually passthrough and validated separately.
+        if (($tcaConfig['type'] ?? '') === 'passthrough') {
+            return false;
+        }
+
+        $parentTable = $config['parentTable'] ?? 'tt_content';
+        return ($tcaConfig['foreign_table'] ?? '') === $parentTable;
+    }
+
+    /**
+     * Checks if a passthrough field is used as inline `foreign_field`
+     * for the configured table on the expected parent table.
+     *
+     * @param array $config
+     * @return bool True if a matching inline relation exists, false otherwise.
+     */
+    protected function isValidReferenceFieldInParentTable(array $config): bool
+    {
+        $tcaConfig = $GLOBALS['TCA'][$config['table']]['columns'][$config['referenceFieldName']]['config'] ?? [];
+        if (!is_array($tcaConfig) || ($tcaConfig['type'] ?? '') !== 'passthrough') {
+            return false;
+        }
+
+        $parentTable = $config['parentTable'] ?? 'tt_content';
+        if (!isset($GLOBALS['TCA'][$parentTable]['columns'])) {
+            return false;
+        }
+
+        foreach ($GLOBALS['TCA'][$parentTable]['columns'] as $parentTableColumn) {
+            $parentTableColumnConfig = $parentTableColumn['config'] ?? [];
+            if (!is_array($parentTableColumnConfig)) {
+                continue;
+            }
+
+            if (($parentTableColumnConfig['type'] ?? '') !== 'inline') {
+                continue;
+            }
+
+            if (($parentTableColumnConfig['foreign_table'] ?? '') !== $config['table']) {
+                continue;
+            }
+
+            if (($parentTableColumnConfig['foreign_field'] ?? '') !== $config['referenceFieldName']) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
