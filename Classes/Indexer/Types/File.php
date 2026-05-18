@@ -275,18 +275,50 @@ class File extends IndexerBase
     /**
      * get absolute directory paths of given path in array
      * @param array $directoryArray
+     * @param string|null $publicPath Base path for resolving relative directories. Defaults to TYPO3 public path.
      * @return array An Array containing the absolute directory paths
      */
-    public function getAbsoluteDirectoryPath(array $directoryArray): array
+    public function getAbsoluteDirectoryPath(array $directoryArray, ?string $publicPath = null): array
     {
-        if (count($directoryArray)) {
-            foreach ($directoryArray as $key => $directory) {
-                $directory = rtrim($directory, '/');
-                $directoryArray[$key] = Environment::getPublicPath() . '/' . $directory . '/';
-            }
-            return $directoryArray;
+        if (empty($directoryArray)) {
+            return [];
         }
-        return [];
+
+        $validDirectoryArray = [];
+        $publicPath = rtrim($publicPath ?? Environment::getPublicPath(), '/');
+        $resolvedPublicPath = realpath($publicPath);
+        if ($resolvedPublicPath !== false) {
+            $publicPath = rtrim($resolvedPublicPath, '/');
+        }
+        $publicPathWithSlash = $publicPath . '/';
+
+        foreach ($directoryArray as $directory) {
+            $directory = trim((string)$directory);
+            if ($directory === '') {
+                continue;
+            }
+
+            $combinedPath = $publicPathWithSlash . ltrim($directory, '/');
+            $resolvedDirectory = realpath($combinedPath);
+            if ($resolvedDirectory === false || !is_dir($resolvedDirectory)) {
+                $errorMessage = 'Directory "' . $directory . '" does not exist or is not accessible.';
+                $this->pObj->logger->error($errorMessage);
+                $this->addError($errorMessage);
+                continue;
+            }
+
+            $resolvedDirectory = rtrim($resolvedDirectory, '/') . '/';
+            if ($resolvedDirectory !== $publicPathWithSlash && !str_starts_with($resolvedDirectory, $publicPathWithSlash)) {
+                $errorMessage = 'Directory "' . $directory . '" is outside the TYPO3 public path and is not allowed.';
+                $this->pObj->logger->error($errorMessage);
+                $this->addError($errorMessage);
+                continue;
+            }
+
+            $validDirectoryArray[] = $resolvedDirectory;
+        }
+
+        return array_values(array_unique($validDirectoryArray));
     }
 
     /**
