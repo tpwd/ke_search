@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[BUGFIX]  Fix unnecessary default value for `pageId` in backend module controller
+
 Version 7.0.1, 18 May 2026
 [!!!]     Security Bugfix. Please update!
 [!!!]     Clear the caches after updating because there were updates in injected dependencies

@@ -278,7 +278,7 @@ class BackendModuleController
         $moduleTemplate->assign('paginator', $paginator ?? null);
         $moduleTemplate->assign('additionalFields', $additionalFields ?? []);
         $moduleTemplate->assign('do', $this->do ?? '');
-        $moduleTemplate->assign('pageId', $this->pageId ?? 0);
+        $moduleTemplate->assign('pageId', $this->pageId);
         $moduleTemplate->assign('currentPage', $currentPage ?? 1);
         $moduleTemplate->assign('pagePath', $pagePath ?? '');
         return $moduleTemplate->renderResponse('BackendModule/IndexedContent');
