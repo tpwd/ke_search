@@ -6,8 +6,9 @@ namespace Tpwd\KeSearch\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
+use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Indexer\Types\File;
+use TYPO3\CMS\Core\Log\Logger;
 
 class FileIndexerPathTest extends TestCase
 {
@@ -100,8 +101,15 @@ class FileIndexerPathTest extends TestCase
     private function createFileIndexerWithoutConstructor(): File
     {
         $indexer = (new \ReflectionClass(File::class))->newInstanceWithoutConstructor();
-        $indexer->pObj = (object)['logger' => new NullLogger()];
+        $indexer->pObj = $this->createIndexerRunnerStub();
         return $indexer;
+    }
+
+    private function createIndexerRunnerStub(): IndexerRunner
+    {
+        $runner = $this->createMock(IndexerRunner::class);
+        $runner->logger = $this->createMock(Logger::class);
+        return $runner;
     }
 
     private function removePath(string $path): void
