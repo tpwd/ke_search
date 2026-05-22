@@ -557,7 +557,7 @@ class IndexerBase
 
         // use file description as abstract
         $abstract = '';
-        if ($fileProperties['description']) {
+        if (!empty($fileProperties['description'])) {
             $abstract = $fileProperties['description'];
         }
 
