@@ -6,6 +6,7 @@ Upcoming version
 [BUGFIX]  Add "pages" and "recursive" fields to `tt_content` for TYPO3 v14+. https://github.com/tpwd/ke_search/issues/333
 [BUGFIX]  Use proper query builder for tx_kesearch_index in backend module. Thanks to Andreas Kießling. https://github.com/tpwd/ke_search/issues/329
 [BUGFIX]  Fix undefined array key warning for "description" in IndexerBase. Thanks to ingo030. https://github.com/tpwd/ke_search/pull/334
+[BUGFIX]  Allow nullable $typolink input in TypoLinkUtility method. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/327
 
 Version 7.0.1, 18 May 2026
 [!!!]     Security Bugfix. Please update!

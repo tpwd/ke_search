@@ -7,10 +7,10 @@ class TypoLinkUtility
     /**
      * Extracts the page UID from a typolink string
      *
-     * @param string $typolink The typolink string (e.g., "t3://page?uid=123")
+     * @param ?string $typolink The typolink string (e.g., "t3://page?uid=123")
      * @return int|null The extracted page UID or null if parsing fails
      */
-    public static function extractPageUidFromTypoLink(string $typolink): ?int
+    public static function extractPageUidFromTypoLink(?string $typolink): ?int
     {
         if (empty($typolink)) {
             return null;
