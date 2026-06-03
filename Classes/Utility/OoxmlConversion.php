@@ -71,7 +71,7 @@ class OoxmlConversion
             if (($xmlIndex = $zipHandle->locateName('xl/sharedStrings.xml')) !== false) {
                 $xmlData = $zipHandle->getFromIndex($xmlIndex);
                 $domDocument = new \DOMDocument();
-                $domDocument->loadXML($xmlData, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
+                $domDocument->loadXML($xmlData, LIBXML_NOERROR | LIBXML_NOWARNING);
                 $outputText = strip_tags(str_replace('</t>', ' </t>', $domDocument->saveXML()));
             } else {
                 $outputText .= '';
@@ -97,7 +97,7 @@ class OoxmlConversion
             while (($xml_index = $zipHandle->locateName('ppt/slides/slide' . $slideNumber . '.xml')) !== false) {
                 $xmlData = $zipHandle->getFromIndex($xml_index);
                 $domDocument = new \DOMDocument();
-                $domDocument->loadXML($xmlData, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
+                $domDocument->loadXML($xmlData, LIBXML_NOERROR | LIBXML_NOWARNING);
                 $outputText .= strip_tags(str_replace('</a:t>', ' </a:t>', $domDocument->saveXML()));
                 $slideNumber++;
             }
