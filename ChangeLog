@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [BUGFIX]  Fix unnecessary default value for `pageId` in backend module controller
 [BUGFIX]  Replace `NullLogger` with mock `IndexerRunner` in tests
+[BUGFIX]  Add "pages" and "recursive" fields to `tt_content` for TYPO3 v14+. https://github.com/tpwd/ke_search/issues/333
 
 Version 7.0.1, 18 May 2026
 [!!!]     Security Bugfix. Please update!

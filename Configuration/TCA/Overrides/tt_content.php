@@ -97,3 +97,15 @@ if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14) {
     ';
     }
 }
+
+// Add "pages" and "recursive" field
+if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 14) {
+    foreach (['ke_search_pi1', 'ke_search_pi3'] as $pluginName) {
+        $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem']
+            = str_replace(
+                'pi_flexform,',
+                'pi_flexform,pages,recursive,',
+                $GLOBALS['TCA']['tt_content']['types'][$pluginName]['showitem']
+            );
+    }
+}
