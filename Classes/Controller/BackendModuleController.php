@@ -708,7 +708,7 @@ class BackendModuleController
     {
         $languages = [];
 
-        $queryBuilder = Db::getQueryBuilder('sys_language');
+        $queryBuilder = Db::getQueryBuilder('tx_kesearch_index');
         $languageRows = $queryBuilder
             ->select('language')
             ->from('tx_kesearch_index')
