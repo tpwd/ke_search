@@ -61,5 +61,4 @@ and "boost keywords".
 More information
 ----------------
 
-* http://dev.kesearch.de/documentation/ke_search_premium/Index.html
-* https://www.typo3-macher.de/facettierte-suche-ke-search/premium/
+* https://www.kesearch.de/fileadmin/documentation/ke_search_premium/Features/Index.html

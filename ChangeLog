@@ -3,6 +3,7 @@ ChangeLog
 Upcoming version
 [TASK]    Add extension title to localization file (for usage in the new record wizard)
 [TASK]    Add extension title in composer.json description (for usage in the extension manager)
+[DOCS]    Update outdated links in documentation and composer.json
 
 Version 7.0.2, 3 June 2026
 [BUGFIX]  Fix unnecessary default value for `pageId` in backend module controller

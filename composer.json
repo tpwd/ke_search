@@ -2,7 +2,7 @@
 	"name": "tpwd/ke_search",
 	"type": "typo3-cms-extension",
 	"description": "Faceted search - Search Extension for TYPO3, including faceting search functions.",
-	"homepage": "https://www.typo3-macher.de/en/facetted-search-ke-search/",
+	"homepage": "https://www.kesearch.de/",
 	"license": "GPL-2.0+",
 	"keywords": [
 		"TYPO3 CMS",
