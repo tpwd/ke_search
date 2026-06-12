@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2021-10-15T11:09:07Z" product-name="ke_search">
 		<header/>
 		<body>
+			<trans-unit id="extension.title" resname="extension.title" >
+				<source>Faceted Search</source>
+			</trans-unit>
 			<trans-unit id="pages.tx_kesearch_label" resname="pages.tx_kesearch_label" >
 				<source>Search</source>
 			</trans-unit>
