@@ -14,3 +14,5 @@ Documentation/conf.py
 /.php-cs-fixer.dist.php
 /.php-cs-fixer.cache
 /.editorconfig
+/.junie
+/var
