@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[BUGFIX]  Set request on ContentObjectRenderer to avoid deprecated getRequest() fallback. Thanks to Konrad Michalik. https://github.com/tpwd/ke_search/pull/337
 [TASK]    Add extension title to localization file (for usage in the new record wizard)
 [TASK]    Add extension title in composer.json description (for usage in the extension manager)
 [DOCS]    Update outdated links in documentation and composer.json
