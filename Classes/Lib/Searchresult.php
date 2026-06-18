@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -36,10 +37,20 @@ class Searchresult
     private array $swords = [];
     private array $conf = [];
     private array $extConfPremium;
+    private ?ServerRequestInterface $request = null;
 
     public function __construct()
     {
         $this->extConfPremium = SearchHelper::getExtConfPremium();
+    }
+
+    /**
+     * Sets the current request so the ContentObjectRenderer instances created
+     * in this class can resolve links without falling back to $GLOBALS['TYPO3_REQUEST'].
+     */
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -77,7 +88,7 @@ class Searchresult
      */
     public function getTitle(): string
     {
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj = $this->makeContentObjectRenderer();
         // configure the link
         $linkconf = $this->getResultLinkConfiguration();
 
@@ -113,7 +124,7 @@ class Searchresult
      */
     public function getResultUrl($linked = false): string
     {
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj = $this->makeContentObjectRenderer();
         $linkText = $cObj->typoLink_URL($this->getResultLinkConfiguration());
         $linkText = htmlspecialchars($linkText);
         if ($linked) {
@@ -205,7 +216,7 @@ class Searchresult
      */
     public function highlightArrayOfWordsInContent(array $wordArray, string $content): string
     {
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj = $this->makeContentObjectRenderer();
         if (count($wordArray)) {
             $highlightedWord = (!empty($this->conf['highlightedWord_stdWrap'])) ?
                 $cObj->stdWrap('\0', $this->conf['highlightedWord_stdWrap']) :
@@ -342,5 +353,18 @@ class Searchresult
                     replacementForEllipsis: '…',
                     cropToSpace: true
                 );
+    }
+
+    /**
+     * Creates a ContentObjectRenderer and injects the current request (if available)
+     * so typoLink/stdWrap don't fall back to $GLOBALS['TYPO3_REQUEST'] (deprecated since v14).
+     */
+    private function makeContentObjectRenderer(): ContentObjectRenderer
+    {
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        if ($this->request !== null) {
+            $cObj->setRequest($this->request);
+        }
+        return $cObj;
     }
 }
