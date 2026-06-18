@@ -9,11 +9,11 @@ use Tpwd\KeSearch\Widgets\Provider\IndexOverviewDataProvider;
 use Tpwd\KeSearch\Widgets\Provider\TrendingSearchphrasesDataProvider;
 use Tpwd\KeSearch\Widgets\StatusWidget;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\BarChartWidget;
 use TYPO3\CMS\Dashboard\Widgets\ListWidget;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 return function (ContainerConfigurator $configurator, ContainerBuilder $containerBuilder) {
     if ($containerBuilder->hasDefinition(BarChartWidget::class)) {
