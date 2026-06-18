@@ -1300,6 +1300,11 @@ class PluginBase extends AbstractPlugin
         }
     }
 
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
     public function translate(string $key, string $alternativeLabel = ''): string
     {
         if (!str_starts_with($key, 'LLL:')) {
