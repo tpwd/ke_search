@@ -20,13 +20,15 @@ ExtensionManagementUtility::addTcaSelectItemGroup(
     'LLL:EXT:ke_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab',
 );
 
+$iconIdentifier = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14 ? 'ext-kesearch-wizard-icon-old' : 'ext-kesearch-wizard-icon';
+
 // Configure Plugins
 $pluginConfig1 =
     [
         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_title',
         'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_plus_wiz_description',
         'value' => 'ke_search_pi1',
-        'icon'  => 'ext-kesearch-wizard-icon',
+        'icon'  => $iconIdentifier,
         'group' => 'ke_search',
     ];
 $pluginConfig2 =
@@ -34,7 +36,7 @@ $pluginConfig2 =
         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_title',
         'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_resultlist.xlf:pi_plus_wiz_description',
         'value' => 'ke_search_pi2',
-        'icon'  => 'ext-kesearch-wizard-icon',
+        'icon'  => $iconIdentifier,
         'group' => 'ke_search',
     ];
 $pluginConfig3 =
@@ -42,7 +44,7 @@ $pluginConfig3 =
         'label' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_title',
         'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:pi_cachable_plus_wiz_description',
         'value' => 'ke_search_pi3',
-        'icon'  => 'ext-kesearch-wizard-icon',
+        'icon'  => $iconIdentifier,
         'group' => 'ke_search',
     ];
 

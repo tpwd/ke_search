@@ -7,6 +7,7 @@ Upcoming version
 [TASK]    Update phpstan to version 2.2.2 in composer.json
 [TASK]    Simplify filter option checks by reducing redundant `piVars` references
 [TASK]    Modernize module icon for TYPO3 v14. Thanks to Konrad Michalik. https://github.com/tpwd/ke_search/pull/336
+[TASK]    Update icons in various places to match with the new module icon and update the info icon in the backend module
 [DOCS]    Update outdated links in documentation and composer.json
 
 Version 7.0.2, 3 June 2026

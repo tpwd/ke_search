@@ -12,9 +12,12 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Dashboard\Widgets\BarChartWidget;
 use TYPO3\CMS\Dashboard\Widgets\ListWidget;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 return function (ContainerConfigurator $configurator, ContainerBuilder $containerBuilder) {
     if ($containerBuilder->hasDefinition(BarChartWidget::class)) {
+        $iconIdentifier = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 14 ? 'ext-kesearch-wizard-icon-old' : 'ext-kesearch-wizard-icon';
         $services = $configurator->services();
 
         $services->set('dashboard.widget.ke_search_indexer_status')
@@ -28,7 +31,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'groupNames' => 'ke_search',
                     'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.title',
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchStatus.description',
-                    'iconIdentifier' => 'ext-kesearch-wizard-icon',
+                    'iconIdentifier' => $iconIdentifier,
                     'height' => 'small',
                     'width' => 'small',
                 ]
@@ -45,7 +48,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'groupNames' => 'ke_search',
                     'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.title',
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchIndexOverview.description',
-                    'iconIdentifier' => 'ext-kesearch-wizard-icon',
+                    'iconIdentifier' => $iconIdentifier,
                     'height' => 'medium',
                     'width' => 'medium',
                 ]
@@ -62,7 +65,7 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
                     'groupNames' => 'ke_search',
                     'title' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchTrendingSearchphrases.title',
                     'description' => 'LLL:EXT:ke_search/Resources/Private/Language/locallang_dashboard.xlf:widgets.keSearchTrendingSearchphrases.description',
-                    'iconIdentifier' => 'ext-kesearch-wizard-icon',
+                    'iconIdentifier' => $iconIdentifier,
                     'height' => 'medium',
                     'width' => 'medium',
                 ]

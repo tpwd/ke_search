@@ -7,4 +7,8 @@ return [
         'provider' => SvgIconProvider::class,
         'source' => 'EXT:ke_search/Resources/Public/Icons/moduleicon.svg',
     ],
+    'ext-kesearch-wizard-icon-old' => [
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:ke_search/Resources/Public/Icons/moduleicon-old.svg',
+    ],
 ];
