@@ -2,6 +2,7 @@
 
 namespace Tpwd\KeSearch\Lib;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tpwd\KeSearch\Utility\ContentUtility;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -36,10 +37,16 @@ class Searchresult
     private array $swords = [];
     private array $conf = [];
     private array $extConfPremium;
+    protected ?ServerRequestInterface $request;
 
     public function __construct()
     {
         $this->extConfPremium = SearchHelper::getExtConfPremium();
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -78,6 +85,7 @@ class Searchresult
     public function getTitle(): string
     {
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setRequest($this->request);
         // configure the link
         $linkconf = $this->getResultLinkConfiguration();
 
@@ -114,6 +122,7 @@ class Searchresult
     public function getResultUrl($linked = false): string
     {
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setRequest($this->request);
         $linkText = $cObj->typoLink_URL($this->getResultLinkConfiguration());
         $linkText = htmlspecialchars($linkText);
         if ($linked) {
@@ -206,6 +215,7 @@ class Searchresult
     public function highlightArrayOfWordsInContent(array $wordArray, string $content): string
     {
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $cObj->setRequest($this->request);
         if (count($wordArray)) {
             $highlightedWord = (!empty($this->conf['highlightedWord_stdWrap'])) ?
                 $cObj->stdWrap('\0', $this->conf['highlightedWord_stdWrap']) :
