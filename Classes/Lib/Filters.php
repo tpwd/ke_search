@@ -114,13 +114,11 @@ class Filters
         foreach ($filter['options'] as $option) {
             $selected = false;
 
-            if (
-                isset($this->pObj->piVars['filter'][$filter['uid']])
-                && $this->pObj->piVars['filter'][$filter['uid']] == $option['tag']
-            ) {
+            $filterPiVar = $this->pObj->piVars['filter'][$filter['uid']] ?? null;
+            if (isset($filterPiVar) && $filterPiVar == $option['tag']) {
                 // one-dimensional piVar: filter option is set
                 $selected = true;
-            } elseif (is_array($this->pObj->piVars['filter'][$filter['uid']] ?? null)) {
+            } elseif (is_array($filterPiVar)) {
                 // multi-dimensional piVars
                 if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
                     $selected = true;
@@ -128,16 +126,13 @@ class Filters
                     $this->pObj->piVars['filter'][$filter['uid']][$option['uid']] = $option['tag'];
                 } else {
                     // already selected via piVars?
-                    $selected = in_array($option['tag'], $this->pObj->piVars['filter'][$filter['uid']]);
+                    $selected = in_array($option['tag'], $filterPiVar);
                 }
             } elseif (
-                // No piVars for this filter are set or the length of the option is one character (dummy placeholder
+                // No piVars for this filter are set, or the length of the option is one character (dummy placeholder
                 // for the routing configuration).
-                !isset($this->pObj->piVars['filter'][$filter['uid']])
-                || (
-                    is_string($this->pObj->piVars['filter'][$filter['uid']])
-                    && strlen($this->pObj->piVars['filter'][$filter['uid']]) === 1
-                )
+                $filterPiVar === null
+                || (is_string($filterPiVar) && strlen($filterPiVar) === 1)
             ) {
                 if ($this->pObj->in_multiarray($option['tag'], $this->pObj->preselectedFilter)) {
                     $selected = true;
