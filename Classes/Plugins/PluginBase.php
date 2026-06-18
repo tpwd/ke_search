@@ -400,12 +400,13 @@ class PluginBase extends AbstractPlugin
 
         // set form action pid
         $this->fluidTemplateVariables['targetpage'] = $this->conf['resultPage'];
+        $targetPageContentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $targetPageContentObject->setRequest($this->request);
         $this->fluidTemplateVariables['targetPageUrl']
-            = GeneralUtility::makeInstance(ContentObjectRenderer::class)
-            ->typoLink_URL(['parameter' => $this->conf['resultPage']]);
+            = $targetPageContentObject->typoLink_URL(['parameter' => $this->conf['resultPage']]);
 
         // set form action
-        $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $siteUrl = $this->request->getAttribute('normalizedParams')->getSiteUrl();
         $lParam = RequestUtility::getQueryParam($this->request, 'L');
         $mpParam = RequestUtility::getQueryParam($this->request, 'MP');
         $typeParam = RequestUtility::getQueryParam($this->request, 'type');
@@ -731,6 +732,7 @@ class PluginBase extends AbstractPlugin
         // init counter and loop through the search results
         $resultCount = 1;
         $resultRowRenderer = GeneralUtility::makeInstance(Searchresult::class);
+        $resultRowRenderer->setRequest($this->request);
         $resultRowRenderer->setPluginConfiguration($this->conf);
         $resultRowRenderer->setSwords($this->swords);
 
