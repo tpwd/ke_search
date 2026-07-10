@@ -139,8 +139,8 @@ class SearchService
         $context->setTagsAgainst($phraseResult['tagsAgainst']);
         $context->setIsEmptySearch(trim($phraseResult['sword']) === '');
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifySearchWords'] ?? null)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifySearchWords'] as $classRef) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifySearchWordsInSearchExecutionContext'] ?? null)) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifySearchWordsInSearchExecutionContext'] as $classRef) {
                 $hookObj = GeneralUtility::makeInstance($classRef);
                 if (method_exists($hookObj, 'modifySearchWords')) {
                     $hookObj->modifySearchWords($phraseResult, $context);
