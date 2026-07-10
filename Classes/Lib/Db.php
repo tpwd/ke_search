@@ -356,7 +356,7 @@ class Db
         $rows = $this->keSearchPremium->getSearchResults($queryForSphinx);
 
         // get number of records
-        $this->numberOfResults = $this->keSearchPremium->getTotalFound();
+        $this->numberOfResults = $this->keSearchPremium->getTotalFound() ?? 0;
         return $rows;
     }
 

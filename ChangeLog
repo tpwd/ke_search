@@ -10,6 +10,7 @@ Version 7.0.3, 18 June 2026
 [TASK]    Add extension title to localization file (for usage in the new record wizard)
 [TASK]    Add extension title in composer.json description (for usage in the extension manager)
 [TASK]    Update phpstan to version 2.2.2 in composer.json
+[TASK]    [TASK] Ensure `numberOfResults` defaults to 0 if `getTotalFound` is null in getSearchResultBySphinx.
 [TASK]    Simplify filter option checks by reducing redundant `piVars` references
 [TASK]    Modernize module icon for TYPO3 v14. Thanks to Konrad Michalik. https://github.com/tpwd/ke_search/pull/336
 [TASK]    Update icons in various places to match with the new module icon and update the info icon in the backend module
