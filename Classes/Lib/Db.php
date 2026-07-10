@@ -54,8 +54,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - Applying configuration from the plugin/search context (visibility, language, fe_groups)
  *
  * A SearchContextInterface (e.g. PluginBase) must be set via setSearchContext() before running
- * searches. The class is not a singleton; frontend plugins share one instance per request via
- * SearchDbRegistry.
+ * searches. The class is not a singleton anymore as in earlier versions; frontend plugins share
+ * one instance per request via SearchDbRegistry.
  *
  * @author Stefan Froemken
  */

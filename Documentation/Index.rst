@@ -53,7 +53,7 @@ and a command-line interface.
    Behaviour/Index
    Statistics/Index
    Hooks/Index
-   Developer/Index
+   PublicSearchApi/Index
    Logging/Index
    CommandLine/Index
    Changelog/Index
