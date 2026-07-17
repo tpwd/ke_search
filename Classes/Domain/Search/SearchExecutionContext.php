@@ -79,7 +79,7 @@ class SearchExecutionContext implements SearchContextInterface
         $this->extConfPremium = $extConfPremium;
     }
 
-    public function &getPiVars(): array
+    public function getPiVars(): array
     {
         return $this->piVars;
     }

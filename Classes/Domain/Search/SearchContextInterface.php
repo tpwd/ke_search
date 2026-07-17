@@ -34,6 +34,8 @@ interface SearchContextInterface
 
     public function getPiVars(): array;
 
+    public function setPiVars(array $piVars): void;
+
     public function getSword(): string;
 
     public function getWordsAgainst(): string;

@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Refactor `getPiVars` to return by value and introduce `setPiVars`
+
 Version 7.1.0, 10 July 2026
 [!!!]     The Db class is no longer a singleton. Extensions that rely on GeneralUtility::makeInstance(Db::class) returning a shared instance must use the SearchService API or the request-scoped Db from the plugin context instead.
 [!!!]     There has been done some refactoring due to the SearchService feature. setPluginbase() and Db::$pObj are deprecated but still supported for backward compatibility.

@@ -98,6 +98,8 @@ class Filters
     public function getSelectedFilterOptions($filter)
     {
         $selectedOptions = [];
+        $piVars = $this->searchContext->getPiVars();
+        $piVarsChanged = false;
 
         // Run through all the filter options and check if one of them has been selected.
         // The filter option can be selected in the frontend via piVars
@@ -105,7 +107,7 @@ class Filters
         foreach ($filter['options'] as $option) {
             $selected = false;
 
-            $filterPiVar = $this->searchContext->getPiVars()['filter'][$filter['uid']] ?? null;
+            $filterPiVar = $piVars['filter'][$filter['uid']] ?? null;
             if (isset($filterPiVar) && $filterPiVar == $option['tag']) {
                 // one-dimensional piVar: filter option is set
                 $selected = true;
@@ -114,7 +116,8 @@ class Filters
                 if ($this->searchContext->in_multiarray($option['tag'], $this->searchContext->getPreselectedFilter())) {
                     $selected = true;
                     // add preselected filter to piVars
-                    $this->searchContext->getPiVars()['filter'][$filter['uid']][$option['uid']] = $option['tag'];
+                    $piVars['filter'][$filter['uid']][$option['uid']] = $option['tag'];
+                    $piVarsChanged = true;
                 } else {
                     // already selected via piVars?
                     $selected = in_array($option['tag'], $filterPiVar);
@@ -128,13 +131,18 @@ class Filters
                 if ($this->searchContext->in_multiarray($option['tag'], $this->searchContext->getPreselectedFilter())) {
                     $selected = true;
                     // add preselected filter to piVars
-                    $this->searchContext->getPiVars()['filter'][$filter['uid']] = [$option['uid'] => $option['tag']];
+                    $piVars['filter'][$filter['uid']] = [$option['uid'] => $option['tag']];
+                    $piVarsChanged = true;
                 }
             }
 
             if ($selected) {
                 $selectedOptions[] = $option['uid'];
             }
+        }
+
+        if ($piVarsChanged) {
+            $this->searchContext->setPiVars($piVars);
         }
 
         return $selectedOptions;

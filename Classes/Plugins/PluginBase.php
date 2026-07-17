@@ -1318,9 +1318,14 @@ class PluginBase extends AbstractPlugin implements SearchContextInterface
         return $this->extConfPremium;
     }
 
-    public function &getPiVars(): array
+    public function getPiVars(): array
     {
         return $this->piVars;
+    }
+
+    public function setPiVars(array $piVars): void
+    {
+        $this->piVars = $piVars;
     }
 
     public function getSword(): string
