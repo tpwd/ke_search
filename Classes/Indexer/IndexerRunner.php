@@ -1269,14 +1269,14 @@ class IndexerRunner
     /**
      * Strips control characters
      *
-     * @param string $content content to sanitize
+     * @param string|null $content content to sanitize
      * @return string
      * @see http://forge.typo3.org/issues/34808
      */
-    public function stripControlCharacters($content)
+    public function stripControlCharacters(string|null $content): string
     {
         // Printable utf-8 does not include any of these chars below x7F
-        return preg_replace('@[\x00-\x08\x0B\x0C\x0E-\x1F]@', ' ', $content);
+        return preg_replace('@[\x00-\x08\x0B\x0C\x0E-\x1F]@', ' ', $content ?? '');
     }
 
     /**
