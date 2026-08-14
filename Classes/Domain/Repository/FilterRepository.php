@@ -34,6 +34,9 @@ class FilterRepository extends BaseRepository
     protected $tableName = 'tx_kesearch_filters';
 
     /**
+     * Returns the first filter translation for the given l10n parent, regardless of language.
+     * Use findByL10nParentAndLanguage() if a specific language is needed.
+     *
      * @param int $l10n_parent
      * @param bool $includeHiddenAndTimeRestricted
      * @return mixed
@@ -48,6 +51,35 @@ class FilterRepository extends BaseRepository
                 $queryBuilder->expr()->eq(
                     'l10n_parent',
                     $queryBuilder->createNamedParameter($l10n_parent, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+    }
+
+    /**
+     * Returns the translation of the given filter in the given language
+     * (there can be at most one translation per language).
+     *
+     * @return array|false
+     */
+    public function findByL10nParentAndLanguage(
+        int $l10n_parent,
+        int $sys_language_uid,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'l10n_parent',
+                    $queryBuilder->createNamedParameter($l10n_parent, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
                 )
             )
             ->executeQuery()

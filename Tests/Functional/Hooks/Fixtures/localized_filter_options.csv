@@ -1,0 +1,29 @@
+"sys_category"
+,"uid","pid","title","sys_language_uid","l10n_parent","parent","tx_kesearch_filter","tx_kesearch_filtersubcat","hidden","deleted"
+,100,1,"Category EN",0,0,0,"10,20","",0,0
+,101,1,"Kategorie DE",1,100,0,"10,20","",0,0
+,102,1,"Категория RU",2,100,0,"10,20","",0,0
+,103,1,"分类 ZH",3,100,0,"10,20","",0,0
+
+"tx_kesearch_filters"
+,"uid","pid","title","options","sys_language_uid","l10n_parent","hidden","deleted"
+,10,1,"Filter EN 1","1000",0,0,0,0
+,11,1,"Filter DE 1","1001",1,10,0,0
+,12,1,"Filter RU 1","1002",2,10,0,0
+,13,1,"Filter ZH 1","1003",3,10,0,0
+,14,1,"Filter ES 1 hidden","1004",4,10,1,0
+,20,1,"Filter EN 2","2000",0,0,0,0
+,21,1,"Filter DE 2","2001",1,20,0,0
+,22,1,"Filter RU 2","",2,20,0,0
+,23,1,"Filter ZH 2","2003",3,20,0,0
+
+"tx_kesearch_filteroptions"
+,"uid","pid","title","tag","slug","sys_language_uid","l10n_parent","hidden","deleted"
+,1000,1,"Category EN","syscat100","category-en",0,0,0,0
+,1001,1,"Kategorie DE","syscat100","kategorie-de",1,1000,0,0
+,1002,1,"Категория RU","syscat100","kategoriya-ru",2,1000,0,0
+,1003,1,"分类 ZH","syscat100","fenlei-zh",3,1000,0,0
+,1004,1,"Categoria ES hidden","syscat100","categoria-es-hidden",4,1000,1,0
+,2000,1,"Category EN 2","syscat100","category-en-2",0,0,0,0
+,2001,1,"Kategorie DE 2","syscat100","kategorie-de-2",1,2000,0,0
+,2003,1,"分类 ZH 2","syscat100","fenlei-zh-2",3,2000,0,0

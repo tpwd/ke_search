@@ -164,8 +164,9 @@ class FilterOptionHook
     }
 
     /**
-     * Creates/updates filter options for given filters from the given category data
-     * removes all filter options with the matching tag in filters which are not connected to the category
+     * Creates/updates filter options for given filters from the given category data.
+     *
+     * In localized mode, only the language of the given $category record is affected.
      *
      * @param array $filters list of filter UIDs
      * @param array $category
@@ -204,44 +205,57 @@ class FilterOptionHook
                 }
             }
         } else {
-            if ($category['l10n_parent']) {
-                $l10nParentCategory = $categoryRepository->findByUid($category['l10n_parent'], true);
-                if ($l10nParentCategory) {
-                    $origTag = SearchHelper::createTagnameFromSystemCategoryUid($l10nParentCategory['uid']);
-                    $origFilterOptions = $filterOptionRepository->findByTagAndLanguage($origTag, 0, true);
-                    if (!empty($origFilterOptions)) {
-                        foreach ($origFilterOptions as $origFilterOption) {
-                            $localizedFilterOptions = $filterOptionRepository->findByL10nParent($origFilterOption['uid'], true);
-                            if (!$localizedFilterOptions) {
-                                // create
-                                $localizedFilterOption = [
-                                    'pid' => $origFilterOption['pid'],
-                                    'title' => $category['title'],
-                                    'tag' => $origTag,
-                                    'sys_language_uid' => $category['sys_language_uid'],
-                                    'l10n_parent' => $origFilterOption['uid'],
-                                ];
-                                foreach ($filters as $origFilter) {
-                                    $localizedFilter = $filterRepository->findByL10nParent((int)$origFilter, true);
-                                    if (!$localizedFilter) {
-                                        continue;
-                                    }
-                                    $filterOptionRepository->create(
-                                        (int)$localizedFilter['uid'],
-                                        $localizedFilterOption
-                                    );
-                                }
-                            } else {
-                                // update
-                                foreach ($localizedFilterOptions as $localizedFilterOption) {
-                                    $filterOptionRepository->update(
-                                        (int)$localizedFilterOption['uid'],
-                                        ['title' => $category['title']]
-                                    );
-                                }
-                            }
-                        }
+            if (!$category['l10n_parent']) {
+                return;
+            }
+            $l10nParentCategory = $categoryRepository->findByUid($category['l10n_parent'], true);
+            if (!$l10nParentCategory) {
+                return;
+            }
+            $origTag = SearchHelper::createTagnameFromSystemCategoryUid($l10nParentCategory['uid']);
+            $languageUid = (int)$category['sys_language_uid'];
+
+            foreach ($filters as $filterUid) {
+                $origFilterOptions = $filterOptionRepository->findByFilterUidAndTag((int)$filterUid, $origTag, true);
+                foreach ($origFilterOptions as $origFilterOption) {
+                    if (!in_array((int)$origFilterOption['sys_language_uid'], [0, -1], true)) {
+                        continue;
                     }
+
+                    $localizedFilterOption = $filterOptionRepository->findByL10nParentAndLanguage(
+                        (int)$origFilterOption['uid'],
+                        $languageUid,
+                        true
+                    );
+
+                    if ($localizedFilterOption) {
+                        // update
+                        $filterOptionRepository->update(
+                            (int)$localizedFilterOption['uid'],
+                            ['title' => $category['title']]
+                        );
+                        continue;
+                    }
+
+                    // create
+                    $localizedFilter = $filterRepository->findByL10nParentAndLanguage(
+                        (int)$filterUid,
+                        $languageUid,
+                        true
+                    );
+                    if (!$localizedFilter) {
+                        continue;
+                    }
+                    $filterOptionRepository->create(
+                        (int)$localizedFilter['uid'],
+                        [
+                            'pid' => $origFilterOption['pid'],
+                            'title' => $category['title'],
+                            'tag' => $origTag,
+                            'sys_language_uid' => $languageUid,
+                            'l10n_parent' => $origFilterOption['uid'],
+                        ]
+                    );
                 }
             }
         }
