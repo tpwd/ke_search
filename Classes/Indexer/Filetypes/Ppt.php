@@ -82,6 +82,10 @@ class Ppt extends File implements FileIndexerInterface
      */
     public function getContent($file)
     {
+        if (!$this->isAppArraySet) {
+            return '';
+        }
+
         // create the tempfile which will contain the content
         $tempFileName = GeneralUtility::tempnam('ppt_files-Indexer');
 
