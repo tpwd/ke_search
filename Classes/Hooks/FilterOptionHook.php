@@ -50,8 +50,7 @@ class FilterOptionHook
         $recordUid,
         array $fields,
         DataHandler $parentObject
-    ): void
-    {
+    ): void {
         if ($table === 'sys_category') {
             $recordUid = $parentObject->substNEWwithIDs[$recordUid] ?? $recordUid;
             // Create and update always if a category is edited
