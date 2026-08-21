@@ -50,15 +50,13 @@ class FilterOptionHook
         $recordUid,
         array $fields,
         DataHandler $parentObject
-    ) {
+    ): void
+    {
         if ($table === 'sys_category') {
-            $recordUid =
-                isset($parentObject->substNEWwithIDs[$recordUid])
-                    ? $parentObject->substNEWwithIDs[$recordUid]
-                    : $recordUid;
+            $recordUid = $parentObject->substNEWwithIDs[$recordUid] ?? $recordUid;
             // Create and update always if a category is edited
             $this->updateFilterOptionsForCategoryAndSubCategories($recordUid);
-            // Cleanup (delete) filter options only only if something changed regarding the assigned filters
+            // Cleanup (delete) filter options only if something changed regarding the assigned filters
             if (isset($fields['tx_kesearch_filter']) || isset($fields['tx_kesearch_filtersubcat'])) {
                 $this->cleanupFilterOptions();
             }
@@ -75,7 +73,7 @@ class FilterOptionHook
      * @param $value
      * @param $pObj
      */
-    public function processCmdmap_postProcess($command, $table, $id, $value, $pObj)
+    public function processCmdmap_postProcess($command, $table, $id, $value, $pObj): void
     {
         if ($table === 'sys_category' && $command === 'delete') {
             /** @var FilterOptionRepository $filterOptionRepository */
@@ -89,7 +87,7 @@ class FilterOptionHook
     /**
      * @param int $categoryUid
      */
-    public function updateFilterOptionsForCategoryAndSubCategories(int $categoryUid)
+    public function updateFilterOptionsForCategoryAndSubCategories(int $categoryUid): void
     {
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
@@ -122,7 +120,7 @@ class FilterOptionHook
      * Those will arise when the connection between a category and a filter has been removed.
      * CAUTION: Will also delete filter options which have been created manually with the "syscat" prefix as tag.
      */
-    public function cleanupFilterOptions()
+    public function cleanupFilterOptions(): void
     {
         /** @var FilterOptionRepository $filterOptionRepository */
         $filterOptionRepository = GeneralUtility::makeInstance(FilterOptionRepository::class);
@@ -138,7 +136,7 @@ class FilterOptionHook
                 $filterIsConnectedToCategory = false;
                 // get the category connected to this filter option
                 $category = $categoryRepository->findByTag($filterOption['tag'], true);
-                // get the filter this filter option is assigned to
+                // get the filter to which this filter option is assigned to
                 $filter = $filterRepository->findByAssignedFilterOption($filterOption['uid'], true);
                 if ($filter) {
                     // Check if this category has this filter assigned in field "tx_kesearch_filter"
@@ -171,7 +169,7 @@ class FilterOptionHook
      * @param array $filters list of filter UIDs
      * @param array $category
      */
-    public function createOrUpdateFilterOptions(array $filters, array $category)
+    public function createOrUpdateFilterOptions(array $filters, array $category): void
     {
         /** @var FilterOptionRepository $filterOptionRepository */
         $filterOptionRepository = GeneralUtility::makeInstance(FilterOptionRepository::class);
@@ -180,7 +178,7 @@ class FilterOptionHook
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
 
-        // If this category record is in default language, we need to create/update the matching
+        // If this category record is in the default language, we need to create/update the matching
         // filter option records. If it is in a different language, we need to create/update the
         // localized filter option.
 
