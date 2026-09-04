@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[FEATURE] Introduce YAML-based indexer configuration support. Indexer configurations can now be stored in YAML files in the folder `Configuration/KeSearch/IndexerConfigurations` of extensions.
+
 Version 7.1.1, 21 August 2026
 [TASK]    Refactor `getPiVars` to return by value and introduce `setPiVars`
 [TASK]    Add nullability and default handling in `stripControlCharacters`. Thanks to r-herrmann. https://github.com/tpwd/ke_search/issues/323
