@@ -11,8 +11,30 @@ these fields with the default page indexer, too.
 
 .. note::
    The hooks described below are not needed anymore to index custom fields in tt_content since ke_search
-   version 4.5.0. Since then you can simply configure those fields in the indexer configuration.
-   see :ref:`indexer for pages<pagesIndexer>`.
+   version 4.5.0. Since then you can simply configure those fields in the indexer configuration
+   (see :ref:`indexer for pages<pagesIndexer>` or :ref:`YAML indexer configuration<yaml-indexer-configuration>`).
+
+Configuration in YAML
+=====================
+
+In a :ref:`YAML indexer configuration <yaml-indexer-configuration>`, custom content fields can be specified using the ``content_fields`` property:
+
+.. code-block:: yaml
+
+   identifier: site_pages
+   title: 'Main Website Pages'
+   type: page
+   storagepid: 10
+   startingpoints_recursive:
+     - 1
+   content_fields:
+     - bodytext
+     - subheader
+     - header_link
+     - tx_myextension_customfield
+
+Hooks (deprecated method)
+=========================
 
 Two hooks are needed:
 

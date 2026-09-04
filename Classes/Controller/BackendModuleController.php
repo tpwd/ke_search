@@ -35,8 +35,10 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
@@ -55,12 +57,14 @@ class BackendModuleController
     protected ?string $do;
     protected PageRenderer $pageRenderer;
     protected IndexerStatusService $indexerStatusService;
+    protected ?ServerRequestInterface $request = null;
 
     public function __construct(
         IndexRepository $indexRepository,
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
-        IndexerStatusService $indexerStatusService
+        IndexerStatusService $indexerStatusService,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
         $this->indexRepository = $indexRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
@@ -70,6 +74,7 @@ class BackendModuleController
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
+        $this->request = $request;
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $this->do = $request->getQueryParams()['do'] ?? null;
@@ -393,27 +398,32 @@ class BackendModuleController
      * @since 28.04.15
      * @return string
      */
-    public function printIndexerConfigurations($indexerConfigurations)
+    public function printIndexerConfigurations(array $indexerConfigurations): string
     {
-        $content = '<div id="kesearch-startindexing-indexers">';
-        if ($indexerConfigurations) {
-            $content .= '<div class="row"><div class="col-md-8">';
-            $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
-            $content .= '<colgroup><col><col width="100"><col width="100"><col width="100"></colgroup>';
-            $content .= '<tr><th>Indexer configuration</th><th>Type</th><th>UID</th><th>PID</th></tr>';
-            foreach ($indexerConfigurations as $indexerConfiguration) {
-                $content .= '<tr>'
-                    . '<td>' . $this->encode($indexerConfiguration['title']) . '</td>'
-                    . '<td>' . $indexerConfiguration['type'] . '</td>'
-                    . '<td>' . $indexerConfiguration['uid'] . '</td>'
-                    . '<td>' . $indexerConfiguration['pid'] . '</td>'
-                    . '</tr>';
-            }
-            $content .= '</table></div>';
-            $content .= '</div></div></div>';
+        if (empty($indexerConfigurations)) {
+            return '';
         }
 
-        return $content;
+        $hasDbConfig = false;
+        $hasYamlConfig = false;
+        foreach ($indexerConfigurations as $indexerConfiguration) {
+            $source = $indexerConfiguration['source'] ?? 'database';
+            if ($source === 'yaml') {
+                $hasYamlConfig = true;
+            } else {
+                $hasDbConfig = true;
+            }
+        }
+
+        $request = $this->request ?? ($GLOBALS['TYPO3_REQUEST'] ?? null) ?? new ServerRequest();
+        $view = $this->backendViewFactory->create($request, ['tpwd/ke_search']);
+        $view->assignMultiple([
+            'indexerConfigurations' => $indexerConfigurations,
+            'hasDbConfig' => $hasDbConfig,
+            'hasYamlConfig' => $hasYamlConfig,
+        ]);
+
+        return $view->render('BackendModule/PrintIndexerConfigurations');
     }
 
     /**

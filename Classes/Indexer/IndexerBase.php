@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Indexer;
 
 use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\IndexerConfiguration\IndexerConfigurationNormalizer;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Service\AttachedFilesService;
@@ -342,6 +343,11 @@ class IndexerBase
      */
     public function getSelectedCategoriesUidList(int $indexerConfigUid): array
     {
+        $registered = IndexerConfigurationNormalizer::getSelectedCategories($indexerConfigUid);
+        if ($registered !== null) {
+            return $registered;
+        }
+
         $queryBuilder = Db::getQueryBuilder('sys_category_record_mm');
         $selectedCategories = $queryBuilder
             ->select('uid_local')

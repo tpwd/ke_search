@@ -4,6 +4,10 @@ services:
     autoconfigure: true
     public: false
 
+  _instanceof:
+    Tpwd\KeSearch\IndexerConfiguration\IndexerConfigurationProviderInterface:
+      tags: ['kesearch.indexer_configuration_provider']
+
   Tpwd\KeSearch\:
     resource: '../Classes/*'
 
@@ -63,6 +67,21 @@ services:
     public: true
     arguments:
       $eventDispatcher: '@Psr\EventDispatcher\EventDispatcherInterface'
+
+  Tpwd\KeSearch\IndexerConfiguration\DatabaseIndexerConfigurationProvider:
+    tags:
+      - name: 'kesearch.indexer_configuration_provider'
+        priority: 100
+
+  Tpwd\KeSearch\IndexerConfiguration\YamlIndexerConfigurationProvider:
+    tags:
+      - name: 'kesearch.indexer_configuration_provider'
+        priority: 50
+
+  Tpwd\KeSearch\Service\IndexerConfigurationService:
+    public: true
+    arguments:
+      $providers: !tagged_iterator kesearch.indexer_configuration_provider
 
   Tpwd\KeSearch\Indexer\IndexerRunner:
     public: true

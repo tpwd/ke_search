@@ -1,0 +1,83 @@
+    <html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<div id="kesearch-startindexing-indexers">
+    <f:if condition="{indexerConfigurations}">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="table-fit">
+                    <table class="table table-striped table-hover">
+                        <colgroup>
+                            <col>
+                            <col width="100">
+                            <col width="100">
+                            <f:if condition="{hasDbConfig}">
+                                <col width="150">
+                                <col width="150">
+                            </f:if>
+                            <f:if condition="{hasYamlConfig}">
+                                <col width="100">
+                                <col width="100">
+                            </f:if>
+                        </colgroup>
+                        <tr>
+                            <th>Indexer configuration</th>
+                            <th>Type</th>
+                            <th>Source</th>
+                            <f:if condition="{hasDbConfig}">
+                                <th>UID</th>
+                                <th>PID</th>
+                            </f:if>
+                            <f:if condition="{hasYamlConfig}">
+                                <th>Extension</th>
+                                <th>Identifier</th>
+                            </f:if>
+                        </tr>
+                        <f:for each="{indexerConfigurations}" as="indexerConfiguration">
+                            <tr>
+                                <td>{indexerConfiguration.title}</td>
+                                <td>{indexerConfiguration.type}</td>
+                                <td>
+                                    <f:if condition="{indexerConfiguration.source} == 'yaml'">
+                                        <f:then>
+                                            <span class="badge badge-info" title="{indexerConfiguration.sourceFile}">YAML</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="badge badge-secondary">DB</span>
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                                <f:if condition="{hasDbConfig}">
+                                    <f:if condition="{indexerConfiguration.source} == 'yaml'">
+                                        <f:then>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </f:then>
+                                        <f:else>
+                                            <td>{indexerConfiguration.uid}</td>
+                                            <td>{indexerConfiguration.pid}</td>
+                                        </f:else>
+                                    </f:if>
+                                </f:if>
+                                <f:if condition="{hasYamlConfig}">
+                                    <f:if condition="{indexerConfiguration.source} == 'yaml'">
+                                        <f:then>
+                                            <td><f:if condition="{indexerConfiguration.extensionKey}"><f:then>{indexerConfiguration.extensionKey}</f:then><f:else>-</f:else></f:if></td>
+                                            <td><f:if condition="{indexerConfiguration.identifier}"><f:then>{indexerConfiguration.identifier}</f:then><f:else>-</f:else></f:if></td>
+                                        </f:then>
+                                        <f:else>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </f:else>
+                                    </f:if>
+                                </f:if>
+                            </tr>
+                        </f:for>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </f:if>
+</div>
+</html>

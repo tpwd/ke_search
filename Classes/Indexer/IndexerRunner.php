@@ -29,6 +29,7 @@ use Tpwd\KeSearch\Domain\Repository\IndexRepository;
 use Tpwd\KeSearch\Event\ModifyFieldValuesBeforeStoringEvent;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
+use Tpwd\KeSearch\Service\IndexerConfigurationService;
 use Tpwd\KeSearch\Service\IndexerStatusService;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use Tpwd\KeSearch\Utility\ContentUtility;
@@ -1215,14 +1216,18 @@ class IndexerRunner
         // collect error messages if an error was found
         if (count($errors)) {
             $errormessage = implode(',', $errors);
+            $additionalInfo = [];
             if (!empty($type)) {
-                $errormessage .= 'TYPE: ' . $type . '; ';
+                $additionalInfo[] = 'TYPE: ' . $type;
             }
             if (!empty($targetPid)) {
-                $errormessage .= 'TARGET PID: ' . $targetPid . '; ';
+                $additionalInfo[] = 'TARGET PID: ' . $targetPid;
             }
             if (!empty($storagePid)) {
-                $errormessage .= 'STORAGE PID: ' . $storagePid . '; ';
+                $additionalInfo[] = 'STORAGE PID: ' . $storagePid;
+            }
+            if (!empty($additionalInfo)) {
+                $errormessage .= ' (' . trim(implode(', ', $additionalInfo)) . ')';
             }
             // @extensionScannerIgnoreLine
             $this->logger->error($errormessage);
@@ -1280,16 +1285,11 @@ class IndexerRunner
     }
 
     /**
-     * This function returns all indexer configurations found in DB independent of PID
+     * This function returns all indexer configurations found in DB and YAML files
      */
     public function getConfigurations(): array
     {
-        $queryBuilder = Db::getQueryBuilder('tx_kesearch_indexerconfig');
-        return $queryBuilder
-            ->select('*')
-            ->from('tx_kesearch_indexerconfig')
-            ->executeQuery()
-            ->fetchAllAssociative();
+        return GeneralUtility::makeInstance(IndexerConfigurationService::class)->getConfigurations();
     }
 
     /**
