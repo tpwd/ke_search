@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Add pre-commit hook to run all tests before commits
 [BUGFIX]  Resolve translated filter and filter option records manually when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
 [BUGFIX]  Don't append a wildcard to quoted search phrases to avoid a MySQL syntax error when enablePartSearch is enabled. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/341
 

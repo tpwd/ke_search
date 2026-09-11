@@ -147,9 +147,7 @@ class FiltersLanguageOverlayTest extends FunctionalTestCase
     protected function createSearchContextStub(array $conf = [], array $piVars = []): SearchContextInterface
     {
         return new class ($conf, $piVars) implements SearchContextInterface {
-            public function __construct(private array $conf = [], private array $piVars = [])
-            {
-            }
+            public function __construct(private array $conf = [], private array $piVars = []) {}
 
             public function getConf(): array
             {

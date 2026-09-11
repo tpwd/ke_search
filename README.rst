@@ -117,6 +117,37 @@ run
 
     .Build/bin/php-cs-fixer fix
 
+Run all tests
+.............
+
+To run all of the above tests (unit tests, functional tests, PHPStan and
+php-cs-fixer) at once:
+
+.. code-block::
+
+    composer test:all
+
+Pre-commit hook
+~~~~~~~~~~~~~~~~
+
+This repository ships with a git pre-commit hook (`.githooks/pre-commit`)
+which runs `composer test:all` before a commit is accepted and aborts the
+commit if any test fails. It is enabled automatically for you when you run
+`composer install` or `composer update`, since the `hooks:install` script is
+registered as a `post-install-cmd`/`post-update-cmd`.
+
+If you need to enable it manually, run:
+
+.. code-block::
+
+    composer hooks:install
+
+If you deliberately want to skip the checks for a single commit, use:
+
+.. code-block::
+
+    git commit --no-verify
+
 Automated tests in GitHub Actions
 ---------------------------------
 

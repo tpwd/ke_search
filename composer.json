@@ -69,6 +69,15 @@
 		"test:unit": ".Build/bin/phpunit -c Tests/phpunit.xml.dist",
 		"test:functional": ".Build/bin/phpunit -c Tests/phpunit.functional.xml",
 		"test:phpstan": ".Build/bin/phpstan clear-result-cache && .Build/bin/phpstan --configuration=Tests/phpstan.neon --memory-limit=256M > phpstan-report.log",
-		"test:php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --using-cache=no > php-cs-fixer-report.log"
+		"test:php-cs-fixer": ".Build/bin/php-cs-fixer fix -v --dry-run --using-cache=no > php-cs-fixer-report.log",
+		"test:all": [
+			"@test:unit",
+			"@test:functional",
+			"@test:phpstan",
+			"@test:php-cs-fixer"
+		],
+		"hooks:install": "git config core.hooksPath .githooks",
+		"post-install-cmd": "@hooks:install",
+		"post-update-cmd": "@hooks:install"
 	}
 }

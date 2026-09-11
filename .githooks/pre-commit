@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Pre-commit hook that runs the test suite before a commit is accepted.
+# Installed via "composer hooks:install" (see composer.json).
+
+echo "Running tests before commit (composer test:all) ..."
+
+composer test:all
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+	echo ""
+	echo "Commit aborted: tests failed. Fix the issues above or use 'git commit --no-verify' to skip this check."
+	exit 1
+fi
+
+exit 0
