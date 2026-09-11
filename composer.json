@@ -53,7 +53,11 @@
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "ke_search",
-			"web-dir": ".Build/web"
+			"web-dir": ".Build/web",
+			"version": "7.2.0",
+			"Package": {
+				"providesPackages": {}
+			}
 		}
 	},
 	"config": {

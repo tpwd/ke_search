@@ -4,6 +4,7 @@ Upcoming version
 [FEATURE] Add pre-commit hook to run all tests before commits
 [BUGFIX]  Resolve translated filter and filter option records manually when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
 [BUGFIX]  Don't append a wildcard to quoted search phrases to avoid a MySQL syntax error when enablePartSearch is enabled. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/341
+[TASK]    Add `version`and `providesPackages` to composer.json
 
 Version 7.2.0, 11 September 2026
 [FEATURE] Introduce YAML-based indexer configuration support. Indexer configurations can now be stored in YAML files in the folder `Configuration/KeSearch/IndexerConfigurations` of extensions.
