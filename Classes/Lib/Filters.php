@@ -19,6 +19,7 @@ namespace Tpwd\KeSearch\Lib;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Tpwd\KeSearch\Domain\Repository\GenericRepository;
 use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -310,6 +311,8 @@ class Filters
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         /** @var PageRepository $pageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        /** @var GenericRepository $genericRepository */
+        $genericRepository = GeneralUtility::makeInstance(GenericRepository::class);
 
         $pageRecord = $this->searchContext->getRequest()?->getAttribute('frontend.page.information')?->getPageRecord();
 
@@ -322,11 +325,42 @@ class Filters
         if (count($rows)) {
             foreach ($rows as $key => $row) {
                 if (is_array($row) && $languageAspect->getContentId() > 0) {
-                    $row = $pageRepository->getLanguageOverlay(
-                        $table,
-                        $row,
-                        $languageAspect
-                    );
+                    if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF) {
+                        // In "free" fallback mode the overlay type is OVERLAYS_OFF, because
+                        // TYPO3 core assumes the record was already fetched in the requested
+                        // language. As our queries always fetch the default language uid, the
+                        // automatic overlay via PageRepository::getLanguageOverlay() would not
+                        // do anything here, so we have to resolve the translated record manually.
+                        // See https://github.com/tpwd/ke_search/issues/328
+                        $overlayRow = $genericRepository->findLangaugeOverlayByUidAndLanguage(
+                            $table,
+                            (int)$row['uid'],
+                            $languageAspect->getContentId()
+                        );
+                        if (is_array($overlayRow)) {
+                            // Keep the uid and pid of the default language record. ke_search always
+                            // works with the default language uid (e.g. for matching selected filter
+                            // options in piVars or for reordering the "options" list), so replacing it
+                            // with the translated record's uid would break those uid-based lookups and
+                            // result in empty filter/option arrays. This mirrors the way TYPO3 core's
+                            // PageRepository::getRecordOverlay() keeps the original uid intact.
+                            $originalUid = $row['uid'];
+                            $originalPid = $row['pid'];
+                            $row = $overlayRow;
+                            $row['uid'] = $originalUid;
+                            $row['pid'] = $originalPid;
+                        } elseif (($LanguageMode ?? '') === 'hideNonTranslated') {
+                            $row = false;
+                        }
+                        // else: no translation found and translations are not required to be
+                        // hidden -> keep the default language row as fallback.
+                    } else {
+                        $row = $pageRepository->getLanguageOverlay(
+                            $table,
+                            $row,
+                            $languageAspect
+                        );
+                    }
 
                     if (is_array($row)) {
                         if ($table == 'tx_kesearch_filters') {
