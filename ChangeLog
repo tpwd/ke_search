@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 7.2.0, 11 September 2026
 [FEATURE] Introduce YAML-based indexer configuration support. Indexer configurations can now be stored in YAML files in the folder `Configuration/KeSearch/IndexerConfigurations` of extensions.
 [TASK]    Add null checks and improve default handling in `SearchHelper`
 
