@@ -133,7 +133,7 @@ class Searchphrase
                 // Link: http://dev.mysql.com/doc/refman/5.0/en/fulltext-stopwords.html
 
                 // don't check length if it is a phrase
-                if (preg_match('/^([+\-~<>])?\"/', $word)) {
+                if ($this->isPhrase($word)) {
                     continue;
                 }
 
@@ -158,13 +158,19 @@ class Searchphrase
             foreach ($searchParts as $key => $word) {
                 if ($word != '|') {
                     // Enable partial word search (default: on) and in-word-search (Sphinx-based or native).
-                    // Partial word search is activated automatically if in-word-search is activated
+                    // Partial word search is activated automatically if in-word-search is activated.
+                    // Don't add a wildcard if it is a phrase, MySQL's boolean-mode fulltext parser does not
+                    // accept a "*" truncation operator directly after a quoted phrase.
                     if (
-                        ($this->searchContext->getExtConf()['enablePartSearch'] ?? true)
-                        ||
-                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && (int)($this->searchContext->getExtConfPremium()['enableInWordSearch'] ?? false))
-                        ||
-                        (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableNativeInWordSearch'] ?? false))
+                        !$this->isPhrase($word)
+                        &&
+                        (
+                            ($this->searchContext->getExtConf()['enablePartSearch'] ?? true)
+                            ||
+                            (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && (int)($this->searchContext->getExtConfPremium()['enableInWordSearch'] ?? false))
+                            ||
+                            (ExtensionManagementUtility::isLoaded('ke_search_premium') && ($this->searchContext->getExtConfPremium()['enableNativeInWordSearch'] ?? false))
+                        )
                     ) {
                         if (($this->searchContext->getExtConfPremium()['enableSphinxSearch'] ?? false) && (int)($this->searchContext->getExtConfPremium()['enableInWordSearch'] ?? false)) {
                             $searchParts[$key] = '*' . trim($searchParts[$key], '*') . '*';
@@ -182,6 +188,17 @@ class Searchphrase
             return array_values($searchParts);
         }
         return [];
+    }
+
+    /**
+     * Checks if the given word is a phrase (optionally prefixed with a modifier and enclosed in double quotes)
+     *
+     * @param string $word
+     * @return bool
+     */
+    public function isPhrase(string $word): bool
+    {
+        return (bool)preg_match('/^([+\-~<>])?\"/', $word);
     }
 
     /**
