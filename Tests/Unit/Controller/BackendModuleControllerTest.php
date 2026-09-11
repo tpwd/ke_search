@@ -89,12 +89,19 @@ class BackendModuleControllerTest extends TestCase
         $viewHelperResolverFactoryMock = $this->createMock(ViewHelperResolverFactoryInterface::class);
         $viewHelperResolverFactoryMock->method('create')->willReturn(new ViewHelperResolver($containerMock, $namespaces));
 
-        $renderingContextFactory = new RenderingContextFactory(
+        $renderingContextFactoryReflection = new \ReflectionClass(RenderingContextFactory::class);
+        $constructorParameters = $renderingContextFactoryReflection->getConstructor()?->getParameters() ?? [];
+        $renderingContextFactoryArguments = [
             $containerMock,
             $cacheManagerMock,
             $viewHelperResolverFactoryMock,
-            $argumentProcessorMock
-        );
+        ];
+        if (count($constructorParameters) >= 4) {
+            $renderingContextFactoryArguments[] = $argumentProcessorMock;
+        }
+
+        $renderingContextFactory = $renderingContextFactoryReflection->newInstanceArgs($renderingContextFactoryArguments);
+        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
 
         $backendViewFactory = new BackendViewFactory(
             $renderingContextFactory,
