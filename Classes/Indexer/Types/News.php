@@ -563,8 +563,8 @@ class News extends IndexerBase
         // todo: index files linked in content elements
         if (count($contentElements)) {
             foreach ($contentElements as $contentElement) {
-                // index header, add header only if not set to "hidden"
-                if ($contentElement['header_layout'] != 100) {
+                // index header, add header only if present and not set to "hidden"
+                if (($contentElement['header'] ?? '') !== '' && $contentElement['header_layout'] != 100) {
                     $content .= "\n" . strip_tags($contentElement['header']) . "\n";
                 }
 
