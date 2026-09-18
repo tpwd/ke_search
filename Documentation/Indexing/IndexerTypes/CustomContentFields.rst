@@ -72,8 +72,13 @@ Two hooks are needed:
             public function modifyContentFromContentElement(string &$bodytext, array $ttContentRow, $pageIndexer)
             {
                // Add the content of the field "subheader" to $bodytext, which is, what
-               // will be saved to the index.
-               $bodytext .= strip_tags($ttContentRow['subheader']);
+               // will be saved to the index. Using ContentUtility::getPlainContentFromContentRow()
+               // instead of a plain strip_tags() call also ensures that words don't "stick together"
+               // (e.g. after removing <br>, <p> or <li> tags).
+               $bodytext .= \Tpwd\KeSearch\Utility\ContentUtility::getPlainContentFromContentRow(
+                   $ttContentRow,
+                   'subheader'
+               );
             }
 
          }

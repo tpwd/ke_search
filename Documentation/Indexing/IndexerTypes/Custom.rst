@@ -19,6 +19,10 @@ https://github.com/tpwd/ke_search_hooks
      the same record.
    * You don't need to fill :php:`$tags` if you don't use faceting.
    * You don't need to fill :php:`$abstract`, it will then generated automatically from $content.
+   * When building :php:`$content` from raw HTML, consider using
+     :php:`\Tpwd\KeSearch\Utility\ContentUtility::getPlainContentFromContentRow()` instead of a plain
+     :php:`strip_tags()` call. This also ensures that words don't "stick together" (e.g. after removing
+     :html:`<br>`, :html:`<p>` or :html:`<li>` tags) and strips :html:`<script>`/:html:`<style>` blocks entirely.
    * You will have to fill :php:`$params` if you want to link to a extension which expects a certain parameter, e.g.
      `&tx_myextension_pi1[showUid]=123`
 

@@ -32,11 +32,8 @@ class ContentUtility
             $content = (string)$contentRow[$fieldName];
         }
 
-        // following lines prevents having words one after the other like: HelloAllTogether
-        $content = str_replace('<td', ' <td', $content);
-        $content = str_replace('<br', ' <br', $content);
-        $content = str_replace('<p', ' <p', $content);
-        $content = str_replace('<li', ' <li', $content);
+        // following line prevents having words one after the other like: HelloAllTogether
+        $content = self::addSpaceBeforeBlockLevelElements($content);
 
         if (isset($contentRow['CType']) && $contentRow['CType'] == 'table') {
             // replace table dividers with whitespace
@@ -57,6 +54,62 @@ class ContentUtility
                 $_procObj = GeneralUtility::makeInstance($_classRef);
                 $_procObj->modifyContentFromContentRow($content, $contentRow, $fieldName, $type);
             }
+        }
+
+        return $content;
+    }
+
+    /**
+     * Adds a space before certain HTML block level elements (like <div>, <h1>, <table>, ...) so that
+     * stripping the tags afterwards does not glue together words which were visually separated,
+     * e.g. "<div>Hello</div><div>World</div>" would otherwise become "HelloWorld" instead of "Hello World".
+     *
+     * @see https://github.com/tpwd/ke_search/issues/338
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function addSpaceBeforeBlockLevelElements(string $content): string
+    {
+        $blockLevelElements = [
+            'address',
+            'article',
+            'aside',
+            'blockquote',
+            'br',
+            'dd',
+            'div',
+            'dl',
+            'dt',
+            'fieldset',
+            'figcaption',
+            'figure',
+            'footer',
+            'form',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'header',
+            'hr',
+            'li',
+            'main',
+            'nav',
+            'ol',
+            'p',
+            'pre',
+            'section',
+            'table',
+            'td',
+            'th',
+            'tr',
+            'ul',
+        ];
+
+        foreach ($blockLevelElements as $blockLevelElement) {
+            $content = str_replace('<' . $blockLevelElement, ' <' . $blockLevelElement, $content);
         }
 
         return $content;
