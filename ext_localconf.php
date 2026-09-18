@@ -5,7 +5,7 @@ use Tpwd\KeSearch\UserFunction\CustomFieldValidation\FilterOptionTagValidator;
 defined('TYPO3') or die();
 
 (function () {
-    // Add Searchbox Plugin
+    // Search box plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
@@ -21,7 +21,7 @@ tt_content.ke_search_pi1 {
         'defaultContentRendering'
     );
 
-    // add Resultlist Plugin
+    // Result list plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',
@@ -37,7 +37,7 @@ tt_content.ke_search_pi2 {
         'defaultContentRendering'
     );
 
-    // Add cachable Searchbox Plugin (USER instead of USER_INT)
+    // Cacheable search box plugin (USER instead of USER_INT)
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
         'tx_kesearch',
         'setup',

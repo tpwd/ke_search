@@ -3,6 +3,7 @@
 # ==============================================
 
 # paths for fluid templating
+// Search box plugin
 plugin.tx_kesearch_pi1 {
     view {
         templateRootPaths {
@@ -34,6 +35,7 @@ plugin.tx_kesearch_pi1 {
     searchWordParameter = tx_kesearch_pi1[sword]
 }
 
+// Result list plugin
 plugin.tx_kesearch_pi2 {
     view < plugin.tx_kesearch_pi1.view
     cssFile < plugin.tx_kesearch_pi1.cssFile
@@ -44,6 +46,7 @@ plugin.tx_kesearch_pi2 {
     includeFilters = 0
 }
 
+// Cacheable search box plugin
 plugin.tx_kesearch_pi3 {
     view < plugin.tx_kesearch_pi1.view
     cssFile < plugin.tx_kesearch_pi1.cssFile
