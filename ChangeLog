@@ -2,9 +2,10 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Add pre-commit hook to run all tests before commits
-[TASK]    Add `ContentUtility::addSpaceBeforeBlockLevelElements()` to prevent words from sticking together for more HTML block level elements. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/338
-[BUGFIX]  Resolve translated filter and filter option records manually when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
+[BUGFIX]  Keep "list" type filter selection when a new search term is entered. https://github.com/tpwd/ke_search/issues/326
+[BUGFIX]  Resolve translated filter and filter option records when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
 [BUGFIX]  Don't append a wildcard to quoted search phrases to avoid a MySQL syntax error when enablePartSearch is enabled. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/341
+[TASK]    Add `ContentUtility::addSpaceBeforeBlockLevelElements()` to prevent words from sticking together for more HTML block level elements. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/338
 [TASK]    Add `version`and `providesPackages` to composer.json
 [DOCS]    Extend docs for CSS file configuration
 
