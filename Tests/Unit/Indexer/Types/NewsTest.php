@@ -11,7 +11,7 @@ use Tpwd\KeSearch\Indexer\Types\News;
 class NewsTest extends TestCase
 {
     #[Test]
-    public function contentElementsWithoutHeaderAreIndexedWithoutDeprecationNotice(): void
+    public function contentElementHeadersAreIndexedOnlyWhenPresentAndVisible(): void
     {
         $indexer = (new \ReflectionClass(News::class))->newInstanceWithoutConstructor();
 
@@ -31,6 +31,11 @@ class NewsTest extends TestCase
                 'bodytext' => '<p>Body with header</p>',
             ],
             [
+                'header' => '',
+                'header_layout' => 0,
+                'bodytext' => '<p>Body with empty header</p>',
+            ],
+            [
                 'header' => 'Hidden header',
                 'header_layout' => 100,
                 'bodytext' => '<p>Body with hidden header</p>',
@@ -43,7 +48,9 @@ class NewsTest extends TestCase
         self::assertStringContainsString('Body with missing header key', $content);
         self::assertStringContainsString('Visible header', $content);
         self::assertStringNotContainsString('<b>', $content);
+        self::assertStringContainsString('Body with empty header', $content);
         self::assertStringContainsString('Body with hidden header', $content);
         self::assertStringNotContainsString('Hidden header', $content);
+        self::assertStringNotContainsString("\n\n\n", $content);
     }
 }
