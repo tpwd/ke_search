@@ -83,6 +83,6 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
         if ($result) {
             return $result['tag'];
         }
-        return $value;
+        return null;
     }
 }
