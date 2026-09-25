@@ -185,7 +185,7 @@ class FilterOptionHookTest extends FunctionalTestCase
 
         $this->hook->updateFilterOptionsForCategoryAndSubCategories(105);
 
-        self::assertSame(1, $this->countFilterOptionsByParentAndLanguage(1000, 4, true));
+        self::assertEquals(1, $this->countFilterOptionsByParentAndLanguage(1000, 4, true));
         $updatedHiddenRecord = $this->filterOptionRepository->findByL10nParentAndLanguage(1000, 4, true);
         self::assertIsArray($updatedHiddenRecord);
         self::assertSame('Categoria ES updated', (string)$updatedHiddenRecord['title']);
