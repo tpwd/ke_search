@@ -38,6 +38,7 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Lib\Searchphrase;
 use Tpwd\KeSearch\Lib\Searchresult;
 use Tpwd\KeSearch\Lib\Sorting;
+use Tpwd\KeSearch\Service\TagInfoService;
 use Tpwd\KeSearch\Utility\RequestUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -738,6 +739,7 @@ class PluginBase extends AbstractPlugin implements SearchContextInterface
         $resultRowRenderer->setRequest($this->request);
         $resultRowRenderer->setPluginConfiguration($this->conf);
         $resultRowRenderer->setSwords($this->swords);
+        $tagInfoService = GeneralUtility::makeInstance(TagInfoService::class);
 
         $this->fluidTemplateVariables['resultrows'] = [];
         foreach ($rows as $row) {
@@ -798,6 +800,10 @@ class PluginBase extends AbstractPlugin implements SearchContextInterface
             $tags = $row['tags'];
             $tags = str_replace('#', ' ', $tags);
             $resultrowTemplateValues['tags'] = $tags;
+
+            // resolve the tags to their "speaking" names (titles of filter options and/or
+            // system categories, including parent categories) for usage in the fluid template
+            $resultrowTemplateValues['tagsInfo'] = $tagInfoService->getTagsInfo($row['tags'], $this->languageId);
 
             // set preview image and/or type icons
             // for files we have the corresponding entry in sys_file as "orig_uid" available (not sys_file_reference)

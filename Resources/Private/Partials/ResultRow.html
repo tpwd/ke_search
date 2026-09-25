@@ -29,6 +29,11 @@
 		</f:if>
 		<f:if condition="{conf.showTags}">
 			<i>{f:translate(key: 'LLL:EXT:ke_search/Resources/Private/Language/locallang_searchbox.xlf:label_tags')}:</i> {resultrow.tags}<br />
+			<f:comment><!--
+				resultrow.tagsInfo provides the "speaking" names of the tags shown above (titles of matching
+				filter options and/or the title and parent categories of a system category), see
+				"Show speaking names of assigned tags" in the documentation.
+			--></f:comment>
 		</f:if>
 	</div>
 	<span class="teaser_icon">

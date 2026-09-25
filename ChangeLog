@@ -1,6 +1,7 @@
 ChangeLog
 
-Upcoming version
+Upcoming version (7.3.0)
+[FEATURE] Add `TagInfoService` to resolve tags in the result row template to their speaking names (filter option titles and/or system category titles including parent categories). https://github.com/tpwd/ke_search/issues/241
 [FEATURE] Add pre-commit hook to run all tests before commits
 [BUGFIX]  Keep "list" type filter selection when a new search term is entered. https://github.com/tpwd/ke_search/issues/326
 [BUGFIX]  Resolve translated filter and filter option records when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
