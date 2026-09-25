@@ -564,8 +564,11 @@ class News extends IndexerBase
         if (count($contentElements)) {
             foreach ($contentElements as $contentElement) {
                 // index header, add header only if not set to "hidden"
-                if ($contentElement['header_layout'] != 100) {
-                    $content .= "\n" . strip_tags($contentElement['header']) . "\n";
+                if (($contentElement['header_layout'] ?? 0) != 100) {
+                    $header = ContentUtility::getPlainContentFromContentRow($contentElement, 'header');
+                    if ($header !== '') {
+                        $content .= "\n" . $header . "\n";
+                    }
                 }
 
                 // index bodytext (main content)
