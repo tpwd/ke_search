@@ -568,6 +568,23 @@ class Page extends IndexerBase
     }
 
     /**
+     * Filters out shortcuts whose original content elements should not be indexed.
+     *
+     * @param array<int, array<string, mixed>> $rows
+     * @return array<int, array<string, mixed>>
+     */
+    private function filterShortcutsBeforeProcessing(array $rows): array
+    {
+        return array_values(array_filter(
+            $rows,
+            function (array $row): bool {
+                return $row['CType'] !== 'shortcut'
+                    || $this->contentElementShouldBeIndexed($row);
+            }
+        ));
+    }
+
+    /**
      * get content of current page and save data to db
      *
      * @param int $uid page-UID that has to be indexed
@@ -637,6 +654,8 @@ class Page extends IndexerBase
 
         $pageContent = [];
         if (count($ttContentRows)) {
+            // Check shortcuts before resolving them so their container visibility is not lost.
+            $ttContentRows = $this->filterShortcutsBeforeProcessing($ttContentRows);
             $ttContentRows = $this->processShortcuts($ttContentRows, $fields);
             foreach ($ttContentRows as $ttContentRow) {
                 // Skip content elements inside hidden containers and for other (custom) reasons

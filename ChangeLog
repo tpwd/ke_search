@@ -7,6 +7,7 @@ Upcoming version (7.3.0)
 [BUGFIX]  Resolve translated filter and filter option records when the site language fallback type is "free". Thanks to Simon Mayr. https://github.com/tpwd/ke_search/issues/328
 [BUGFIX]  Don't append a wildcard to quoted search phrases to avoid a MySQL syntax error when enablePartSearch is enabled. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/341
 [BUGFIX]  Skip empty content element headers in news indexer. Thanks to zeaiso. https://github.com/tpwd/ke_search/pull/342
+[BUGFIX]  Do not index shortcut content referenced from disabled containers in the pages indexer. Thanks to mentis-webdesign. https://github.com/tpwd/ke_search/issues/344
 [BUGFIX]  Fix PhpStan error in FilterOptionHookTest
 [TASK]    Add `ContentUtility::addSpaceBeforeBlockLevelElements()` to prevent words from sticking together for more HTML block level elements. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/338
 [TASK]    Add `version`and `providesPackages` to composer.json
