@@ -98,7 +98,7 @@ class IndexerStatusService
         $indexerStatus['indexers'][$indexerConfig['uid']]['statusText']
             = '"' . $indexerConfig['title'] . '"'
             . ' has finished';
-        if ($indexerStatus['indexers'][$indexerConfig['uid']]['totalRecords'] >= 0) {
+        if (($indexerStatus['indexers'][$indexerConfig['uid']]['totalRecords'] ?? -1) >= 0) {
             $indexerStatus['indexers'][$indexerConfig['uid']]['statusText'] .=
                 ' (' . $indexerStatus['indexers'][$indexerConfig['uid']]['totalRecords'] . ' records)';
         }

@@ -108,36 +108,49 @@ class File extends IndexerBase
             return $errorMessage;
         }
 
-        $files = [];
+        $filesFound = $this->countFilesToIndex($directoryArray, $fileCollections);
+        $counter = $this->extractContentAndSaveToIndex($this->getFilesForIndexing($directoryArray, $fileCollections));
+
+        if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL) {
+            $resultMessage = $filesFound . ' files have been found for indexing.' . chr(10)
+                . $counter . ' new or updated files have been indexed.';
+            if ($this->counterRemoved) {
+                $resultMessage .= chr(10) . $this->counterRemoved . ' outdated file index record(s) have been removed.';
+            }
+        } else {
+            $resultMessage = $filesFound . ' files have been found for indexing.' . chr(10)
+                . $counter . ' files have been indexed.';
+        }
+        return $resultMessage;
+    }
+
+    private function countFilesToIndex(array $directoryArray, mixed $fileCollections): int
+    {
+        $count = 0;
+        foreach ($this->getFilesForIndexing($directoryArray, $fileCollections) as $_file) {
+            $count++;
+        }
+
+        return $count;
+    }
+
+    private function getFilesForIndexing(array $directoryArray, mixed $fileCollections): \Generator
+    {
         if (count($directoryArray)) {
             if ($this->indexerConfig['fal_storage'] > 0) {
                 /* @var $storageRepository StorageRepository */
                 $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
                 $this->storage = $storageRepository->findByUid($this->indexerConfig['fal_storage']);
 
-                $this->getFilesFromFal($files, $directoryArray);
+                yield from $this->getFilesFromFal($directoryArray);
             } else {
-                $files = $this->getFilesFromDirectories($directoryArray);
+                yield from $this->getFilesFromDirectories($directoryArray);
             }
         }
 
         if (!empty($fileCollections)) {
-            $this->getFilesFromFileCollections($files, $fileCollections);
+            yield from $this->getFilesFromFileCollections($fileCollections);
         }
-
-        $counter = $this->extractContentAndSaveToIndex($files);
-
-        if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL) {
-            $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
-                . $counter . ' new or updated files have been indexed.';
-            if ($this->counterRemoved) {
-                $resultMessage .= chr(10) . $this->counterRemoved . ' outdated file index record(s) have been removed.';
-            }
-        } else {
-            $resultMessage = count($files) . ' files have been found for indexing.' . chr(10)
-                . $counter . ' files have been indexed.';
-        }
-        return $resultMessage;
     }
 
     public function startIncrementalIndexing(): string
@@ -177,12 +190,12 @@ class File extends IndexerBase
     }
 
     /**
-     * fetches files recursively using FAL
+     * Fetches files recursively using FAL
      *
-     * @param array $files
      * @param array $directoryArray
+     * @return \Generator
      */
-    public function getFilesFromFal(array &$files, array $directoryArray)
+    public function getFilesFromFal(array $directoryArray): \Generator
     {
         foreach ($directoryArray as $directory) {
             if (!$this->storage->hasFolder($directory)) {
@@ -201,7 +214,7 @@ class File extends IndexerBase
                 if (count($filesInFolder)) {
                     foreach ($filesInFolder as $file) {
                         if (FileUtility::isFileIndexable($file, $this->indexerConfig)) {
-                            $files[] = $file;
+                            yield $file;
                         } else {
                             if ($this->indexingMode == self::INDEXING_MODE_INCREMENTAL) {
                                 $this->removeFileFromIndex($file);
@@ -214,7 +227,7 @@ class File extends IndexerBase
                 $subfolders = $folder->getSubFolders();
                 if (count($subfolders)) {
                     foreach ($subfolders as $subfolder) {
-                        $this->getFilesFromFal($files, [$subfolder->getIdentifier()]);
+                        yield from $this->getFilesFromFal([$subfolder->getIdentifier()]);
                     }
                 }
             }
@@ -222,17 +235,16 @@ class File extends IndexerBase
     }
 
     /**
-     * Get files from given relative directory path array.
+     * Get files from a given relative directory path array.
      * Returns the *absolute* paths on the local file system for each file.
      *
      * @param array $directoryArray
-     * @return array An Array containing all files of all valid directories
+     * @return \Generator
      */
-    public function getFilesFromDirectories(array $directoryArray): array
+    public function getFilesFromDirectories(array $directoryArray): \Generator
     {
         $directoryArray = $this->getAbsoluteDirectoryPath($directoryArray);
         if (count($directoryArray)) {
-            $files = [];
             foreach ($directoryArray as $directory) {
                 $foundFiles = GeneralUtility::getAllFilesAndFoldersInPath(
                     [],
@@ -242,16 +254,14 @@ class File extends IndexerBase
 
                 if (count($foundFiles)) {
                     foreach ($foundFiles as $file) {
-                        $files[] = $file;
+                        yield $file;
                     }
                 }
             }
-            return $files;
         }
-        return [];
     }
 
-    public function getFilesFromFileCollections(&$files, $fileCollections): void
+    public function getFilesFromFileCollections($fileCollections): \Generator
     {
         // Boot up the filecollector
         $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
@@ -263,13 +273,9 @@ class File extends IndexerBase
         $fileCollector->addFilesFromFileCollections($collectionsArray);
 
         // If the file collection "type" is "static" then file references are returned
-        $collectionFiles = array_map(
-            fn($item) => ($item instanceof FileReference) ? $item->getOriginalFile() : $item,
-            $fileCollector->getFiles()
-        );
-
-        // Get the files & index them
-        $files = array_merge($files, $collectionFiles);
+        foreach ($fileCollector->getFiles() as $item) {
+            yield ($item instanceof FileReference) ? $item->getOriginalFile() : $item;
+        }
     }
 
     /**
@@ -330,40 +336,37 @@ class File extends IndexerBase
      * @param array $files
      * @return int
      */
-    public function extractContentAndSaveToIndex(array $files): int
+    public function extractContentAndSaveToIndex(iterable $files): int
     {
         $counter = 0;
-        $totalCount = count($files);
-        if ($totalCount > 0) {
-            foreach ($files as $file) {
-                $this->indexerStatusService->setRunningStatus($this->indexerConfig, $counter, $totalCount);
-                if ($this->fileInfo->setFile($file)) {
-                    if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
-                        $filePath = $file->getForLocalProcessing(false);
-                    } else {
-                        $filePath = $file;
-                    }
+        foreach ($files as $file) {
+            $this->indexerStatusService->setRunningStatus($this->indexerConfig, $counter);
+            if ($this->fileInfo->setFile($file)) {
+                if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+                    $filePath = $file->getForLocalProcessing(false);
+                } else {
+                    $filePath = $file;
+                }
 
-                    // Check if if we have already up-to-date content for this file in the index by comparing the  timestamps.
-                    // Todo: The index record also contains metadata which may have also changed, this needs to be checked also.
-                    $fileContent = $this->getFileContentFromIndex($this->getUniqueHashForFile(), filemtime($filePath));
+                // Check if if we have already up-to-date content for this file in the index by comparing the  timestamps.
+                // Todo: The index record also contains metadata which may have also changed, this needs to be checked also.
+                $fileContent = $this->getFileContentFromIndex($this->getUniqueHashForFile(), filemtime($filePath));
 
-                    // in incremental indexing mode we can skip the further processing of this file now if we found
-                    // a matching index record, because we do not need to store something to the index.
-                    // In full indexing mode we need to store the already existing index record
-                    // again because we want to update the timestamp.
-                    if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL && $fileContent !== false) {
-                        continue;
-                    }
+                // in incremental indexing mode we can skip the further processing of this file now if we found
+                // a matching index record, because we do not need to store something to the index.
+                // In full indexing mode we need to store the already existing index record
+                // again because we want to update the timestamp.
+                if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL && $fileContent !== false) {
+                    continue;
+                }
 
-                    if ($fileContent === false) {
-                        $fileContent = $this->getFileContent($filePath);
-                    }
+                if ($fileContent === false) {
+                    $fileContent = $this->getFileContent($filePath);
+                }
 
-                    if ($fileContent !== false) {
-                        $this->storeToIndex($file, $fileContent);
-                        $counter++;
-                    }
+                if ($fileContent !== false) {
+                    $this->storeToIndex($file, $fileContent);
+                    $counter++;
                 }
             }
         }

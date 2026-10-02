@@ -169,89 +169,95 @@ class IndexerRunner
             }
         }
 
-        // set indexing start time
-        $this->startTime = time();
+        try {
+            // set indexing start time
+            $this->startTime = time();
 
-        // get configurations
-        $configurations = $this->getConfigurations();
+            // get configurations
+            $configurations = $this->getConfigurations();
 
-        // register additional fields which should be written to DB
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] ?? null)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] as $_classRef) {
-                $_procObj = GeneralUtility::makeInstance($_classRef);
-                $_procObj->registerAdditionalFields($this->additionalFields);
+            // register additional fields which should be written to DB
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] ?? null)) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'] as $_classRef) {
+                    $_procObj = GeneralUtility::makeInstance($_classRef);
+                    $_procObj->registerAdditionalFields($this->additionalFields);
+                }
             }
-        }
 
-        // set some prepare statements
-        $this->prepareStatements();
+            // set some prepare statements
+            $this->prepareStatements();
 
-        $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
-        $content .= '<tr><th>Indexer configuration</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
-        foreach ($configurations as $indexerConfig) {
-            $this->indexerStatusService->setScheduledStatus($indexerConfig);
-        }
-        foreach ($configurations as $indexerConfig) {
-            if ($this->io) {
-                $this->io->writeln('Running indexer configuration "' . $indexerConfig['title'] . '"');
+            $content .= '<div class="table-fit"><table class="table table-striped table-hover">';
+            $content .= '<tr><th>Indexer configuration</th><th>Mode</th><th>Info</th><th>Time</th></tr>';
+            foreach ($configurations as $indexerConfig) {
+                $this->indexerStatusService->setScheduledStatus($indexerConfig);
             }
-            $this->indexerStatusService->setRunningStatus($indexerConfig);
-            $this->indexerConfig = $indexerConfig;
+            foreach ($configurations as $indexerConfig) {
+                if ($this->io) {
+                    $this->io->writeln('Running indexer configuration "' . $indexerConfig['title'] . '"');
+                }
+                $this->indexerStatusService->setRunningStatus($indexerConfig);
+                $this->indexerConfig = $indexerConfig;
 
-            // run default indexers shipped with ke_search
-            if (in_array($this->indexerConfig['type'], $this->defaultIndexerTypes)) {
-                $className = __NAMESPACE__ . '\\Types\\';
-                $className .= GeneralUtility::underscoredToUpperCamelCase($this->indexerConfig['type']);
-                if (class_exists($className)) {
-                    $this->logger->info(
-                        'Running indexer configuration "' . $this->indexerConfig['title'] . '"',
-                        $this->indexerConfig
-                    );
-                    $searchObj = GeneralUtility::makeInstance($className, $this);
-                    if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
-                        $message = $searchObj->startIndexing();
-                    } else {
-                        if (method_exists($searchObj, 'startIncrementalIndexing')) {
-                            $message = $searchObj->startIncrementalIndexing();
+                // run default indexers shipped with ke_search
+                if (in_array($this->indexerConfig['type'], $this->defaultIndexerTypes)) {
+                    $className = __NAMESPACE__ . '\\Types\\';
+                    $className .= GeneralUtility::underscoredToUpperCamelCase($this->indexerConfig['type']);
+                    if (class_exists($className)) {
+                        $this->logger->info(
+                            'Running indexer configuration "' . $this->indexerConfig['title'] . '"',
+                            $this->indexerConfig
+                        );
+                        $searchObj = GeneralUtility::makeInstance($className, $this);
+                        if ($indexingMode == IndexerBase::INDEXING_MODE_FULL) {
+                            $message = $searchObj->startIndexing();
                         } else {
-                            $message = 'Incremental indexing is not available for this indexer, starting full indexing. <br />';
-                            $this->logger->info(strip_tags($message));
-                            $message .= $searchObj->startIndexing();
+                            if (method_exists($searchObj, 'startIncrementalIndexing')) {
+                                $message = $searchObj->startIncrementalIndexing();
+                            } else {
+                                $message = 'Incremental indexing is not available for this indexer, starting full indexing. <br />';
+                                $this->logger->info(strip_tags($message));
+                                $message .= $searchObj->startIndexing();
+                            }
+                        }
+                        $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
+                        $content .= $this->renderIndexingReport($searchObj, $message);
+                    } else {
+                        $errorMessage = 'Could not find class ' . $className;
+                        // @extensionScannerIgnoreLine
+                        $this->logger->error($errorMessage);
+                        $content .= '<div class="alert alert-error">' . $errorMessage . '</div>' . "\n";
+                    }
+                }
+
+                // hook for custom indexer
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] ?? null)) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] as $_classRef) {
+                        $searchObj = GeneralUtility::makeInstance($_classRef, $this);
+                        $this->logger->info(
+                            'Running indexer configuration "' . $this->indexerConfig['title'] . '": '
+                            . 'Trying to start custom indexer "' . $_classRef,
+                            $this->indexerConfig
+                        );
+                        if ($indexingMode == IndexerBase::INDEXING_MODE_FULL || !method_exists($searchObj, 'startIncrementalIndexing')) {
+                            $message = $searchObj->customIndexer($indexerConfig, $this);
+                        } else {
+                            $message = $searchObj->startIncrementalIndexing($indexerConfig, $this);
+                        }
+                        $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
+                        if ($message) {
+                            $content .= $this->renderIndexingReport($searchObj, $message);
                         }
                     }
-                    $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
-                    $content .= $this->renderIndexingReport($searchObj, $message);
-                } else {
-                    $errorMessage = 'Could not find class ' . $className;
-                    // @extensionScannerIgnoreLine
-                    $this->logger->error($errorMessage);
-                    $content .= '<div class="alert alert-error">' . $errorMessage . '</div>' . "\n";
                 }
+                $this->indexerStatusService->setFinishedStatus($indexerConfig);
             }
-
-            // hook for custom indexer
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] ?? null)) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'] as $_classRef) {
-                    $searchObj = GeneralUtility::makeInstance($_classRef, $this);
-                    $this->logger->info(
-                        'Running indexer configuration "' . $this->indexerConfig['title'] . '": '
-                        . 'Trying to start custom indexer "' . $_classRef,
-                        $this->indexerConfig
-                    );
-                    if ($indexingMode == IndexerBase::INDEXING_MODE_FULL || !method_exists($searchObj, 'startIncrementalIndexing')) {
-                        $message = $searchObj->customIndexer($indexerConfig, $this);
-                    } else {
-                        $message = $searchObj->startIncrementalIndexing($indexerConfig, $this);
-                    }
-                    $this->indexingErrors = $this->mergeIndexingErrors($searchObj, $this->indexingErrors);
-                    if ($message) {
-                        $content .= $this->renderIndexingReport($searchObj, $message);
-                    }
-                }
-            }
-            $this->indexerStatusService->setFinishedStatus($indexerConfig);
+            $content .= '</table></div>' . chr(10);
+        } catch (\Throwable $throwable) {
+            $this->indexerStatusService->clearIndexerStartTime();
+            $this->cleanUpProcessAfterIndexing();
+            return $this->handleFatalIndexingError($throwable, $this->indexerConfig ?? []);
         }
-        $content .= '</table></div>' . chr(10);
 
         // process index cleanup
         $content .= $this->cleanUpIndex($indexingMode);
@@ -312,16 +318,7 @@ class IndexerRunner
             }
         }
 
-        // Log report to sys_log and decode urls to prevent errors in backend module,
-        // make sure report fits into the 'details' column of sys_log which is of type "text" and can hold 64 KB.
-        $GLOBALS['BE_USER']->writelog(
-            4,
-            0,
-            0,
-            -1,
-            '[ke_search] ' . urldecode(html_entity_decode(substr($plaintextReport, 0, 60000))),
-            []
-        );
+        $this->logIndexingReport($plaintextReport);
 
         // verbose or quiet output? as set in function call!
         if ($verbose) {
@@ -329,6 +326,46 @@ class IndexerRunner
         }
 
         return '';
+    }
+
+    protected function handleFatalIndexingError(\Throwable $throwable, array $indexerConfig = []): string
+    {
+        $this->endTime = time();
+        $this->indexerStatusService->clearIndexerStartTime();
+        if (!empty($indexerConfig)) {
+            $this->indexerStatusService->setFinishedStatus($indexerConfig);
+        }
+
+        $errorMessage = 'Fatal error during indexing: ' . $throwable->getMessage();
+        $this->logger->critical($errorMessage, ['exception' => $throwable]);
+        $this->indexingErrors[] = $errorMessage;
+
+        $reportHtml = '<div class="row"><div class="col-md-8">'
+            . '<div class="alert alert-danger"><h3>Fatal indexing error</h3><p>'
+            . htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8')
+            . '</p></div>'
+            . '</div></div>';
+
+        $plainTextReport = $this->createPlaintextReport($reportHtml);
+        $this->logIndexingReport($plainTextReport);
+
+        return $reportHtml;
+    }
+
+    protected function logIndexingReport(string $plaintextReport): void
+    {
+        if (($GLOBALS['BE_USER'] ?? null) instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) {
+            /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
+            $beUser = $GLOBALS['BE_USER'];
+            $beUser->writelog(
+                4,
+                0,
+                0,
+                null,
+                '[ke_search] ' . urldecode(html_entity_decode(substr($plaintextReport, 0, 60000))),
+                []
+            );
+        }
     }
 
     /**

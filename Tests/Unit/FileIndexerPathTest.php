@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Indexer\Types\File;
+use Tpwd\KeSearch\Service\IndexerStatusService;
 use TYPO3\CMS\Core\Log\Logger;
 
 class FileIndexerPathTest extends TestCase
@@ -96,6 +97,36 @@ class FileIndexerPathTest extends TestCase
 
         self::assertSame([], $resolvedDirectories);
         self::assertNotEmpty($indexer->getErrors());
+    }
+
+    #[Test]
+    public function fatalMemoryErrorsAreReturnedAsUserVisibleReports(): void
+    {
+        $runner = (new \ReflectionClass(IndexerRunner::class))->newInstanceWithoutConstructor();
+        $runner->logger = $this->createMock(Logger::class);
+        $runner->logger->expects(self::once())
+            ->method('critical')
+            ->with(self::stringContains('Fatal error during indexing:'), self::anything());
+
+        $indexerStatusService = $this->createMock(IndexerStatusService::class);
+        $indexerStatusService->expects(self::once())->method('clearIndexerStartTime');
+        $indexerStatusService->expects(self::once())
+            ->method('setFinishedStatus')
+            ->with(['uid' => 42, 'title' => 'Files']);
+
+        $property = new \ReflectionProperty(IndexerRunner::class, 'indexerStatusService');
+        $property->setAccessible(true);
+        $property->setValue($runner, $indexerStatusService);
+
+        $method = new \ReflectionMethod(IndexerRunner::class, 'handleFatalIndexingError');
+        $report = $method->invoke(
+            $runner,
+            new \Error('Allowed memory size of 134217728 bytes exhausted'),
+            ['uid' => 42, 'title' => 'Files']
+        );
+
+        self::assertStringContainsString('Fatal indexing error', $report);
+        self::assertStringContainsString('Allowed memory size of 134217728 bytes exhausted', $report);
     }
 
     private function createFileIndexerWithoutConstructor(): File
