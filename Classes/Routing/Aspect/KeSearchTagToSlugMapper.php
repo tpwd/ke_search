@@ -64,6 +64,10 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
 
     public function resolve(string $value): ?string
     {
+        if ($value === '' || $value === '-') {
+            return $value;
+        }
+
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class);
         $languageId = $context->getPropertyFromAspect('language', 'id');
