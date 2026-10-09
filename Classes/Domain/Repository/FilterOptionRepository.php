@@ -254,6 +254,27 @@ class FilterOptionRepository extends BaseRepository
     }
 
     /**
+     * @param string $slug
+     * @param bool $includeHiddenAndTimeRestricted
+     * @return mixed[]
+     */
+    public function findBySlug(string $slug, bool $includeHiddenAndTimeRestricted = false)
+    {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'slug',
+                    $queryBuilder->createNamedParameter($slug, Connection::PARAM_STR)
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    /**
      * Returns all the filter options of a given filter with the given tag
      *
      * @param $filterUid

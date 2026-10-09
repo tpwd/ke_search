@@ -1,7 +1,8 @@
 ChangeLog
 
-Upcoming version
+Version 7.3.1, 9 October 2026
 [BUGFIX]  Don't return 404 for placeholder values or empty strings in KeSearchTagToSlugMapper. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/345
+[BUGFIX]  Fix language resolution and fallback in KeSearchTagToSlugMapper. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/345
 [TASK]    Replace direct DB queries with FilterOptionRepository in KeSearchTagToSlugMapper
 
 Version 7.3.0, 2 October 2026
