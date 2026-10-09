@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Don't return 404 for placeholder values or empty strings in KeSearchTagToSlugMapper. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/345
+[TASK]    Replace direct DB queries with FilterOptionRepository in KeSearchTagToSlugMapper
 
 Version 7.3.0, 2 October 2026
 [FEATURE] Add `TagInfoService` to resolve tags in the result row template to their speaking names (filter option titles and/or system category titles including parent categories). https://github.com/tpwd/ke_search/issues/241

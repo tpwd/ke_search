@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace Tpwd\KeSearch\Routing\Aspect;
 
+use Tpwd\KeSearch\Domain\Repository\FilterOptionRepository;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -44,20 +44,11 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
         $context = GeneralUtility::makeInstance(Context::class);
         $languageId = $context->getPropertyFromAspect('language', 'id');
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_kesearch_filteroptions');
-        $result = $queryBuilder
-            ->select('slug')
-            ->from('tx_kesearch_filteroptions')
-            ->where(
-                $queryBuilder->expr()->eq('tag', $queryBuilder->createNamedParameter($value)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
+        /** @var FilterOptionRepository $filterOptionRepository */
+        $filterOptionRepository = GeneralUtility::makeInstance(FilterOptionRepository::class);
+        $result = $filterOptionRepository->findByTagAndLanguage($value, $languageId);
         if ($result) {
-            return $result['slug'];
+            return $result[0]['slug'];
         }
         return $value;
     }
@@ -72,20 +63,11 @@ class KeSearchTagToSlugMapper implements StaticMappableAspectInterface
         $context = GeneralUtility::makeInstance(Context::class);
         $languageId = $context->getPropertyFromAspect('language', 'id');
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_kesearch_filteroptions');
-        $result = $queryBuilder
-            ->select('tag')
-            ->from('tx_kesearch_filteroptions')
-            ->where(
-                $queryBuilder->expr()->eq('slug', $queryBuilder->createNamedParameter($value)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageId))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
+        /** @var FilterOptionRepository $filterOptionRepository */
+        $filterOptionRepository = GeneralUtility::makeInstance(FilterOptionRepository::class);
+        $result = $filterOptionRepository->findBySlugAndLanguage($value, $languageId);
         if ($result) {
-            return $result['tag'];
+            return $result[0]['tag'];
         }
         return null;
     }

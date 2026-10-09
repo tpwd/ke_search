@@ -225,6 +225,35 @@ class FilterOptionRepository extends BaseRepository
     }
 
     /**
+     * @param string $slug
+     * @param int $sys_language_uid
+     * @param bool $includeHiddenAndTimeRestricted
+     * @return mixed[]
+     */
+    public function findBySlugAndLanguage(
+        string $slug,
+        int $sys_language_uid,
+        bool $includeHiddenAndTimeRestricted = false
+    ) {
+        $queryBuilder = $this->getQueryBuilder($includeHiddenAndTimeRestricted);
+        return $queryBuilder
+            ->select('*')
+            ->from($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'slug',
+                    $queryBuilder->createNamedParameter($slug, Connection::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($sys_language_uid, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    /**
      * Returns all the filter options of a given filter with the given tag
      *
      * @param $filterUid
