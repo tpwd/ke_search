@@ -1043,6 +1043,7 @@ class Page extends IndexerBase
         if (count($fileObjects) && $feGroups != DONOTINDEX) {
             foreach ($fileObjects as $fileObject) {
                 $isIndexable = false;
+                $file = null;
                 if ($fileObject instanceof FileInterface) {
                     $file = ($fileObject instanceof FileReference) ? $fileObject->getOriginalFile() : $fileObject;
                     $isHiddenFileReference = ($fileObject instanceof FileReference) && $fileObject->getProperty('hidden');
@@ -1077,8 +1078,8 @@ class Page extends IndexerBase
                         $errorMessage = 'Could not index file ' . $filePath . ' in content element #' . $ttContentRow['uid'] . ' (file does not exist).';
                         $this->pObj->logger->warning($errorMessage);
                         $this->addError($errorMessage);
-                    } else {
-                        $isValidFile = $fileIndexerObject->fileInfo->setFile($fileObject);
+                    } elseif ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+                        $isValidFile = $fileIndexerObject->fileInfo->setFile($file);
                         if ($isValidFile) {
                             $content = $fileIndexerObject->getFileContent($filePath);
                             if ($content !== false) {

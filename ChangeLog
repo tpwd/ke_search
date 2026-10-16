@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Fix migration of backend group permissions to ke_search content elements. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/346
+[BUGFIX]  Ensure file variable is properly initialized before indexing
 
 Version 7.3.1, 9 October 2026
 [BUGFIX]  Don't return 404 for placeholder values or empty strings in KeSearchTagToSlugMapper. Thanks to Hobokens. https://github.com/tpwd/ke_search/issues/345
