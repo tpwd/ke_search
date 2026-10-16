@@ -181,17 +181,14 @@ final class KeSearchCTypeMigration implements UpgradeWizardInterface
         foreach ($this->getBackendUserGroupsToUpdate() as $record) {
             $fields = GeneralUtility::trimExplode(',', $record['explicit_allowdeny'], true);
             foreach ($fields as $key => $field) {
-                if ($field === 'tt_content:list_type:tx_kesearch_pi1') {
-                    unset($fields[$key]);
-                    $fields[] = 'tt_content:CType:tx_kesearch_pi1';
+                if ($field === 'tt_content:list_type:ke_search_pi1') {
+                    $fields[$key] = 'tt_content:CType:ke_search_pi1';
                 }
-                if ($field === 'tt_content:list_type:tx_kesearch_pi2') {
-                    unset($fields[$key]);
-                    $fields[] = 'tt_content:CType:tx_kesearch_pi2';
+                if ($field === 'tt_content:list_type:ke_search_pi2') {
+                    $fields[$key] = 'tt_content:CType:ke_search_pi2';
                 }
-                if ($field === 'tt_content:list_type:tx_kesearch_pi3') {
-                    unset($fields[$key]);
-                    $fields[] = 'tt_content:CType:tx_kesearch_pi3';
+                if ($field === 'tt_content:list_type:ke_search_pi3') {
+                    $fields[$key] = 'tt_content:CType:ke_search_pi3';
                 }
             }
 
