@@ -177,6 +177,8 @@ class FilterOptionHook
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
 
+        $hidden = (int)($category['hidden'] ?? 0) === 1 ? 1 : 0;
+
         // If this category record is in the default language, we need to create/update the matching
         // filter option records. If it is in a different language, we need to create/update the
         // localized filter option.
@@ -189,14 +191,14 @@ class FilterOptionHook
                     // create
                     $filterOptionRepository->create(
                         (int)$filterUid,
-                        ['title' => $category['title'], 'tag' => $tag]
+                        ['title' => $category['title'], 'tag' => $tag, 'hidden' => $hidden]
                     );
                 } else {
                     // update
                     foreach ($filterOptions as $filterOption) {
                         $filterOptionRepository->update(
                             $filterOption['uid'],
-                            ['title' => $category['title']]
+                            ['title' => $category['title'], 'hidden' => $hidden]
                         );
                     }
                 }
@@ -229,7 +231,7 @@ class FilterOptionHook
                         // update
                         $filterOptionRepository->update(
                             (int)$localizedFilterOption['uid'],
-                            ['title' => $category['title']]
+                            ['title' => $category['title'], 'hidden' => $hidden]
                         );
                         continue;
                     }
@@ -249,6 +251,7 @@ class FilterOptionHook
                             'pid' => $origFilterOption['pid'],
                             'title' => $category['title'],
                             'tag' => $origTag,
+                            'hidden' => $hidden,
                             'sys_language_uid' => $languageUid,
                             'l10n_parent' => $origFilterOption['uid'],
                         ]

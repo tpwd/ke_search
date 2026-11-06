@@ -189,6 +189,7 @@ class FilterOptionHookTest extends FunctionalTestCase
         $updatedHiddenRecord = $this->filterOptionRepository->findByL10nParentAndLanguage(1000, 4, true);
         self::assertIsArray($updatedHiddenRecord);
         self::assertSame('Categoria ES updated', (string)$updatedHiddenRecord['title']);
+        self::assertSame(0, (int)$updatedHiddenRecord['hidden']);
     }
 
     public function testTwoAssignedFiltersCreateExactlyOneLocalizedOptionPerFilter(): void
@@ -210,6 +211,118 @@ class FilterOptionHookTest extends FunctionalTestCase
         self::assertIsArray($createdForFilter20);
         self::assertSame($newTitle, (string)$createdForFilter10['title']);
         self::assertSame($newTitle, (string)$createdForFilter20['title']);
+    }
+
+    public function testSavingHiddenDefaultLanguageCategoryHidesOnlyDefaultLanguageFilterOptions(): void
+    {
+        $this->updateRecord('sys_category', 100, ['hidden' => 1]);
+
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(100);
+
+        self::assertSame(1, (int)$this->findFilterOptionByUid(1000)['hidden']);
+        self::assertSame(1, (int)$this->findFilterOptionByUid(2000)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1001)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1002)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1003)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(2001)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(2003)['hidden']);
+    }
+
+    public function testSavingHiddenLocalizedCategoryHidesOnlyItsLocalizedFilterOptions(): void
+    {
+        $this->updateRecord('sys_category', 103, ['hidden' => 1]);
+
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(103);
+
+        self::assertSame(1, (int)$this->findFilterOptionByUid(1003)['hidden']);
+        self::assertSame(1, (int)$this->findFilterOptionByUid(2003)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1000)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1001)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1002)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(2000)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(2001)['hidden']);
+    }
+
+    public function testUnhidingCategoryUnhidesItsFilterOptions(): void
+    {
+        $this->updateRecord('sys_category', 100, ['hidden' => 1]);
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(100);
+
+        self::assertSame(1, (int)$this->findFilterOptionByUid(1000)['hidden']);
+        self::assertSame(1, (int)$this->findFilterOptionByUid(2000)['hidden']);
+
+        $this->updateRecord('sys_category', 100, ['hidden' => 0]);
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(100);
+
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1000)['hidden']);
+        self::assertSame(0, (int)$this->findFilterOptionByUid(2000)['hidden']);
+    }
+
+    public function testMissingHiddenFieldOnCategoryTreatsFilterOptionAsVisible(): void
+    {
+        $this->updateRecord('tx_kesearch_filteroptions', 1003, ['hidden' => 1]);
+        $category = $this->findCategoryByUid(103);
+        unset($category['hidden']);
+
+        $this->hook->createOrUpdateFilterOptions([10], $category);
+
+        self::assertSame(0, (int)$this->findFilterOptionByUid(1003)['hidden']);
+    }
+
+    public function testFilterOptionCreatedForHiddenCategoryIsHidden(): void
+    {
+        $this->insertCategory([
+            'uid' => 106,
+            'pid' => 1,
+            'title' => 'Hidden category',
+            'sys_language_uid' => 0,
+            'l10n_parent' => 0,
+            'parent' => 0,
+            'tx_kesearch_filter' => '10',
+            'tx_kesearch_filtersubcat' => '',
+            'hidden' => 1,
+            'deleted' => 0,
+        ]);
+
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(106);
+
+        $filterOptions = $this->filterOptionRepository->findByTag('syscat106', true);
+        self::assertCount(1, $filterOptions);
+        self::assertSame(1, (int)$filterOptions[0]['hidden']);
+    }
+
+    public function testHiddenSubcategoryGetsHiddenOptionFromParentFilter(): void
+    {
+        $this->insertCategory([
+            'uid' => 106,
+            'pid' => 1,
+            'title' => 'Parent category',
+            'sys_language_uid' => 0,
+            'l10n_parent' => 0,
+            'parent' => 0,
+            'tx_kesearch_filter' => '',
+            'tx_kesearch_filtersubcat' => '10',
+            'hidden' => 0,
+            'deleted' => 0,
+        ]);
+        $this->insertCategory([
+            'uid' => 107,
+            'pid' => 1,
+            'title' => 'Hidden subcategory',
+            'sys_language_uid' => 0,
+            'l10n_parent' => 0,
+            'parent' => 106,
+            'tx_kesearch_filter' => '',
+            'tx_kesearch_filtersubcat' => '',
+            'hidden' => 1,
+            'deleted' => 0,
+        ]);
+
+        $this->hook->updateFilterOptionsForCategoryAndSubCategories(106);
+
+        $filterOptions = $this->filterOptionRepository->findByTag('syscat107', true);
+        self::assertCount(1, $filterOptions);
+        self::assertSame(1, (int)$filterOptions[0]['hidden']);
     }
 
     protected function updateRecord(string $tableName, int $uid, array $fields): void
@@ -307,6 +420,7 @@ class FilterOptionHookTest extends FunctionalTestCase
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_kesearch_filteroptions');
+        $queryBuilder->getRestrictions()->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction::class);
 
         $record = $queryBuilder
             ->select('*')
