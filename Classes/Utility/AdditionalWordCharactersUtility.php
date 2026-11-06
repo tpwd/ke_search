@@ -8,61 +8,101 @@ use Tpwd\KeSearch\Lib\SearchHelper;
 
 class AdditionalWordCharactersUtility
 {
+    /**
+     * Returns the configured list of characters that should be treated as additional word separators.
+     *
+     * @return string[]
+     */
     public static function getAdditionalWordCharacters(): array
     {
-        $extConf = SearchHelper::getExtConf();
-        $additionalWordCharacters = [];
-        if (!empty($extConf['additionalWordCharacters'] ?? '')) {
-            foreach (str_split($extConf['additionalWordCharacters']) as $char) {
-                $additionalWordCharacters[] = $char;
-            }
-        }
-        return $additionalWordCharacters;
+        $configured = SearchHelper::getExtConf()['additionalWordCharacters'] ?? '';
+
+        return $configured === '' ? [] : str_split($configured);
     }
 
+    /**
+     * Creates additional hidden index content for words containing configured separator characters.
+     *
+     * This keeps backwards-compatible, partially encoded variants and adds the fully encoded form
+     * needed for multi-character tokens such as email addresses.
+     *
+     * @param string $content
+     * @return string
+     */
     public static function getAdditionalContent(string $content): string
     {
-        $additionalWordCharacters = self::getAdditionalWordCharacters();
-        if (empty($additionalWordCharacters)) {
+        $characters = self::getAdditionalWordCharacters();
+        if ($characters === []) {
             return '';
         }
-        $additionalContent = '';
-        foreach ($additionalWordCharacters as $additionalWordCharacter) {
-            $matches = [];
-            $pattern = '/(?=(?:[^\s]*[' . $additionalWordCharacter . ']){1,})\S+/';
-            preg_match_all($pattern, $content, $matches);
-            if ($matches) {
-                foreach ($matches as $match) {
-                    if (!empty($additionalContent)) {
-                        $additionalContent .= ' ';
-                    }
-                    $additionalContent .= str_replace(
-                        $additionalWordCharacter,
-                        self::getReplacementForAdditionalWordCharacter($additionalWordCharacter),
-                        implode(' ', $match)
-                    );
+
+        $words = preg_split('/\s+/', trim($content), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        $variants = [];
+
+        // Create per-character variants (for compatibility with existing behavior).
+        foreach ($characters as $character) {
+            foreach ($words as $word) {
+                if (str_contains($word, $character)) {
+                    $variants[] = self::replaceSingleAdditionalWordCharacter($word, $character);
                 }
             }
         }
-        return $additionalContent;
+
+        // Add the fully encoded variant for words containing multiple configured separators.
+        foreach ($words as $word) {
+            if (strpbrk($word, implode('', $characters)) !== false) {
+                $variants[] = self::replaceAdditionalWordCharacters($word);
+            }
+        }
+
+        // Keep only unique, non-empty values.
+        $variants = array_values(array_unique(array_filter(
+            $variants,
+            static fn(string $value): bool => $value !== ''
+        )));
+
+        return implode(' ', $variants);
     }
 
+    /**
+     * Replaces all configured additional word characters in a string with their encoded representation.
+     *
+     * @param string $content
+     * @return string
+     */
     public static function replaceAdditionalWordCharacters(string $content): string
     {
-        $additionalWordCharacters = self::getAdditionalWordCharacters();
-        if (empty($additionalWordCharacters)) {
-            return $content;
+        foreach (self::getAdditionalWordCharacters() as $character) {
+            $content = self::replaceSingleAdditionalWordCharacter($content, $character);
         }
-        foreach ($additionalWordCharacters as $additionalWordCharacter) {
-            $content = str_replace(
-                $additionalWordCharacter,
-                self::getReplacementForAdditionalWordCharacter($additionalWordCharacter),
-                $content
-            );
-        }
+
         return $content;
     }
 
+    /**
+     * Replaces only one configured additional word character in a string with its encoded representation.
+     *
+     * @param string $content
+     * @param string $character
+     * @return string
+     */
+    public static function replaceSingleAdditionalWordCharacter(string $content, string $character): string
+    {
+        return str_replace(
+            $character,
+            self::getReplacementForAdditionalWordCharacter($character),
+            $content
+        );
+    }
+
+    /**
+     * Returns the replacement token used for a configured separator character.
+     *
+     * Example: '.' becomes '___46___'.
+     *
+     * @param string $character
+     * @return string
+     */
     public static function getReplacementForAdditionalWordCharacter(string $character): string
     {
         return '___' . ord($character) . '___';

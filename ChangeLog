@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [FEATURE] Refactor search phrase handling with new utility methods. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/347
+[BUGFIX]  Multiple additionalWordCharacters are encoded inconsistently during indexing and searching. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/348
 [BUGFIX]  Fix migration of backend group permissions to ke_search content elements. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/346
 [BUGFIX]  Ensure file variable is properly initialized before indexing
 
