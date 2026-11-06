@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Tpwd\KeSearch\Domain\Search\SearchExecutionContext;
 use Tpwd\KeSearch\Lib\Searchphrase;
+use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -164,6 +165,53 @@ class SearchphraseTest extends TestCase
         $result = $searchphrase->explodeSearchPhrase('+hello -world');
 
         self::assertSame(['+hello*', '-world*'], $result);
+    }
+
+    #[Test]
+    public function configuredAdditionalWordCharactersProduceFullyEncodedVariantForMultipleSeparators(): void
+    {
+        $this->initializePackageManager();
+        $originalTypo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'] ?? null;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ke_search'] = ['additionalWordCharacters' => '.@'];
+
+        try {
+            $additionalContent = AdditionalWordCharactersUtility::getAdditionalContent('info@example.com');
+
+            self::assertStringContainsString('info___64___example___46___com', $additionalContent);
+            self::assertStringContainsString('info@example___46___com', $additionalContent);
+            self::assertStringContainsString('info___64___example.com', $additionalContent);
+        } finally {
+            if ($originalTypo3ConfVars === null) {
+                unset($GLOBALS['TYPO3_CONF_VARS']);
+            } else {
+                $GLOBALS['TYPO3_CONF_VARS'] = $originalTypo3ConfVars;
+            }
+        }
+    }
+
+    #[Test]
+    public function replaceSingleAdditionalWordCharacterEncodesOnlySelectedCharacter(): void
+    {
+        $this->initializePackageManager();
+        $originalTypo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'] ?? null;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['ke_search'] = ['additionalWordCharacters' => '.@'];
+
+        try {
+            self::assertSame(
+                'info___64___example.com',
+                AdditionalWordCharactersUtility::replaceSingleAdditionalWordCharacter('info@example.com', '@')
+            );
+            self::assertSame(
+                'info@example___46___com',
+                AdditionalWordCharactersUtility::replaceSingleAdditionalWordCharacter('info@example.com', '.')
+            );
+        } finally {
+            if ($originalTypo3ConfVars === null) {
+                unset($GLOBALS['TYPO3_CONF_VARS']);
+            } else {
+                $GLOBALS['TYPO3_CONF_VARS'] = $originalTypo3ConfVars;
+            }
+        }
     }
 
     private function createSearchphrase(array $extConf = [], array $extConfPremium = []): Searchphrase
