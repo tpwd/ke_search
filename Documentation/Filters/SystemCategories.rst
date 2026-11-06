@@ -38,6 +38,17 @@ You can then select for which filter a category should be used as a filter optio
 .. note::
 
    * The filter options will be created via a backend hook whenever a category is edited (created, updated or deleted).
+   * A category's hidden state is synchronized to its filter options when saved
+     (since version 7.4.0). Newly created options, including those for
+     subcategories, use that state.
+   * Synchronization is language-specific: a category in the default language
+     updates default-language options; a translated category updates only the
+     option in the same language.
+   * The category's hidden state takes precedence over a filter option's manually
+     set hidden state. Saving a visible category makes its options visible again.
+   * Existing categories synchronize when next saved. Tags already stored in the
+     search index remain until the next full re-index. Category start and end
+     times are not mirrored to filter options.
    * Up to version 3.1.6 ke_search only created the tags, you had to create the filter options
      yourself and use the auto-generated tag names.
    * For each assigned system category, two tags are created:
