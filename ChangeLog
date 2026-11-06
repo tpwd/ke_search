@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 7.4.0, 6 November 2026
 [FEATURE] Synchronize hidden state of system categories with filter options. Thanks to André Müller.
 [FEATURE] Refactor search phrase handling with new utility methods. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/347
 [BUGFIX]  Multiple additionalWordCharacters are encoded inconsistently during indexing and searching. Thanks to Florian Schuhmann. https://github.com/tpwd/ke_search/issues/348
