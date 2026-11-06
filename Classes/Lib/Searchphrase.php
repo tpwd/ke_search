@@ -22,6 +22,7 @@ namespace Tpwd\KeSearch\Lib;
 
 use Tpwd\KeSearch\Domain\Search\SearchContextInterface;
 use Tpwd\KeSearch\Utility\AdditionalWordCharactersUtility;
+use Tpwd\KeSearch\Utility\SearchPhraseUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -133,7 +134,7 @@ class Searchphrase
                 // Link: http://dev.mysql.com/doc/refman/5.0/en/fulltext-stopwords.html
 
                 // don't check length if it is a phrase
-                if ($this->isPhrase($word)) {
+                if (SearchPhraseUtility::isPhrase($word)) {
                     continue;
                 }
 
@@ -157,12 +158,22 @@ class Searchphrase
 
             foreach ($searchParts as $key => $word) {
                 if ($word != '|') {
+                    // Trailing boolean operators are invalid in MySQL's boolean full-text syntax.
+                    if (!SearchPhraseUtility::isPhrase($word)) {
+                        $word = SearchPhraseUtility::normalizeAndValidateSearchWord($word, $this->searchContext);
+                        if ($word === null) {
+                            unset($searchParts[$key]);
+                            continue;
+                        }
+                        $searchParts[$key] = $word;
+                    }
+
                     // Enable partial word search (default: on) and in-word-search (Sphinx-based or native).
                     // Partial word search is activated automatically if in-word-search is activated.
                     // Don't add a wildcard if it is a phrase, MySQL's boolean-mode fulltext parser does not
                     // accept a "*" truncation operator directly after a quoted phrase.
                     if (
-                        !$this->isPhrase($word)
+                        !SearchPhraseUtility::isPhrase($word)
                         &&
                         (
                             ($this->searchContext->getExtConf()['enablePartSearch'] ?? true)
@@ -179,26 +190,19 @@ class Searchphrase
                         }
                     }
 
-                    // add + explicit to all search words to make the searchresults equal to sphinx search results
-                    if ($this->searchContext->getExtConf()['enableExplicitAnd']) {
-                        $searchParts[$key] = '+' . ltrim($searchParts[$key], '+');
+                    // Add + explicitly to all search words if enableExplicitAnd is set to true in the extension
+                    // configuration. But only if the word does not already have a leading + or - operator.
+                    if (
+                        $this->searchContext->getExtConf()['enableExplicitAnd']
+                        && !SearchPhraseUtility::hasLeadingPlusOrMinus($searchParts[$key])
+                    ) {
+                        $searchParts[$key] = '+' . $searchParts[$key];
                     }
                 }
             }
             return array_values($searchParts);
         }
         return [];
-    }
-
-    /**
-     * Checks if the given word is a phrase (optionally prefixed with a modifier and enclosed in double quotes)
-     *
-     * @param string $word
-     * @return bool
-     */
-    public function isPhrase(string $word): bool
-    {
-        return (bool)preg_match('/^([+\-~<>])?\"/', $word);
     }
 
     /**
