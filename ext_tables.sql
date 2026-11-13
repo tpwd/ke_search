@@ -82,7 +82,7 @@ CREATE TABLE tx_kesearch_index (
 	targetpid text,
 	content mediumtext,
   hidden_content mediumtext,
-	params tinytext,
+	params text,
 	type tinytext,
 	tags text,
 	abstract text,
