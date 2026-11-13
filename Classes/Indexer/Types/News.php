@@ -28,9 +28,12 @@ use Tpwd\KeSearch\Indexer\IndexerRunner;
 use Tpwd\KeSearch\Lib\Db;
 use Tpwd\KeSearch\Lib\SearchHelper;
 use Tpwd\KeSearch\Utility\ContentUtility;
-use Tpwd\KeSearch\Utility\TypoLinkUtility;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Plugin 'Faceted search' for the 'ke_search' extension.
@@ -617,16 +620,60 @@ class News extends IndexerBase
         return $this->getContentFromFiles($relatedFiles);
     }
 
+    /**
+     * Tells if the internal link of a news record leads to a target that
+     * can be verified: an existing page, an existing file or an address
+     * (absolute, or relative to the site root).
+     *
+     * The link field of EXT:news takes any kind of link. Everything else
+     * (mail, phone, folder, record, unknown or unresolvable links) is
+     * skipped, as a link that cannot be checked would end up as a search
+     * result without a working target.
+     */
     protected function internalTargetExists(array $newsRecord): bool
     {
-        $targetExists = false;
-        $pageUid = TypoLinkUtility::extractPageUidFromTypoLink($newsRecord['internalurl']);
-        if ($pageUid) {
-            /** @var PageRepository $pageRepository */
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $targetExists = !empty($pageRepository->findByUid($pageUid));
+        $typoLink = trim((string)($newsRecord['internalurl'] ?? ''));
+        if ($typoLink === '') {
+            return false;
         }
-        return $targetExists;
+
+        try {
+            // The field holds a typolink: the link itself plus optional target, class, title
+            $url = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typoLink)['url'];
+            $linkDetails = GeneralUtility::makeInstance(LinkService::class)->resolve($url);
+        } catch (\Throwable $exception) {
+            // A single broken link must not stop the indexing run, but the reason should be visible
+            $this->pObj->logger->warning(
+                'Internal link of news record could not be resolved: ' . $exception->getMessage(),
+                ['uid' => $newsRecord['uid'] ?? 0, 'internalurl' => $typoLink]
+            );
+            return false;
+        }
+
+        return match ($linkDetails['type'] ?? '') {
+            LinkService::TYPE_PAGE => $this->pageExists($linkDetails['pageuid'] ?? null),
+            LinkService::TYPE_FILE => $this->fileExists($linkDetails['file'] ?? null),
+            LinkService::TYPE_URL => preg_match('#^(https?://|/)#i', (string)($linkDetails['url'] ?? '')) === 1,
+            default => false,
+        };
+    }
+
+    /**
+     * A file record whose file is gone from the storage is flagged as missing by the core.
+     */
+    protected function fileExists(mixed $file): bool
+    {
+        return $file instanceof File && !$file->isMissing();
+    }
+
+    protected function pageExists(mixed $pageUid): bool
+    {
+        if (!MathUtility::canBeInterpretedAsInteger($pageUid) || (int)$pageUid <= 0) {
+            return false;
+        }
+        /** @var PageRepository $pageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        return !empty($pageRepository->findByUid((int)$pageUid));
     }
 
 }
