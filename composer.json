@@ -54,7 +54,7 @@
 		"typo3/cms": {
 			"extension-key": "ke_search",
 			"web-dir": ".Build/web",
-			"version": "7.4.0",
+			"version": "7.5.0",
 			"Package": {
 				"providesPackages": {}
 			}

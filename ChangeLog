@@ -1,6 +1,6 @@
 ChangeLog
 
-Upcoming version
+Version 7.5.0, 13 November 2026
 [!!!]     This version changes the database structure.
 [FEATURE] Index page fields as visible or hidden content. https://github.com/tpwd/ke_search/issues/295
 [BUGFIX]  Index news with an internal link to a file or a URL. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/353
