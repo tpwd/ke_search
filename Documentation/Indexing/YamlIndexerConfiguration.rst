@@ -110,6 +110,16 @@ single search result per page.
 * ``content_fields`` (array of strings or comma-separated string, default:
   ``bodytext,subheader,header_link``): Fields from the ``tt_content`` table
   to include in fulltext indexing.
+* ``page_fields`` (array of strings or comma-separated string, default: empty,
+  since version 7.5.0): Text fields from the ``pages`` table to append to the
+  indexed content for each page language.
+* ``page_fields_hidden`` (array of strings or comma-separated string, default:
+  empty, since version 7.5.0): Text fields from the ``pages`` table to add as
+  searchable hidden content, which is not shown in search result content.
+  Only fields of the TCA types ``input``, ``text`` and ``email`` are indexed.
+  Code fields (like ``TSconfig``) and fields which are only visible to admins
+  are skipped. Do not index sensitive values. These settings do not create
+  index entries for pages without indexable content.
 * ``additional_tables`` (YAML mapping, array, or INI string): Configuration
   for indexing content from child/related database tables (e.g.
   EXT:bootstrap_package accordion/tab/carousel items, EXT:mask,
@@ -123,6 +133,16 @@ single search result per page.
 * ``index_use_page_tags_for_files`` (boolean or integer, default: ``0``): If
   set to ``true`` / ``1``, tags assigned to the parent page will be applied
   to indexed linked files.
+
+For example, add the page author to the indexed content and page keywords as
+hidden searchable content:
+
+.. code-block:: yaml
+
+   page_fields:
+     - author
+   page_fields_hidden:
+     - keywords
 
 Content Element Indexer (``type: tt_content``)
 ----------------------------------------------

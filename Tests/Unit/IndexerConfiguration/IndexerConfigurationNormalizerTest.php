@@ -295,6 +295,8 @@ class IndexerConfigurationNormalizerTest extends TestCase
 
         self::assertSame('pdf,ppt,doc,xls,docx,xlsx,pptx', $normalized['fileext']);
         self::assertSame('bodytext,subheader,header_link', $normalized['content_fields']);
+        self::assertSame('', $normalized['page_fields']);
+        self::assertSame('', $normalized['page_fields_hidden']);
         self::assertSame('media', $normalized['file_reference_fields']);
         self::assertSame('text,textmedia,textpic,bullets,table,html,header,uploads,shortcut,accordion,tab,carousel,carousel_fullscreen,carousel_small,icon_group,card_group,timeline', $normalized['contenttypes']);
         self::assertSame('1', $normalized['index_page_doctypes']);
@@ -304,6 +306,34 @@ class IndexerConfigurationNormalizerTest extends TestCase
         self::assertSame(0, $normalized['index_use_page_tags_for_files']);
         self::assertSame(0, $normalized['fal_storage']);
         self::assertStringContainsString('tx_bootstrappackage_accordion_item', $normalized['additional_tables']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function pageFieldsAreNormalizedFromArraysAndCommaSeparatedStrings(): void
+    {
+        $base = [
+            'identifier' => 'page_fields_idx',
+            'title' => 'Page fields',
+            'type' => 'page',
+        ];
+
+        $arrayConfig = $this->subject->normalize($base + [
+            'page_fields' => ['author', 'description'],
+            'page_fields_hidden' => ['keywords'],
+        ], 'file.yaml');
+
+        self::assertNotNull($arrayConfig);
+        self::assertSame('author,description', $arrayConfig['page_fields']);
+        self::assertSame('keywords', $arrayConfig['page_fields_hidden']);
+
+        $stringConfig = $this->subject->normalize($base + [
+            'page_fields' => 'author, description',
+            'page_fields_hidden' => 'keywords, description',
+        ], 'file.yaml');
+
+        self::assertNotNull($stringConfig);
+        self::assertSame('author, description', $stringConfig['page_fields']);
+        self::assertSame('keywords, description', $stringConfig['page_fields_hidden']);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
