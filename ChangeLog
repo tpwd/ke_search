@@ -2,6 +2,8 @@ ChangeLog
 
 Upcoming version
 [BUGFIX]  Index news with an internal link to a file or a URL. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/353
+[BUGFIX]  Store index params as text to fit long external URLs. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/354
+[TASK]    Deprecate TypoLinkUtility::extractPageUidFromTypoLink(). Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/357
 
 Version 7.4.0, 6 November 2026
 [FEATURE] Synchronize hidden state of system categories with filter options. Thanks to André Müller.
