@@ -115,6 +115,13 @@ class ContentUtility
         return $content;
     }
 
+    /**
+     * Extends the additional fields array with the "hidden content" field to prepare it for indexing.
+     * If the field already exists, the new content will be appended to it.
+     *
+     * @param array $additionalFields
+     * @param string $hiddenContent
+     */
     public static function addHiddenContent(array &$additionalFields, string $hiddenContent)
     {
         $hiddenContent = trim($hiddenContent);

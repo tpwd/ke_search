@@ -135,6 +135,8 @@ CREATE TABLE tx_kesearch_indexerconfig (
 	directories text,
 	fileext tinytext,
 	content_fields text,
+	page_fields text,
+	page_fields_hidden text,
 	file_reference_fields text,
 	file_collections text,
 	filteroption int(11) DEFAULT '0' NOT NULL,

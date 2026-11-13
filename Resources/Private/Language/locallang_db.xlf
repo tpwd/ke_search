@@ -302,6 +302,18 @@ fields[] = bodytext
 			<trans-unit id="tx_kesearch_indexerconfig.content_fields.description" resname="tx_kesearch_indexerconfig.content_fields.description" >
 				<source>You can add "text" and "link" fields here. Files linked in link fields and in text fields will be indexed. The field "header" will be added automatically and indexed if not set to "hidden". default: bodytext,subheader,header_link</source>
 			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.page_fields" resname="tx_kesearch_indexerconfig.page_fields" >
+				<source>Page fields which should be indexed</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.page_fields.description" resname="tx_kesearch_indexerconfig.page_fields.description" >
+				<source>Comma-separated list of text fields from the pages table, e.g. author,description. Values from the current page language are added to the indexed content.</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.page_fields_hidden" resname="tx_kesearch_indexerconfig.page_fields_hidden" >
+				<source>Page fields which should be indexed as hidden content</source>
+			</trans-unit>
+			<trans-unit id="tx_kesearch_indexerconfig.page_fields_hidden.description" resname="tx_kesearch_indexerconfig.page_fields_hidden.description" >
+				<source>Comma-separated list of text fields from the pages table. Values from the current page language are searchable but are not shown in search result content.</source>
+			</trans-unit>
 			<trans-unit id="tx_kesearch_indexerconfig.filteroption" resname="tx_kesearch_indexerconfig.filteroption" >
 				<source>Add tag to all indexed elements</source>
 			</trans-unit>

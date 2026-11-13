@@ -105,6 +105,19 @@ Advanced options
   header_link" which is used for the default content elements. This is useful
   if you added your custom content elements for example using EXT:mask or
   EXT:content_blocks.
+* (since version 7.5.0) In :guilabel:`Page fields which should be indexed` you
+  can define text fields from the `pages` table (e.g. `author,description`).
+  Values from the current page language are added to the indexed content and
+  may appear in search result excerpts.
+* (since version 7.5.0) In
+  :guilabel:`Page fields which should be indexed as hidden content` you can
+  define text fields from the `pages` table that should be searchable but not
+  shown in search result content.
+  Only fields of the TCA types `input`, `text` and `email` are indexed. Code
+  fields (like `TSconfig`) and fields which are only visible to admins are
+  skipped, a warning is written to the log. Do not index sensitive values.
+  These settings add fields to pages that already have indexable content;
+  they do not index an otherwise empty page on their own.
 * Using the field :guilabel:`Comma separated list of allowed file extensions`
   you can set the allowed file extension of files to index. By default this is
   set to `pdf,ppt,doc,xls,docx,xlsx,pptx`. For pdf, ppt, doc and xls files you

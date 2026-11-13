@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [!!!]     This version changes the database structure.
+[FEATURE] Index page fields as visible or hidden content. https://github.com/tpwd/ke_search/issues/295
 [BUGFIX]  Index news with an internal link to a file or a URL. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/353
 [BUGFIX]  Store index params as text to fit long external URLs. Thanks to Michael Reuber. https://github.com/tpwd/ke_search/issues/354
 [BUGFIX]  Store index title as text to fit long page titles combined with content element headers. Thanks to Simon Praetorius. https://github.com/tpwd/ke_search/issues/351

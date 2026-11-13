@@ -74,6 +74,8 @@ class IndexerConfigurationNormalizer implements LoggerAwareInterface
         $targetPid = $rawConfig['targetpid'] ?? $this->getTcaDefault('targetpid', 0);
         $fileext = $rawConfig['fileext'] ?? $this->getTcaDefault('fileext', '');
         $contentFields = $rawConfig['content_fields'] ?? $this->getTcaDefault('content_fields', '');
+        $pageFields = $rawConfig['page_fields'] ?? $this->getTcaDefault('page_fields', '');
+        $pageFieldsHidden = $rawConfig['page_fields_hidden'] ?? $this->getTcaDefault('page_fields_hidden', '');
         $fileReferenceFields = $rawConfig['file_reference_fields'] ?? $this->getTcaDefault('file_reference_fields', '');
         $contenttypes = $rawConfig['contenttypes'] ?? $this->getTcaDefault('contenttypes', '');
         $additionalTables = $rawConfig['additional_tables'] ?? $this->getTcaDefault('additional_tables', '');
@@ -116,6 +118,8 @@ class IndexerConfigurationNormalizer implements LoggerAwareInterface
             'directories' => is_array($directories) ? implode("\n", $directories) : (string)$directories,
             'fileext' => $this->toCsvString($fileext),
             'content_fields' => $this->toCsvString($contentFields),
+            'page_fields' => $this->toCsvString($pageFields),
+            'page_fields_hidden' => $this->toCsvString($pageFieldsHidden),
             'file_reference_fields' => $this->toCsvString($fileReferenceFields),
             'file_collections' => $this->toCsvString($fileCollections),
             'filteroption' => (int)($rawConfig['filteroption'] ?? $this->getTcaDefault('filteroption', 0)),

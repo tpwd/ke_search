@@ -585,6 +585,66 @@ class Page extends IndexerBase
     }
 
     /**
+     * Returns plain text content from the given fields of a page record.
+     *
+     * @param array<string, mixed> $pageRecord
+     * @param string[] $fields
+     */
+    public function getContentFromPageRecord(array $pageRecord, array $fields): string
+    {
+        $content = [];
+        foreach ($fields as $field) {
+            if (!isset($GLOBALS['TCA']['pages']['columns'][$field])) {
+                $this->pObj->logger->warning(
+                    'Page field "{field}" is not defined in TCA, skipping.',
+                    ['field' => $field]
+                );
+                continue;
+            }
+            if (!$this->isPageFieldAllowedForIndexing($GLOBALS['TCA']['pages']['columns'][$field])) {
+                $this->pObj->logger->warning(
+                    'Page field "{field}" is not allowed for indexing, skipping.',
+                    ['field' => $field]
+                );
+                continue;
+            }
+            $fieldContent = trim(ContentUtility::getPlainContentFromContentRow($pageRecord, $field));
+            if ($fieldContent !== '') {
+                $content[] = $fieldContent;
+            }
+        }
+        return implode("\n", $content);
+    }
+
+    /**
+     * Only text-like page fields may be indexed. Code fields (e.g. TSconfig) and fields
+     * which are only visible to admins are not allowed to prevent indexing sensitive data.
+     *
+     * @param array<string, mixed> $columnConfiguration TCA configuration of the page field
+     */
+    protected function isPageFieldAllowedForIndexing(array $columnConfiguration): bool
+    {
+        $config = $columnConfiguration['config'] ?? [];
+        if (!in_array($config['type'] ?? '', ['input', 'text', 'email'], true)) {
+            return false;
+        }
+        if (($config['renderType'] ?? '') === 'codeEditor') {
+            return false;
+        }
+        $displayConditions = (array)($columnConfiguration['displayCond'] ?? []);
+        $hiddenForNonAdmins = false;
+        array_walk_recursive(
+            $displayConditions,
+            static function ($condition) use (&$hiddenForNonAdmins): void {
+                if ($condition === 'HIDE_FOR_NON_ADMINS') {
+                    $hiddenForNonAdmins = true;
+                }
+            }
+        );
+        return !$hiddenForNonAdmins;
+    }
+
+    /**
      * get content of current page and save data to db
      *
      * @param int $uid page-UID that has to be indexed
@@ -740,6 +800,20 @@ class Page extends IndexerBase
             }
         }
 
+        $pageFields = GeneralUtility::trimExplode(',', $this->indexerConfig['page_fields'] ?? '', true);
+        $pageFieldsHidden = GeneralUtility::trimExplode(',', $this->indexerConfig['page_fields_hidden'] ?? '', true);
+        $hiddenPageContent = [];
+        foreach (array_keys($pageContent) as $languageUid) {
+            $pageRecord = $this->cachedPageRecords[$languageUid][$uid] ?? [];
+            if ($pageFields !== []) {
+                $pageFieldsContent = $this->getContentFromPageRecord($pageRecord, $pageFields);
+                if ($pageFieldsContent !== '') {
+                    $pageContent[$languageUid] .= "\n" . $pageFieldsContent;
+                }
+            }
+            $hiddenPageContent[$languageUid] = $this->getContentFromPageRecord($pageRecord, $pageFieldsHidden);
+        }
+
         // make it possible to modify the indexerConfig via hook
         $additionalFields = [];
         $indexerConfig = $this->indexerConfig;
@@ -798,6 +872,12 @@ class Page extends IndexerBase
                     $abstract = (string)($this->cachedPageRecords[$language_uid][$uid]['tx_kesearch_abstract']
                         ?: $this->cachedPageRecords[$language_uid][$uid]['abstract']);
 
+                    $additionalFieldsForLanguage = $additionalFields;
+                    ContentUtility::addHiddenContent(
+                        $additionalFieldsForLanguage,
+                        $hiddenPageContent[$language_uid] ?? ''
+                    );
+
                     $this->pObj->storeInIndex(
                         $indexerConfig['storagepid'],                               // storage PID
                         $this->cachedPageRecords[$language_uid][$uid]['title'],     // page title
@@ -812,7 +892,7 @@ class Page extends IndexerBase
                         $accessRestrictionsLanguageOverlay['endtime'],              // endtime
                         $accessRestrictionsLanguageOverlay['fe_group'],             // fe_group
                         $indexEntryDefaultValues['debugOnly'],                      // debug only?
-                        $additionalFields                                           // additional fields added by hooks
+                        $additionalFieldsForLanguage                                // additional fields added by hooks
                     );
                     $this->counter++;
                 } else {
