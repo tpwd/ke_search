@@ -89,7 +89,7 @@ CREATE TABLE tx_kesearch_index (
 	sortdate int(11) DEFAULT '0' NOT NULL,
 	orig_uid varchar(255) DEFAULT '0' NOT NULL,
 	orig_pid int(11) DEFAULT '0' NOT NULL,
-	title tinytext,
+	title text,
 	language int(11) DEFAULT '0' NOT NULL,
 	directory tinytext,
 	hash varchar(32) DEFAULT '' NOT NULL,
