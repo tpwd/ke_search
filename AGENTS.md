@@ -48,6 +48,10 @@ Guidelines for AI coding agents (e.g. Junie) working on `ke_search`.
 
 - Breaking changes are marked with `[!!!]`. Mention database structure
   changes and required cache clearing explicitly.
+- Whenever you add an entry to `Upcoming version`, re-sort the whole section:
+  group the entries by tag in this order: `[!!!]`, `[FEATURE]`, `[BUGFIX]`,
+  `[TASK]`, `[DOCS]`, `[CONFIG]`, `[RELEASE]`. Keep the existing order of the
+  entries within each group and add new entries at the end of their group.
 - Never change version numbers (`ext_emconf.php`, `composer.json`) or create
   a new version section; this is done in separate `[RELEASE]` commits.
 

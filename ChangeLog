@@ -1,6 +1,7 @@
 ChangeLog
 
 Upcoming version
+[FEATURE] Detect changes in file metadata in incremental file indexer. https://github.com/tpwd/ke_search/issues/83
 [TASK]    Add EditorConfig and PHP CS Fixer configuration files; update .gitignore and README
 [TASK]    Add AGENTS.md with development guidelines for AI coding agents
 
