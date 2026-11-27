@@ -12,8 +12,6 @@ Documentation/_themes
 Documentation/conf.py
 *GENERATED*
 /*.log
-/.php-cs-fixer.dist.php
+/.php-cs-fixer.php
 /.php-cs-fixer.cache
-/.editorconfig
 /.junie
-/var

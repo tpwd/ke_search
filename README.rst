@@ -47,15 +47,13 @@ You can checkout the project locally with
 
 (adapt the repository URL to your cloned repository)
 
-Then install the dependencies and run the coding-standards command to
-copy the files `.editorconfig` and `.php-cs-fixer.dist.php` to the root
-directoy of the package.
+The repository includes the `.editorconfig` and `.php-cs-fixer.dist.php`
+configuration files. Install the dependencies with:
 
 .. code-block::
 
     cd ke_search
     composer install
-    composer exec typo3-coding-standards setup
 
 Testing
 ~~~~~~~
@@ -68,7 +66,7 @@ and symlink or deploy the directory `ke_search` to your TYPO3 test instance to
 `typo3conf/ext/ke_search`. If you deploy the code (e.g. by using PHPStorm
 "Deployment" feature), you can ignore the `.Build` directory.
 
-There are also ome helpers available to test your automatically, see below.
+There are also some helpers available to test your code automatically, see below.
 
 Unit Tests
 ..........

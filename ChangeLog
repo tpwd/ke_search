@@ -1,5 +1,8 @@
 ChangeLog
 
+Upcoming version
+[TASK]    Add EditorConfig and PHP CS Fixer configuration files; update .gitignore and README
+
 Version 7.5.0, 13 November 2026
 [!!!]     This version changes the database structure.
 [FEATURE] Index page fields as visible or hidden content. https://github.com/tpwd/ke_search/issues/295
