@@ -2,6 +2,7 @@ ChangeLog
 
 Upcoming version
 [TASK]    Add EditorConfig and PHP CS Fixer configuration files; update .gitignore and README
+[TASK]    Add AGENTS.md with development guidelines for AI coding agents
 
 Version 7.5.0, 13 November 2026
 [!!!]     This version changes the database structure.
