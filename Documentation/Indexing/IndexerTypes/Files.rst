@@ -26,8 +26,14 @@ There are two ways to index files:
   the metadata of files. Or you can decide not to use FAL. That will only index
   file contents and no file metadata.
 
-An incremental indexer is available. It will detect changes by comparing the file
-modification time against the last indexing time and re-index those files.
+An incremental indexer is available. It detects file content changes using the
+file modification time and re-indexes changed files. For FAL files in the
+dedicated file indexer, it also compares the metadata record timestamp with the
+timestamp of the index record. Changed metadata fields and category tags are
+refreshed while reusing the indexed file content, so text extraction is not
+repeated.
+Renaming a system category does not change the file metadata record. Run a full
+indexing to refresh the category tags.
 
 Since version 4.6.0 it is possible to exclude files from indexing by
 deactivating the "Include in search" checkbox in the new "Search" tab of the

@@ -348,15 +348,30 @@ class File extends IndexerBase
                     $filePath = $file;
                 }
 
-                // Check if if we have already up-to-date content for this file in the index by comparing the  timestamps.
-                // Todo: The index record also contains metadata which may have also changed, this needs to be checked also.
-                $fileContent = $this->getFileContentFromIndex($this->getUniqueHashForFile(), filemtime($filePath));
+                // Check if we have already up-to-date content for this file in the index by comparing the timestamps.
+                $indexRow = $this->indexRepository->findOneByHashAndModificationTime(
+                    $this->getUniqueHashForFile(),
+                    filemtime($filePath)
+                );
+                $fileContent = is_array($indexRow) && isset($indexRow['content']) ? $indexRow['content'] : false;
 
                 // in incremental indexing mode we can skip the further processing of this file now if we found
                 // a matching index record, because we do not need to store something to the index.
                 // In full indexing mode we need to store the already existing index record
                 // again because we want to update the timestamp.
                 if ($this->indexingMode === self::INDEXING_MODE_INCREMENTAL && $fileContent !== false) {
+                    if (
+                        $file instanceof \TYPO3\CMS\Core\Resource\File
+                        && $this->fileMetadataHasChanged($file, $indexRow)
+                    ) {
+                        $this->pObj->logger->debug(
+                            'Re-indexing FAL file because metadata has changed',
+                            ['file' => $file->getCombinedIdentifier()]
+                        );
+                        $this->removeIndexRecordIfLanguageChanged($file, $indexRow);
+                        $this->storeToIndex($file, $fileContent);
+                        $counter++;
+                    }
                     continue;
                 }
 
@@ -438,6 +453,40 @@ class File extends IndexerBase
         }
 
         return $fileContent;
+    }
+
+    protected function getMetaDataForFile(\TYPO3\CMS\Core\Resource\File $file): array
+    {
+        /** @var MetaDataRepository $metaDataRepository */
+        $metaDataRepository = GeneralUtility::makeInstance(MetaDataRepository::class);
+        return $metaDataRepository->findByFile($file);
+    }
+
+    protected function fileMetadataHasChanged(\TYPO3\CMS\Core\Resource\File $file, array $indexRow): bool
+    {
+        return self::isMetadataNewerThanIndexRecord($this->getMetaDataForFile($file), $indexRow);
+    }
+
+    public static function isMetadataNewerThanIndexRecord(array $metaData, array $indexRow): bool
+    {
+        if (!isset($metaData['tstamp'], $indexRow['tstamp'])) {
+            return false;
+        }
+
+        $metadataTimestamp = (int)$metaData['tstamp'];
+        $indexTimestamp = (int)$indexRow['tstamp'];
+
+        return $metadataTimestamp > 0 && $indexTimestamp > 0 && $metadataTimestamp >= $indexTimestamp;
+    }
+
+    protected function removeIndexRecordIfLanguageChanged(\TYPO3\CMS\Core\Resource\File $file, array $indexRow): void
+    {
+        if (
+            isset($indexRow['uid'], $indexRow['language'])
+            && $this->detectFileLanguage($file->getProperties()) !== (int)$indexRow['language']
+        ) {
+            $this->indexRepository->deleteByUid((int)$indexRow['uid']);
+        }
     }
 
     /**

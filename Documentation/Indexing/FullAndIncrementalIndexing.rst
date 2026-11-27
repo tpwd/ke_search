@@ -42,6 +42,8 @@ Incremental indexing has a few drawbacks:
   starting full indexing.")
 * Changes to files won't be recognized if you use the page or content element indexer, only if you use the
   dedicated file indexer.
+* Renamed system categories are not detected for FAL files during incremental
+  indexing. Run a full indexing to refresh their indexed category tags.
 
 Recommendation
 ==============
